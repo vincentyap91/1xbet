@@ -1,0 +1,15 @@
+# Secrets / local notes
+1xbet-livesite-login.txt
+*.env
+.env.*
+
+# Editor / OS
+.cursor/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies / build
+node_modules/
+dist/
+.cache/

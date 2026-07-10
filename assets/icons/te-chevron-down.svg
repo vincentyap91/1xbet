@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="xMidYMid meet" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Img" clip-path="url(#clip0_0_4)">
+<path id="Vector" d="M4.75 5.84375L0.125 1.28125C-0.03125 1.125 -0.03125 0.9375 0.125 0.78125L0.71875 0.15625C0.875 0 1.125 0 1.25 0.15625L5 3.84375L8.75 0.15625C8.875 0 9.125 0 9.28125 0.15625L9.90625 0.78125C10.0313 0.9375 10.0313 1.09375 9.90625 1.28125L5.3125 5.84375C5.15625 6 4.90625 6 4.78125 5.84375H4.75Z" fill="var(--fill-0, white)"/>
+</g>
+<defs>
+<clipPath id="clip0_0_4">
+<rect width="10" height="6" fill="white"/>
+</clipPath>
+</defs>
+</svg>

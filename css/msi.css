@@ -1,0 +1,1059 @@
+/* =========================================================
+   MSI page — self-contained styles.
+   All colours via design tokens from styles.css.
+   Pattern-compatible with wc2026.css (reuses .wc-* names).
+   ========================================================= */
+
+/* ── Layout ── */
+.msi-layout {
+  grid-template-columns: 250px minmax(680px, 1fr) 260px;
+}
+
+.msi-main {
+  gap: var(--gap);
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   SHARED TEAM LOGO UTILITIES
+═══════════════════════════════════════════════ */
+.wc-flag-circle {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--surface-tertiary);
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.wc-flag-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+.wc-flag-lg {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 1px 6px rgba(0,0,0,.22);
+}
+.wc-flag-lg img { width: 100%; height: 100%; object-fit: cover; }
+
+.wc-flag-sm {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.18);
+  vertical-align: middle;
+}
+.wc-flag-sm img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ═══════════════════════════════════════════════
+   LEFT SIDEBAR
+═══════════════════════════════════════════════ */
+.wc-left-sidebar {
+  gap: var(--gap);
+}
+
+.wc-side-card {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--sidebar-bg);
+  border: 1px solid var(--border-dark);
+}
+
+.wc-side-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+  background: linear-gradient(180deg, var(--section-blue), var(--section-blue-dark));
+}
+
+.wc-side-bydate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.wc-side-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.76);
+}
+
+.wc-side-bydate-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.wc-side-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--header-action);
+  opacity: .84;
+}
+.wc-side-icon-btn:hover { opacity: 1; background: var(--section-blue); }
+
+.wc-side-sports-label {
+  padding: 6px 12px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .06em;
+}
+
+.wc-date-group {
+  border-top: 1px solid var(--border-dark);
+}
+.wc-date-group summary { list-style: none; }
+.wc-date-group summary::-webkit-details-marker { display: none; }
+
+.wc-date-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  cursor: pointer;
+  color: rgba(255,255,255,.82);
+  user-select: none;
+}
+.wc-date-summary:hover { background: var(--sidebar-bg-hover); color: var(--text-inverse); }
+
+.wc-ds-text { flex: 1; font-size: 12px; font-weight: 600; }
+
+.wc-date-count {
+  font-size: 11px;
+  color: var(--cyan-soft);
+  font-weight: 700;
+}
+
+.wc-exp-chevron {
+  flex-shrink: 0;
+  transition: transform .18s ease;
+  opacity: .6;
+}
+details[open] .wc-exp-chevron { transform: rotate(180deg); }
+
+.wc-date-sub {
+  background: rgba(0,0,0,.14);
+  border-top: 1px solid var(--border-dark);
+}
+
+.wc-date-match {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 4px 14px 4px 20px;
+  font-size: 11px;
+  color: rgba(255,255,255,.72);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+.wc-date-match:hover { color: var(--text-inverse); background: var(--sidebar-bg-hover); }
+
+.wc-dm-time {
+  color: var(--cyan-soft);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.wc-dm-teams { flex: 1; }
+
+.wc-side-actions-v {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid var(--border-dark);
+}
+
+.wc-side-btn-full {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--header-action);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.wc-side-btn-full:hover { background: var(--section-blue); }
+
+/* ═══════════════════════════════════════════════
+   SUBNAV
+═══════════════════════════════════════════════ */
+.wc-subnav {
+  display: flex;
+  min-height: 42px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, var(--section-blue), var(--section-blue-dark));
+  border: 1px solid var(--border-dark);
+}
+
+.wc-subnav-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  min-width: 112px;
+  padding: 0 18px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.78);
+}
+.wc-subnav-tab:hover,
+.wc-subnav-tab.active {
+  color: var(--text-inverse);
+  background: rgba(62,180,240,.12);
+}
+.wc-subnav-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 14px; right: 14px; bottom: 0;
+  height: 2px;
+  background: var(--action-green);
+  border-radius: var(--radius-xs);
+}
+.wc-subnav-icon { flex-shrink: 0; }
+
+/* ═══════════════════════════════════════════════
+   SHARED TAB CHROME
+═══════════════════════════════════════════════ */
+.wc-tabs {
+  display: flex;
+  gap: 2px;
+  min-height: 40px;
+  padding: 0 8px;
+  background: linear-gradient(180deg, var(--section-blue), var(--section-blue-dark));
+}
+
+.wc-tab {
+  position: relative;
+  padding: 0 14px;
+  color: rgba(255,255,255,.74);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.wc-tab.active, .wc-tab:hover { color: var(--text-inverse); }
+.wc-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 8px; right: 8px; bottom: 0;
+  height: 2px;
+  background: var(--action-green);
+}
+
+.wc-tab-panel { color: var(--text-primary); }
+.wc-info-copy {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════
+   HERO — MSI style (white card, 2-way odds)
+═══════════════════════════════════════════════ */
+.wc-hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-tertiary);
+  border: 1px solid var(--border-light);
+}
+
+.msi-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../assets/images/msi/hero-overlay.webp');
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+.msi-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11,29,51,.15) 0%,
+    rgba(11,29,51,.62) 50%,
+    rgba(11,29,51,.70) 100%
+  );
+}
+
+.wc-hero-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px;
+  width: min(520px, 92%);
+}
+
+.wc-hero-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: .04em;
+  text-shadow: 0 2px 16px rgba(0,0,0,.55);
+  text-transform: uppercase;
+}
+
+/* MSI white hero card */
+.msi-hero-card {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wc-hero-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.wc-hero-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.wc-hero-team-home { justify-content: flex-end; }
+.wc-hero-team-away { justify-content: flex-start; }
+
+/* Team logo in hero */
+.msi-hero-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.wc-hero-score {
+  min-width: 52px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.wc-hero-date {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* 2-way odds (no draw) */
+.msi-hero-odds {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.msi-odd-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--odds-bg);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-weight: 700;
+}
+.msi-odd-btn:hover,
+.msi-odd-btn.selected { background: var(--cyan-accent); color: #fff; border-color: var(--cyan-accent); }
+.msi-odd-btn strong { font-size: 13px; }
+
+/* ═══════════════════════════════════════════════
+   MATCH BOARD
+═══════════════════════════════════════════════ */
+.wc-match-board {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: var(--gap);
+  align-items: start;
+}
+
+.wc-summary-card,
+.wc-markets-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  background: var(--surface-primary);
+}
+
+/* MSI Summary — logos + form + countdown */
+.msi-sum-scoreboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  background: var(--surface-secondary);
+  gap: 8px;
+}
+
+.msi-sum-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.msi-sum-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.msi-sum-team-name {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.msi-sum-score {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--section-blue);
+  min-width: 52px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Form dots */
+.msi-form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+.msi-form-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.msi-form-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  letter-spacing: .04em;
+}
+
+.msi-form-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.msi-form-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--action-green);
+}
+
+.msi-form-dot.loss { background: #e03a3a; }
+.msi-form-dot.draw { background: var(--text-secondary); }
+
+/* Countdown */
+.wc-countdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--surface-secondary);
+  border-top: 1px solid var(--border-light);
+}
+
+.wc-countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 42px;
+}
+.wc-countdown-unit strong {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-primary);
+  line-height: 1;
+}
+.wc-countdown-unit span {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+.wc-countdown-sep {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--text-secondary);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.wc-sum-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border-light);
+}
+.wc-sum-date { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+.wc-fav-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+}
+.wc-fav-btn:hover { background: var(--surface-tertiary); }
+
+/* Markets card */
+.wc-markets-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  background: var(--league-header);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.wc-mkt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--surface-tertiary);
+  color: var(--text-primary);
+}
+.wc-mkt-chip.active { background: var(--section-blue); color: #fff; }
+.wc-mkt-chip span { color: inherit; opacity: .78; }
+
+.wc-mkt-search {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 120px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+}
+.wc-mkt-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 11px;
+  color: var(--text-primary);
+}
+.wc-mkt-collapse {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.wc-mkt-collapse:hover { color: var(--text-primary); }
+
+.wc-markets-list {
+  display: grid;
+  gap: 1px;
+  background: var(--border-light);
+}
+.wc-market { background: var(--surface-primary); }
+
+.wc-market-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  color: var(--text-primary);
+  background: var(--league-header);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+.wc-market-head::after {
+  content: "";
+  width: 0; height: 0;
+  margin-left: 8px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: .72;
+  transition: transform .18s ease;
+}
+.wc-market.open .wc-market-head::after { transform: rotate(180deg); }
+.wc-market-head strong {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-right: 6px;
+}
+
+.wc-market-body {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px;
+}
+.wc-market-body[hidden] { display: none; }
+.wc-market-body-2col { grid-template-columns: repeat(2, 1fr); }
+
+/* Correct Score grid (3 col) */
+.msi-market-body-score {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px;
+}
+.msi-market-body-score[hidden] { display: none; }
+
+.msi-score-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 7px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.msi-score-btn .msi-score-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.msi-score-btn .msi-score-kind {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.msi-score-btn .msi-score-odd {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--section-blue);
+}
+.msi-score-btn:hover,
+.msi-score-btn.selected {
+  background: var(--odds-bg);
+  border-color: var(--cyan-accent);
+}
+.msi-score-btn.selected .msi-score-odd { color: var(--cyan-accent); }
+
+/* Total maps */
+.msi-market-body-total {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 8px;
+}
+.msi-market-body-total[hidden] { display: none; }
+
+.msi-total-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  font-size: 11px;
+  color: var(--text-primary);
+}
+.msi-total-btn .msi-total-hcap {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.msi-total-btn .msi-total-name {
+  font-size: 11px;
+  font-weight: 700;
+  flex: 1;
+  text-align: left;
+  margin: 0 4px;
+}
+.msi-total-btn .msi-total-odd {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--section-blue);
+}
+.msi-total-btn:hover,
+.msi-total-btn.selected {
+  background: var(--odds-bg);
+  border-color: var(--cyan-accent);
+}
+.msi-total-btn.selected .msi-total-odd { color: var(--cyan-accent); }
+
+/* ═══════════════════════════════════════════════
+   SCHEDULE (MSI match card)
+═══════════════════════════════════════════════ */
+.wc-schedule {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  background: var(--surface-primary);
+}
+
+.wc-schedule-tabs { padding-right: 0; }
+
+.wc-my-teams-link {
+  margin-left: auto;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan-soft);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.wc-my-teams-link:hover { color: var(--text-inverse); }
+
+.wc-sched-empty { padding: 14px 16px; }
+
+/* MSI match card inside schedule */
+.msi-match-card {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+.msi-match-card:last-child { border-bottom: none; }
+
+.msi-mc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.msi-mc-teams {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.msi-mc-team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.msi-mc-team-away { justify-content: flex-end; }
+
+.msi-mc-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.msi-mc-score {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--section-blue);
+  min-width: 44px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.msi-mc-fav {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-secondary);
+  flex-shrink: 0;
+}
+.msi-mc-fav:hover { background: var(--surface-tertiary); }
+
+.msi-mc-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.msi-mc-round {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.msi-mc-date {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.msi-mc-odds {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+/* ═══════════════════════════════════════════════
+   EVENT CALENDAR
+═══════════════════════════════════════════════ */
+.msi-calendar-section {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+  background: var(--surface-primary);
+}
+
+.msi-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--league-header);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.msi-cal-title {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.msi-cal-date-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-blue);
+  color: var(--text-inverse);
+  font-size: 11px;
+  font-weight: 700;
+}
+.msi-cal-date-btn:hover { background: var(--brand-blue); }
+
+.msi-cal-group {
+  border-top: 1px solid var(--border-light);
+}
+.msi-cal-group:first-of-type { border-top: none; }
+
+.msi-cal-date-label {
+  padding: 8px 14px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--surface-secondary);
+  border-bottom: 1px solid var(--border-light);
+  letter-spacing: .04em;
+}
+
+/* 2-column result cards grid */
+.msi-result-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--border-light);
+}
+
+.msi-result-card {
+  background: var(--surface-primary);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.msi-res-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.msi-res-team {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.msi-res-team-away { justify-content: flex-end; }
+
+.msi-res-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* CSS initials for teams without logos */
+.msi-res-initials {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--section-blue);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.msi-res-score {
+  font-size: 16px;
+  font-weight: 900;
+  color: var(--section-blue);
+  min-width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.msi-res-status {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+/* ═══════════════════════════════════════════════
+   SHARED ODD BUTTON (same as wc-odd-btn)
+═══════════════════════════════════════════════ */
+.odd-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 34px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.odd-btn:hover,
+.odd-btn.selected {
+  background: var(--odds-bg);
+  border-color: var(--cyan-accent);
+  color: var(--text-primary);
+}
+.odd-btn span:first-child { color: var(--text-secondary); font-size: 11px; }
+.odd-btn span:last-child { font-weight: 800; color: var(--section-blue); }
+.odd-btn.selected span:last-child { color: var(--cyan-accent); }
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 1400px) {
+  .msi-layout { grid-template-columns: 230px minmax(0, 1fr) 260px; }
+}
+
+@media (max-width: 1200px) {
+  .msi-layout { grid-template-columns: 230px minmax(0, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .wc-match-board { grid-template-columns: 1fr; }
+  .msi-result-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .msi-layout { grid-template-columns: 1fr; }
+  .wc-hero { min-height: 260px; }
+  .wc-hero-title { font-size: 28px; }
+  .msi-hero-odds { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .wc-subnav-tab { flex: 1; min-width: 0; padding: 0 10px; }
+  .msi-hero-odds { grid-template-columns: 1fr 1fr; }
+  .wc-market-body { grid-template-columns: 1fr; }
+  .msi-market-body-score { grid-template-columns: repeat(2, 1fr); }
+  .msi-result-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,659 @@
+OK: Tether ERC20 OK: Tether TRC20 OK: Bitcoin OK: Help2Pay OK: Touch 'n Go OK: GrabPay OK: DuitNow <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Methods — 1xBet</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/info-pages.css" />
+  <link rel="stylesheet" href="css/payments.css" />
+</head>
+<body data-page="payments">
+  <div class="page-shell">
+
+    <!-- ========== HEADER ========== -->
+    <header class="site-header" role="banner">
+      <div class="header-top">
+        <div class="header-brand">
+          <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="header-bottom">
+            <span class="mobile-menu-bars" aria-hidden="true"></span>
+          </button>
+          <a href="index.html" class="logo" aria-label="1xBet home">
+            <img src="assets/icons/logo-1xbet.svg" alt="1xBet" class="logo-img" width="122" height="27" />
+          </a>
+          <a href="index.html" class="logo-flag-link" aria-label="Country">
+            <img src="assets/icons/flag-my.svg" alt="MY" class="logo-flag" width="32" height="32" />
+          </a>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="icon-btn icon-btn-square" aria-label="Bonus" title="Bonus">
+            <span class="icon-btn-inner">
+              <img src="assets/icons/icon-gift.svg" alt="" width="16" height="16" />
+              <span class="icon-badge">1</span>
+            </span>
+          </button>
+          <a href="#" class="icon-btn icon-btn-square desktop-only-action" aria-label="Become a payment agent" title="Become a payment agent">
+            <img src="assets/icons/icon-agent.svg" alt="" width="16" height="16" />
+          </a>
+          <a href="payments.html" class="icon-btn icon-btn-square desktop-only-action" aria-label="Deposit" title="Deposit" aria-current="page">
+            <img src="assets/icons/icon-deposit.svg" alt="" width="16" height="16" />
+          </a>
+          <a href="#reg-form" class="btn-register">Registration</a>
+          <button type="button" class="btn-login">Log in</button>
+          <div class="header-meta-group">
+            <button type="button" class="header-meta settings-btn" aria-label="Settings">
+              <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
+              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+            </button>
+            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
+              <img src="assets/icons/icon-lang.svg" alt="" class="lang-flag" width="14" height="14" />
+              <span>EN</span>
+              <span class="meta-sep">/</span>
+              <span id="header-clock">10:39</span>
+              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-bottom" id="header-bottom">
+        <nav class="main-nav" aria-label="Primary">
+          <div class="nav-list">
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                <img src="assets/icons/icon-trophy.svg" alt="" class="nav-icon" width="18" height="16" />
+                TOP-EVENTS
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="wc2026.html" role="menuitem">WC2026</a>
+                <a href="msi.html" role="menuitem">MSI</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                Sports
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="national-team.html" role="menuitem">Bet on Your National Team</a>
+                <a href="big-tournaments.html" role="menuitem">Bet on Big Tournaments</a>
+                <a href="long-term-bets.html" role="menuitem">Long-term bets</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                Live
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="multi-live.html" role="menuitem">Multi-LIVE</a>
+                <a href="live-national-team.html" role="menuitem">Bet on Your National Team</a>
+                <a href="marble-live.html" role="menuitem">Marble-Live</a>
+                <a href="fast-bet.html" role="menuitem">Fast bet</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                1xGames
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown dropdown-wide" role="menu">
+                <a href="world-flight-26.html" role="menuitem">World Flight 26</a>
+                <a href="index.html#games" role="menuitem">Crash</a>
+                <a href="index.html#games" role="menuitem">Crystal</a>
+                <a href="index.html#games" role="menuitem">Midgard Zombies</a>
+                <a href="index.html#games" role="menuitem">Show all</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                Casino
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="casino.html" role="menuitem">Slots</a>
+                <a href="casino-favourites.html" role="menuitem">My Casino / Favourites</a>
+              </div>
+            </div>
+            <a href="live-casino.html" class="nav-link nav-link-plain">Live Casino</a>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                Esports
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="esports.html" role="menuitem">All Esports</a>
+                <a href="esports.html" role="menuitem">CS2</a>
+                <a href="esports.html" role="menuitem">Dota 2</a>
+                <a href="esports.html" role="menuitem">LoL</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+                PROMO
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown" role="menu">
+                <a href="promo.html" role="menuitem">All promotions</a>
+                <a href="index.html#promo-slider" role="menuitem">WORLD WIN 26</a>
+                <a href="#reg-form" role="menuitem">Welcome Bonus</a>
+              </div>
+            </div>
+            <div class="nav-item has-dropdown">
+              <button type="button" class="nav-link active" aria-expanded="false" aria-haspopup="true" aria-current="page">
+                More
+                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
+              </button>
+              <div class="dropdown dropdown-wide" role="menu">
+                <a href="about-us.html" role="menuitem">About us</a>
+                <a href="payments.html" role="menuitem" aria-current="page">Payments</a>
+                <a href="terms.html" role="menuitem">Terms and Conditions</a>
+                <a href="#" role="menuitem">Bingo</a>
+                <a href="#" role="menuitem">Toto</a>
+                <a href="#" role="menuitem">Results</a>
+                <a href="#" role="menuitem">Statistics</a>
+              </div>
+            </div>
+          </div>
+          <a href="index.html#games" class="nav-link nav-dice">
+            <img src="assets/icons/icon-dice.svg" alt="" class="nav-icon dice-icon" width="32" height="32" />
+            Dice
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ========== BREADCRUMBS ========== -->
+    <div class="payments-crumbs-bar">
+      <nav class="payments-crumbs" aria-label="Breadcrumb">
+        <a href="index.html" class="payments-crumb-home" aria-label="Home">
+          <img src="assets/icons/te-home.svg" alt="" width="14" height="14" />
+        </a>
+        <span class="payments-crumb-sep" aria-hidden="true">/</span>
+        <span class="payments-crumb-cur" aria-current="page">Payments</span>
+      </nav>
+    </div>
+
+    <!-- ========== MAIN LAYOUT ========== -->
+    <div class="payments-layout">
+
+      <!-- ── Info Sidebar ────────────────────────────────── -->
+      <aside class="info-sidebar" aria-label="Information menu">
+        <div class="info-sidebar-title">Information</div>
+        <ul class="info-nav" role="list">
+          <li class="info-nav-item">
+            <a href="about-us.html" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <circle cx="8" cy="5" r="2.5"/>
+                <path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+              </svg>
+              About us
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="#" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M8 1l2 4.5H15l-3.5 3 1.3 4.5L8 11l-4.8 2L4.5 8.5 1 5.5h5z"/>
+              </svg>
+              Our awards
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="#" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M14 11.3v2a1.3 1.3 0 0 1-1.4 1.3A13 13 0 0 1 7 12.6a12.7 12.7 0 0 1-3.9-3.9A13 13 0 0 1 1.1 3.4 1.3 1.3 0 0 1 2.4 2h2a1.3 1.3 0 0 1 1.3 1.1c.08.62.23 1.24.45 1.83a1.3 1.3 0 0 1-.3 1.37L5.2 7a10.4 10.4 0 0 0 3.9 3.9l.69-.69a1.3 1.3 0 0 1 1.37-.3c.59.22 1.21.37 1.83.45A1.3 1.3 0 0 1 14 11.3z"/>
+              </svg>
+              Contacts
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="terms.html" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M10 1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5l-3-4z"/>
+                <polyline points="9 1 9 5 13 5"/>
+                <line x1="6" y1="8" x2="10" y2="8"/>
+                <line x1="6" y1="11" x2="10" y2="11"/>
+              </svg>
+              Terms and Conditions
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="payments.html" class="info-nav-link active" aria-current="page">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <rect x="1" y="4" width="14" height="10" rx="1.5"/>
+                <path d="M1 7h14"/>
+                <path d="M5 11h2M9 11h2"/>
+              </svg>
+              Payments
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="#" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <circle cx="8" cy="8" r="6.5"/>
+                <line x1="8" y1="5.5" x2="8" y2="8"/>
+                <line x1="8" y1="10.5" x2="8.01" y2="10.5"/>
+              </svg>
+              How to place a bet
+            </a>
+          </li>
+          <li class="info-nav-item">
+            <a href="#" class="info-nav-link">
+              <svg class="info-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M2 4h12M2 8h8M2 12h5"/>
+              </svg>
+              Cookie Policy
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ── Payments Main ───────────────────────────────── -->
+      <main class="payments-main" id="main-content">
+        <div class="payments-content">
+
+          <!-- Header row -->
+          <div class="payments-header-row">
+            <h1 class="payments-page-title">Deposit</h1>
+            <button type="button" class="payments-region" id="payments-region-btn" aria-label="Change region">
+              <img src="assets/icons/flag-my.svg" alt="Malaysia" class="payments-region-flag" />
+              <span>Malaysia</span>
+              <img src="assets/icons/icon-chevron.svg" alt="" class="payments-region-chevron" />
+            </button>
+          </div>
+          <p class="payments-subtitle">Select a payment system to top up your account.</p>
+
+          <!-- Tabs -->
+          <div class="payments-tabs" role="tablist" aria-label="Payment direction">
+            <button type="button" class="payments-tab active" role="tab" aria-selected="true" data-tab="deposit" id="tab-deposit">Deposit</button>
+            <button type="button" class="payments-tab" role="tab" aria-selected="false" data-tab="withdrawal" id="tab-withdrawal">Withdrawal</button>
+          </div>
+
+          <!-- Category filters -->
+          <div class="payments-categories" role="toolbar" aria-label="Filter payment methods">
+            <button type="button" class="payments-cat-btn active" data-cat="all">All methods <span class="payments-cat-count">(63)</span></button>
+            <button type="button" class="payments-cat-btn" data-cat="ewallet">E-wallets <span class="payments-cat-count">(3)</span></button>
+            <button type="button" class="payments-cat-btn" data-cat="cash">Cash <span class="payments-cat-count">(1)</span></button>
+            <button type="button" class="payments-cat-btn" data-cat="banking">Internet banking <span class="payments-cat-count">(2)</span></button>
+            <button type="button" class="payments-cat-btn" data-cat="transfer">Bank transfer <span class="payments-cat-count">(1)</span></button>
+            <button type="button" class="payments-cat-btn" data-cat="crypto">Cryptocurrency <span class="payments-cat-count">(56)</span></button>
+          </div>
+
+          <!-- Payment cards grid -->
+          <div class="payments-grid" id="payments-grid">
+
+            <!-- DuitNow -->
+            <article class="payments-card" data-cat="banking ewallet">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/duitnow.png" alt="DuitNow" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">DuitNow</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 10</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="DuitNow">Deposit</button>
+            </article>
+
+            <!-- GrabPay -->
+            <article class="payments-card" data-cat="ewallet">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/grabpay.png" alt="GrabPay" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">GrabPay</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 10</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="GrabPay">Deposit</button>
+            </article>
+
+            <!-- Touch 'n Go -->
+            <article class="payments-card" data-cat="ewallet">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/touchngo.png" alt="Touch 'n Go" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">Touch 'n Go eWallet</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 10</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Touch 'n Go eWallet">Deposit</button>
+            </article>
+
+            <!-- Help2Pay -->
+            <article class="payments-card" data-cat="banking">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/help2pay.png" alt="Help2Pay" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">Help2Pay</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 30</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Help2Pay">Deposit</button>
+            </article>
+
+            <!-- FPX -->
+            <article class="payments-card" data-cat="banking transfer">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#003087 0%,#001f5c 100%)">FPX</div>
+              </div>
+              <div class="payments-card-name">FPX (Financial Process Exchange)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 10</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="FPX">Deposit</button>
+            </article>
+
+            <!-- Cash Deposit -->
+            <article class="payments-card" data-cat="cash">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#2d7a2d 0%,#1e5c1e 100%)">Cash</div>
+              </div>
+              <div class="payments-card-name">Cash Deposit</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>MYR 50</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Cash Deposit">Deposit</button>
+            </article>
+
+            <!-- Bitcoin -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/bitcoin.png" alt="Bitcoin" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">Bitcoin (BTC)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>0.0001 BTC</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">~10 min</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Bitcoin">Deposit</button>
+            </article>
+
+            <!-- Ethereum -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#627eea 0%,#4a68d8 100%)">Ethereum</div>
+              </div>
+              <div class="payments-card-name">Ethereum (ETH)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>0.001 ETH</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Ethereum">Deposit</button>
+            </article>
+
+            <!-- Tether TRC20 -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/tether.png" alt="Tether TRC20" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">Tether (USDT TRC-20)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>1 USDT</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Tether TRC-20">Deposit</button>
+            </article>
+
+            <!-- Tether ERC20 -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <img src="assets/images/payments/tether.png" alt="Tether ERC20" width="98" height="44" />
+              </div>
+              <div class="payments-card-name">Tether (USDT ERC-20)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>10 USDT</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Tether ERC-20">Deposit</button>
+            </article>
+
+            <!-- USDC -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#2775ca 0%,#1a5da8 100%)">USD Coin</div>
+              </div>
+              <div class="payments-card-name">USD Coin (USDC)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>5 USDC</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="USD Coin">Deposit</button>
+            </article>
+
+            <!-- BNB -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#f0b90b 0%,#c8960a 100%)">BNB</div>
+              </div>
+              <div class="payments-card-name">BNB (Binance Coin)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>0.01 BNB</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="BNB">Deposit</button>
+            </article>
+
+            <!-- Litecoin -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#bfbbbb 0%,#9a9797 100%);color:#333">Litecoin</div>
+              </div>
+              <div class="payments-card-name">Litecoin (LTC)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>0.01 LTC</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">~2 min</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Litecoin">Deposit</button>
+            </article>
+
+            <!-- Ripple XRP -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#00aae4 0%,#0088bb 100%)">XRP</div>
+              </div>
+              <div class="payments-card-name">Ripple (XRP)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>10 XRP</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Ripple XRP">Deposit</button>
+            </article>
+
+            <!-- Dogecoin -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#c2a633 0%,#9e8428 100%)">Dogecoin</div>
+              </div>
+              <div class="payments-card-name">Dogecoin (DOGE)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>100 DOGE</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">~1 min</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Dogecoin">Deposit</button>
+            </article>
+
+            <!-- Solana -->
+            <article class="payments-card" data-cat="crypto">
+              <div class="payments-card-logo">
+                <div class="payments-logo-placeholder" style="background:linear-gradient(135deg,#9945ff 0%,#7a32d8 100%)">Solana</div>
+              </div>
+              <div class="payments-card-name">Solana (SOL)</div>
+              <div class="payments-card-meta">
+                <div class="payments-card-min">Minimum: <strong>0.1 SOL</strong></div>
+                <div class="payments-card-tags">
+                  <span class="payments-card-tag payments-tag-fee">No fees</span>
+                  <span class="payments-card-tag payments-tag-instant">Instant</span>
+                </div>
+              </div>
+              <button type="button" class="payments-card-btn" data-method="Solana">Deposit</button>
+            </article>
+
+          </div><!-- /payments-grid -->
+
+        </div><!-- /payments-content -->
+      </main>
+
+    </div><!-- /payments-layout -->
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="site-footer">
+      <nav class="footer-nav" aria-label="Footer">
+        <div class="footer-col">
+          <h3>Information</h3>
+          <a href="about-us.html">About us</a>
+          <a href="terms.html">Terms and Conditions</a>
+          <a href="#">Affiliate Program</a>
+          <a href="#">Become an agent</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Policy</a>
+          <a href="#">Contacts</a>
+        </div>
+        <div class="footer-col">
+          <h3>Betting</h3>
+          <a href="index.html#live-events">Sports</a>
+          <a href="multi-live.html">Multi-LIVE</a>
+          <a href="index.html#live-events">Live</a>
+          <a href="#">Toto</a>
+        </div>
+        <div class="footer-col">
+          <h3>Games</h3>
+          <a href="casino.html">Casino</a>
+          <a href="index.html#games">1xGames</a>
+          <a href="live-casino.html">Live Casino</a>
+        </div>
+        <div class="footer-col">
+          <h3>Promotions</h3>
+          <a href="promo.html">All promotions</a>
+          <a href="#">Welcome Bonus</a>
+          <a href="#">Cashback</a>
+        </div>
+        <div class="footer-col">
+          <h3>Useful links</h3>
+          <a href="payments.html" aria-current="page">Payment methods</a>
+          <a href="#">Mobile version</a>
+          <a href="#reg-form">Registration</a>
+        </div>
+        <div class="footer-col">
+          <h3>Apps</h3>
+          <a href="#" class="footer-app-link">
+            <img src="assets/icons/ft-ios.svg" alt="" width="14" height="14" /><span>iOS</span>
+          </a>
+          <a href="#" class="footer-app-link">
+            <img src="assets/icons/ft-android.svg" alt="" width="14" height="14" /><span>Android</span>
+          </a>
+          <a href="#" class="footer-app-link">
+            <img src="assets/icons/ft-other-apps.svg" alt="" width="14" height="14" /><span>Other apps</span>
+          </a>
+        </div>
+      </nav>
+
+      <section class="footer-partners" aria-label="Partners">
+        <h3>Partners</h3>
+        <div class="footer-partners-track" id="footer-partners-track">
+          <a href="#" class="partner-card" title="FC Barcelona"><img src="assets/images/partners/partner-barcelona.webp" alt="FC Barcelona" width="70" height="70" /><img class="partner-badge" src="assets/icons/ft-trophy.svg" alt="" width="12" height="12" /></a>
+          <a href="#" class="partner-card" title="Serie A"><img src="assets/images/partners/partner-seriea.webp" alt="Serie A" width="70" height="70" /><img class="partner-badge" src="assets/icons/ft-trophy.svg" alt="" width="12" height="12" /></a>
+          <a href="#" class="partner-card" title="PSG"><img src="assets/images/partners/partner-psg.webp" alt="PSG" width="70" height="70" /><img class="partner-badge" src="assets/icons/ft-trophy.svg" alt="" width="12" height="12" /></a>
+          <a href="#" class="partner-card" title="PGL"><img src="assets/images/partners/partner-pgl.webp" alt="PGL" width="70" height="70" /><img class="partner-badge" src="assets/icons/ft-gamepad.svg" alt="" width="12" height="12" /></a>
+        </div>
+      </section>
+
+      <div class="footer-meta">
+        <div class="footer-meta-card footer-legal">
+          <p>Copyright &copy; 2024 &laquo;1xBet&raquo;.</p>
+          <p>1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="#">Find out more</a></p>
+        </div>
+        <a href="#" class="footer-meta-card footer-support">
+          <img src="assets/icons/ft-support.svg" alt="" width="48" height="48" />
+          <span><strong>CUSTOMER SUPPORT</strong><span>1800812889</span></span>
+        </a>
+        <div class="footer-meta-card footer-aside">
+          <div class="footer-aside-top">
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook" class="social-icon"><img src="assets/icons/ft-facebook.svg" alt="" width="16" height="16" /></a>
+              <a href="#" aria-label="Instagram" class="social-icon"><img src="assets/icons/ft-instagram.svg" alt="" width="16" height="16" /></a>
+            </div>
+            <span class="age-badge">18+</span>
+          </div>
+          <a href="#" class="footer-mobile-btn">MOBILE VERSION</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+
+  <nav class="mobile-tabbar" aria-label="Mobile shortcuts">
+    <a href="index.html" class="mobile-tab">
+      <img src="assets/icons/te-football.svg" alt="" width="18" height="18" />
+      <span>Sports</span>
+    </a>
+    <a href="promo.html" class="mobile-tab">
+      <img src="assets/icons/icon-gift.svg" alt="" width="18" height="18" />
+      <span>Promo</span>
+    </a>
+    <button type="button" class="mobile-tab" id="mobile-betslip-btn">
+      <img src="assets/icons/rb-bolt.svg" alt="" width="14" height="18" />
+      <span>Bet slip</span>
+    </button>
+    <button type="button" class="mobile-tab" id="mobile-menu-tab" aria-controls="header-bottom" aria-expanded="false">
+      <span class="mobile-menu-bars" aria-hidden="true"></span>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/payments.js"></script>
+  <script src="js/auth-modals.js"></script>
+</body>
+</html>

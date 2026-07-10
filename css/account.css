@@ -1,0 +1,976 @@
+/* =========================================================
+   Account Pages — personal-profile, deposit, withdraw
+   Logged-in header: Figma 45:11 (96px = 48 + 40 + 8)
+   Colors via CSS tokens only (no Figma chrome hex).
+   ========================================================= */
+
+/* ── Logged-in header cluster (Figma 45:49) ─────────────── */
+
+.header-user-block {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+body.is-logged-in .header-user-block {
+  display: flex;
+}
+
+body.is-logged-in .header-guest-only {
+  display: none !important;
+}
+
+/* Top actions: 32px controls + 24px settings/lang */
+body.is-logged-in .header-actions {
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  min-height: 40px;
+}
+
+.header-user-cluster {
+  display: flex;
+  align-items: stretch;
+  height: 32px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header-account-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 47px;
+  height: 32px;
+  padding: 4px 8.5px;
+  background: var(--header-action);
+  border-radius: 8px 0 0 8px;
+  color: #fff;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.header-account-btn:hover {
+  background: var(--header-action-hover);
+}
+
+.header-account-btn img:first-child {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.header-account-btn .meta-chevron {
+  width: 10px;
+  height: 6px;
+  margin-left: 0;
+  display: block;
+}
+
+.header-account-dot {
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--danger);
+}
+
+.header-balance-chip {
+  display: flex;
+  align-items: stretch;
+  margin-left: 1px;
+  height: 32px;
+  background: var(--header-action);
+  border-radius: 0 8px 8px 0;
+}
+
+.header-balance-rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  min-width: 112px;
+  padding: 3px 8px 3px 4px;
+}
+
+.header-balance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  color: #fff;
+  line-height: 13px;
+  white-space: nowrap;
+}
+
+.header-balance-row:first-child {
+  font-weight: 400;
+}
+
+.header-balance-row:last-child {
+  opacity: .8;
+  font-weight: 700;
+}
+
+.header-balance-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-width: 28px;
+  height: 32px;
+  flex-shrink: 0;
+  border: none;
+  border-left: 1px solid rgba(255,255,255,.2);
+  background: var(--header-action);
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  opacity: .85;
+  transition: opacity .15s, background .15s;
+}
+
+.header-balance-refresh:hover {
+  opacity: 1;
+  background: var(--header-action-hover);
+}
+
+.header-balance-refresh img {
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.btn-deposit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 4px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--action-green);
+  border-radius: 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.btn-deposit:hover {
+  background: var(--action-green-hover);
+  color: #fff;
+}
+
+.header-msg-btn {
+  color: #fff;
+  width: auto !important;
+  min-width: 48px;
+  height: 32px;
+  padding: 4px 9px !important;
+  gap: 4px;
+  border-radius: 8px;
+}
+
+.header-msg-btn .icon-btn-inner {
+  flex-shrink: 0;
+}
+
+.header-msg-btn .meta-chevron {
+  width: 10px;
+  height: 6px;
+  margin-left: 0;
+  display: block;
+  flex-shrink: 0;
+  opacity: .95;
+}
+
+/* Settings + language: 24px tall when logged in (Figma 45:107) */
+body.is-logged-in .header-meta-group {
+  display: flex;
+  align-items: stretch;
+  gap: 1px;
+  height: 24px;
+}
+
+body.is-logged-in .header-meta {
+  min-height: 24px;
+  height: 24px;
+  padding: 4px 8.5px;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+}
+
+body.is-logged-in .settings-btn {
+  border-radius: 8px 0 0 8px;
+  padding: 4px 8.5px;
+}
+
+body.is-logged-in .lang-time-btn {
+  border-radius: 0 8px 8px 0;
+  padding: 4px;
+  gap: 4px;
+}
+
+body.is-logged-in .lang-time-btn .lang-flag {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(212, 222, 232, .9);
+}
+
+.header-account-btn img:first-child,
+.header-balance-refresh img,
+.settings-btn img:first-child {
+  display: block;
+}
+
+.lang-time-btn .lang-flag {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(212, 222, 232, .9);
+}
+
+/* Compact logged-in controls on smaller desktops */
+@media (max-width: 1100px) {
+  body.is-logged-in .header-balance-rows {
+    min-width: 96px;
+  }
+  body.is-logged-in .btn-deposit {
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 900px) {
+  body.is-logged-in .header-balance-chip {
+    display: none;
+  }
+  body.is-logged-in .header-msg-btn .meta-chevron,
+  body.is-logged-in .header-account-btn .meta-chevron {
+    display: none;
+  }
+  body.is-logged-in .btn-deposit {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+}
+
+/* ── Page layout ────────────────────────────────────────── */
+
+.account-main {
+  flex: 1;
+  background: var(--page-bg);
+  padding: 14px 12px 20px;
+  min-height: calc(100vh - 96px);
+}
+
+.account-shell {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Sidebar ────────────────────────────────────────────── */
+
+.account-sidebar {
+  width: 232px;
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Sidebar account card */
+
+.acc-card {
+  padding: 12px 12px 10px;
+  background: var(--section-blue);
+}
+
+.acc-card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Circular progress ring (SVG) */
+.acc-ring {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.acc-ring svg {
+  display: block;
+  transform: rotate(-90deg);
+}
+
+.acc-ring-track {
+  fill: none;
+  stroke: rgba(255,255,255,.18);
+  stroke-width: 3.5;
+}
+
+.acc-ring-fill {
+  fill: none;
+  stroke: var(--action-green);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 119.38;       /* 2π × 19 */
+  stroke-dashoffset: 95.50;       /* 119.38 × 0.8 → 20% filled */
+  transition: stroke-dashoffset .4s ease;
+}
+
+.acc-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.acc-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.acc-card-number {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.acc-card-email {
+  font-size: 11px;
+  color: var(--cyan-soft);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.acc-card-balances {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.acc-balance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  gap: 8px;
+}
+
+.acc-balance-label {
+  color: var(--cyan-soft);
+}
+
+.acc-balance-value {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Sidebar nav groups */
+
+.acc-nav-group {
+  padding-bottom: 4px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+.acc-nav-group-label {
+  padding: 7px 12px 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.acc-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: rgba(255,255,255,.8);
+  text-decoration: none;
+  transition: background .15s, color .1s;
+  position: relative;
+}
+
+.acc-nav-link:hover {
+  background: var(--sidebar-bg-hover);
+  color: #fff;
+}
+
+.acc-nav-link.is-active,
+.acc-nav-link[aria-current="page"] {
+  background: rgba(26,79,138,.6);
+  color: #fff;
+  font-weight: 600;
+}
+
+.acc-nav-link.is-active::before,
+.acc-nav-link[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--action-green);
+  border-radius: 0 2px 2px 0;
+}
+
+.acc-nav-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  background: var(--action-green);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Logout */
+
+.account-logout {
+  display: block;
+  width: 100%;
+  padding: 11px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cyan-soft);
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,.08);
+  cursor: pointer;
+  transition: color .15s, background .15s;
+  background: transparent;
+}
+
+.account-logout:hover {
+  color: #fff;
+  background: rgba(255,255,255,.04);
+}
+
+/* ── Content panel ──────────────────────────────────────── */
+
+.account-content {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.account-content-head {
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.account-content-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0 0 2px;
+  letter-spacing: .02em;
+}
+
+.account-content-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.account-content-body {
+  padding: 16px 20px 20px;
+}
+
+/* ── Profile progress banner ───────────────────────────── */
+
+.profile-progress-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 14px;
+  background: #fffbe6;
+  border: 1px solid #f5d964;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.profile-progress-label {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.profile-progress-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--surface-tertiary);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.profile-progress-bar {
+  height: 100%;
+  background: var(--action-green);
+  border-radius: 99px;
+  width: 34%;
+}
+
+.profile-progress-pct {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--action-green);
+  white-space: nowrap;
+}
+
+/* ── Profile form ──────────────────────────────────────── */
+
+.profile-form-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.profile-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+.profile-fieldset legend {
+  display: block;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.profile-field {
+  margin-bottom: 9px;
+}
+
+.profile-field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.profile-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-input {
+  width: 100%;
+  padding: 7px 32px 7px 10px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color .15s;
+}
+
+.profile-input:focus {
+  border-color: var(--brand-blue);
+  background: #fff;
+}
+
+.profile-input[readonly],
+.profile-input:disabled {
+  background: var(--surface-tertiary);
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.profile-input-icon {
+  position: absolute;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.profile-input-icon.is-editable {
+  pointer-events: auto;
+  cursor: pointer;
+  color: var(--brand-blue);
+}
+
+.profile-input-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.profile-input-help {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--brand-blue);
+  margin-top: 2px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.profile-select {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  outline: none;
+  appearance: auto;
+  transition: border-color .15s;
+}
+
+.profile-select:focus {
+  border-color: var(--brand-blue);
+  background: #fff;
+}
+
+.profile-save-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--action-green);
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background .15s;
+  font-family: var(--font);
+}
+
+.profile-save-btn:hover {
+  background: var(--action-green-hover);
+}
+
+/* ── Deposit / Withdraw layout ─────────────────────────── */
+
+.dep-layout {
+  display: flex;
+  gap: 0;
+  min-height: 380px;
+}
+
+.dep-categories {
+  width: 188px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border-light);
+  padding: 6px 0;
+}
+
+.dep-cat-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background .15s;
+  line-height: 1.3;
+}
+
+.dep-cat-btn:hover {
+  background: var(--surface-secondary);
+}
+
+.dep-cat-btn.is-active {
+  background: var(--odds-hover);
+  font-weight: 700;
+  color: var(--brand-blue);
+  border-left-color: var(--action-green);
+  padding-left: 11px;
+}
+
+.dep-cat-count {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: auto;
+  padding-left: 4px;
+}
+
+.dep-methods {
+  flex: 1;
+  padding: 12px 14px 14px;
+  overflow: auto;
+}
+
+/* Promo / info banner */
+.dep-promo-banner {
+  padding: 10px 14px;
+  background: linear-gradient(90deg, var(--sidebar-bg) 0%, var(--section-blue) 100%);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.dep-promo-banner strong {
+  color: var(--action-green);
+}
+
+.dep-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 14px 0 6px;
+}
+
+.dep-group-label:first-child {
+  margin-top: 0;
+}
+
+.dep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+/* Payment method card */
+.pay-method-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px 8px;
+  background: var(--surface-secondary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+  position: relative;
+  text-align: center;
+}
+
+.pay-method-card:hover {
+  border-color: var(--brand-blue);
+  box-shadow: 0 2px 8px rgba(43,120,214,.12);
+}
+
+.pay-method-card.is-selected {
+  border-color: var(--action-green);
+  background: #f5fbee;
+}
+
+.pay-method-logo {
+  width: 90px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pay-method-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pay-logo-placeholder {
+  width: 90px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.pay-method-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.pay-method-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 1px 5px;
+  background: var(--action-green);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+  border-radius: 99px;
+}
+
+/* Withdraw header row */
+.withdraw-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--border-light);
+  flex-wrap: wrap;
+}
+
+.withdraw-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin: 0;
+  letter-spacing: .02em;
+}
+
+.btn-withdrawal-requests {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--action-green);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.btn-withdrawal-requests:hover {
+  background: var(--action-green-hover);
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .dep-categories {
+    width: 160px;
+  }
+}
+
+@media (max-width: 900px) {
+  .account-shell {
+    flex-direction: column;
+  }
+
+  .account-sidebar {
+    width: 100%;
+  }
+
+  .profile-form-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .dep-layout {
+    flex-direction: column;
+  }
+
+  .dep-categories {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    flex-wrap: wrap;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .dep-cat-btn {
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    width: auto;
+  }
+
+  .dep-cat-btn.is-active {
+    border-left: none;
+    border-bottom: 2px solid var(--action-green);
+    padding-left: 10px;
+  }
+
+  .header-balance-chip {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .account-main {
+    padding: 8px;
+  }
+
+  .account-content-body {
+    padding: 12px;
+  }
+
+  .dep-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+}

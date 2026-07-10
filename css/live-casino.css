@@ -1,0 +1,402 @@
+/* =========================================================
+   live-casino.css — Live Casino lobby
+   Layout: screenshot reference; colors: DESIGN_SYSTEM.md
+   Extends casino.css
+   ========================================================= */
+
+/* ── Live LIVE badge in toolbar / hero ──────────────────── */
+.lc-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #fff;
+  text-transform: uppercase;
+}
+.lc-live-badge .live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--danger);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── Hero slides ──────────────────────────────────────────── */
+.lc-hero-slide {
+  position: relative;
+  overflow: hidden;
+}
+
+.lc-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(10,25,50,.85) 0%, rgba(10,25,50,.35) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.lc-hero-slide .casino-hero-content { z-index: 2; position: relative; }
+
+.lc-slide-football-studio {
+  background: url("../assets/images/live-casino/hero-football-studio.png") center/cover no-repeat, #0d2240;
+}
+.lc-slide-mega-roulette,
+.lc-slide-las-vegas {
+  background: url("../assets/images/live-casino/hero-las-vegas-roulette.png") center/cover no-repeat, #0d2240;
+}
+.lc-slide-lightning-baccarat {
+  background: url("../assets/images/live-casino/hero-lightning-baccarat.png") center/cover no-repeat, #0d2240;
+}
+
+.lc-mini-1 {
+  background: url("../assets/images/live-casino/hero-aside-1.png") center/cover no-repeat, #1a3060;
+}
+.lc-mini-2 {
+  background: url("../assets/images/live-casino/hero-aside-2.png") center/cover no-repeat, #1a3060;
+}
+
+/* ── Category tabs (screenshot: green underline on Popular) ─ */
+.lc-filters.casino-filters {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px;
+  margin: 0;
+  background: var(--page-bg);
+  border-bottom: 1px solid var(--border-dark);
+  flex-wrap: nowrap;
+}
+
+.lc-filters-list {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+}
+.lc-filters-list::-webkit-scrollbar { display: none; }
+
+/* Reset shared casino chip → tab underline */
+.lc-filters .casino-filter-chip.lc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .72);
+  background: transparent !important;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  box-shadow: none !important;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+  user-select: none;
+}
+.lc-filters .casino-filter-chip.lc-chip:hover {
+  color: #fff;
+  background: transparent !important;
+}
+.lc-filters .casino-filter-chip.lc-chip.active {
+  color: #fff;
+  font-weight: 700;
+  background: transparent !important;
+  border-bottom-color: var(--action-green);
+  box-shadow: none !important;
+}
+.lc-filters .casino-filter-chip.lc-chip svg,
+.lc-filters .casino-filter-chip.lc-chip .lc-chip-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: .9;
+  object-fit: contain;
+}
+.lc-filters .casino-filter-chip.lc-chip.active svg,
+.lc-filters .casino-filter-chip.lc-chip.active .lc-chip-icon {
+  opacity: 1;
+  color: var(--action-green);
+}
+
+.lc-filters .casino-filter-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  color: rgba(255, 255, 255, .75);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 0;
+}
+.lc-filters .casino-filter-sort:hover { color: #fff; }
+.lc-filters .casino-filter-sort svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Dense 8-col game grid ──────────────────────────────── */
+.lc-section.casino-section {
+  padding: 10px 12px 20px;
+  margin: 0;
+  background: var(--page-bg);
+}
+
+.lc-game-grid.game-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 5px;
+}
+
+/* ── Live tile card ─────────────────────────────────────── */
+.lc-tile.game-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--sidebar-bg);
+  cursor: pointer;
+  aspect-ratio: auto;
+}
+
+.lc-tile-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 216 / 130;
+  overflow: hidden;
+  background: #0a1829;
+}
+
+.lc-tile-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform .2s;
+}
+.lc-tile:hover .lc-tile-img { transform: scale(1.04); }
+
+.lc-tile .game-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .2s;
+  z-index: 2;
+}
+.lc-tile:hover .game-tile-overlay { opacity: 1; }
+
+/* Fav top-right so it doesn't cover bottom badges */
+.lc-tile .game-tile-fav {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: auto;
+  z-index: 3;
+}
+
+/* Badges — bottom-right of thumbnail (screenshot) */
+.lc-tile-badges {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.lc-tile-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  line-height: 1.3;
+  color: #fff;
+  white-space: nowrap;
+}
+.lc-tile-badge--cashback {
+  background: var(--warning);
+  color: var(--text-primary);
+}
+.lc-tile-badge--new {
+  background: var(--action-green);
+  color: #fff;
+}
+.lc-tile-badge--promo {
+  background: var(--cyan-accent);
+  color: var(--page-bg);
+}
+
+/* Hide legacy LIVE corner badge if present */
+.lc-tile-live-badge { display: none !important; }
+
+/* Footer: name left + limits right */
+.lc-tile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 6px 8px;
+  min-height: 34px;
+  background: #1a2a40;
+  border-top: 1px solid rgba(255, 255, 255, .04);
+}
+
+.lc-tile-provider {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 2;
+  width: auto;
+  max-width: 64px;
+  height: 22px;
+  object-fit: contain;
+  object-position: left center;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.55));
+}
+
+/* Provider logos strip — image logos */
+.lc-providers.casino-providers {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 20px 12px;
+  background: var(--section-blue-dark);
+  border-radius: var(--radius-md);
+  border-top: none;
+  margin-top: 20px;
+}
+.lc-providers .casino-provider.lc-provider {
+  height: 48px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,.18);
+  border-radius: var(--radius-sm);
+}
+.lc-providers .casino-provider.lc-provider img {
+  max-width: 100%;
+  max-height: 32px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: .85;
+  transition: opacity .15s;
+}
+.lc-providers .casino-provider.lc-provider:hover img {
+  opacity: 1;
+}
+@media (max-width: 900px) {
+  .lc-providers.casino-providers { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 600px) {
+  .lc-providers.casino-providers { grid-template-columns: repeat(3, 1fr); }
+}
+
+.lc-tile-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.lc-limits {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .55);
+  white-space: nowrap;
+}
+
+/* Legacy nested info — flatten via CSS if HTML not yet updated */
+.lc-tile-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  overflow: hidden;
+}
+.lc-tile-info .game-tile-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Load more ──────────────────────────────────────────── */
+.lc-load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0 8px;
+}
+.lc-load-more {
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 10px 32px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.lc-load-more:hover { background: var(--header-action-hover); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1400px) {
+  .lc-game-grid.game-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .lc-game-grid.game-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .lc-hero-slide { min-height: 180px; }
+  .lc-filters.casino-filters { padding: 0 8px; }
+  .lc-section.casino-section { padding: 8px; }
+}
+
+@media (max-width: 600px) {
+  .lc-game-grid.game-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .lc-limits { display: none; }
+}

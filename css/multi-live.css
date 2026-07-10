@@ -1,0 +1,245 @@
+/* =========================================================
+   multi-live.css — Multi-LIVE empty state (Figma 21:2)
+   Colors: sportsbook tokens — section-blue chrome, light empty panel.
+   No left sidebar; main + right rail only.
+   ========================================================= */
+
+.sportsbook-layout.ml-layout {
+  grid-template-columns: minmax(720px, 1fr) 260px;
+}
+
+.ml-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* Desktop: stretch so empty board fills remaining viewport */
+  min-height: calc(100vh - var(--header-h) - 16px);
+}
+
+/* Toolbar — Home > Multi-LIVE + search (section-blue, not page navy) */
+.ml-toolbar {
+  display: flex;
+  align-items: stretch;
+  gap: 1px;
+  min-height: 32px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
+}
+
+.ml-crumbs {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0 8px;
+  background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
+  color: var(--text-inverse);
+}
+
+.ml-crumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 4px;
+  color: var(--text-inverse);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ml-crumb img {
+  width: 16px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.ml-crumb-sep {
+  width: 6px;
+  height: 10px;
+  margin: 0 4px;
+  opacity: 0.85;
+  filter: brightness(0) invert(1);
+}
+
+.ml-crumb-label {
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+.ml-toolbar-main {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: 0 4px;
+  background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
+}
+
+.ml-search {
+  display: flex;
+  align-items: stretch;
+  width: 176px;
+  min-height: 24px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.ml-search input {
+  flex: 1;
+  min-width: 0;
+  height: 24px;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-inverse);
+  font-size: 11px;
+}
+
+.ml-search input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.ml-search button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.ml-search button img {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* Sport chips — section-blue (readable vs page navy) */
+.ml-filters {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-height: 40px;
+  padding: 0 4px 0 8px;
+  background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.ml-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 8px 0 4px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.ml-chip img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.ml-chip:hover,
+.ml-chip.active {
+  color: var(--text-inverse);
+}
+
+.ml-chip.active {
+  box-shadow: inset 0 -2px 0 var(--action-green);
+}
+
+.ml-chip-more {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 6px;
+  color: var(--text-inverse);
+  background: var(--header-action);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.ml-chip-more img {
+  width: 10px;
+  height: 6px;
+  filter: brightness(0) invert(1);
+}
+
+/* Empty board — light surface; fills remaining height on desktop only */
+.ml-board {
+  margin-top: var(--gap);
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 24px;
+  background: var(--surface-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  text-align: center;
+}
+
+.ml-board-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+  color: var(--text-primary);
+}
+
+.ml-board-text {
+  margin: 0;
+  max-width: 620px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1200px) {
+  .sportsbook-layout.ml-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .ml-main {
+    min-height: 0;
+  }
+
+  .ml-search {
+    width: 140px;
+  }
+
+  .ml-board {
+    flex: 0 0 auto;
+    min-height: 280px;
+    padding: 32px 16px;
+  }
+
+  .ml-board-title {
+    font-size: 18px;
+  }
+}
