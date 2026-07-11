@@ -316,25 +316,25 @@ a:focus-visible {
   color: #fff;
   border-radius: 8px;
   white-space: nowrap;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s, color 0.15s;
 }
 
+/* Direct links (e.g. Live Casino) share the same chip geometry as dropdown triggers */
 .nav-link-plain {
-  height: 100%;
-  padding: 0 8px;
-  border-radius: 0;
-}
-
-.nav-link-plain:hover {
-  background: transparent;
-  opacity: 0.9;
+  height: 32px;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 
 .nav-link:hover,
+.nav-link-plain:hover,
+.nav-link.active,
+.nav-link-plain.active,
 .nav-item.open > .nav-link {
   background: rgba(62, 180, 240, 0.18);
   color: #fff;
   box-shadow: inset 0 -2px 0 var(--accent-blue);
+  opacity: 1;
 }
 
 .nav-icon {
@@ -357,18 +357,20 @@ a:focus-visible {
 
 .nav-dice {
   flex-shrink: 0;
-  height: 100%;
-  padding: 0 8px;
+  height: 32px;
+  padding: 4px 8px;
   gap: 8px;
   text-transform: none;
   font-weight: 700;
   letter-spacing: 0;
-  border-radius: 0;
+  border-radius: 8px;
 }
 
 .nav-dice:hover {
-  background: transparent;
-  opacity: 0.9;
+  background: rgba(62, 180, 240, 0.18);
+  color: #fff;
+  box-shadow: inset 0 -2px 0 var(--accent-blue);
+  opacity: 1;
 }
 
 .nav-dice .dice-icon {
