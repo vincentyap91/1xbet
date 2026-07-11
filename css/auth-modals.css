@@ -156,7 +156,7 @@
   background: var(--surface-secondary, #f4f7fb);
   position: relative;
   overflow: hidden;
-  min-height: 420px;
+  min-height: 350px;
 }
 
 /*

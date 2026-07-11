@@ -197,11 +197,14 @@
 
         <div class="es-side-panel">
           <div class="es-mode-tabs" role="tablist">
-            <button type="button" class="es-mode-tab is-active" role="tab" aria-selected="true">
+            <button type="button" class="es-mode-tab is-active" role="tab" aria-selected="true" data-mode="live">
               <img src="assets/icons/esports/icon-live.svg" alt="" width="16" height="16" />
               Live
             </button>
-            <button type="button" class="es-mode-tab" role="tab" aria-selected="false">Sports</button>
+            <button type="button" class="es-mode-tab" role="tab" aria-selected="false" data-mode="sports">
+              <img src="assets/icons/esports/icon-prematch.svg" alt="" width="16" height="16" />
+              Sports
+            </button>
           </div>
 
           <div class="es-side-links">
@@ -619,237 +622,426 @@
           </div>
         </section>
 
-        <!-- 6. Match list — live events -->
-        <section class="live-events-block es-live-section" id="es-matches" aria-label="Live Matches">
-          <div class="te-toolbar-main">
-            <div class="te-toolbar-left">
-              <span class="live-dot" aria-hidden="true"></span>
-              <span class="te-toolbar-label">LIVE</span>
-              <nav class="te-tabs" role="tablist">
-                <button type="button" class="section-tab active" role="tab">Popular</button>
-                <button type="button" class="section-tab" role="tab">CS 2</button>
-                <button type="button" class="section-tab" role="tab">Dota 2</button>
-                <button type="button" class="section-tab" role="tab">LoL</button>
-                <button type="button" class="section-tab" role="tab">Valorant</button>
-                <button type="button" class="section-tab more-tab" role="tab">+5</button>
-              </nav>
-            </div>
+        <!-- 6. Live matches (layout: live esports/real) -->
+        <section class="es-match-section es-live-section" id="es-matches" aria-label="Live Matches">
+          <div class="es-section-bar es-section-bar--live">
+            <img class="es-section-bar-icon" src="assets/icons/esports/icon-live-section.svg" alt="" width="16" height="16" />
+            <h2 class="es-section-bar-title">Live</h2>
           </div>
-          <div class="odds-table-wrap">
+          <div class="es-game-filters" role="toolbar" aria-label="Live game filters">
+            <button type="button" class="es-game-chip active" data-filter="all">
+              <img src="assets/icons/esports/icon-all-games.svg" alt="" width="16" height="16" />
+              <span>All</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="cs2">
+              <img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" />
+              <span>CS 2</span>
+              <span class="es-chip-live">LIVE</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="dota2">
+              <img src="assets/icons/esports/icon-dota2.svg" alt="" width="16" height="16" />
+              <span>Dota 2</span>
+              <span class="es-chip-live">LIVE</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="lol">
+              <img src="assets/icons/esports/icon-lol.svg" alt="" width="16" height="16" />
+              <span>LoL</span>
+              <span class="es-chip-live">LIVE</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="mlbb">
+              <img src="assets/icons/esports/icon-mlbb.svg" alt="" width="16" height="16" />
+              <span>MLBB</span>
+              <span class="es-chip-live">LIVE</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="valorant">
+              <img src="assets/icons/esports/icon-valorant.svg" alt="" width="16" height="16" />
+              <span>Valorant</span>
+            </button>
+          </div>
 
-            <!-- CS 2 Block -->
-            <div class="league-block">
-              <div class="league-header">
-                <span class="league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
-                <span class="league-name">CS 2 — PGL Major Copenhagen</span>
-                <span class="col-label">W1</span>
-                <span class="col-label">W2</span>
-                <span class="col-label">+more</span>
+          <div class="es-table">
+            <div class="es-league" data-disc="cs2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">CS 2. Eternity League</span>
+                <span class="es-market-label">1x2</span>
               </div>
-              <div class="league-body">
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 14:23</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Natus Vincere</span><span class="score">7</span></div>
-                      <div class="team-line"><span class="team-name">FaZe Clan</span><span class="score">9</span></div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Team Havoc</span><span class="es-score">10</span></div>
+                      <div class="es-team"><span class="es-team-name">Team Crypt</span><span class="es-score">9</span></div>
                     </div>
+                    <div class="es-meta">2 map / Best of 3 maps</div>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.85">1.85</button>
-                    <button class="odd-btn" data-market="W2" data-val="2.10">2.10</button>
-                    <a href="#" class="more-link">+14</a>
-                  </div>
-                </div>
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 08:12</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Team Vitality</span><span class="score">4</span></div>
-                      <div class="team-line"><span class="team-name">G2 Esports</span><span class="score">5</span></div>
-                    </div>
-                  </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="2.40">2.40</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.62">1.62</button>
-                    <a href="#" class="more-link">+12</a>
-                  </div>
-                </div>
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 32:05</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Parivision</span><span class="score">0</span></div>
-                      <div class="team-line"><span class="team-name">BIG</span><span class="score">3</span></div>
-                    </div>
-                  </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.82">1.82</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.99">1.99</button>
-                    <a href="#" class="more-link">+10</a>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.85"><span>W1</span><strong>1.85</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="2.10"><span>W2</span><strong>2.10</strong></button>
+                    <a href="#" class="es-more">+10</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Dota 2 Block -->
-            <div class="league-block">
-              <div class="league-header">
-                <span class="league-icon"><img src="assets/icons/esports/icon-dota2.svg" alt="" width="16" height="16" /></span>
-                <span class="league-name">Dota 2 — Esports World Cup 2026</span>
-                <span class="col-label">W1</span>
-                <span class="col-label">W2</span>
-                <span class="col-label">+more</span>
+            <div class="es-league" data-disc="cs2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">CS 2. Berserk League</span>
+                <span class="es-market-label">1x2</span>
               </div>
-              <div class="league-body">
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 42:07</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Team Spirit</span><span class="score">1</span></div>
-                      <div class="team-line"><span class="team-name">OG Esports</span><span class="score">0</span></div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">MysT</span><span class="es-score">0</span></div>
+                      <div class="es-team"><span class="es-team-name">Havoc</span><span class="es-score">0</span></div>
                     </div>
+                    <div class="es-meta">Best of 1 map</div>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.55">1.55</button>
-                    <button class="odd-btn" data-market="W2" data-val="2.60">2.60</button>
-                    <a href="#" class="more-link">+18</a>
-                  </div>
-                </div>
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 15:30</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Team Liquid</span><span class="score">0</span></div>
-                      <div class="team-line"><span class="team-name">Evil Geniuses</span><span class="score">0</span></div>
-                    </div>
-                  </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="2.15">2.15</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.75">1.75</button>
-                    <a href="#" class="more-link">+15</a>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.82"><span>W1</span><strong>1.82</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.99"><span>W2</span><strong>1.99</strong></button>
+                    <a href="#" class="es-more">+2</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- LoL Block -->
-            <div class="league-block">
-              <div class="league-header">
-                <span class="league-icon"><img src="assets/icons/esports/icon-lol.svg" alt="" width="16" height="16" /></span>
-                <span class="league-name">League of Legends — Worlds 2026 — Play-In</span>
-                <span class="col-label">W1</span>
-                <span class="col-label">W2</span>
-                <span class="col-label">+more</span>
+            <div class="es-league" data-disc="dota2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-dota2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">Dota 2. Berserk League</span>
+                <span class="es-market-label">1x2</span>
               </div>
-              <div class="league-body">
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 28:55</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">T1</span><span class="score">0</span></div>
-                      <div class="team-line"><span class="team-name">Gen.G</span><span class="score">1</span></div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Pir4te</span><span class="es-score">0</span></div>
+                      <div class="es-team"><span class="es-team-name">HeliX0</span><span class="es-score">0</span></div>
                     </div>
+                    <div class="es-meta">Best of 3 maps</div>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.78">1.78</button>
-                    <button class="odd-btn" data-market="W2" data-val="2.05">2.05</button>
-                    <a href="#" class="more-link">+16</a>
-                  </div>
-                </div>
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time"><span class="live-time">LIVE 19:30</span></div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Cloud9</span><span class="score">0</span></div>
-                      <div class="team-line"><span class="team-name">100 Thieves</span><span class="score">0</span></div>
-                    </div>
-                  </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="2.10">2.10</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.78">1.78</button>
-                    <a href="#" class="more-link">+11</a>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.55"><span>W1</span><strong>1.55</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="2.60"><span>W2</span><strong>2.60</strong></button>
+                    <a href="#" class="es-more">+8</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
               </div>
             </div>
 
+            <div class="es-league" data-disc="lol">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-lol.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">League of Legends. European Circuit</span>
+                <span class="es-market-label">1x2</span>
+              </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Luxe Gaming</span><span class="es-score">6</span></div>
+                      <div class="es-team"><span class="es-team-name">Poro Protectors</span><span class="es-score">7</span></div>
+                    </div>
+                    <div class="es-meta">3 map / Best of 3 maps</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.78"><span>W1</span><strong>1.78</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="2.05"><span>W2</span><strong>2.05</strong></button>
+                    <a href="#" class="es-more">+12</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="es-league" data-disc="mlbb">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-mlbb.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">Mobile Legends. Epic Clash Series</span>
+                <span class="es-market-label">1x2</span>
+              </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Team Orcas</span><span class="es-score">2</span></div>
+                      <div class="es-team"><span class="es-team-name">Hexstorm Crew</span><span class="es-score">6</span></div>
+                    </div>
+                    <div class="es-meta">2 map / Best of 5 maps</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.40"><span>W1</span><strong>2.40</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.62"><span>W2</span><strong>1.62</strong></button>
+                    <a href="#" class="es-more">+6</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <!-- LINE — upcoming pre-match -->
-        <section class="live-events-block es-line-section" aria-label="Upcoming Matches">
-          <div class="te-toolbar-main">
-            <div class="te-toolbar-left">
-              <span class="te-toolbar-label">LINE</span>
-              <nav class="te-tabs" role="tablist">
-                <button type="button" class="section-tab active" role="tab">Today</button>
-                <button type="button" class="section-tab" role="tab">Tomorrow</button>
-                <button type="button" class="section-tab" role="tab">All</button>
-              </nav>
-            </div>
+        <!-- 7. Sports (pre-match) — enhanced -->
+        <section class="es-match-section es-line-section" id="es-sports" aria-label="Sports Matches">
+          <div class="es-section-bar es-section-bar--sports">
+            <img class="es-section-bar-icon" src="assets/icons/esports/icon-prematch.svg" alt="" width="16" height="16" />
+            <h2 class="es-section-bar-title">Sports</h2>
           </div>
-          <div class="odds-table-wrap">
-            <div class="league-block">
-              <div class="league-header">
-                <span class="league-icon"><img src="assets/icons/esports/icon-valorant.svg" alt="" width="16" height="16" /></span>
-                <span class="league-name">Valorant — VCT Champions 2026</span>
-                <span class="col-label">W1</span>
-                <span class="col-label">W2</span>
-                <span class="col-label">+more</span>
+          <div class="es-game-filters" role="toolbar" aria-label="Sports game filters">
+            <button type="button" class="es-game-chip active" data-filter="all">
+              <img src="assets/icons/esports/icon-all-games.svg" alt="" width="16" height="16" />
+              <span>All</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="cs2">
+              <img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" />
+              <span>CS 2</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="dota2">
+              <img src="assets/icons/esports/icon-dota2.svg" alt="" width="16" height="16" />
+              <span>Dota 2</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="valorant">
+              <img src="assets/icons/esports/icon-valorant.svg" alt="" width="16" height="16" />
+              <span>Valorant</span>
+            </button>
+            <button type="button" class="es-game-chip" data-filter="lol">
+              <img src="assets/icons/esports/icon-lol.svg" alt="" width="16" height="16" />
+              <span>LoL</span>
+            </button>
+          </div>
+
+          <div class="es-table">
+            <div class="es-league" data-disc="cs2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">CS 2. XSE Pro League</span>
+                <span class="es-market-label">1x2</span>
               </div>
-              <div class="league-body">
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time">18:00</div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Sentinels</span></div>
-                      <div class="team-line"><span class="team-name">LOUD</span></div>
-                    </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">01:00</span>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.90">1.90</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.98">1.98</button>
-                    <a href="#" class="more-link">+10</a>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">9z</span></div>
+                      <div class="es-team"><span class="es-team-name">Alliance</span></div>
+                    </div>
+                    <div class="es-meta">Play-Off. Round of 4</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.90"><span>W1</span><strong>1.90</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.98"><span>W2</span><strong>1.98</strong></button>
+                    <a href="#" class="es-more">+650</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time">20:00</div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Team Liquid</span></div>
-                      <div class="team-line"><span class="team-name">Paper Rex</span></div>
-                    </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">04:00</span>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="2.25">2.25</button>
-                    <button class="odd-btn" data-market="W2" data-val="1.68">1.68</button>
-                    <a href="#" class="more-link">+9</a>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">PARIVISION</span></div>
+                      <div class="es-team"><span class="es-team-name">FaZe Clan</span></div>
+                    </div>
+                    <div class="es-meta">Play-Off. Round of 4</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.25"><span>W1</span><strong>2.25</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.68"><span>W2</span><strong>1.68</strong></button>
+                    <a href="#" class="es-more">+505</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="league-block">
-              <div class="league-header">
-                <span class="league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
-                <span class="league-name">CS 2 — ESL Pro League Season 22</span>
-                <span class="col-label">W1</span>
-                <span class="col-label">W2</span>
-                <span class="col-label">+more</span>
+
+            <div class="es-league" data-disc="cs2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-cs2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">CS 2. European Pro League</span>
+                <span class="es-market-label">1x2</span>
               </div>
-              <div class="league-body">
-                <div class="event-row">
-                  <div class="event-main">
-                    <div class="event-time">21:30</div>
-                    <div class="event-teams">
-                      <div class="team-line"><span class="team-name">Astralis</span></div>
-                      <div class="team-line"><span class="team-name">ENCE</span></div>
-                    </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">03:30</span>
                   </div>
-                  <div class="event-odds desktop-odds">
-                    <button class="odd-btn" data-market="W1" data-val="1.72">1.72</button>
-                    <button class="odd-btn" data-market="W2" data-val="2.20">2.20</button>
-                    <a href="#" class="more-link">+13</a>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">BASEMENT BOYS</span></div>
+                      <div class="es-team"><span class="es-team-name">ENJOY</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group B</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.72"><span>W1</span><strong>1.72</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="2.20"><span>W2</span><strong>2.20</strong></button>
+                    <a href="#" class="es-more">+76</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">12/07/2026</span>
+                    <span class="es-clock">01:00</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Eternal Premium</span></div>
+                      <div class="es-team"><span class="es-team-name">ENCE</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group C</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.95"><span>W1</span><strong>1.95</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.88"><span>W2</span><strong>1.88</strong></button>
+                    <a href="#" class="es-more">+17</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">12/07/2026</span>
+                    <span class="es-clock">03:30</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Atreides</span></div>
+                      <div class="es-team"><span class="es-team-name">Sparta</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group C</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.05"><span>W1</span><strong>2.05</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.80"><span>W2</span><strong>1.80</strong></button>
+                    <a href="#" class="es-more">+17</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="es-league" data-disc="dota2">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-dota2.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">Dota 2. Esports World Cup</span>
+                <span class="es-market-label">1x2</span>
+              </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">02:00</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">BB Team</span></div>
+                      <div class="es-team"><span class="es-team-name">GamerLegion</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group A</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.65"><span>W1</span><strong>1.65</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="2.30"><span>W2</span><strong>2.30</strong></button>
+                    <a href="#" class="es-more">+120</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">04:30</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Aurora Gaming</span></div>
+                      <div class="es-team"><span class="es-team-name">Team Liquid</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group B</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.15"><span>W1</span><strong>2.15</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.75"><span>W2</span><strong>1.75</strong></button>
+                    <a href="#" class="es-more">+98</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">12/07/2026</span>
+                    <span class="es-clock">02:00</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">PARIVISION</span></div>
+                      <div class="es-team"><span class="es-team-name">Team Spirit</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage. Group C</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.80"><span>W1</span><strong>2.80</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.48"><span>W2</span><strong>1.48</strong></button>
+                    <a href="#" class="es-more">+110</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="es-league" data-disc="valorant">
+              <div class="es-league-head">
+                <span class="es-league-icon"><img src="assets/icons/esports/icon-valorant.svg" alt="" width="16" height="16" /></span>
+                <span class="es-league-name">Valorant. Esports World Cup</span>
+                <span class="es-market-label">1x2</span>
+              </div>
+              <div class="es-league-body">
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">18:00</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Sentinels</span></div>
+                      <div class="es-team"><span class="es-team-name">LOUD</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="1.90"><span>W1</span><strong>1.90</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.98"><span>W2</span><strong>1.98</strong></button>
+                    <a href="#" class="es-more">+42</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
+                  </div>
+                </div>
+                <div class="es-row">
+                  <div class="es-row-when">
+                    <span class="es-date">11/07/2026</span>
+                    <span class="es-clock">20:00</span>
+                  </div>
+                  <div class="es-row-main">
+                    <div class="es-teams">
+                      <div class="es-team"><span class="es-team-name">Team Liquid</span></div>
+                      <div class="es-team"><span class="es-team-name">Paper Rex</span></div>
+                    </div>
+                    <div class="es-meta">Group Stage</div>
+                  </div>
+                  <div class="es-odds">
+                    <button type="button" class="es-odd" data-market="W1" data-val="2.25"><span>W1</span><strong>2.25</strong></button>
+                    <button type="button" class="es-odd" data-market="W2" data-val="1.68"><span>W2</span><strong>1.68</strong></button>
+                    <a href="#" class="es-more">+38</a>
+                    <button type="button" class="es-fav" aria-label="Add to favorites">★</button>
                   </div>
                 </div>
               </div>

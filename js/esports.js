@@ -118,25 +118,12 @@
     });
   }
 
-  function bindModeTabs() {
-    $$(".es-mode-tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        $$(".es-mode-tab").forEach((t) => {
-          t.classList.remove("is-active");
-          t.setAttribute("aria-selected", "false");
-        });
-        tab.classList.add("is-active");
-        tab.setAttribute("aria-selected", "true");
-      });
-    });
-  }
-
   /* ── Odds buttons ─────────────────────────────────────────── */
   function bindOdds() {
-    $$(".odd-btn").forEach((btn) => {
+    $$(".odd-btn, .es-odd").forEach((btn) => {
       btn.addEventListener("click", () => {
-        const row = btn.closest(".event-row");
-        const allInRow = row ? $$(".odd-btn", row) : [];
+        const row = btn.closest(".event-row, .es-row");
+        const allInRow = row ? $$(".odd-btn, .es-odd", row) : [];
         const wasSelected = btn.classList.contains("selected");
 
         allInRow.forEach((b) => b.classList.remove("selected"));
@@ -144,13 +131,22 @@
           btn.classList.add("selected");
           const market = btn.dataset.market || "selection";
           const val = btn.dataset.val || "";
-          const teams = row ? $$(".team-name", row).map((t) => t.textContent) : [];
+          const teams = row
+            ? $$(".team-name, .es-team-name", row).map((t) => t.textContent)
+            : [];
           const label = teams.length >= 2 ? `${teams[0]} vs ${teams[1]}` : "match";
           toast(`Added to bet slip: ${label} — ${market} @ ${val}`);
           updateBetSlipCount(1);
         } else {
           updateBetSlipCount(-1);
         }
+      });
+    });
+
+    $$(".es-fav").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.classList.toggle("active");
+        toast(btn.classList.contains("active") ? "Added to favorites" : "Removed from favorites");
       });
     });
   }
@@ -170,6 +166,44 @@
         if (!tabs) return;
         $$(".section-tab", tabs).forEach((t) => t.classList.remove("active"));
         tab.classList.add("active");
+      });
+    });
+  }
+
+  /* ── Game filter chips (Live / Sports tables) ─────────────── */
+  function bindGameFilters() {
+    $$(".es-game-filters").forEach((bar) => {
+      const section = bar.closest(".es-match-section");
+      if (!section) return;
+      $$(".es-game-chip", bar).forEach((chip) => {
+        chip.addEventListener("click", () => {
+          $$(".es-game-chip", bar).forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+          const filter = chip.getAttribute("data-filter") || "all";
+          $$(".es-league", section).forEach((league) => {
+            const disc = league.getAttribute("data-disc") || "";
+            league.classList.toggle("is-hidden", filter !== "all" && disc !== filter);
+          });
+        });
+      });
+    });
+  }
+
+  function bindModeTabs() {
+    $$(".es-mode-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        $$(".es-mode-tab").forEach((t) => {
+          t.classList.remove("is-active");
+          t.setAttribute("aria-selected", "false");
+        });
+        tab.classList.add("is-active");
+        tab.setAttribute("aria-selected", "true");
+        const mode = tab.getAttribute("data-mode") || "";
+        if (mode === "live") {
+          $("#es-matches")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (mode === "sports" || mode === "line") {
+          $("#es-sports")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
     });
   }
@@ -234,6 +268,7 @@
     bindDisciplines();
     bindModeTabs();
     bindOdds();
+    bindGameFilters();
     bindSectionTabs();
     bindDiscCards();
     bindHero();

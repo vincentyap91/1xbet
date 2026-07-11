@@ -401,7 +401,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   min-height: 38px;
   padding: 6px 14px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: var(--table-text);
   background: var(--odds-bg);
   border: 1px solid var(--border-light);
   color: var(--text-primary);
@@ -409,7 +409,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .msi-odd-btn:hover,
 .msi-odd-btn.selected { background: var(--cyan-accent); color: #fff; border-color: var(--cyan-accent); }
-.msi-odd-btn strong { font-size: 13px; }
+.msi-odd-btn strong { font-size: var(--table-text); }
 
 /* ═══════════════════════════════════════════════
    MATCH BOARD
@@ -554,7 +554,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   padding: 8px 12px;
   border-top: 1px solid var(--border-light);
 }
-.wc-sum-date { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+.wc-sum-date { font-size: var(--table-text); font-weight: 700; color: var(--text-secondary); }
 .wc-fav-btn {
   display: grid;
   place-items: center;
@@ -990,7 +990,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 
 .msi-res-status {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -1009,7 +1009,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   min-height: 34px;
   padding: 5px 10px;
   border-radius: var(--radius-sm);
-  font-size: 12px;
+  font-size: var(--table-text);
   background: var(--surface-secondary);
   border: 1px solid var(--border-light);
   color: var(--text-primary);
@@ -1023,7 +1023,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   border-color: var(--cyan-accent);
   color: var(--text-primary);
 }
-.odd-btn span:first-child { color: var(--text-secondary); font-size: 11px; }
+.odd-btn span:first-child { color: var(--text-secondary); font-size: var(--table-text-meta); }
 .odd-btn span:last-child { font-weight: 800; color: var(--section-blue); }
 .odd-btn.selected span:last-child { color: var(--cyan-accent); }
 

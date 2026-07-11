@@ -90,9 +90,12 @@ Reference for designing **new pages** in this project. Preserve desktop visual i
 | Family | Pages | Chrome | Content |
 |--------|-------|--------|---------|
 | **Sportsbook (dark shell)** | `index.html`, `national-team.html`, `live-national-team.html`, `marble-live.html`, `big-tournaments.html`, `long-term-bets.html`, `multi-live.html`, `fast-bet.html`, `world-flight-26.html` | Dark navy header / left nav / footer; active rows `--accent-blue` | Light odds tables / empty boards / promo heroes (`--surface-primary`, `--surface-secondary`, `--league-header`, `--odds-bg`) |
+| **Esports (dark tables)** | `esports.html` | Same dark shell; Live/Sports section bars + game filter strip | Dark match tables (`.es-table` / `.es-row` / `.es-odd`) matching live `esports/real` — not the light homepage odds stack |
 | **TOP-EVENTS (light content)** | `wc2026.html`, `msi.html` | Shared dark site header/footer; page gutter + tournament chrome via `css/top-events-theme.css` | White cards, light subnav, light side panels |
 
 **Sports / Big Tournaments** must match the homepage table/data map in **§2.1** below (same tokens + same class patterns). Do **not** use light Figma list backgrounds (`--surface-tertiary`) for Sports left-nav lists.
+
+**Esports exception:** Live + Sports match lists on `esports.html` use dark navy rows and labeled W1/W2 chips (`.es-odd`) to mirror [1xBet esports/real](https://1xlite-46272.pro/en/esports/real). Reuse project tokens (`--sidebar-bg`, `--header-nav-bg`, `--accent-blue`, `--action-green`, `--section-blue`); do not invent a second light table palette for that page.
 
 ### 2.1 Odds tables & data surfaces (homepage canon — reuse this)
 
@@ -125,13 +128,13 @@ Outright / custom tables (e.g. Big Tournaments) may use semantic `<table>` marku
 | **League / column header** | `.league-header` | `--league-header` | Title `--text-primary`; col labels `.col-label` → `--text-secondary` | Separators via grid gap; league block bottom `--border-light` |
 | **League icon chip** | `.league-icon` | `--section-blue` | `#fff` | radius `--radius-xs` |
 | **Header icon buttons** | `.icon-tiny` | transparent; hover `rgba(18,103,214,.12)` | `--text-secondary`; hover `--brand-blue`; fav active `--warning` | — |
-| **Data row (odd)** | `.event-row` | `--surface-primary` | Teams `--text-primary` (600) | Top `1px solid #e4edf4` |
+| **Data row (odd)** | `.event-row` | `--surface-primary` | Teams `--text-primary` (600) at `--table-text`; meta `--table-text-meta` | Top `1px solid #e4edf4` |
 | **Data row (even)** | `.event-row:nth-child(even)` | `--row-alternate` | same | same |
-| **Time / meta** | `.event-time`, `.total-val`, `.handicap-val` | — | `--text-secondary`; LIVE time `--danger` + bold | tabular-nums |
+| **Time / meta** | `.event-time`, `.total-val`, `.handicap-val`, `.col-label` | — | `--text-secondary` at `--table-text-meta`; LIVE time `--danger` + bold | tabular-nums |
 | **Score** | `.team-line .score` | — | `--text-secondary`; LIVE score `--danger` | — |
 | **Stats cell** | `.stats-cell` | — | `--text-muted` | — |
 | **+more markets** | `.more-link` | `--accent-blue`; hover `--accent-blue-hover` | `#fff` | pill radius |
-| **Odds chip default** | `.odd-btn` | `--odds-bg` | `--text-primary` | `1px solid rgba(201,215,228,.8)`; inset highlight |
+| **Odds chip default** | `.odd-btn`, `.bt-odd`, `.lt-odd` | `--odds-bg` | `--text-primary` at `--table-text` | `1px solid rgba(201,215,228,.8)`; inset highlight |
 | **Odds chip hover** | `.odd-btn:hover` | `--odds-hover` | `--text-primary` | — |
 | **Odds chip selected** | `.odd-btn.selected` | `--odds-selected` | `#fff` | border `#1a8fc4`; white corner dot |
 | **Odds disabled** | `.odd-btn:disabled` | (same) | opacity `0.4` | — |
@@ -171,19 +174,22 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Selection odds value | `.bet-item-sel .odds`, `.acc-odd` | `--brand-blue` (numeric emphasis on light) |
 | Toolbar title / save | `.bet-toolbar-title`, `.bet-save-link` | `--section-blue` |
 | Icon chips | `.bet-icon-btn` | `--odds-bg`; hover `--border-light` |
-| Reg tabs | `.reg-tab` | default `--odds-bg`; active `--section-blue` + `#fff` |
+| Reg tabs | `.reg-tab` | inactive `--league-header` (visible on panel); active `--section-blue` + `#fff` |
 | Inputs | `.reg-input`, `.reg-select`, stake inputs | `#fff` + `--text-primary`; placeholder `--text-muted` |
 | Primary CTA | `.btn-reg`, `.btn-slip-reg` | `--action-green` / hover `--action-green-hover` |
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
 
 #### Accumulators (data cards)
 
+Same stack as LIVE/LINE: dark toolbar + light table as **siblings** (table is not nested inside a card shell).
+
 | Layer | Colors |
 |-------|--------|
-| Card | `--surface-primary` + `--border-dark` + same soft shadow as odds wrap |
-| Header | section-blue gradient; bonus line `--cyan-soft` |
-| List rows | border `--border-light`; match `--text-primary`; sel `--text-secondary`; odd `--brand-blue` |
-| Footer | `--surface-secondary`; strong total `--text-primary` |
+| Header | `.acc-header` section-blue gradient; title `--text-inverse`; bonus `--cyan-soft` |
+| Table wrap | `.acc-table` — `--surface-primary` + `--border-dark` + same soft shadow as `.odds-table-wrap` |
+| List rows | odd `--surface-primary` / even `--row-alternate`; top `#e4edf4`; match `--text-primary` at `--table-text`; meta `--text-secondary` at `--table-text-meta` |
+| Odds chip | `.acc-odd` same as `.odd-btn` (`--odds-bg` + border + inset) |
+| Footer | `--surface-secondary`; overall odds `--text-primary`; CTA `--action-green` |
 
 #### Outright / Yes–No tables (Sports pages)
 
@@ -247,14 +253,16 @@ Icons: reuse `te-*` / `sport-*` from Figma exports already in `assets/icons/`.
 
 ## 3. Typography
 
-- **Font:** `var(--font)` → `Arial, Inter, system-ui, sans-serif`
+- **Font:** `var(--font)` → Apple.com UI stack — `"SF Pro Text", "SF Pro Icons", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif`
+- **Display (optional):** `var(--font-display)` → `"SF Pro Display", …` for large titles (≥ ~28px), same fallbacks as [apple.com](https://www.apple.com/)
 - **Base size:** `12px` body; UI often `11–14px`
+- **Odds table type (site-wide):** `--table-text` `0.75rem` (league/team/odds primary); `--table-text-meta` `0.6875rem` (labels, time, scores, totals). Tokens in `css/styles.css` `:root`; reuse on Big Tournaments, Long-term, Esports, TOP-EVENTS odds/markets.
 - **Weights:** `400` regular, `600–700` UI emphasis, `800–900` titles / CTAs
 - **Case:** Section titles and many CTAs are **uppercase** with tight letter-spacing
 - **On dark:** white / `rgba(255,255,255,.65–.85)` / `--cyan-soft` for hover
 - **On light:** `--text-primary` / `--text-secondary`
 
-Do not introduce display/serif fonts or a second type system on new pages.
+Do not introduce unrelated display/serif fonts or a third type system. Prefer `var(--font)` for UI; use `var(--font-display)` only for large titles when matching Apple optical sizing.
 
 ---
 

@@ -46,10 +46,15 @@
   --text-secondary: #5a738a;
   --text-muted: #8a9db0;
   --text-inverse: #ffffff;
+  /* Odds / data table type hierarchy (site-wide) */
+  --table-text: 0.75rem;
+  --table-text-meta: 0.6875rem;
   --success: #88af2a;
   --warning: #f1b630;
   --danger: #e95555;
-  --font: Arial, Inter, system-ui, sans-serif;
+  /* Apple.com stack: SF Pro Text (UI/body) + SF Pro Display (large type) */
+  --font: "SF Pro Text", "SF Pro Icons", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "SF Pro Display", "SF Pro Text", "SF Pro Icons", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --header-h: 96px;
   /* Live-site shape scale */
   --radius-xs: 2px;
@@ -2283,7 +2288,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   min-height: 32px;
   padding: 0 6px;
   background: var(--league-header);
-  font-size: 11px;
+  font-size: var(--table-text);
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -2301,7 +2306,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   border-radius: var(--radius-xs);
   background: var(--section-blue);
   color: #fff;
-  font-size: 9px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -2359,7 +2364,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .col-label {
   text-align: center;
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   color: var(--text-secondary);
 }
@@ -2373,7 +2378,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   padding: 2px 6px;
   background: var(--surface-primary);
   border-top: 1px solid #e4edf4;
-  font-size: 11px;
+  font-size: var(--table-text-meta);
 }
 
 .event-row:nth-child(even) {
@@ -2399,7 +2404,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .event-time {
   flex-shrink: 0;
   width: 42px;
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   line-height: 1.3;
@@ -2421,6 +2426,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   gap: 6px;
   line-height: 1.35;
   color: var(--text-primary);
+  font-size: var(--table-text);
   font-weight: 600;
   min-width: 0;
 }
@@ -2443,6 +2449,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 }
 
 .team-line .score {
+  font-size: var(--table-text-meta);
   font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
   font-weight: 700;
@@ -2488,7 +2495,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   min-width: 34px;
   height: 22px;
   padding: 0 6px;
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   color: #fff;
   background: var(--accent-blue);
@@ -2503,7 +2510,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .total-val,
 .handicap-val {
   text-align: center;
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 600;
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
@@ -2523,7 +2530,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   width: 100%;
   height: 28px;
   padding: 0 2px;
-  font-size: 11px;
+  font-size: var(--table-text);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--text-primary);
@@ -2661,8 +2668,10 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   font-size: 14px;
   font-weight: 400;
   color: var(--text-primary);
-  background: var(--odds-bg);
+  background: var(--league-header);
+  border: none;
   border-radius: 0;
+  cursor: pointer;
 }
 
 .reg-tab:first-child {
@@ -2956,13 +2965,13 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 }
 
 .bet-item-league {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--text-muted);
   margin-bottom: 2px;
 }
 
 .bet-item-match {
-  font-size: 11px;
+  font-size: var(--table-text);
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
@@ -2970,7 +2979,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 }
 
 .bet-item-market {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--text-secondary);
 }
 
@@ -2979,7 +2988,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   justify-content: space-between;
   align-items: center;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: var(--table-text);
   font-weight: 700;
 }
 
@@ -3291,7 +3300,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 
 /* =========================================================
-   13. Accumulator
+   13. Accumulator — toolbar + table siblings (like LIVE/LINE)
    ========================================================= */
 .accumulators {
   display: grid;
@@ -3299,43 +3308,72 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   gap: var(--gap);
 }
 
-.acc-card {
-  background: var(--surface-primary);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  color: var(--text-primary);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+.acc-block {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
+/* Dark holder — title/bonus only (not wrapping the table) */
 .acc-header {
   padding: 10px 12px;
   background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
-  color: #fff;
+  color: var(--text-inverse);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
-.acc-header h3 {
+.acc-title {
   margin: 0 0 4px;
   font-size: 13px;
   font-weight: 800;
+  color: var(--text-inverse);
 }
 
 .acc-bonus {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--cyan-soft);
 }
 
+/* Light table — sibling of header, same as .odds-table-wrap */
+.acc-table {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-dark);
+  border-top: none;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  color: var(--text-primary);
+}
+
 .acc-list {
-  padding: 8px 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  background: var(--surface-primary);
 }
 
 .acc-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 11px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-top: 1px solid #e4edf4;
+  background: var(--surface-primary);
+  font-size: var(--table-text-meta);
+  color: var(--text-primary);
+}
+
+.acc-item:first-child {
+  border-top: none;
+}
+
+.acc-item:nth-child(even) {
+  background: var(--row-alternate);
 }
 
 .acc-item:last-child {
@@ -3376,7 +3414,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 }
 
 .acc-when {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--text-secondary);
 }
 
@@ -3384,7 +3422,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   color: var(--text-secondary);
 }
 
@@ -3392,12 +3430,15 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   width: 12px;
   height: 12px;
   flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .acc-match {
   flex: 1;
   min-width: 0;
+  font-size: var(--table-text);
   font-weight: 600;
+  color: var(--text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3405,33 +3446,49 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .acc-sel {
   color: var(--text-secondary);
-  font-size: 10px;
-  margin-right: 6px;
+  font-size: var(--table-text-meta);
+  margin-right: 4px;
+  flex-shrink: 0;
 }
 
 .acc-odd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 28px;
+  padding: 0 6px;
+  font-size: var(--table-text);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--brand-blue);
+  color: var(--text-primary);
+  background: var(--odds-bg);
+  border: 1px solid rgba(201, 215, 228, 0.8);
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  flex-shrink: 0;
 }
 
 .acc-footer {
+  margin-top: auto;
   padding: 10px 12px 12px;
-  border-top: 1px solid var(--border-light);
+  border-top: 1px solid #e4edf4;
   background: var(--surface-secondary);
 }
 
 .acc-odds {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: var(--table-text);
   color: var(--text-secondary);
 }
 
 .acc-odds strong {
   color: var(--text-primary);
   font-size: 16px;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
@@ -3443,12 +3500,15 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   letter-spacing: 0.3px;
   color: #fff;
   background: var(--action-green);
+  border: none;
   border-radius: var(--radius);
+  cursor: pointer;
   box-shadow: 0 2px 6px rgba(136, 175, 42, 0.35);
 }
 
 .btn-acc:hover {
   background: var(--action-green-hover);
+  color: #fff;
 }
 
 /* =========================================================

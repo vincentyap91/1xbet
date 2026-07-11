@@ -200,7 +200,7 @@ details[open] .bt-summary-chevron {
   border-collapse: collapse;
   border-spacing: 0;
   font-family: var(--font);
-  font-size: 11px;
+  font-size: var(--table-text-meta);
   background: var(--surface-primary);
 }
 
@@ -217,7 +217,7 @@ details[open] .bt-summary-chevron {
   text-align: left;
   padding: 0 12px;
   color: var(--text-inverse);
-  font-size: 11px;
+  font-size: var(--table-text);
   font-weight: 700;
   white-space: nowrap;
   min-width: 168px;
@@ -231,7 +231,7 @@ details[open] .bt-summary-chevron {
   text-align: center;
   padding: 9px 8px;
   color: var(--text-inverse);
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -250,7 +250,7 @@ details[open] .bt-summary-chevron {
   text-align: center;
   padding: 5px 4px 6px;
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 600;
   text-transform: lowercase;
   min-width: 54px;
@@ -278,7 +278,7 @@ details[open] .bt-summary-chevron {
   gap: 8px;
   padding: 7px 12px;
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: var(--table-text);
   font-weight: 600;
   white-space: nowrap;
   border-right: 1px solid var(--border-light);
@@ -320,7 +320,7 @@ details[open] .bt-summary-chevron {
   margin: 0 auto;
   background: var(--odds-bg);
   color: var(--text-primary);
-  font-size: 11px;
+  font-size: var(--table-text);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   border: 1px solid rgba(201, 215, 228, 0.65);

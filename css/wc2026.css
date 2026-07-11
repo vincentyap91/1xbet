@@ -423,7 +423,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   min-height: 38px;
   padding: 6px 12px;
   border-radius: var(--radius-md);
-  font-size: 12px;
+  font-size: var(--table-text);
   background: var(--odds-bg);
   border: 1px solid var(--border-light);
   color: var(--text-primary);
@@ -435,7 +435,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   border-color: var(--odds-selected);
   color: var(--text-inverse);
 }
-.wc-odd-btn strong { font-size: 13px; color: var(--section-blue); }
+.wc-odd-btn strong { font-size: var(--table-text); color: var(--section-blue); }
 .wc-odd-btn.selected strong { color: var(--text-inverse); }
 
 /* ═══════════════════════════════════════════════
@@ -524,7 +524,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-prob-track span { display: block; height: 100%; background: var(--cyan-accent); border-radius: var(--radius-xs); }
 .wc-prob-track-draw span { background: var(--action-green); }
 .wc-prob-track-away span { background: var(--text-secondary); opacity: .6; }
-.wc-prob-val { font-size: 12px; font-weight: 800; color: var(--text-primary); text-align: right; }
+.wc-prob-val { font-size: var(--table-text); font-weight: 800; color: var(--text-primary); text-align: right; }
 
 .wc-countdown-row {
   display: flex;
@@ -569,7 +569,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   padding: 8px 12px;
   border-top: 1px solid var(--border-light);
 }
-.wc-sum-date { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+.wc-sum-date { font-size: var(--table-text); font-weight: 700; color: var(--text-secondary); }
 .wc-fav-btn {
   display: grid;
   place-items: center;
@@ -597,7 +597,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   min-height: 26px;
   padding: 0 10px;
   border-radius: 999px;
-  font-size: 11px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   background: var(--surface-tertiary);
   color: var(--text-primary);
@@ -621,11 +621,11 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   border: none;
   outline: none;
   background: transparent;
-  font-size: 11px;
+  font-size: var(--table-text-meta);
   color: var(--text-primary);
 }
 .wc-mkt-collapse {
-  font-size: 10px;
+  font-size: var(--table-text-meta);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -651,7 +651,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   color: var(--text-primary);
   background: var(--league-header);
   font-weight: 800;
-  font-size: 12px;
+  font-size: var(--table-text);
   text-transform: uppercase;
 }
 .wc-market-head::after {
@@ -668,7 +668,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-market-head strong {
   margin-left: auto;
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: var(--table-text-meta);
   margin-right: 6px;
 }
 
@@ -746,7 +746,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   justify-content: space-between;
   gap: 12px;
 }
-.wc-result-date { font-size: 11px; font-weight: 700; color: var(--text-secondary); }
+.wc-result-date { font-size: var(--table-text-meta); font-weight: 700; color: var(--text-secondary); }
 .wc-result-stats-btn {
   display: inline-flex;
   align-items: center;
