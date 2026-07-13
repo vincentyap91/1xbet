@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transaction History — 1xBet</title>
+  <title>Bet History - 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
 </head>
-<body data-page="transaction-history" class="is-logged-in">
+<body data-page="bet-history" class="is-logged-in">
   <div class="page-shell">
 
     <!-- ========== HEADER ========== -->
@@ -219,8 +219,8 @@
             <div class="acc-nav-group-label">My Wallet and Bets</div>
             <a href="deposit.html" class="acc-nav-link">Deposit</a>
             <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
-            <a href="bet-history.html" class="acc-nav-link">Bet history</a>
-            <a href="transaction-history.html" class="acc-nav-link is-active" aria-current="page">Transaction history</a>
+            <a href="bet-history.html" class="acc-nav-link is-active" aria-current="page">Bet history</a>
+            <a href="transaction-history.html" class="acc-nav-link">Transaction history</a>
             <a href="#" class="acc-nav-link">Payment queries</a>
           </div>
 
@@ -250,35 +250,117 @@
         </aside>
 
         <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
-        <section class="account-content tx-history-content" aria-label="Transaction history">
+        <section class="account-content bet-history-content" aria-label="Bet history">
 
           <div class="account-content-head">
-            <h1 class="account-content-title">Transaction history</h1>
-            <p class="account-content-sub">Information about deposits, withdrawals and transfers of funds</p>
+            <h1 class="account-content-title">Bet history</h1>
+            <p class="account-content-sub">More information about your bets</p>
           </div>
 
           <div class="account-content-body">
-            <div class="tx-history-panel">
-              <div class="tx-history-toolbar">
-                <nav class="tx-history-tabs" role="tablist" aria-label="Account type">
-                  <button type="button" class="tx-history-tab is-active" role="tab" aria-selected="true" data-tx-tab="main">Main account</button>
-                  <button type="button" class="tx-history-tab" role="tab" aria-selected="false" data-tx-tab="virtual">Virtual account</button>
-                </nav>
-                <div class="tx-history-actions">
-                  <button type="button" class="tx-history-action-btn" id="tx-queries-btn">Payment queries</button>
-                  <button type="button" class="tx-history-action-btn" id="tx-archive-btn">Load archive</button>
+            <div class="bet-history-tabs-wrap">
+              <nav class="bet-history-tabs" aria-label="Bet history categories">
+                <a href="#" class="bet-history-tab">On the website</a>
+                <a href="#" class="bet-history-tab">WC2026</a>
+                <a href="#" class="bet-history-tab bh-tab-compact-hide">Toto</a>
+                <a href="#" class="bet-history-tab bh-tab-compact-hide">Baseline odds</a>
+                <a href="#" class="bet-history-tab bh-tab-compact-hide">Unsettled bets</a>
+                <a href="#" class="bet-history-tab is-active" aria-current="page">Casino</a>
+                <a href="#" class="bet-history-tab bh-tab-compact-hide">Autosale</a>
+              </nav>
+              <button type="button" class="bet-history-tabs-menu" id="bh-tabs-menu-btn" aria-label="More categories" aria-expanded="false" aria-haspopup="true" aria-controls="bh-tabs-menu">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v1.5H2V4zm0 4h12v1.5H2V8zm0 4h12V13.5H2V12z" fill="currentColor"/></svg>
+              </button>
+              <div class="bet-history-tabs-dropdown" id="bh-tabs-menu" role="menu" hidden>
+                <a href="#" role="menuitem">On the website</a>
+                <a href="#" role="menuitem">WC2026</a>
+                <a href="#" role="menuitem">Toto</a>
+                <a href="#" role="menuitem">Baseline odds</a>
+                <a href="#" role="menuitem">Unsettled bets</a>
+                <a href="#" role="menuitem" class="is-active">Casino</a>
+                <a href="#" role="menuitem">Autosale</a>
+              </div>
+            </div>
+
+            <div class="bh-toolbar" aria-label="Bet history actions">
+              <button type="button" class="bh-toolbar-btn" id="bh-filters-btn" aria-expanded="false" aria-controls="bh-filters-panel">
+                Filters
+                <span class="bh-toolbar-chevron" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="bh-toolbar-btn" id="bh-email-btn">
+                Send to e-mail
+                <span class="bh-toolbar-chevron" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="bet-history-layout">
+              <div class="bh-filters-backdrop" id="bh-filters-backdrop" hidden></div>
+              <aside class="bet-history-actions" id="bh-filters-panel" aria-label="Bet history filters">
+                <div class="bh-filters-panel-head">
+                  <h3>Filters</h3>
+                  <button type="button" class="bh-filters-close" id="bh-filters-close" aria-label="Close filters">&times;</button>
+                </div>
+                <div class="bh-actions-head">
+                  <button type="button" class="bh-action-tab is-active" aria-label="Filter bets">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12L9.5 8v4.2l-3 1V8L2 3z" fill="currentColor"/></svg>
+                  </button>
+                  <button type="button" class="bh-action-tab" aria-label="Messages">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v8H2V4zm1.3 1.2L8 8.5l4.7-3.3H3.3z" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <p class="bh-filter-note">You can only select a period of 31 days maximum.</p>
+                <p class="bh-filter-note">You can search bets for the past 6 months from the current date.</p>
+
+                <form class="bh-filter-form" action="#" method="get">
+                  <label>
+                    <span>Period</span>
+                    <div class="bh-date-row">
+                      <input type="text" value="07.07.2026" aria-label="Start date" />
+                      <input type="text" value="13.07.2026" aria-label="End date" />
+                    </div>
+                  </label>
+                  <label>
+                    <span>Game type</span>
+                    <select>
+                      <option>All</option>
+                      <option>Live casino</option>
+                      <option>Casino</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Bet type</span>
+                    <select>
+                      <option>All</option>
+                      <option>Bet</option>
+                      <option>Paid out</option>
+                    </select>
+                  </label>
+                  <button type="submit">Apply</button>
+                </form>
+              </aside>
+
+              <div class="bet-history-results">
+                <div class="bh-results-head">
+                  <h2>Results</h2>
+                  <span class="bh-period">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 1v2h6V1h1v2h2v11H2V3h2V1h1zm8 6H3v6h10V7z" fill="currentColor"/></svg>
+                    Period: 07/07 - 13/07
+                  </span>
+                </div>
+
+                <div class="bh-list-wrap">
+                  <div class="bh-table-head" aria-hidden="true">
+                    <div>Game / Game type</div>
+                    <div>Transaction</div>
+                    <div>Date</div>
+                    <div>Provider</div>
+                    <div>Amount</div>
+                    <div>Transaction type</div>
+                    <div>Action</div>
+                  </div>
+                  <div class="bh-list" id="bh-list" aria-label="Casino bet history"></div>
                 </div>
               </div>
-
-              <div class="tx-history-account">
-                <span class="tx-history-account-label">Account No.</span>
-                <span class="tx-history-account-no" id="tx-account-no">1733760863</span>
-                <button type="button" class="tx-history-copy" id="tx-copy-account" aria-label="Copy account number">
-                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 2.5h6A1.5 1.5 0 0 1 13 4v6.5H11.5V4H5.5V2.5zm-2 2h6A1.5 1.5 0 0 1 11 6v6.5a1.5 1.5 0 0 1-1.5 1.5h-6A1.5 1.5 0 0 1 2 12.5V6a1.5 1.5 0 0 1 1.5-1.5z" fill="currentColor"/></svg>
-                </button>
-              </div>
-
-              <div class="tx-history-list" id="tx-list" aria-label="Recent transactions"></div>
             </div>
           </div>
 
@@ -388,7 +470,7 @@
 
   <script src="js/script.js"></script>
   <script src="js/account.js"></script>
-  <script src="js/transaction-history.js"></script>
+  <script src="js/bet-history.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>
 </html>
