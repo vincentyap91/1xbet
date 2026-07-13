@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Withdraw — 1xBet</title>
+  <title>Transaction History — 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
 </head>
-<body data-page="withdraw" class="is-logged-in">
+<body data-page="transaction-history" class="is-logged-in">
   <div class="page-shell">
 
     <!-- ========== HEADER ========== -->
@@ -218,9 +218,9 @@
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">My Wallet and Bets</div>
             <a href="deposit.html" class="acc-nav-link">Deposit</a>
-            <a href="withdraw.html" class="acc-nav-link is-active" aria-current="page">Withdraw funds</a>
+            <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
             <a href="#" class="acc-nav-link">Bet history</a>
-            <a href="#" class="acc-nav-link">Transaction history</a>
+            <a href="transaction-history.html" class="acc-nav-link is-active" aria-current="page">Transaction history</a>
             <a href="#" class="acc-nav-link">Payment queries</a>
           </div>
 
@@ -250,172 +250,58 @@
         </aside>
 
         <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
-        <section class="account-content" aria-label="Withdraw funds">
+        <section class="account-content" aria-label="Transaction history">
 
-          <!-- Title row with Withdrawal requests button -->
-          <div class="withdraw-head-row">
-            <h1 class="withdraw-title">Withdrawing from account 1733760863</h1>
-            <a href="#" class="btn-withdrawal-requests">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                <rect x="1" y="1" width="11" height="11" rx="2" stroke="white" stroke-width="1.3"/>
-                <path d="M4 6.5h5M4 4.5h5M4 8.5h3" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-              Withdrawal requests
-            </a>
+          <div class="account-content-head">
+            <h1 class="account-content-title">Transaction history</h1>
+            <p class="account-content-sub">Account 1733760863 — recent deposits and withdrawals</p>
           </div>
 
-          <!-- Category tabs + method grid -->
-          <div class="dep-layout">
-
-            <!-- Category tabs (left) -->
-            <nav class="dep-categories" aria-label="Withdrawal categories" role="tablist">
-              <button type="button" class="dep-cat-btn" data-cat="recommended" role="tab" aria-selected="false">
-                Recommended
-                <span class="dep-cat-count">(3)</span>
-              </button>
-              <button type="button" class="dep-cat-btn is-active" data-cat="all" role="tab" aria-selected="true">
-                All methods
-                <span class="dep-cat-count">(12)</span>
-              </button>
-              <button type="button" class="dep-cat-btn" data-cat="card" role="tab" aria-selected="false">
-                Payment cards
-                <span class="dep-cat-count">(2)</span>
-              </button>
-              <button type="button" class="dep-cat-btn" data-cat="ewallet" role="tab" aria-selected="false">
-                E-wallets
-                <span class="dep-cat-count">(3)</span>
-              </button>
-              <button type="button" class="dep-cat-btn" data-cat="transfer" role="tab" aria-selected="false">
-                Bank transfer
-                <span class="dep-cat-count">(1)</span>
-              </button>
-              <button type="button" class="dep-cat-btn" data-cat="crypto" role="tab" aria-selected="false">
-                Cryptocurrency
-                <span class="dep-cat-count">(3)</span>
-              </button>
-            </nav>
-
-            <!-- Methods (right) -->
-            <div class="dep-methods">
-
-              <!-- Info notice -->
-              <div class="dep-promo-banner">
-                Withdrawals are processed within <strong>15 minutes</strong> for e-wallets and <strong>1–3 business days</strong> for bank transfers. Verify your identity to remove limits.
-              </div>
-
-              <div class="dep-sections-panel" id="dep-sections-panel" role="tabpanel">
-
-              <!-- Recommended -->
-              <section class="dep-section" data-section="recommended">
-              <div class="dep-group-label">Recommended</div>
-              <div class="dep-grid">
-                <div class="pay-method-card" data-category="recommended ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/touchngo.png" alt="Touch 'n Go" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">Touch 'n Go</div>
-                </div>
-                <div class="pay-method-card" data-category="recommended ewallet" tabindex="0" role="button" aria-label="GrabPay">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/grabpay.png" alt="GrabPay" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">GrabPay</div>
-                </div>
-                <div class="pay-method-card" data-category="recommended ewallet" tabindex="0" role="button" aria-label="DuitNow">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/duitnow.png" alt="DuitNow" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">DuitNow</div>
-                </div>
-              </div>
-              </section>
-
-              <!-- Payment cards -->
-              <section class="dep-section" data-section="card">
-              <div class="dep-group-label">Payment cards</div>
-              <div class="dep-grid">
-                <div class="pay-method-card" data-category="card" tabindex="0" role="button" aria-label="Visa">
-                  <div class="pay-method-logo">
-                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#1a1f71 0%,#1a1f71 100%);">Visa</div>
-                  </div>
-                  <div class="pay-method-name">Visa</div>
-                </div>
-                <div class="pay-method-card" data-category="card" tabindex="0" role="button" aria-label="Mastercard">
-                  <div class="pay-method-logo">
-                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#eb001b 0%,#f79e1b 100%);">Mastercard</div>
-                  </div>
-                  <div class="pay-method-name">Mastercard</div>
-                </div>
-              </div>
-              </section>
-
-              <!-- E-wallets -->
-              <section class="dep-section" data-section="ewallet">
-              <div class="dep-group-label">E-wallets</div>
-              <div class="dep-grid">
-                <div class="pay-method-card" data-category="ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/touchngo.png" alt="Touch 'n Go" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">Touch 'n Go</div>
-                </div>
-                <div class="pay-method-card" data-category="ewallet" tabindex="0" role="button" aria-label="GrabPay">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/grabpay.png" alt="GrabPay" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">GrabPay</div>
-                </div>
-                <div class="pay-method-card" data-category="ewallet" tabindex="0" role="button" aria-label="DuitNow">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/duitnow.png" alt="DuitNow" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">DuitNow</div>
-                </div>
-              </div>
-              </section>
-
-              <!-- Bank transfer -->
-              <section class="dep-section" data-section="transfer">
-              <div class="dep-group-label">Bank transfer</div>
-              <div class="dep-grid">
-                <div class="pay-method-card" data-category="transfer" tabindex="0" role="button" aria-label="FPX">
-                  <div class="pay-method-logo">
-                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#003087 0%,#001f5c 100%);">FPX</div>
-                  </div>
-                  <div class="pay-method-name">FPX</div>
-                </div>
-              </div>
-              </section>
-
-              <!-- Cryptocurrency -->
-              <section class="dep-section" data-section="crypto">
-              <div class="dep-group-label">Cryptocurrency</div>
-              <div class="dep-grid">
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Bitcoin">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/bitcoin.png" alt="Bitcoin" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">Bitcoin</div>
-                </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Tether TRC20">
-                  <div class="pay-method-logo">
-                    <img src="assets/images/payments/tether.png" alt="Tether TRC20" width="90" height="38" />
-                  </div>
-                  <div class="pay-method-name">Tether TRC20</div>
-                </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Ethereum">
-                  <div class="pay-method-logo">
-                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#627eea 0%,#3c56c8 100%);">ETH</div>
-                  </div>
-                  <div class="pay-method-name">Ethereum</div>
-                </div>
-              </div>
-              </section>
-
-              </div><!-- /dep-sections-panel -->
-
-            </div><!-- /dep-methods -->
-          </div><!-- /dep-layout -->
+          <div class="account-content-body">
+            <div class="tx-table-wrap">
+              <table class="tx-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Method</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>13 Jul 2026, 09:01</td>
+                    <td>Deposit</td>
+                    <td>Bank Transfer</td>
+                    <td class="tx-amount">+50.00 MYR</td>
+                    <td><span class="tx-status tx-status--pending">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>10 Jul 2026, 14:22</td>
+                    <td>Deposit</td>
+                    <td>Touch 'n Go</td>
+                    <td class="tx-amount">+100.00 MYR</td>
+                    <td><span class="tx-status tx-status--completed">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td>08 Jul 2026, 11:05</td>
+                    <td>Withdrawal</td>
+                    <td>FPX</td>
+                    <td class="tx-amount">-75.00 MYR</td>
+                    <td><span class="tx-status tx-status--completed">Completed</span></td>
+                  </tr>
+                  <tr>
+                    <td>05 Jul 2026, 18:40</td>
+                    <td>Deposit</td>
+                    <td>Bitcoin</td>
+                    <td class="tx-amount">+250.00 MYR</td>
+                    <td><span class="tx-status tx-status--completed">Completed</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
         </section>
 
@@ -523,6 +409,6 @@
 
   <script src="js/script.js"></script>
   <script src="js/account.js"></script>
-  <script src="js/auth-modals.js"></script>
+    <script src="js/auth-modals.js"></script>
 </body>
 </html>

@@ -595,7 +595,31 @@
     lineSearch: "",
     lineType: "live",
     promoIndex: 0,
+    myBetsTab: "open",
   };
+
+  const MOCK_RUNNING_BETS = [
+    {
+      id: "487030422",
+      placedDate: "07/12/2026",
+      placedTime: "21:54:55",
+      sport: "Football",
+      market: "Correct Score",
+      pick: "2 : 1",
+      match: "France -vs- Spain",
+      eventName: "WORLD CUP 2026 (in Canada, Mexico & USA)",
+      eventDate: "07/15",
+      maxPayout: "100.80",
+      odds: "8.4",
+      oddsTag: "E",
+      stake: "12.00",
+      stakeAlt: "12.00",
+      status: "Running",
+      cashOut: false,
+    },
+  ];
+
+  const MOCK_SETTLED_BETS = [];
 
   /* ---------- Helpers ---------- */
 
@@ -1015,7 +1039,7 @@
   /* ---------- Bet slip ---------- */
 
   function syncOddButtons() {
-    $$(".odd-btn[data-odd]").forEach((btn) => {
+    $$("[data-odd]").forEach((btn) => {
       try {
         const data = JSON.parse(btn.getAttribute("data-odd").replace(/&quot;/g, '"'));
         const on = state.betSlip.some((b) => b.id === data.id);
@@ -1035,17 +1059,145 @@
     badge.textContent = String(n);
   }
 
+  function syncBetTabCount() {
+    const tab = $('.bet-tab[data-bet-tab="slip"]');
+    if (!tab) return;
+    let badge = tab.querySelector(".bet-tab-count");
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.className = "bet-tab-count";
+      tab.appendChild(badge);
+    }
+    const n = state.betSlip.length;
+    badge.hidden = n === 0;
+    badge.textContent = String(n);
+  }
+
+  function ensureTicketFooter() {
+    const footer = $("#bet-footer");
+    if (!footer || footer.dataset.ticketLayout === "true") return;
+    footer.dataset.ticketLayout = "true";
+    footer.innerHTML = `
+      <div class="bet-type-row">
+        <button type="button" class="ticket-select" id="bet-type-select" aria-haspopup="listbox">
+          <span>Accumulator</span>
+          <span class="select-chevron" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="ticket-trash" id="clear-bets" aria-label="Clear bet slip">
+          <img src="assets/icons/rb-close.svg" alt="" width="12" height="12" />
+        </button>
+      </div>
+      <div class="ticket-summary-row">
+        <span>Overall odds</span>
+        <strong id="total-odds">1.00</strong>
+        <button type="button" class="ticket-settings" aria-label="Place settings" title="Place settings">
+          <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
+        </button>
+      </div>
+      <div class="ticket-stake-block">
+        <label class="stake-title" for="stake-input">Stake amount (MYR)</label>
+        <div class="stake-control">
+          <button type="button" class="stake-step" data-stake-step="-50" aria-label="Decrease stake">-</button>
+          <input type="number" id="stake-input" min="1" step="1" value="50" />
+          <button type="button" class="stake-step" data-stake-step="50" aria-label="Increase stake">+</button>
+          <button type="button" class="ticket-settings" aria-label="Stake settings" title="Stake settings">
+            <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
+          </button>
+        </div>
+        <div class="quick-stakes" aria-label="Quick stake amounts">
+          <button type="button" data-quick-stake="1">+1</button>
+          <button type="button" data-quick-stake="100">+100</button>
+          <button type="button" data-quick-stake="250">+250</button>
+        </div>
+      </div>
+      <button type="button" class="max-stake-link">
+        <span>Maximum stake</span>
+        <strong>11700 MYR</strong>
+      </button>
+      <label class="ticket-field">
+        <span>When odds change:</span>
+        <button type="button" class="ticket-select">
+          <span>Accept if odds increase</span>
+          <span class="select-chevron" aria-hidden="true"></span>
+        </button>
+      </label>
+      <button type="button" class="promo-code-toggle">
+        <span>Promo code</span>
+        <span class="select-chevron" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="btn-place" id="place-bet">Place Bet</button>
+    `;
+  }
+
+  function ticketScore(b) {
+    if (b.score) return b.score;
+    return b.live ? "[ 0:0 ]" : "";
+  }
+
+  function ticketSportIcon(b) {
+    if (b.sportIcon) return `<img class="ticket-sport-icon" src="${b.sportIcon}" alt="" width="14" height="14" />`;
+    return `<span class="ticket-sport-icon ticket-sport-dot" aria-hidden="true"></span>`;
+  }
+
+  function hydrateTicketData(data) {
+    const source = { ...data };
+    for (const league of [...liveLeagues, ...lineLeagues]) {
+      const event = league.events.find((ev) => source.id && source.id.startsWith(`${ev.id}-`));
+      if (!event) continue;
+      const score = event.scoreH != null || event.scoreA != null ? `[ ${event.scoreH ?? 0}:${event.scoreA ?? 0} ]` : "";
+      return {
+        ...source,
+        eventId: event.id.replace(/\D/g, "") || event.id,
+        league: source.league || league.name,
+        live: Boolean(event.live),
+        score,
+        sportIcon: sportHeaderIconMap[league.sport] || `assets/icons/sport-${league.sport}.svg`,
+      };
+    }
+    return {
+      ...source,
+      eventId: source.eventId || source.id,
+      live: Boolean(source.live),
+      score: source.score || "",
+    };
+  }
+
+  function renderTicketCards(items) {
+    return items
+      .map(
+        (b) => `
+      <article class="bet-item ticket-card" data-bet-id="${b.id}">
+        <button type="button" class="bet-remove" data-remove="${b.id}" aria-label="Remove selection">×</button>
+        <div class="ticket-meta-line">
+          ${b.live ? '<span class="ticket-live-badge">LIVE</span>' : ""}
+          ${ticketSportIcon(b)}
+          <span class="ticket-event-id">${b.eventId || b.id}</span>
+          <span class="bet-item-league">${b.league || "Top Events"}</span>
+        </div>
+        <div class="bet-item-match">${b.match}</div>
+        ${ticketScore(b) ? `<div class="ticket-score">${ticketScore(b)}</div>` : ""}
+        <div class="ticket-selection-row">
+          <span class="ticket-odds-pill">${formatOdd(b.odds)}</span>
+          <span class="ticket-market">${b.market}: ${b.selection}</span>
+        </div>
+      </article>`
+      )
+      .join("");
+  }
+
   function renderBetSlip() {
     const empty = $("#bet-empty");
     const list = $("#bet-list");
     const footer = $("#bet-footer");
     const regCta = $("#bet-reg-cta");
+    syncBetTabCount();
     syncMobileBetCount();
 
     if (!state.betSlip.length) {
       empty.hidden = false;
       list.hidden = true;
       footer.hidden = true;
+      footer.classList.remove("is-sticky");
       if (regCta) regCta.hidden = false;
       list.innerHTML = "";
       syncOddButtons();
@@ -1055,7 +1207,9 @@
     empty.hidden = true;
     list.hidden = false;
     footer.hidden = false;
+    footer.classList.add("is-sticky");
     if (regCta) regCta.hidden = true;
+    ensureTicketFooter();
     list.innerHTML = state.betSlip
       .map(
         (b) => `
@@ -1071,6 +1225,7 @@
       </article>`
       )
       .join("");
+    list.innerHTML = renderTicketCards(state.betSlip);
 
     updateTotals();
     syncOddButtons();
@@ -1078,16 +1233,20 @@
 
   function updateTotals() {
     const total = productOdds(state.betSlip);
-    const stake = Number($("#stake-input").value) || 0;
-    $("#total-odds").textContent = formatOdd(total);
-    $("#potential-return").textContent = (stake * total).toFixed(2);
+    const stakeInput = $("#stake-input");
+    const totalOdds = $("#total-odds");
+    const potentialReturn = $("#potential-return");
+    const stake = Number(stakeInput?.value) || 0;
+    if (totalOdds) totalOdds.textContent = formatOdd(total);
+    if (potentialReturn) potentialReturn.textContent = (stake * total).toFixed(2);
   }
 
   function toggleOdd(data) {
     const idx = state.betSlip.findIndex((b) => b.id === data.id);
     if (idx >= 0) state.betSlip.splice(idx, 1);
-    else state.betSlip.push(data);
+    else state.betSlip.push(hydrateTicketData(data));
     renderBetSlip();
+    openRightDrawer();
   }
 
   function parseOddAttr(el) {
@@ -1222,13 +1381,16 @@
       tgOdds.addEventListener("click", (e) => {
         const btn = e.target.closest(".tg-odd[data-odd]");
         if (!btn || btn.disabled) return;
+        e.preventDefault();
+        e.stopPropagation();
         try {
           const data = JSON.parse(btn.getAttribute("data-odd"));
           if (!data.odds) return;
           const exists = state.betSlip.findIndex((b) => b.id === data.id);
           if (exists >= 0) state.betSlip.splice(exists, 1);
-          else state.betSlip.push(data);
+          else state.betSlip.push(hydrateTicketData(data));
           renderBetSlip();
+          openRightDrawer();
           syncOddButtons();
           $$(".tg-odd").forEach((b) => {
             try {
@@ -1380,6 +1542,8 @@
   }
 
   function initBetSlip() {
+    initMyBetsPanel();
+
     $$(".bet-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
         $$(".bet-tab").forEach((t) => {
@@ -1397,8 +1561,54 @@
     $("#bet-list").addEventListener("click", (e) => {
       const rm = e.target.closest("[data-remove]");
       if (!rm) return;
-      state.betSlip = state.betSlip.filter((b) => b.id !== rm.getAttribute("data-remove"));
-      renderBetSlip();
+      const id = rm.getAttribute("data-remove");
+      const card = rm.closest(".bet-item");
+      if (card) {
+        card.classList.add("is-removing");
+        setTimeout(() => {
+          state.betSlip = state.betSlip.filter((b) => b.id !== id);
+          renderBetSlip();
+        }, 180);
+      } else {
+        state.betSlip = state.betSlip.filter((b) => b.id !== id);
+        renderBetSlip();
+      }
+    });
+
+    $("#bet-slip-body")?.addEventListener("click", (e) => {
+      const step = e.target.closest("[data-stake-step]");
+      const quick = e.target.closest("[data-quick-stake]");
+      const clear = e.target.closest("#clear-bets");
+      const place = e.target.closest("#place-bet");
+      const stakeInput = $("#stake-input");
+
+      if (step && stakeInput) {
+        const next = Math.max(1, (Number(stakeInput.value) || 0) + Number(step.getAttribute("data-stake-step")));
+        stakeInput.value = String(next);
+        updateTotals();
+        return;
+      }
+
+      if (quick && stakeInput) {
+        stakeInput.value = String((Number(stakeInput.value) || 0) + Number(quick.getAttribute("data-quick-stake")));
+        updateTotals();
+        return;
+      }
+
+      if (clear) {
+        state.betSlip = [];
+        renderBetSlip();
+        showToast("Bet slip cleared");
+        return;
+      }
+
+      if (place) {
+        showToast("Demo only — bet not placed");
+      }
+    });
+
+    $("#bet-slip-body")?.addEventListener("input", (e) => {
+      if (e.target.closest("#stake-input")) updateTotals();
     });
 
     $("#clear-bets").addEventListener("click", () => {
@@ -1462,6 +1672,170 @@
         showToast("Accumulator added to bet slip");
       });
     });
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function getMyBetsData(tab) {
+    return tab === "history" ? MOCK_SETTLED_BETS : MOCK_RUNNING_BETS;
+  }
+
+  function formatMyBetsStake(stake) {
+    const n = parseFloat(stake);
+    if (!Number.isFinite(n)) return stake;
+    return Number.isInteger(n) ? String(n) : n.toFixed(2);
+  }
+
+  function renderMyBetsOpenCard(bet) {
+    const oddsLine =
+      escapeHtml(bet.odds) +
+      (bet.oddsTag ? ` <span class="mybets-card-odds-tag">(${escapeHtml(bet.oddsTag)})</span>` : "");
+    const cashOutBtn = bet.cashOut
+      ? `<button type="button" class="mybets-cashout">Cash Out</button>`
+      : `<button type="button" class="mybets-cashout is-disabled" disabled>Cash Out not available</button>`;
+    const eventName = bet.eventName || bet.event || "";
+    const eventDate = bet.eventDate ? `<span class="mybets-card-event-date">${escapeHtml(bet.eventDate)}</span>` : "";
+
+    return (
+      `<article class="mybets-card">` +
+        `<header class="mybets-card-head">${escapeHtml(bet.sport)} - ${escapeHtml(bet.market)}</header>` +
+        `<div class="mybets-card-main">` +
+          `<div class="mybets-card-pick">` +
+            `<span class="mybets-selection-accent" aria-hidden="true"></span>` +
+            `<div class="mybets-card-pick-body">` +
+              `<div class="mybets-card-score">${escapeHtml(bet.pick)}</div>` +
+              `<div class="mybets-card-odds-line">${oddsLine}</div>` +
+              eventDate +
+            `</div>` +
+          `</div>` +
+          `<div class="mybets-card-stake">` +
+            `<span class="mybets-card-stake-currency">RM</span>` +
+            `<span class="mybets-card-stake-value">${escapeHtml(formatMyBetsStake(bet.stake))}</span>` +
+          `</div>` +
+        `</div>` +
+        `<div class="mybets-card-event">` +
+          `<div class="mybets-card-match">${escapeHtml(bet.match)}</div>` +
+          `<div class="mybets-card-league">${escapeHtml(eventName)}</div>` +
+        `</div>` +
+        `<div class="mybets-card-meta">` +
+          `<div class="mybets-card-meta-left">` +
+            `<span class="mybets-card-id">ID: ${escapeHtml(bet.id)}</span>` +
+            `<span class="mybets-card-time">${escapeHtml(bet.placedDate)} ${escapeHtml(bet.placedTime)} GMT-4</span>` +
+          `</div>` +
+          `<span class="mybets-status mybets-status--${bet.status.toLowerCase()}">${escapeHtml(bet.status)}</span>` +
+        `</div>` +
+        `<div class="mybets-card-payout">` +
+          `<span class="mybets-card-payout-label">Max payout</span>` +
+          `<strong class="mybets-card-payout-value">RM ${escapeHtml(bet.maxPayout)}</strong>` +
+        `</div>` +
+        cashOutBtn +
+      `</article>`
+    );
+  }
+
+  function renderMyBetsContent() {
+    const container = $("#mybets-content");
+    if (!container) return;
+
+    const tab = state.myBetsTab;
+    const bets = getMyBetsData(tab);
+
+    if (!bets.length) {
+      const emptyMsg =
+        tab === "history"
+          ? "There are no settled bet slips for the last session"
+          : "No open bets. Place a bet to see it here.";
+      container.innerHTML = `<div class="mybets-empty"><p class="bet-empty-text">${emptyMsg}</p></div>`;
+      return;
+    }
+
+    container.innerHTML =
+      `<div class="mybets-cards">${bets.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>`;
+  }
+
+  function updateMyBetsBadges() {
+    const openCount = MOCK_RUNNING_BETS.length;
+    const historyCount = MOCK_SETTLED_BETS.length;
+    const openBadge = $("#mybets-open-count");
+    const historyBadge = $("#mybets-history-count");
+    if (openBadge) openBadge.textContent = String(openCount);
+    if (historyBadge) historyBadge.textContent = String(historyCount);
+  }
+
+  function setMyBetsTab(tab) {
+    state.myBetsTab = tab;
+    $$(".mybets-subtab").forEach((btn) => {
+      const isActive = btn.getAttribute("data-mybets-tab") === tab;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-selected", isActive ? "true" : "false");
+    });
+    const controls = $("#mybets-open-controls");
+    const viewAll = $("#mybets-view-all");
+    if (controls) controls.hidden = tab !== "open";
+    if (viewAll) viewAll.hidden = tab !== "open";
+    renderMyBetsContent();
+  }
+
+  function initMyBetsPanel() {
+    const body = $("#my-bets-body");
+    if (!body || body.dataset.initialized) return;
+    body.dataset.initialized = "1";
+
+    body.innerHTML =
+      `<div class="mybets-subtabs" role="tablist" aria-label="My bets views">` +
+        `<button type="button" class="mybets-subtab active" role="tab" aria-selected="true" data-mybets-tab="open">` +
+          `Open <span class="mybets-badge" id="mybets-open-count">0</span>` +
+        `</button>` +
+        `<button type="button" class="mybets-subtab" role="tab" aria-selected="false" data-mybets-tab="history">` +
+          `History <span class="mybets-badge" id="mybets-history-count">0</span>` +
+        `</button>` +
+      `</div>` +
+      `<div class="mybets-open-controls" id="mybets-open-controls">` +
+        `<div class="mybets-controls-row">` +
+          `<label class="mybets-check">` +
+            `<input type="checkbox" class="mybets-check-input" id="mybets-cashout-toggle" />` +
+            `<span class="mybets-check-label">Cash Out</span>` +
+            `<span class="mybets-info" title="Enable cash out for eligible bets" tabindex="0" role="img" aria-label="Cash Out information">i</span>` +
+          `</label>` +
+          `<button type="button" class="mybets-refresh" aria-label="Refresh bets">` +
+            `<span class="mybets-refresh-icon" aria-hidden="true">↻</span> 98` +
+          `</button>` +
+        `</div>` +
+        `<label class="mybets-check mybets-check--full">` +
+          `<input type="checkbox" class="mybets-check-input" id="mybets-accept-cashout" />` +
+          `<span class="mybets-check-label">Accept Any Cash Out Value</span>` +
+          `<span class="mybets-info" title="Accept any offered cash out amount" tabindex="0" role="img" aria-label="Accept any cash out value information">i</span>` +
+        `</label>` +
+      `</div>` +
+      `<div class="mybets-content" id="mybets-content"></div>` +
+      `<button type="button" class="mybets-view-all" id="mybets-view-all">View All</button>` +
+      `<p class="mybets-footer-note">All transactions are time stamped at GMT-4.</p>`;
+
+    body.addEventListener("click", (e) => {
+      const subtab = e.target.closest("[data-mybets-tab]");
+      if (subtab) {
+        setMyBetsTab(subtab.getAttribute("data-mybets-tab"));
+        return;
+      }
+      if (e.target.closest(".mybets-refresh")) {
+        showToast("Bets refreshed (demo)");
+      }
+      if (e.target.closest(".mybets-view-all")) {
+        showToast("View all bets — demo only");
+      }
+      if (e.target.closest(".mybets-cashout:not(.is-disabled)")) {
+        showToast("Cash Out — demo only");
+      }
+    });
+
+    updateMyBetsBadges();
+    setMyBetsTab("open");
   }
 
   function initRegistration() {

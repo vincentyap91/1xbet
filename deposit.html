@@ -220,7 +220,7 @@
             <a href="deposit.html" class="acc-nav-link is-active" aria-current="page">Deposit</a>
             <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
             <a href="#" class="acc-nav-link">Bet history</a>
-            <a href="#" class="acc-nav-link">Transaction history</a>
+            <a href="transaction-history.html" class="acc-nav-link">Transaction history</a>
             <a href="#" class="acc-nav-link">Payment queries</a>
           </div>
 
@@ -251,6 +251,9 @@
 
         <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
         <section class="account-content" aria-label="Deposit">
+
+          <!-- Step 1: Payment method selection -->
+          <div class="dep-step is-active" id="dep-step-methods" data-step="methods">
 
           <div class="account-content-head">
             <h1 class="account-content-title">Account 1733760863</h1>
@@ -300,136 +303,217 @@
             <!-- Methods (right) -->
             <div class="dep-methods">
 
+              <div class="dep-sections-panel" id="dep-sections-panel" role="tabpanel">
+
               <!-- Recommended -->
+              <section class="dep-section" data-section="recommended">
               <div class="dep-group-label">Recommended</div>
               <div class="dep-grid">
-                <div class="pay-method-card" data-category="recommended ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
+                <div class="pay-method-card" data-method-id="touchngo" data-category="recommended ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/touchngo.png" alt="Touch 'n Go" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Touch 'n Go</div>
                   <span class="pay-method-badge">+10%</span>
                 </div>
-                <div class="pay-method-card" data-category="recommended ewallet" tabindex="0" role="button" aria-label="GrabPay">
+                <div class="pay-method-card" data-method-id="grabpay" data-category="recommended ewallet" tabindex="0" role="button" aria-label="GrabPay">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/grabpay.png" alt="GrabPay" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">GrabPay</div>
                 </div>
-                <div class="pay-method-card" data-category="recommended banking ewallet" tabindex="0" role="button" aria-label="DuitNow">
+                <div class="pay-method-card" data-method-id="duitnow" data-category="recommended banking ewallet" tabindex="0" role="button" aria-label="DuitNow">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/duitnow.png" alt="DuitNow" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">DuitNow</div>
                 </div>
-                <div class="pay-method-card" data-category="recommended banking" tabindex="0" role="button" aria-label="Help2Pay">
+                <div class="pay-method-card" data-method-id="help2pay" data-category="recommended banking" tabindex="0" role="button" aria-label="Help2Pay">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/help2pay.png" alt="Help2Pay" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Help2Pay</div>
                 </div>
               </div>
+              </section>
 
               <!-- Payment cards -->
+              <section class="dep-section" data-section="card">
               <div class="dep-group-label">Payment cards</div>
               <div class="dep-grid">
-                <div class="pay-method-card" data-category="card" tabindex="0" role="button" aria-label="Visa">
+                <div class="pay-method-card" data-method-id="visa" data-category="card" tabindex="0" role="button" aria-label="Visa">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#1a1f71 0%,#1a1f71 100%);">Visa</div>
                   </div>
                   <div class="pay-method-name">Visa</div>
                 </div>
-                <div class="pay-method-card" data-category="card" tabindex="0" role="button" aria-label="Mastercard">
+                <div class="pay-method-card" data-method-id="mastercard" data-category="card" tabindex="0" role="button" aria-label="Mastercard">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#eb001b 0%,#f79e1b 100%);">Mastercard</div>
                   </div>
                   <div class="pay-method-name">Mastercard</div>
                 </div>
               </div>
+              </section>
 
               <!-- E-wallets -->
+              <section class="dep-section" data-section="ewallet">
               <div class="dep-group-label">E-wallets</div>
               <div class="dep-grid">
-                <div class="pay-method-card" data-category="ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
+                <div class="pay-method-card" data-method-id="touchngo" data-category="ewallet" tabindex="0" role="button" aria-label="Touch 'n Go eWallet">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/touchngo.png" alt="Touch 'n Go" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Touch 'n Go</div>
                 </div>
-                <div class="pay-method-card" data-category="ewallet" tabindex="0" role="button" aria-label="GrabPay">
+                <div class="pay-method-card" data-method-id="grabpay" data-category="ewallet" tabindex="0" role="button" aria-label="GrabPay">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/grabpay.png" alt="GrabPay" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">GrabPay</div>
                 </div>
-                <div class="pay-method-card" data-category="ewallet banking" tabindex="0" role="button" aria-label="DuitNow">
+                <div class="pay-method-card" data-method-id="duitnow" data-category="ewallet banking" tabindex="0" role="button" aria-label="DuitNow">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/duitnow.png" alt="DuitNow" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">DuitNow</div>
                 </div>
-                <div class="pay-method-card" data-category="ewallet banking" tabindex="0" role="button" aria-label="Help2Pay">
+                <div class="pay-method-card" data-method-id="help2pay" data-category="ewallet banking" tabindex="0" role="button" aria-label="Help2Pay">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/help2pay.png" alt="Help2Pay" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Help2Pay</div>
                 </div>
               </div>
+              </section>
 
-              <!-- Internet banking / Bank transfer -->
+              <!-- Internet banking & Bank transfer (all methods view) -->
+              <section class="dep-section" data-section="banking-transfer">
               <div class="dep-group-label">Internet banking &amp; Bank transfer</div>
               <div class="dep-grid">
-                <div class="pay-method-card" data-category="banking transfer" tabindex="0" role="button" aria-label="FPX">
+                <div class="pay-method-card" data-method-id="fpx" data-category="banking transfer" tabindex="0" role="button" aria-label="FPX">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#003087 0%,#001f5c 100%);">FPX</div>
                   </div>
                   <div class="pay-method-name">FPX</div>
                 </div>
               </div>
+              </section>
+
+              <!-- Internet banking -->
+              <section class="dep-section" data-section="banking">
+              <div class="dep-group-label">Internet banking</div>
+              <div class="dep-grid">
+                <div class="pay-method-card" data-method-id="fpx" data-category="banking transfer" tabindex="0" role="button" aria-label="FPX">
+                  <div class="pay-method-logo">
+                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#003087 0%,#001f5c 100%);">FPX</div>
+                  </div>
+                  <div class="pay-method-name">FPX</div>
+                </div>
+              </div>
+              </section>
+
+              <!-- Bank transfer -->
+              <section class="dep-section" data-section="transfer">
+              <div class="dep-group-label">Bank transfer</div>
+              <div class="dep-grid">
+                <div class="pay-method-card" data-method-id="bank-transfer" data-category="banking transfer" tabindex="0" role="button" aria-label="FPX">
+                  <div class="pay-method-logo">
+                    <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#003087 0%,#001f5c 100%);">FPX</div>
+                  </div>
+                  <div class="pay-method-name">FPX</div>
+                </div>
+              </div>
+              </section>
 
               <!-- Cryptocurrency -->
+              <section class="dep-section" data-section="crypto">
               <div class="dep-group-label">Cryptocurrency</div>
               <div class="dep-grid">
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Bitcoin">
+                <div class="pay-method-card" data-method-id="bitcoin" data-category="crypto" tabindex="0" role="button" aria-label="Bitcoin">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/bitcoin.png" alt="Bitcoin" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Bitcoin</div>
                 </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Ethereum">
+                <div class="pay-method-card" data-method-id="ethereum" data-category="crypto" tabindex="0" role="button" aria-label="Ethereum">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#627eea 0%,#3c56c8 100%);">ETH</div>
                   </div>
                   <div class="pay-method-name">Ethereum</div>
                 </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Tether ERC20">
+                <div class="pay-method-card" data-method-id="tether-erc20" data-category="crypto" tabindex="0" role="button" aria-label="Tether ERC20">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/tether.png" alt="Tether ERC20" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Tether ERC20</div>
                 </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Tether TRC20">
+                <div class="pay-method-card" data-method-id="tether-trc20" data-category="crypto" tabindex="0" role="button" aria-label="Tether TRC20">
                   <div class="pay-method-logo">
                     <img src="assets/images/payments/tether.png" alt="Tether TRC20" width="90" height="38" />
                   </div>
                   <div class="pay-method-name">Tether TRC20</div>
                 </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="USDC">
+                <div class="pay-method-card" data-method-id="usdc" data-category="crypto" tabindex="0" role="button" aria-label="USDC">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#2775ca 0%,#1a5da8 100%);">USDC</div>
                   </div>
                   <div class="pay-method-name">USD Coin (USDC)</div>
                 </div>
-                <div class="pay-method-card" data-category="crypto" tabindex="0" role="button" aria-label="Litecoin">
+                <div class="pay-method-card" data-method-id="litecoin" data-category="crypto" tabindex="0" role="button" aria-label="Litecoin">
                   <div class="pay-method-logo">
                     <div class="pay-logo-placeholder" style="background:linear-gradient(135deg,#bfbbbb 0%,#9a9797 100%);color:#333;">LTC</div>
                   </div>
                   <div class="pay-method-name">Litecoin</div>
                 </div>
               </div>
+              </section>
+
+              </div><!-- /dep-sections-panel -->
 
             </div><!-- /dep-methods -->
           </div><!-- /dep-layout -->
+
+          </div><!-- /dep-step-methods -->
+
+          <!-- Step 2: Deposit details -->
+          <div class="dep-step" id="dep-step-details" data-step="details" hidden>
+            <div class="account-content-head dep-details-head">
+              <button type="button" class="dep-back-btn" id="dep-details-back" aria-label="Back to payment methods">
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Back
+              </button>
+              <div class="dep-details-head-text">
+                <h1 class="account-content-title" id="dep-details-title">Deposit details</h1>
+                <p class="account-content-sub" id="dep-details-sub">Complete your deposit</p>
+              </div>
+            </div>
+            <div class="account-content-body dep-details-body">
+              <div id="dep-details-content" class="dep-details-content"></div>
+            </div>
+            <div class="dep-details-actions" id="dep-details-actions">
+              <button type="button" class="dep-btn-secondary" id="dep-details-back-bottom">Back</button>
+              <button type="button" class="dep-btn-primary" id="dep-details-submit">
+                <span class="dep-btn-label">Continue</span>
+                <span class="dep-btn-spinner" hidden aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Success -->
+          <div class="dep-step" id="dep-step-success" data-step="success" hidden>
+            <div class="dep-success-wrap">
+              <div class="dep-success-icon" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="var(--action-green)"/><path d="M12 20.5l5.5 5.5L28 15" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <h2 class="dep-success-title">Deposit Submitted</h2>
+              <p class="dep-success-desc">Your deposit request has been submitted successfully.</p>
+              <div class="dep-success-actions">
+                <button type="button" class="dep-btn-primary" id="dep-success-again">Deposit Again</button>
+                <a href="transaction-history.html" class="dep-btn-secondary dep-btn-link" id="dep-success-history">View Transaction History</a>
+              </div>
+            </div>
+          </div>
 
         </section>
 
@@ -537,6 +621,7 @@
 
   <script src="js/script.js"></script>
   <script src="js/account.js"></script>
+  <script src="js/deposit.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>
 </html>
