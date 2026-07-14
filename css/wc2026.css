@@ -83,7 +83,7 @@
   gap: 8px;
   padding: 11px 12px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-inverse);
   background: linear-gradient(180deg, var(--section-blue), var(--section-blue-dark));
@@ -320,7 +320,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-hero-title {
   margin: 0;
   font-size: 36px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-inverse);
   letter-spacing: .04em;
   text-shadow: 0 2px 16px rgba(0,0,0,.5);
@@ -351,7 +351,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   align-items: center;
   gap: 8px;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
 }
 .wc-hero-team-home { justify-content: flex-end; }
@@ -361,7 +361,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   min-width: 52px;
   text-align: center;
   font-size: 26px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
 }
@@ -393,7 +393,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   padding: 0 14px;
   color: rgba(255,255,255,.74);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -470,12 +470,12 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
 }
 .wc-sum-score {
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--section-blue);
   min-width: 48px;
   text-align: center;
@@ -492,7 +492,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-prob-title {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-primary);
 }
@@ -524,7 +524,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-prob-track span { display: block; height: 100%; background: var(--cyan-accent); border-radius: var(--radius-xs); }
 .wc-prob-track-draw span { background: var(--action-green); }
 .wc-prob-track-away span { background: var(--text-secondary); opacity: .6; }
-.wc-prob-val { font-size: var(--table-text); font-weight: 800; color: var(--text-primary); text-align: right; }
+.wc-prob-val { font-size: var(--table-text); font-weight: 700; color: var(--text-primary); text-align: right; }
 
 .wc-countdown-row {
   display: flex;
@@ -543,7 +543,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-countdown-unit strong {
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
 }
@@ -556,7 +556,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-countdown-sep {
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-secondary);
   line-height: 1;
   margin-bottom: 10px;
@@ -650,7 +650,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   padding: 0 12px;
   color: var(--text-primary);
   background: var(--league-header);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--table-text);
   text-transform: uppercase;
 }
@@ -727,17 +727,17 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   flex: 1;
 }
 .wc-result-team-away { justify-content: flex-end; }
-.wc-result-name { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+.wc-result-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
 .wc-result-score {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--section-blue);
   min-width: 30px;
   text-align: center;
 }
 .wc-result-divider {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-secondary);
 }
 .wc-result-meta {
@@ -777,7 +777,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-champion-label {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -793,7 +793,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-champion-who {
   margin: 0 0 14px;
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-primary);
   text-align: center;
 }
@@ -837,7 +837,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-champ-odd span:last-child {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
 }
 .wc-champ-odd:hover, .wc-champ-odd.selected {
@@ -863,7 +863,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-bracket-panel-head h2 {
   margin: 0;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-primary);
 }
@@ -885,7 +885,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 
 .wc-bracket-round-label {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-secondary);
   letter-spacing: .06em;
@@ -976,7 +976,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-venue-heading {
   margin: 0;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-primary);
 }
@@ -1070,7 +1070,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-players-header h2 {
   margin: 0;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-primary);
 }
@@ -1096,7 +1096,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 .wc-table tbody tr:nth-child(even) { background: var(--row-alternate); }
 .wc-table td:first-child { color: var(--text-secondary); font-weight: 700; }
 .wc-table td:last-child,
-.wc-table th:last-child { text-align: right; font-weight: 800; }
+.wc-table th:last-child { text-align: right; font-weight: 700; }
 
 .wc-player {
   display: inline-flex;
@@ -1126,7 +1126,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   background: var(--accent-blue);
   color: var(--text-inverse);
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 700;
   flex-shrink: 0;
 }
 
@@ -1147,7 +1147,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
 }
 .wc-live-cta-title {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -1160,7 +1160,7 @@ details[open] .wc-exp-chevron { transform: rotate(180deg); }
   border-radius: var(--radius-sm);
   background: var(--action-green);
   color: var(--text-inverse);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 13px;
   text-transform: uppercase;
   white-space: nowrap;

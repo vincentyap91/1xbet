@@ -1,4 +1,4 @@
-/* bet-history.js — Bet history page: render rows + compact filters */
+/* bet-history.js — Bet History page: render rows + compact filters */
 (function () {
   'use strict';
 

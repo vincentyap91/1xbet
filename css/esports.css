@@ -348,7 +348,7 @@
 }
 .es-hero-banner-title {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   color: #fff;
   letter-spacing: .02em;
   text-transform: none;
@@ -506,7 +506,7 @@
 .es-team-initials {
   background: var(--initials-bg, var(--section-blue));
   font-size: 8px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   letter-spacing: 0;
 }
@@ -521,7 +521,7 @@
 }
 .es-pop-score {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   min-width: 16px;
   text-align: right;
@@ -755,7 +755,7 @@
 .es-section-bar-title {
   margin: 0;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: #fff;
 }
@@ -822,7 +822,7 @@
   background: var(--danger);
   color: #fff;
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1.2;
 }
@@ -958,7 +958,7 @@
   min-width: 16px;
   text-align: right;
   font-size: var(--table-text);
-  font-weight: 800;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--cyan-soft);
 }
@@ -999,7 +999,7 @@
 
 .es-odd strong {
   font-size: var(--table-text);
-  font-weight: 800;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: #fff;
 }

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Casino — Slots Lobby — 1xBet</title>
+  <title>Casino � Slots Lobby � 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/casino.css" />
 </head>
@@ -40,17 +40,14 @@
           <a href="#reg-form" class="btn-register">Registration</a>
           <button type="button" class="btn-login">Log in</button>
           <div class="header-meta-group">
-            <button type="button" class="header-meta settings-btn" aria-label="Settings">
-              <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
-              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
-            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
-              <img src="assets/icons/icon-lang.svg" alt="" class="lang-flag" width="14" height="14" />
-              <span>EN</span>
-              <span class="meta-sep">/</span>
-              <span id="header-clock">10:39</span>
-              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
+            <div class="header-lang" id="header-lang">
+              <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
+                <img src="assets/images/account/flags/flag-gb.svg" alt="" class="lang-flag" width="14" height="14" id="header-lang-flag" />
+                <span class="header-lang-label" id="header-lang-label">English</span>
+                <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+              </button>
+              <ul class="header-lang-menu" id="header-lang-menu" role="listbox" aria-label="Languages" hidden></ul>
+            </div>
           </div>
         </div>
       </div>
@@ -250,7 +247,7 @@
         <!-- Main content -->
         <main class="casino-main" id="main-content">
 
-          <!-- ── Hero carousel ────────────────────────────── -->
+          <!-- -- Hero carousel ------------------------------ -->
           <div class="casino-hero" aria-label="Featured promotions">
             <div class="casino-hero-track">
 
@@ -270,7 +267,7 @@
                 <div class="casino-hero-content">
                   <div class="casino-hero-date">04.03.2026 - 03.03.2027</div>
                   <div class="casino-hero-title">DROPS &amp; WINS</div>
-                  <div class="casino-hero-prize">PRIZE POOL: <span>€25 000 000</span></div>
+                  <div class="casino-hero-prize">PRIZE POOL: <span>�25 000 000</span></div>
                   <a href="#" class="btn-hero-play">PLAY</a>
                 </div>
               </div>
@@ -281,7 +278,7 @@
                 <div class="casino-hero-content">
                   <div class="casino-hero-date">Summer Season 2026</div>
                   <div class="casino-hero-title">SUMMER SEASON OF LEGENDS</div>
-                  <div class="casino-hero-prize">PRIZE POOL: <span>€600 000</span></div>
+                  <div class="casino-hero-prize">PRIZE POOL: <span>�600 000</span></div>
                   <a href="#" class="btn-hero-play">PLAY</a>
                 </div>
               </div>
@@ -305,7 +302,7 @@
             </div>
           </div><!-- /casino-hero -->
 
-          <!-- ── Category filter tabs ─────────────────────── -->
+          <!-- -- Category filter tabs ----------------------- -->
           <div class="casino-filters" role="toolbar" aria-label="Game category filters">
             <div class="casino-filters-list">
               <button type="button" class="casino-filter-chip">
@@ -331,11 +328,11 @@
             </button>
           </div>
 
-          <!-- ── Game grid - Row 1 ────────────────────────── -->
+          <!-- -- Game grid - Row 1 -------------------------- -->
           <section class="casino-section" aria-label="Games" id="game-grid-main">
             <div class="game-grid">
 
-              <!-- Game tiles — using existing game images + placeholder gradients -->
+              <!-- Game tiles � using existing game images + placeholder gradients -->
               <div class="game-tile" data-game="3 Fortune Mummies">
               <div class="game-tile-media">
                 <img class="game-tile-img" src="assets/images/casino/games/3-fortune-mummies.png" alt="3 Fortune Mummies" width="217" height="130" loading="lazy" />
@@ -755,7 +752,7 @@
             </div><!-- /game-grid -->
           </section>
 
-          <!-- ── Tournaments row ────────────────────────────── -->
+          <!-- -- Tournaments row ------------------------------ -->
           <section id="casino-tournaments" aria-label="Tournaments">
             <div class="casino-section-hdr">
               <h2 class="casino-section-hdr-title">
@@ -768,7 +765,7 @@
               <div class="tourn-card" data-game="Cash Kick Off">
                 <img src="assets/images/casino/tournaments/cash-kickoff.png" alt="Cash Kick Off" width="240" height="140" loading="lazy" />
                 <div class="tourn-card-badge">LIVE</div>
-                <div class="tourn-card-prize">€ 100,000</div>
+                <div class="tourn-card-prize">� 100,000</div>
                 <div class="tourn-card-body">
                   <div class="tourn-card-title">CASH KICK OFF</div>
                   <div class="tourn-card-desc">Enjoy a variety of games and take part in a prize draw!</div>
@@ -787,7 +784,7 @@
               <div class="tourn-card" data-game="World Cup Drops">
                 <img src="assets/images/casino/tournaments/stand-for-victory.png" alt="World Cup Drops" width="240" height="140" loading="lazy" />
                 <div class="tourn-card-badge">LIVE</div>
-                <div class="tourn-card-prize">€ 500,000</div>
+                <div class="tourn-card-prize">� 500,000</div>
                 <div class="tourn-card-body">
                   <div class="tourn-card-title">WORLD CUP DROPS</div>
                   <div class="tourn-card-desc">Join in the race for prizes and become one of the winners!</div>
@@ -806,7 +803,7 @@
               <div class="tourn-card" data-game="Summer Season of Legends">
                 <img src="assets/images/casino/tournaments/summer-season.png" alt="Summer Season" width="240" height="140" loading="lazy" />
                 <div class="tourn-card-badge">LIVE</div>
-                <div class="tourn-card-prize">€ 600,000</div>
+                <div class="tourn-card-prize">� 600,000</div>
                 <div class="tourn-card-body">
                   <div class="tourn-card-title">SUMMER SEASON OF LEGENDS</div>
                   <div class="tourn-card-desc">Join in the race for prizes and become one of the winners!</div>
@@ -825,7 +822,7 @@
               <div class="tourn-card" data-game="Fly High Conquer the Sky">
                 <img src="assets/images/casino/tournaments/summer-booster.png" alt="Fly High" width="240" height="140" loading="lazy" />
                 <div class="tourn-card-badge">LIVE</div>
-                <div class="tourn-card-prize">€ 4M</div>
+                <div class="tourn-card-prize">� 4M</div>
                 <div class="tourn-card-body">
                   <div class="tourn-card-title">FLY HIGH, CONQUER THE SKY!</div>
                   <div class="tourn-card-desc">Enjoy a variety of games and take part in a prize draw!</div>
@@ -844,7 +841,7 @@
               <div class="tourn-card" data-game="Summer Booster">
                 <img src="assets/images/casino/tournaments/cash-splash.png" alt="Summer Booster" width="240" height="140" loading="lazy" />
                 <div class="tourn-card-badge" style="background:var(--action-green);">STAND FOR VICTORY</div>
-                <div class="tourn-card-prize">€ 6.5M</div>
+                <div class="tourn-card-prize">� 6.5M</div>
                 <div class="tourn-card-body">
                   <div class="tourn-card-title">SUMMER BOOSTER</div>
                   <div class="tourn-card-desc">Sign up for prizes and become one of the winners!</div>
@@ -863,7 +860,7 @@
             </div><!-- /tournament-row -->
           </section>
 
-          <!-- ── Provider logos strip ─────────────────────── -->
+          <!-- -- Provider logos strip ----------------------- -->
           <div class="casino-providers" aria-label="Game providers">
             <a href="#" class="casino-provider">Infinity</a>
             <a href="#" class="casino-provider">Amatic</a>
@@ -899,7 +896,7 @@
           <a href="#">Affiliate Program</a>
           <a href="#">Become an agent</a>
           <a href="#">Privacy Policy</a>
-          <a href="#">Сookie Policy</a>
+          <a href="#">?ookie Policy</a>
           <a href="#">Contacts</a>
         </div>
         <div class="footer-col">
@@ -959,7 +956,7 @@
 
       <div class="footer-meta">
         <div class="footer-meta-card footer-legal">
-          <p>Copyright © 2024 «1xBet» .</p>
+          <p>Copyright � 2024 �1xBet� .</p>
           <p>1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="#">Find out more</a></p>
         </div>
         <a href="#" class="footer-meta-card footer-support">
@@ -995,7 +992,7 @@
         </div>
       </div>
       <button type="button" class="casino-popup-close" id="casino-popup-close" aria-label="Close popup">
-        <img src="assets/icons/casino/popup-close.svg" alt="✕" onerror="this.replaceWith(document.createTextNode('✕'))" />
+        <img src="assets/icons/casino/popup-close.svg" alt="?" onerror="this.replaceWith(document.createTextNode('?'))" />
       </button>
     </div>
   </div>

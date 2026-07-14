@@ -49,7 +49,7 @@ body[data-page="about-us"] {
 
 .about-hero-title {
   font-size: 42px;
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .03em;
   line-height: 1.1;
@@ -186,7 +186,7 @@ body[data-page="about-us"] {
 
 .about-section-title {
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .04em;
   color: #fff;
@@ -221,7 +221,7 @@ body[data-page="about-us"] {
 
 .about-secure-card h3 {
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   margin: 0 0 16px;
   text-transform: uppercase;
@@ -364,7 +364,7 @@ body[data-page="about-us"] {
 
 .about-trusted-title {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   line-height: 1.15;
@@ -390,7 +390,7 @@ body[data-page="about-us"] {
 
 .about-stat-value {
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   color: #fff;
 }
 

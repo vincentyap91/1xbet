@@ -40,17 +40,14 @@
           <a href="#reg-form" class="btn-register">Registration</a>
           <button type="button" class="btn-login">Log in</button>
           <div class="header-meta-group">
-            <button type="button" class="header-meta settings-btn" aria-label="Settings">
-              <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
-              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
-            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
-              <img src="assets/icons/icon-lang.svg" alt="" class="lang-flag" width="14" height="14" />
-              <span>EN</span>
-              <span class="meta-sep">/</span>
-              <span id="header-clock">10:39</span>
-              <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
+            <div class="header-lang" id="header-lang">
+              <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
+                <img src="assets/images/account/flags/flag-gb.svg" alt="" class="lang-flag" width="14" height="14" id="header-lang-flag" />
+                <span class="header-lang-label" id="header-lang-label">English</span>
+                <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+              </button>
+              <ul class="header-lang-menu" id="header-lang-menu" role="listbox" aria-label="Languages" hidden></ul>
+            </div>
           </div>
         </div>
       </div>

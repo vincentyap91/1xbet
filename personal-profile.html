@@ -52,8 +52,8 @@
             </div>
           </div>
 
-          <!-- Make a deposit -->
-          <a href="deposit.html" class="btn-deposit">Make a deposit</a>
+          <!-- Make a Deposit -->
+          <a href="deposit.html" class="btn-deposit">Make a Deposit</a>
 
           <!-- Messages -->
           <button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages">
@@ -66,15 +66,14 @@
 
           <!-- Settings + lang/clock -->
           <div class="header-meta-group">
-            <button type="button" class="header-meta settings-btn" aria-label="Settings">
-              <img src="assets/images/account/icon-settings.svg" alt="" width="16" height="16" />
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
-            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
-              <img src="assets/images/account/icon-lang-en.svg" alt="" class="lang-flag" width="14" height="14" />
-              <span>EN</span><span class="meta-sep">/</span><span id="header-clock">10:39</span>
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
+            <div class="header-lang" id="header-lang">
+              <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
+                <img src="assets/images/account/flags/flag-gb.svg" alt="" class="lang-flag" width="14" height="14" id="header-lang-flag" />
+                <span class="header-lang-label" id="header-lang-label">English</span>
+                <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+              </button>
+              <ul class="header-lang-menu" id="header-lang-menu" role="listbox" aria-label="Languages" hidden></ul>
+            </div>
           </div>
         </div>
       </div>
@@ -225,50 +224,48 @@
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">My Wallet and Bets</div>
             <a href="deposit.html" class="acc-nav-link">Deposit</a>
-            <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
-            <a href="bet-history.html" class="acc-nav-link">Bet history</a>
-            <a href="transaction-history.html" class="acc-nav-link">Transaction history</a>
-            <a href="#" class="acc-nav-link">Payment queries</a>
+            <a href="withdraw.html" class="acc-nav-link">Withdraw Funds</a>
+            <a href="bet-history.html" class="acc-nav-link">Bet History</a>
+            <a href="transaction-history.html" class="acc-nav-link">Transaction History</a>
+            <a href="payment-queries.html" class="acc-nav-link">Payment Queries</a>
           </div>
 
           <!-- Nav: Profile -->
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Profile</div>
             <a href="personal-profile.html" class="acc-nav-link is-active" aria-current="page">
-              Personal profile
+              Personal Profile
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">
+            <a href="security.html" class="acc-nav-link">
               Security
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">Account settings</a>
           </div>
 
           <!-- Nav: Extra -->
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Extra</div>
-            <a href="#" class="acc-nav-link">Invite friends</a>
-            <a href="#" class="acc-nav-link">Casino VIP Cashback</a>
-            <a href="#" class="acc-nav-link">Bonuses and gifts</a>
+            <a href="referral.html" class="acc-nav-link">Referral</a>
+            <a href="my-rewards.html" class="acc-nav-link">My Rewards</a>
+            <a href="#" class="acc-nav-link">Bonuses and Gifts</a>
             <a href="promo.html" class="acc-nav-link">Promotions</a>
-            <a href="#" class="acc-nav-link">Customer Support</a>
+            <a href="live-chat.html" class="acc-nav-link">Live Chat</a>
           </div>
 
           <button type="button" class="account-logout" data-auth-open="logout">Log out</button>
         </aside>
 
         <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
-        <section class="account-content" aria-label="Personal profile">
+        <section class="account-content profile-content" aria-label="Personal Profile">
 
           <div class="account-content-head">
-            <h1 class="account-content-title">Personal profile</h1>
-            <p class="account-content-sub">Fill in your personal details. Fields marked with a lock cannot be changed.</p>
+            <h1 class="account-content-title">Account details</h1>
+            <p class="account-content-sub">Manage your profile, VIP tier and personal information.</p>
           </div>
 
-          <div class="account-content-body">
+          <div class="account-content-body profile-page-body">
 
-            <!-- Progress banner -->
             <div class="profile-progress-banner" role="status">
               <span class="profile-progress-label">Fill in profile</span>
               <div class="profile-progress-bar-wrap" aria-label="34% complete" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100" role="progressbar">
@@ -277,192 +274,116 @@
               <span class="profile-progress-pct">34%</span>
             </div>
 
-            <!-- Profile form -->
-            <form class="profile-form" id="profile-form" method="post" action="#" novalidate>
-              <div class="profile-form-cols">
-
-                <!-- LEFT: Account + Contacts -->
-                <div>
-                  <fieldset class="profile-fieldset">
-                    <legend>Account</legend>
-
-                    <div class="profile-field">
-                      <label for="pf-account-number">Account number</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-account-number" type="text" value="1733760863" readonly aria-readonly="true" />
-                        <span class="profile-input-icon" aria-hidden="true">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="6" width="8" height="7" rx="1"/>
-                            <path d="M5 6V4a2 2 0 0 1 4 0v2"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-reg-date">Registration date</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-reg-date" type="text" value="10.07.2026" readonly aria-readonly="true" />
-                        <span class="profile-input-icon" aria-hidden="true">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="6" width="8" height="7" rx="1"/>
-                            <path d="M5 6V4a2 2 0 0 1 4 0v2"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-password">Password</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-password" type="password" value="password" autocomplete="current-password" />
-                        <span class="profile-input-icon is-editable" aria-label="Edit password">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M9.5 2l2.5 2.5L4.5 12H2v-2.5L9.5 2z"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-                  </fieldset>
-
-                  <fieldset class="profile-fieldset">
-                    <legend>Contacts</legend>
-
-                    <div class="profile-field">
-                      <label for="pf-phone">Phone number</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-phone" type="tel" value="+60 •••••••89" autocomplete="tel" />
-                        <span class="profile-input-icon is-editable" aria-label="Edit phone">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M9.5 2l2.5 2.5L4.5 12H2v-2.5L9.5 2z"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-email">Email</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-email" type="email" value="m***@gmail.com" readonly aria-readonly="true" autocomplete="email" />
-                        <span class="profile-input-icon" aria-hidden="true">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="6" width="8" height="7" rx="1"/>
-                            <path d="M5 6V4a2 2 0 0 1 4 0v2"/>
-                          </svg>
-                        </span>
-                      </div>
-                      <a href="#" class="profile-input-help">Why can't I change my email?</a>
-                    </div>
-                  </fieldset>
+            <section class="pf-summary-card" aria-labelledby="pf-summary-title">
+              <h2 class="visually-hidden" id="pf-summary-title">Account summary</h2>
+              <div class="pf-summary-row">
+                <div class="pf-summary-identity">
+                  <div class="pf-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><circle cx="12" cy="9" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M6 19c.9-3 2.8-4.5 6-4.5s5.1 1.5 6 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  </div>
+                  <div class="pf-identity">
+                    <span class="pf-verified">Verified account</span>
+                    <p class="pf-username">test123</p>
+                    <p class="pf-email">demo@gmail.com</p>
+                  </div>
                 </div>
 
-                <!-- RIGHT: Personal info -->
-                <div>
-                  <fieldset class="profile-fieldset">
-                    <legend>Personal info</legend>
-
-                    <div class="profile-field">
-                      <label for="pf-surname">Surname</label>
-                      <input class="profile-input" id="pf-surname" type="text" placeholder="Enter surname" autocomplete="family-name" />
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-given-name">Given name</label>
-                      <input class="profile-input" id="pf-given-name" type="text" placeholder="Enter given name" autocomplete="given-name" />
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-dob">Date of birth</label>
-                      <input class="profile-input" id="pf-dob" type="date" autocomplete="bday" />
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-place-birth">Place of birth</label>
-                      <input class="profile-input" id="pf-place-birth" type="text" placeholder="City of birth" />
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-doc-type">Type of document</label>
-                      <select class="profile-select" id="pf-doc-type">
-                        <option value="">— Select —</option>
-                        <option value="passport">Passport</option>
-                        <option value="ic">Identity Card (MyKad)</option>
-                        <option value="driving">Driving Licence</option>
-                      </select>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-country">Country</label>
-                      <div class="profile-input-wrap">
-                        <input class="profile-input" id="pf-country" type="text" value="Malaysia" readonly aria-readonly="true" />
-                        <span class="profile-input-icon" aria-hidden="true">
-                          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="3" y="6" width="8" height="7" rx="1"/>
-                            <path d="M5 6V4a2 2 0 0 1 4 0v2"/>
-                          </svg>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-region">Region / State</label>
-                      <select class="profile-select" id="pf-region">
-                        <option value="">— Select —</option>
-                        <option>Kuala Lumpur</option>
-                        <option>Selangor</option>
-                        <option>Penang</option>
-                        <option>Johor</option>
-                        <option>Sabah</option>
-                        <option>Sarawak</option>
-                        <option>Perak</option>
-                        <option>Kedah</option>
-                        <option>Kelantan</option>
-                        <option>Terengganu</option>
-                        <option>Pahang</option>
-                        <option>Negeri Sembilan</option>
-                        <option>Melaka</option>
-                        <option>Putrajaya</option>
-                        <option>Labuan</option>
-                      </select>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-city">City</label>
-                      <select class="profile-select" id="pf-city">
-                        <option value="">— Select —</option>
-                        <option>Kuala Lumpur</option>
-                        <option>Petaling Jaya</option>
-                        <option>Shah Alam</option>
-                        <option>Johor Bahru</option>
-                        <option>George Town</option>
-                        <option>Ipoh</option>
-                        <option>Kota Kinabalu</option>
-                        <option>Kuching</option>
-                      </select>
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-address">Permanent registered address</label>
-                      <input class="profile-input" id="pf-address" type="text" placeholder="Street, building, unit" autocomplete="street-address" />
-                    </div>
-
-                    <div class="profile-field">
-                      <label for="pf-sex">Sex</label>
-                      <select class="profile-select" id="pf-sex" autocomplete="sex">
-                        <option value="">— Select —</option>
-                        <option value="m">Male</option>
-                        <option value="f">Female</option>
-                      </select>
-                    </div>
-
-                    <button type="submit" class="profile-save-btn">Save</button>
-                  </fieldset>
+                <div class="pf-medal-wrap">
+                  <img src="assets/images/account/platinum-medal.png" alt="" class="pf-medal" width="72" height="72" loading="lazy">
+                  <span class="pf-tier-pill">Platinum</span>
                 </div>
 
-              </div><!-- /profile-form-cols -->
-            </form>
+                <div class="pf-tier-progress">
+                  <div class="pf-tier-head">
+                    <span class="pf-tier-target">Target: Diamond</span>
+                    <span class="pf-tier-pct">75%</span>
+                  </div>
+                  <div class="profile-progress-bar-wrap pf-tier-bar" aria-label="75% to next tier" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+                    <div class="profile-progress-bar"></div>
+                  </div>
+                  <p class="pf-tier-caption">Progress to next tier: 75%</p>
+                </div>
+              </div>
+            </section>
 
-          </div><!-- /account-content-body -->
+            <section class="pf-promo-card" aria-labelledby="pf-promo-title">
+              <div class="pf-promo-head">
+                <div class="pf-promo-copy">
+                  <p class="pf-promo-eyebrow">Current promo</p>
+                  <h2 class="pf-promo-title" id="pf-promo-title">All Time Deposit Promotion</h2>
+                </div>
+                <button type="button" class="pf-promo-end" id="pf-promo-end-btn">End promo</button>
+              </div>
+              <div class="pf-promo-progress">
+                <div class="pf-promo-meta">
+                  <span>Promo rollover</span>
+                  <strong>MYR 3.00 / 6.00</strong>
+                </div>
+                <div class="profile-progress-bar-wrap pf-promo-bar" aria-label="50% promo rollover complete" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" role="progressbar">
+                  <div class="profile-progress-bar"></div>
+                </div>
+                <span class="pf-promo-pct">50%</span>
+              </div>
+            </section>
+
+            <section class="pf-info-card" aria-labelledby="pf-info-title">
+              <header class="pf-info-head">
+                <h2 class="pf-info-title" id="pf-info-title">Personal info</h2>
+                <p class="pf-info-sub">Core account identity and contact details.</p>
+              </header>
+
+              <form class="profile-form pf-form" id="profile-form" method="post" action="#" novalidate>
+                <div class="pf-form-grid">
+                  <div class="profile-field">
+                    <label for="pf-username">Username</label>
+                    <div class="pf-input-wrap">
+                      <span class="pf-input-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><circle cx="10" cy="7" r="2.6" stroke="currentColor" stroke-width="1.5"/><path d="M5 17c.7-2.6 2.4-4 5-4s4.3 1.4 5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </span>
+                      <input class="profile-input pf-input" id="pf-username" type="text" value="test123" readonly aria-readonly="true" autocomplete="username" />
+                    </div>
+                  </div>
+
+                  <div class="profile-field">
+                    <label for="pf-full-name">Full name</label>
+                    <div class="pf-input-wrap">
+                      <span class="pf-input-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><circle cx="10" cy="7" r="2.6" stroke="currentColor" stroke-width="1.5"/><path d="M5 17c.7-2.6 2.4-4 5-4s4.3 1.4 5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </span>
+                      <input class="profile-input pf-input" id="pf-full-name" type="text" value="test" autocomplete="name" />
+                    </div>
+                  </div>
+
+                  <div class="profile-field pf-field-full">
+                    <label for="pf-phone">Phone number</label>
+                    <div class="pf-input-wrap">
+                      <span class="pf-input-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M6.5 4.5h7A1.5 1.5 0 0115 6v8a1.5 1.5 0 01-1.5 1.5h-7A1.5 1.5 0 016 14V6a1.5 1.5 0 011.5-1.5z" stroke="currentColor" stroke-width="1.5"/><path d="M9 13.5h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </span>
+                      <input class="profile-input pf-input" id="pf-phone" type="tel" value="+60 12144234" autocomplete="tel" />
+                    </div>
+                  </div>
+
+                  <div class="profile-field pf-field-full">
+                    <label for="pf-dob">Date of birth</label>
+                    <div class="pf-input-wrap pf-input-wrap--focus">
+                      <span class="pf-input-icon" aria-hidden="true">
+                        <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><rect x="4" y="5.5" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3M13 4v3M4 9h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                      </span>
+                      <input class="profile-input pf-input" id="pf-dob" type="date" value="2008-11-06" autocomplete="bday" />
+                    </div>
+                    <p class="pf-field-hint" role="note">
+                      <span class="pf-field-hint-icon" aria-hidden="true">!</span>
+                      Please enter your date of birth to receive additional bonus
+                    </p>
+                  </div>
+                </div>
+
+                <button type="submit" class="profile-save-btn pf-save-btn">Save changes</button>
+              </form>
+            </section>
+
+          </div>
         </section>
 
       </div><!-- /account-shell -->

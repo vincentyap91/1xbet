@@ -50,7 +50,7 @@
             </div>
           </div>
 
-          <a href="deposit.html" class="btn-deposit" aria-current="page">Make a deposit</a>
+          <a href="deposit.html" class="btn-deposit" aria-current="page">Make a Deposit</a>
 
           <button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages">
             <span class="icon-btn-inner">
@@ -61,15 +61,14 @@
           </button>
 
           <div class="header-meta-group">
-            <button type="button" class="header-meta settings-btn" aria-label="Settings">
-              <img src="assets/images/account/icon-settings.svg" alt="" width="16" height="16" />
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
-            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
-              <img src="assets/images/account/icon-lang-en.svg" alt="" class="lang-flag" width="14" height="14" />
-              <span>EN</span><span class="meta-sep">/</span><span id="header-clock">10:39</span>
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
+            <div class="header-lang" id="header-lang">
+              <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
+                <img src="assets/images/account/flags/flag-gb.svg" alt="" class="lang-flag" width="14" height="14" id="header-lang-flag" />
+                <span class="header-lang-label" id="header-lang-label">English</span>
+                <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+              </button>
+              <ul class="header-lang-menu" id="header-lang-menu" role="listbox" aria-label="Languages" hidden></ul>
+            </div>
           </div>
         </div>
       </div>
@@ -218,32 +217,31 @@
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">My Wallet and Bets</div>
             <a href="deposit.html" class="acc-nav-link is-active" aria-current="page">Deposit</a>
-            <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
-            <a href="bet-history.html" class="acc-nav-link">Bet history</a>
-            <a href="transaction-history.html" class="acc-nav-link">Transaction history</a>
-            <a href="#" class="acc-nav-link">Payment queries</a>
+            <a href="withdraw.html" class="acc-nav-link">Withdraw Funds</a>
+            <a href="bet-history.html" class="acc-nav-link">Bet History</a>
+            <a href="transaction-history.html" class="acc-nav-link">Transaction History</a>
+            <a href="payment-queries.html" class="acc-nav-link">Payment Queries</a>
           </div>
 
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Profile</div>
             <a href="personal-profile.html" class="acc-nav-link">
-              Personal profile
+              Personal Profile
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">
+            <a href="security.html" class="acc-nav-link">
               Security
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">Account settings</a>
           </div>
 
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Extra</div>
-            <a href="#" class="acc-nav-link">Invite friends</a>
-            <a href="#" class="acc-nav-link">Casino VIP Cashback</a>
-            <a href="#" class="acc-nav-link">Bonuses and gifts</a>
+            <a href="referral.html" class="acc-nav-link">Referral</a>
+            <a href="my-rewards.html" class="acc-nav-link">My Rewards</a>
+            <a href="#" class="acc-nav-link">Bonuses and Gifts</a>
             <a href="promo.html" class="acc-nav-link">Promotions</a>
-            <a href="#" class="acc-nav-link">Customer Support</a>
+            <a href="live-chat.html" class="acc-nav-link">Live Chat</a>
           </div>
 
           <button type="button" class="account-logout" data-auth-open="logout">Log out</button>
@@ -261,7 +259,7 @@
           </div>
 
           <!-- Promo banner -->
-          <div class="dep-promo-banner" style="margin:12px 20px 0; border-radius:8px;">
+          <div class="dep-promo-banner">
             Deposit <strong>MYR 50+</strong> and receive a <strong>+10% bonus</strong> on your first deposit. Funds are credited instantly. <a href="promo.html" style="color:var(--cyan-soft);text-decoration:underline;">Learn more</a>
           </div>
 

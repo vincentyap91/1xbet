@@ -278,15 +278,160 @@
     document.head.appendChild(link);
   }
 
+  function accountMenuHtml(menuId) {
+    const chevron =
+      '<svg viewBox="0 0 8 8" width="8" height="8" aria-hidden="true"><path d="M1.5 2.75L4 5.25 6.5 2.75" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const icons = {
+      deposit:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2.5v8M9 10.5L6.25 7.75M9 10.5l2.75-2.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 12.5c.9 1.6 2.9 2.7 5.5 2.7s4.6-1.1 5.5-2.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+      withdraw:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 15.5v-8M9 7.5l2.75 2.75M9 7.5L6.25 10.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 5.5c.9-1.6 2.9-2.7 5.5-2.7s4.6 1.1 5.5 2.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+      invite:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="6.5" cy="6" r="2.25" stroke="currentColor" stroke-width="1.5"/><circle cx="12.25" cy="7" r="1.75" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 14.5c.4-2.2 2.1-3.5 4-3.5s3.6 1.3 4 3.5M10.5 11.2c1.1-.4 2.3-.2 3.2.7.7.8 1 1.7 1.1 2.6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+      profile:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="9" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 14.5c.6-2.4 2.5-3.7 5-3.7s4.4 1.3 5 3.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+      history:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 6v3l1.9 1.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 9a6 6 0 1 0 1.1-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      settings:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 1.65l1.2.32.42 1.4c.42.12.81.3 1.16.54l1.38-.42 1.2 1.2-.42 1.38c.24.35.42.74.54 1.16l1.4.42.32 1.2-.32 1.2-1.4.42c-.12.42-.3.81-.54 1.16l.42 1.38-1.2 1.2-1.38-.42a4.6 4.6 0 01-1.16.54l-.42 1.4L9 16.35l-1.2-.32-.42-1.4a4.6 4.6 0 01-1.16-.54l-1.38.42-1.2-1.2.42-1.38a4.6 4.6 0 01-.54-1.16l-1.4-.42L1.65 9l.32-1.2 1.4-.42c.12-.42.3-.81.54-1.16l-.42-1.38 1.2-1.2 1.38.42c.35-.24.74-.42 1.16-.54l.42-1.4L9 1.65z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="9" cy="9" r="2.2" stroke="currentColor" stroke-width="1.45"/></svg>',
+      logout:
+        '<svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M7.5 3.5H4.2A1.7 1.7 0 002.5 5.2v7.6A1.7 1.7 0 004.2 14.5h3.3M8 9h7.5M12.5 5.5L16 9l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      avatar:
+        '<svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="7" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M4 16.5c.7-2.8 2.9-4.2 6-4.2s5.3 1.4 6 4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+    };
+
+    return (
+      '<div class="acc-menu" id="' +
+      menuId +
+      '" role="menu" hidden>' +
+      '<div class="acc-menu-arrow" aria-hidden="true"></div>' +
+      '<div class="acc-menu-head">' +
+      '<span class="acc-menu-avatar">' +
+      icons.avatar +
+      "</span>" +
+      '<div class="acc-menu-user">' +
+      '<p class="acc-menu-id">№1733760863</p>' +
+      '<p class="acc-menu-email">wendy.h@example.net</p>' +
+      "</div>" +
+      "</div>" +
+      '<div class="acc-menu-balances">' +
+      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Bonus points ' +
+      chevron +
+      '</span><span class="acc-menu-balance-value">0</span></div>' +
+      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Main account (MYR) ' +
+      chevron +
+      '</span><span class="acc-menu-balance-value">0</span></div>' +
+      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Unsettled bets</span><span class="acc-menu-balance-value">0</span></div>' +
+      "</div>" +
+      '<nav class="acc-menu-nav" aria-label="Account">' +
+      '<a href="deposit.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.deposit +
+      "</span>Make a Deposit</a>" +
+      '<a href="withdraw.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.withdraw +
+      "</span>Withdraw Funds</a>" +
+      '<a href="referral.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.invite +
+      "</span>Invite friends</a>" +
+      '<a href="personal-profile.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.profile +
+      '<span class="acc-menu-icon-dot" aria-hidden="true"></span></span>Personal Profile</a>' +
+      '<a href="bet-history.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.history +
+      "</span>Bet History</a>" +
+      '<a href="security.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      icons.settings +
+      "</span>Account settings</a>" +
+      '<button type="button" class="acc-menu-link" role="menuitem" data-auth-open="logout"><span class="acc-menu-icon">' +
+      icons.logout +
+      "</span>Log out</button>" +
+      "</nav>" +
+      "</div>"
+    );
+  }
+
+  function closeAccountMenus(exceptWrap) {
+    $$(".header-account-wrap.is-open").forEach((wrap) => {
+      if (exceptWrap && wrap === exceptWrap) return;
+      wrap.classList.remove("is-open");
+      const btn = $(".header-account-btn", wrap);
+      const menu = $(".acc-menu", wrap);
+      if (btn) btn.setAttribute("aria-expanded", "false");
+      if (menu) menu.hidden = true;
+    });
+  }
+
+  function enhanceAccountDropdown(btn) {
+    if (!btn || btn.dataset.accMenuReady === "1") return;
+
+    let wrap = btn.closest(".header-account-wrap");
+    if (!wrap) {
+      wrap = document.createElement("div");
+      wrap.className = "header-account-wrap";
+      btn.parentNode.insertBefore(wrap, btn);
+      wrap.appendChild(btn);
+    }
+
+    if (btn.tagName === "A") {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = btn.className;
+      button.setAttribute("aria-label", btn.getAttribute("aria-label") || "My account");
+      button.innerHTML = btn.innerHTML;
+      btn.replaceWith(button);
+      btn = button;
+      wrap = btn.closest(".header-account-wrap");
+    }
+
+    let menu = $(".acc-menu", wrap);
+    const menuId = "acc-menu-" + Math.random().toString(36).slice(2, 9);
+    if (!menu) {
+      wrap.insertAdjacentHTML("beforeend", accountMenuHtml(menuId));
+      menu = $(".acc-menu", wrap);
+    }
+
+    btn.setAttribute("aria-haspopup", "menu");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", menu.id || menuId);
+    btn.dataset.accMenuReady = "1";
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const willOpen = !wrap.classList.contains("is-open");
+      closeAccountMenus(willOpen ? wrap : null);
+      wrap.classList.toggle("is-open", willOpen);
+      btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      if (menu) menu.hidden = !willOpen;
+    });
+  }
+
+  function initAccountDropdowns() {
+    $$(".header-account-btn").forEach(enhanceAccountDropdown);
+
+    if (!document.body.dataset.accMenuDocBound) {
+      document.body.dataset.accMenuDocBound = "1";
+      document.addEventListener("click", (e) => {
+        if (e.target.closest(".header-account-wrap")) return;
+        closeAccountMenus();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeAccountMenus();
+      });
+    }
+  }
+
   function userHeaderHtml() {
     return (
       '<div class="header-user-block" id="header-user-block" hidden>' +
       '<div class="header-user-cluster">' +
-      '<a href="personal-profile.html" class="header-account-btn" aria-label="My account">' +
+      '<div class="header-account-wrap">' +
+      '<button type="button" class="header-account-btn" aria-label="My account" aria-haspopup="menu" aria-expanded="false">' +
       '<img src="assets/images/account/icon-user.svg" alt="" width="16" height="16" />' +
       '<img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />' +
       '<span class="header-account-dot" aria-hidden="true"></span>' +
-      "</a>" +
+      "</button>" +
+      "</div>" +
       '<div class="header-balance-chip">' +
       '<div class="header-balance-rows">' +
       '<div class="header-balance-row"><span>MYR</span><span>0</span></div>' +
@@ -297,7 +442,7 @@
       "</button>" +
       "</div>" +
       "</div>" +
-      '<a href="deposit.html" class="btn-deposit">Make a deposit</a>' +
+      '<a href="deposit.html" class="btn-deposit">Make a Deposit</a>' +
       '<button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages">' +
       '<span class="icon-btn-inner">' +
       '<img src="assets/images/account/icon-messages.svg" alt="" width="16" height="16" />' +
@@ -321,16 +466,12 @@
     $$(".btn-register, .btn-login", actions).forEach((el) => el.classList.add("header-guest-only"));
     $$(".desktop-only-action", actions).forEach((el) => el.classList.add("header-guest-only"));
 
-    // Upgrade gift / settings / lang icons to Figma assets when present
+    // Upgrade gift / lang icons to Figma assets when present
     const giftImg = $('button[aria-label="Bonus"] img, button[aria-label="Bonus"] .icon-btn-inner img', actions);
     if (giftImg) giftImg.src = "assets/images/account/icon-gift.svg";
-    const settingsImg = $(".settings-btn img:first-child", actions);
-    if (settingsImg) settingsImg.src = "assets/images/account/icon-settings.svg";
-    $$(".settings-btn .meta-chevron, .lang-time-btn .meta-chevron, .header-account-btn .meta-chevron, .header-msg-btn .meta-chevron", actions).forEach((img) => {
+    $$(".header-lang-btn .meta-chevron, .header-account-btn .meta-chevron, .header-msg-btn .meta-chevron", actions).forEach((img) => {
       img.src = "assets/images/account/icon-chevron.svg";
     });
-    const langImg = $(".lang-time-btn .lang-flag", actions);
-    if (langImg) langImg.src = "assets/images/account/icon-lang-en.svg";
 
     if (hasStaticUser) return;
 
@@ -356,6 +497,9 @@
     $$(".header-guest-only").forEach((el) => {
       el.hidden = !!on;
     });
+
+    if (on) initAccountDropdowns();
+    else closeAccountMenus();
   }
 
   function isLoggedIn() {
@@ -483,6 +627,7 @@
       const logoutOpen = e.target.closest("[data-auth-open='logout']");
       if (logoutOpen) {
         e.preventDefault();
+        closeAccountMenus();
         openPanel("logout");
         return;
       }
@@ -528,6 +673,7 @@
         if (action === "live-chat") {
           toast("Opening live chat…");
           closeAuth();
+          location.href = "live-chat.html";
           return;
         }
       }

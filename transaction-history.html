@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transaction History — 1xBet</title>
+  <title>Transaction Record — 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
 </head>
-<body data-page="transaction-history" class="is-logged-in">
+<body data-page="transaction-history" class="is-logged-in history-record-page">
   <div class="page-shell">
 
     <!-- ========== HEADER ========== -->
@@ -50,7 +50,7 @@
             </div>
           </div>
 
-          <a href="deposit.html" class="btn-deposit">Make a deposit</a>
+          <a href="deposit.html" class="btn-deposit">Make a Deposit</a>
 
           <button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages">
             <span class="icon-btn-inner">
@@ -61,15 +61,14 @@
           </button>
 
           <div class="header-meta-group">
-            <button type="button" class="header-meta settings-btn" aria-label="Settings">
-              <img src="assets/images/account/icon-settings.svg" alt="" width="16" height="16" />
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
-            <button type="button" class="header-meta lang-time-btn" aria-label="Language and time zone">
-              <img src="assets/images/account/icon-lang-en.svg" alt="" class="lang-flag" width="14" height="14" />
-              <span>EN</span><span class="meta-sep">/</span><span id="header-clock">10:39</span>
-              <img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
-            </button>
+            <div class="header-lang" id="header-lang">
+              <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
+                <img src="assets/images/account/flags/flag-gb.svg" alt="" class="lang-flag" width="14" height="14" id="header-lang-flag" />
+                <span class="header-lang-label" id="header-lang-label">English</span>
+                <img src="assets/icons/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />
+              </button>
+              <ul class="header-lang-menu" id="header-lang-menu" role="listbox" aria-label="Languages" hidden></ul>
+            </div>
           </div>
         </div>
       </div>
@@ -218,68 +217,90 @@
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">My Wallet and Bets</div>
             <a href="deposit.html" class="acc-nav-link">Deposit</a>
-            <a href="withdraw.html" class="acc-nav-link">Withdraw funds</a>
-            <a href="bet-history.html" class="acc-nav-link">Bet history</a>
-            <a href="transaction-history.html" class="acc-nav-link is-active" aria-current="page">Transaction history</a>
-            <a href="#" class="acc-nav-link">Payment queries</a>
+            <a href="withdraw.html" class="acc-nav-link">Withdraw Funds</a>
+            <a href="bet-history.html" class="acc-nav-link">Bet History</a>
+            <a href="transaction-history.html" class="acc-nav-link is-active" aria-current="page">Transaction History</a>
+            <a href="payment-queries.html" class="acc-nav-link">Payment Queries</a>
           </div>
 
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Profile</div>
             <a href="personal-profile.html" class="acc-nav-link">
-              Personal profile
+              Personal Profile
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">
+            <a href="security.html" class="acc-nav-link">
               Security
               <span class="acc-nav-badge" aria-label="1 action required">1</span>
             </a>
-            <a href="#" class="acc-nav-link">Account settings</a>
           </div>
 
           <div class="acc-nav-group">
             <div class="acc-nav-group-label">Extra</div>
-            <a href="#" class="acc-nav-link">Invite friends</a>
-            <a href="#" class="acc-nav-link">Casino VIP Cashback</a>
-            <a href="#" class="acc-nav-link">Bonuses and gifts</a>
+            <a href="referral.html" class="acc-nav-link">Referral</a>
+            <a href="my-rewards.html" class="acc-nav-link">My Rewards</a>
+            <a href="#" class="acc-nav-link">Bonuses and Gifts</a>
             <a href="promo.html" class="acc-nav-link">Promotions</a>
-            <a href="#" class="acc-nav-link">Customer Support</a>
+            <a href="live-chat.html" class="acc-nav-link">Live Chat</a>
           </div>
 
           <button type="button" class="account-logout" data-auth-open="logout">Log out</button>
         </aside>
 
         <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
-        <section class="account-content tx-history-content" aria-label="Transaction history">
+        <section class="account-content tx-record-content" aria-label="Transaction Record">
 
           <div class="account-content-head">
-            <h1 class="account-content-title">Transaction history</h1>
-            <p class="account-content-sub">Information about deposits, withdrawals and transfers of funds</p>
+            <h1 class="account-content-title">Transaction Record</h1>
           </div>
 
           <div class="account-content-body">
-            <div class="tx-history-panel">
-              <div class="tx-history-toolbar">
-                <nav class="tx-history-tabs" role="tablist" aria-label="Account type">
-                  <button type="button" class="tx-history-tab is-active" role="tab" aria-selected="true" data-tx-tab="main">Main account</button>
-                  <button type="button" class="tx-history-tab" role="tab" aria-selected="false" data-tx-tab="virtual">Virtual account</button>
-                </nav>
-                <div class="tx-history-actions">
-                  <button type="button" class="tx-history-action-btn" id="tx-queries-btn">Payment queries</button>
-                  <button type="button" class="tx-history-action-btn" id="tx-archive-btn">Load archive</button>
+            <nav class="tx-record-tabs" role="tablist" aria-label="Transaction type">
+              <button type="button" class="tx-record-tab is-active" role="tab" aria-selected="true" data-tx-type="deposits">Deposits</button>
+              <button type="button" class="tx-record-tab" role="tab" aria-selected="false" data-tx-type="withdrawals">Withdrawals</button>
+            </nav>
+
+            <section class="pq-panel tx-record-panel" aria-label="Filters">
+              <form class="tx-record-form" id="tx-record-form" action="#" novalidate>
+                <div class="tx-record-date-grid">
+                  <label class="tx-record-field">
+                    <span class="tx-record-label">Start date</span>
+                    <input type="text" class="tx-record-input" id="tx-start-date" name="start" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
+                  </label>
+                  <label class="tx-record-field">
+                    <span class="tx-record-label">End date</span>
+                    <input type="text" class="tx-record-input" id="tx-end-date" name="end" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
+                  </label>
+                </div>
+
+                <div class="tx-record-period-row" role="group" aria-label="Quick date range">
+                  <button type="button" class="tx-record-period-btn" data-tx-period="today">Today</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="yesterday">Yesterday</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
+                  <button type="button" class="tx-record-period-btn is-active" data-tx-period="this-week">This Week</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="this-month">This Month</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="last-month">Last Month</button>
+                </div>
+
+                <button type="submit" class="tx-record-submit">Submit</button>
+              </form>
+            </section>
+
+            <section class="pq-panel tx-record-panel tx-record-panel--results" aria-label="Results">
+              <div class="tx-record-table-wrap">
+                <div class="tx-record-table-head" aria-hidden="true">
+                  <div class="tx-record-col-label" data-col="date">Date</div>
+                  <div class="tx-record-col-label" data-col="amount">Amount</div>
+                  <div class="tx-record-col-label" data-col="status">Status</div>
+                  <div class="tx-record-col-label" data-col="description">Description</div>
+                </div>
+                <div class="tx-record-table-body" id="tx-record-body" aria-live="polite">
+                  <div class="acc-empty-panel pq-empty tx-record-empty" id="tx-record-empty" role="status">
+                    <p class="acc-empty-title">No Data Found</p>
+                  </div>
                 </div>
               </div>
-
-              <div class="tx-history-account">
-                <span class="tx-history-account-label">Account No.</span>
-                <span class="tx-history-account-no" id="tx-account-no">1733760863</span>
-                <button type="button" class="tx-history-copy" id="tx-copy-account" aria-label="Copy account number">
-                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 2.5h6A1.5 1.5 0 0 1 13 4v6.5H11.5V4H5.5V2.5zm-2 2h6A1.5 1.5 0 0 1 11 6v6.5a1.5 1.5 0 0 1-1.5 1.5h-6A1.5 1.5 0 0 1 2 12.5V6a1.5 1.5 0 0 1 1.5-1.5z" fill="currentColor"/></svg>
-                </button>
-              </div>
-
-              <div class="tx-history-list" id="tx-list" aria-label="Recent transactions"></div>
-            </div>
+            </section>
           </div>
 
         </section>
@@ -388,7 +409,7 @@
 
   <script src="js/script.js"></script>
   <script src="js/account.js"></script>
-  <script src="js/transaction-history.js"></script>
+  <script src="js/history-record.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>
 </html>

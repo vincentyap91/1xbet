@@ -257,7 +257,7 @@ Icons: reuse `te-*` / `sport-*` from Figma exports already in `assets/icons/`.
 - **Display (optional):** `var(--font-display)` → `"SF Pro Display", …` for large titles (≥ ~28px), same fallbacks as [apple.com](https://www.apple.com/)
 - **Base size:** `12px` body; UI often `11–14px`
 - **Odds table type (site-wide):** `--table-text` `0.75rem` (league/team/odds primary); `--table-text-meta` `0.6875rem` (labels, time, scores, totals). Tokens in `css/styles.css` `:root`; reuse on Big Tournaments, Long-term, Esports, TOP-EVENTS odds/markets.
-- **Weights:** `400` regular, `600–700` UI emphasis, `800–900` titles / CTAs
+- **Weights:** `400` regular, `600–700` UI emphasis / titles / CTAs (do **not** use `800+` — feels too heavy)
 - **Case:** Section titles and many CTAs are **uppercase** with tight letter-spacing
 - **On dark:** white / `rgba(255,255,255,.65–.85)` / `--cyan-soft` for hover
 - **On light:** `--text-primary` / `--text-secondary`
@@ -280,6 +280,53 @@ Do not introduce unrelated display/serif fonts or a third type system. Prefer `v
 | `--header-h` | `96px` desktop; `56px` mobile |
 
 Prefer `8px` rhythm. Panels use `--radius-md`. Avoid large “marketing” radii unless matching an existing component.
+
+### 4.1 Account inner pages (`.account-main`)
+
+Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Queries, Personal Profile, Security, Referral (and sibling account pages). Tokens live on `.account-main` in `css/account.css` — **use these instead of inventing page-local padding.**
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--acc-pad-x` | `20px` (mobile `12px`) | Head / body / toolbar horizontal pad |
+| `--acc-head-pad` | `14px 20px 12px` | `.account-content-head`, `.withdraw-head-row` |
+| `--acc-body-pad` | `16px 20px 20px` | `.account-content-body` |
+| `--acc-section-gap` | `16px` | Between major blocks (banner→form, toolbar→list, details sections) |
+| `--acc-stack-gap` | `24px` | Chapter gaps (generic account stacks) |
+| `--acc-field-gap` | `8px` | Dense micro spacing (filters, empty-title → text) |
+| `--acc-label-gap` | `4px` | Dense label→control (toolbars, compact filters) |
+| `--acc-form-legend-gap` | `16px` | Fieldset title (“Account Info”) → first field |
+| `--acc-form-field-gap` | `16px` | Between form fields / balance alert in deposit & withdraw details |
+| `--acc-form-label-gap` | `8px` | Form label → input; amount wrap → hint |
+| `--acc-method-section-gap` | `24px` | Between method categories (Recommended → Payment cards → …) |
+| `--acc-method-label-gap` | `12px` | Category label → method card grid |
+| `--acc-method-grid-gap` | `12px` | Row/column gap between `.pay-method-card` cells |
+| `--acc-card-gap` | `12px` | Menu / reward / security card grids |
+| `--acc-dense-gap` | `8px` | Dense lists, filter rows, logo→name inside method cards |
+| `--acc-panel-pad` | `16px` | Nested white panels (history filters/results, tx panel, method cards) |
+| `--acc-toolbar-h` | `44px` | Full-bleed under-title tab bars (Payment Queries, Referral) |
+| `--acc-empty-pad` | `40px 20px` | Empty states |
+| `--acc-empty-min-h` | `320px` | Empty state min height |
+
+**Rules**
+
+1. Do **not** compress head/body per page (`padding-bottom: 4px`, `padding-top: 4px`, etc.). Keep canon head/body pads.
+2. Full-bleed toolbars (`.pq-toolbar`, `.ref-top-tabs`): `min-height: var(--acc-toolbar-h)`, `padding: 0 var(--acc-pad-x)`.
+3. In-panel history tabs (bet / transaction): `min-height: 40px` inside `--acc-panel-pad` surfaces.
+4. Nested panels already sit inside `.account-content-body` — use `--acc-panel-pad` once; don’t add a second full body pad on the panel child.
+5. **Method pick** (deposit/withdraw `.dep-section` / `.dep-grid`): use `--acc-method-*` — section `24`, label→grid `12`, card gap `12`. Do not pack sections with `4px` margins or dense `8px` grids.
+6. **Account forms** (`.profile-fieldset` / `.dep-details-section` — Account Info, Bank Account Info, deposit details): use `--acc-form-*` (legend `16`, field `16`, label `8`). Do not reuse dense `--acc-field-gap` / `--acc-label-gap` here.
+7. Form controls: text/select inputs `10px` vertical pad; amount input `16px` pad.
+8. Mobile (≤600px): `--acc-pad-x` shrinks to `--acc-pad-x-sm` (`12px`); keep the same scale ratios.
+
+**Page checklist (inner content only)**
+
+| Page | Notes |
+|------|--------|
+| Deposit / Withdraw | Method pick: `--acc-method-*`; details forms: `--acc-form-*`; stacks `--acc-section-gap`; sticky actions on `--acc-pad-x` |
+| Bet History / Transaction History | Restore body top pad; unify panel pad + list-row `12px` |
+| Payment Queries | Toolbar owns the bottom border; body must not double the top pad |
+| Personal Profile / Security | Profile fields use `--acc-form-*`; progress banner + `--acc-section-gap`; security cards `--acc-card-gap` / `--acc-panel-pad` |
+| Referral | Homepage chrome on light account surface: invite banner `--sidebar-bg`→`--section-blue`; accordion / history toolbars section-blue gradient + `--action-green` underline; tables `--league-header` / `--row-alternate` / numeric `--brand-blue`; CTAs `--action-green`; major blocks `32px` apart |
 
 ---
 
@@ -314,10 +361,20 @@ Prefer `8px` rhythm. Panels use `--radius-md`. Avoid large “marketing” radii
 ### Mobile chrome (≤900px)
 
 - Hamburger → primary nav drawer (`#header-bottom.is-open`)
-- Bottom tab bar: Sports / Live / Bet slip / Menu
+- Bottom tab bar (sportsbook): Sports / Live / Bet slip / Menu
 - Left sports = left drawer; bet slip/reg = bottom sheet
 - Backdrop `#drawer-backdrop`; body `.drawer-open` locks scroll
 - Event rows → card layout with 1X2 only (`.event-odds-mobile`); hide `.desktop-odds`
+
+**Logged-in account pages (mobile)** — structure from reference screenshots; colors from tokens (not 12WIN yellow/white chrome):
+
+| Piece | Implementation |
+|-------|----------------|
+| Top header | Dark `--header-bar-bg`; hamburger + logo; gift / account / `--action-green` Make a Deposit / messages as 36px `--header-action` squares |
+| Subcategory strip | `.acc-subnav` (≤900px only, horizontal scroll): all account sidebar links (Deposit, Withdraw, histories, Profile, Security, Referral, …). Active card `--odds-hover` + `--accent-blue` border; badges `--action-green`. Desktop keeps `.account-sidebar`; mobile hides the sidebar. |
+| Bottom sticky nav | `.mobile-tabbar--account`: Home · Promotion · Deposit FAB (`--action-green` circle) · Livechat · Account (active `--action-green`) |
+
+Wired in `js/account.js` when `.account-main` is present.
 
 ---
 
@@ -412,6 +469,10 @@ New pages should reuse these modules’ classes and tokens rather than inventing
 
 **TOP-EVENTS pages** (`wc2026.html`, `msi.html`): shared light theme in `css/top-events-theme.css` + page CSS (tournament chrome; still use `.odd-btn` tokens for odds chips where present).
 
+**Referral** (`referral.html`): account shell + `css/account.css` `.ref-*`. Top tabs (`.ref-top-tabs`): **Referral Info** | **My Rewards** (`--action-green` underline; hash `#rewards` opens rewards). Referral Info hero: light intro + feature pills (`--odds-bg` / `--accent-blue-soft`), summary card with `--brand-blue` values and `--action-green` Downlines CTA; share utility nested under hero intro (light `.dep-info-card` copy rows + compact social chips — no section-blue banner). How-it-works step art in `assets/images/referral/`. Accordion/history headers section-blue gradient + `--action-green` active underline; commission tables `--league-header` / `--row-alternate` / numeric `--brand-blue`. **My Rewards** panel: claim cards + reward history tables. **Downlines modal** (`.dl-backdrop` / `.dl-modal`): section-blue header, summary/KPI tabs, date filters + period chips (`--accent-blue` active), stat cards on `--surface-secondary` with `--brand-blue` values. Do not use screenshot grey/red/yellow chrome hex.
+
+**Account profile dropdown** (logged-in header `.header-account-btn` → `.acc-menu` in `css/account.css`, wired in `js/auth-modals.js`): light popover on `--surface-primary` with soft shadow; text/icons `--section-blue`; hover `--odds-hover`; red badge `--danger`; balances + links to Deposit / Withdraw / Referral / Profile / Bet History / Security / Log out. Max weight `700`.
+
 ---
 
 ## 8. Interaction conventions
@@ -438,8 +499,9 @@ When designing a **new page**:
 7. [ ] Light content areas for data; dark chrome for navigation  
 8. [ ] Green = CTA, brand blue = login, accent blue = nav/active  
 9. [ ] **Tables / odds / data rows:** follow **§2.1** (reuse `.odds-table-wrap`, `.league-header`, `.event-row`, `.odd-btn` or identical tokens)  
-10. [ ] Mobile: no forced `min-width` desktop tables; card/stack patterns  
-11. [ ] Keep interactions demo-safe and consistent with `js/script.js`  
+10. [ ] **Account pages:** use **§4.1** `--acc-*` spacing — no ad-hoc head/body compressors  
+11. [ ] Mobile: no forced `min-width` desktop tables; card/stack patterns  
+12. [ ] Keep interactions demo-safe and consistent with `js/script.js`  
 
 ---
 
@@ -451,6 +513,7 @@ When designing a **new page**:
 - Replacing token colors with screenshot/Figma hex  
 - Dark navy column headers or green odds chips on sportsbook tables  
 - A second table theme instead of §2.1  
+- Account pages inventing one-off head/body pads (use §4.1 `--acc-*`)  
 - Hiding nav on mobile without a replacement drawer/tab bar  
 - Horizontal-scrolling full odds grids as the only mobile solution  
 
@@ -462,6 +525,7 @@ When designing a **new page**:
 |------|------|
 | `index.html` (+ other root HTML) | Page structure |
 | `css/styles.css` | Tokens + shared UI |
+| `css/account.css` | Account shell + Deposit / Withdraw / History / Profile / Security / Referral / Payment Queries (`--acc-*` spacing) |
 | `css/top-events-theme.css` | WC2026 / MSI light theme |
 | `css/wc2026.css` / `css/msi.css` / `css/big-tournaments.css` / `css/long-term-bets.css` / `css/multi-live.css` | Page-specific styles |
 | `js/script.js` | Homepage / national-team / live-national-team demo interactions |

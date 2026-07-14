@@ -596,7 +596,7 @@
     inset 0 3px 0 rgba(255, 255, 255, .35),
     0 8px 20px rgba(136, 175, 42, .35);
   font-size: 34px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .auth-confirm-title {
@@ -638,7 +638,7 @@
 .auth-verify-copy h3 {
   margin: 0 0 8px;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--section-blue, #1a4f8a);
 }
 
@@ -696,7 +696,7 @@
 .auth-complete h3 {
   margin: 0 0 20px;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary, #1a3048);
 }
 

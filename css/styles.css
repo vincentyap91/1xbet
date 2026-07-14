@@ -485,7 +485,10 @@ a:focus-visible {
 .header-meta-group {
   display: flex;
   align-items: stretch;
-  gap: 1px;
+}
+
+.header-lang {
+  position: relative;
 }
 
 .header-meta {
@@ -503,20 +506,75 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-.settings-btn {
-  border-radius: 8px 0 0 8px;
-  padding: 4px 8.5px;
+.header-lang-btn {
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  gap: 6px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
-.settings-btn img:first-child {
-  width: 16px;
-  height: 16px;
+.header-lang-label {
+  max-width: 132px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.35;
+  display: inline-block;
+  vertical-align: middle;
+  padding-block: 1px;
 }
 
-.lang-time-btn {
-  border-radius: 0 8px 8px 0;
-  padding: 4px;
-  gap: 4px;
+.header-lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 1200;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  min-width: 210px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(11, 29, 51, 0.14);
+}
+
+.header-lang-menu[hidden] {
+  display: none;
+}
+
+.header-lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+
+.header-lang-option:hover {
+  background: var(--odds-hover);
+}
+
+.header-lang-option.is-active {
+  background: var(--odds-hover);
+  color: var(--section-blue);
+}
+
+.header-lang-option .lang-flag {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
 }
 
 .header-meta:hover {
@@ -1152,7 +1210,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   background: var(--header-action);
   color: var(--text-inverse);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -1221,7 +1279,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   align-items: center;
   gap: 8px;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
 }
 
@@ -1254,7 +1312,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 .promo-title {
   margin: 0;
   font-size: 32px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 1px;
   color: #fff;
   text-transform: uppercase;
@@ -1274,7 +1332,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   margin-top: 4px;
   padding: 11px 26px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   color: #fff;
   background: var(--action-green);
@@ -1525,7 +1583,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   width: min(393px, 32%);
   padding: 8px 40px;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 24px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1576,7 +1634,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   padding: 0 4px;
   min-height: 10px;
   font-size: 8px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 10px;
   letter-spacing: 0.64px;
   text-transform: uppercase;
@@ -2095,7 +2153,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 .section-title {
   margin: 0;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.4px;
   display: inline-flex;
   align-items: center;
@@ -2860,7 +2918,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   background: #fff;
   border-radius: 6px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 18px;
 }
 
@@ -3148,7 +3206,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .mybets-card-score {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.15;
   color: var(--text-primary);
 }
@@ -3190,7 +3248,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .mybets-card-stake-value {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   line-height: 1.15;
@@ -3454,7 +3512,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   background: var(--action-green);
   border-radius: 2px;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 12px;
 }
 
@@ -3498,7 +3556,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   margin-bottom: 4px;
   color: #6a9b20;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 14px;
 }
 
@@ -3755,7 +3813,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .btn-place {
   height: 36px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   background: var(--action-green);
   border-radius: var(--radius);
@@ -4009,7 +4067,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .acc-title {
   margin: 0 0 4px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-inverse);
 }
 
@@ -4172,7 +4230,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .acc-odds strong {
   color: var(--text-primary);
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
@@ -4180,7 +4238,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   width: 100%;
   height: 38px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.3px;
   color: #fff;
   background: var(--action-green);
@@ -4220,7 +4278,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .footer-col h3 {
   margin: 0 0 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 16px;
   color: #fff;
   text-transform: uppercase;
@@ -4265,7 +4323,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 .footer-partners h3 {
   margin: 0 0 8px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 16px;
   color: #fff;
   text-transform: uppercase;
@@ -4382,7 +4440,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .footer-support strong {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -4438,7 +4496,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   height: 32px;
   padding: 0 6px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
@@ -4452,7 +4510,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   min-height: 32px;
   padding: 0 12px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #fff;
@@ -4544,13 +4602,11 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     grid-column: 1 / -1;
   }
 
-  .header-meta-group .lang-time-btn span:not(.meta-sep):not(#header-clock),
-  .header-meta-group .meta-sep,
-  #header-clock {
+  .header-meta-group .header-lang-label {
     display: none;
   }
 
-  .lang-time-btn {
+  .header-lang-btn {
     padding: 4px 8px;
   }
 }
@@ -4674,8 +4730,14 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   }
 
   .header-actions {
-    gap: 4px;
+    gap: 6px;
     padding: 0;
+  }
+
+  .header-actions .icon-btn-square {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
   }
 
   .header-meta-group,
