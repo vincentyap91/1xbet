@@ -1739,6 +1739,14 @@ body.dl-modal-open {
   text-align: center;
 }
 
+.ref-how-sub {
+  margin: 0 0 var(--acc-section-gap);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
 .ref-how {
   margin-bottom: 32px;
 }

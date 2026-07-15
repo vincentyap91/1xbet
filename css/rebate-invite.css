@@ -1,0 +1,74 @@
+/* Guest Rebate — same Multi-LIVE / invite shell as referral-invite.html
+ * Shared gate styles from referral-invite.css (.ri-login-btn, .ri-board-how, .ref-*)
+ */
+
+body[data-page="rebate-invite"] {
+  background: var(--page-bg);
+}
+
+.ml-board.rbi-board-benefit[hidden],
+.ml-board[data-rbi-panel][hidden] {
+  display: none !important;
+}
+
+.rbi-benefit {
+  width: 100%;
+}
+
+.rbi-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  box-shadow: 0 2px 8px rgba(11, 29, 51, 0.1);
+}
+
+.rbi-board-benefit .rbi-table {
+  min-width: 640px;
+}
+
+.rbi-board-benefit .rbi-table th,
+.rbi-board-benefit .rbi-table td {
+  text-align: center;
+}
+
+.rbi-board-benefit .rbi-table th:first-child,
+.rbi-board-benefit .rbi-table td:first-child {
+  text-align: left;
+}
+
+.rbi-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.rbi-cat img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Normal column emphasis (guest benefit table) */
+.rbi-board-benefit .rbi-table thead th.is-highlight {
+  background: var(--odds-hover);
+  color: var(--section-blue);
+}
+
+.rbi-board-benefit .rbi-table tbody td.is-highlight {
+  background: var(--odds-hover);
+  color: var(--brand-blue);
+  font-weight: 700;
+}
+
+.rbi-board-benefit .rbi-table tbody td:not(.is-highlight):not(:first-child) {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.rbi-board-benefit .rbi-table tbody tr:nth-child(even) td.is-highlight {
+  background: rgba(62, 180, 240, 0.16);
+}

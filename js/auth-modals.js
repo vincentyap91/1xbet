@@ -714,6 +714,14 @@
       setLoggedIn(true);
       toast("Demo only — signed in");
       closeAuth();
+      // Guest invite landings → account pages after login
+      if (/referral-invite\.html/i.test(location.pathname + location.href)) {
+        location.assign("referral.html");
+      } else if (/membership-invite\.html/i.test(location.pathname + location.href)) {
+        location.assign("membership.html");
+      } else if (/rebate-invite\.html/i.test(location.pathname + location.href)) {
+        location.assign("rebate.html");
+      }
     });
 
     const regPass = $("#auth-reg-pass");

@@ -131,11 +131,14 @@
                 <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
               </button>
               <div class="dropdown" role="menu">
-                <a href="promo.html" role="menuitem" aria-current="page">All promotions</a>
-                <a href="index.html#promo-slider" role="menuitem">WORLD WIN 26</a>
+                <a href="promo.html" role="menuitem">All promotions</a>
+                <a href="promo-detail.html" role="menuitem">WORLD WIN 26</a>
                 <a href="#reg-form" role="menuitem">Welcome Bonus</a>
               </div>
             </div>
+            <a href="referral-invite.html" class="nav-link nav-link-plain">Referral</a>
+            <a href="membership-invite.html" class="nav-link nav-link-plain">Membership</a>
+            <a href="rebate-invite.html" class="nav-link nav-link-plain">Rebate</a>
             <div class="nav-item has-dropdown">
               <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
                 More
@@ -175,88 +178,106 @@
         </nav>
       </div>
 
-      <!-- ── Dual hero banners ──────────────────────────────── -->
-      <div class="promo-heroes" aria-label="Featured promotions">
-
-        <a href="#" class="promo-hero-card promo-hero-norisk">
-          <div class="promo-hero-art" aria-hidden="true"></div>
-          <div class="promo-hero-meta">
-            <div class="promo-hero-nav" aria-hidden="true">
-              <span class="promo-hero-nav-btn"><svg viewBox="0 0 10 10"><path d="M7 2L3 5l4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
-              <span class="promo-hero-nav-btn"><svg viewBox="0 0 10 10"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
-            </div>
-            <span class="promo-hero-meta-label">Bonuses</span>
-            <span class="promo-hero-meta-num">4</span><span class="promo-hero-meta-total">/53</span>
+      <!-- ── Single Promo hero slider ─────────────────────────── -->
+      <section class="promo-hero-slider" id="promo-hero-slider" aria-label="Featured promotions">
+        <div class="promo-hero-meta">
+          <div class="promo-hero-nav">
+            <button type="button" class="promo-hero-nav-btn" id="promo-hero-prev" aria-label="Previous promo">
+              <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M7 2L3 5l4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+            </button>
+            <button type="button" class="promo-hero-nav-btn" id="promo-hero-next" aria-label="Next promo">
+              <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+            </button>
           </div>
-          <div class="promo-hero-content">
-            <h2 class="promo-hero-title">No Risk Bet</h2>
-            <span class="promo-hero-cta">Bonus offer details</span>
-          </div>
-        </a>
+          <span class="promo-hero-meta-label">Promo</span>
+          <span class="promo-hero-meta-num" id="promo-hero-index">1</span><span class="promo-hero-meta-total" id="promo-hero-total">/2</span>
+        </div>
 
-        <a href="#" class="promo-hero-card promo-hero-codes">
-          <div class="promo-hero-art" aria-hidden="true"></div>
-          <div class="promo-hero-meta">
-            <div class="promo-hero-nav" aria-hidden="true">
-              <span class="promo-hero-nav-btn"><svg viewBox="0 0 10 10"><path d="M7 2L3 5l4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
-              <span class="promo-hero-nav-btn"><svg viewBox="0 0 10 10"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
-            </div>
-            <span class="promo-hero-meta-label">Promo</span>
-            <span class="promo-hero-meta-num">1</span><span class="promo-hero-meta-total">/2</span>
-          </div>
-          <div class="promo-hero-content">
-            <h2 class="promo-hero-title">Promo Code Store</h2>
-            <p class="promo-hero-sub">Enjoy the games and receive bonuses for regular play!</p>
-            <span class="promo-hero-cta">Select</span>
-          </div>
-        </a>
+        <div class="promo-hero-viewport">
+          <div class="promo-hero-track" id="promo-hero-track">
+            <a href="#" class="promo-hero-card promo-hero-norisk is-active" data-promo-slide>
+              <div class="promo-hero-art" aria-hidden="true"></div>
+              <div class="promo-hero-content">
+                <h2 class="promo-hero-title">No Risk Bet</h2>
+                <p class="promo-hero-sub">Take part in featured promo offers and claim your rewards.</p>
+                <span class="promo-hero-cta">Promo offer details</span>
+              </div>
+            </a>
 
-      </div>
+            <a href="#" class="promo-hero-card promo-hero-codes" data-promo-slide>
+              <div class="promo-hero-art" aria-hidden="true"></div>
+              <div class="promo-hero-content">
+                <h2 class="promo-hero-title">Promo Code Store</h2>
+                <p class="promo-hero-sub">Enjoy the games and receive bonuses for regular play!</p>
+                <span class="promo-hero-cta">Select</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
 
-      <!-- ── Category filter bar ───────────────────────────── -->
+      <!-- ── Category filter bar (live bonus-navigation tabs) ─ -->
       <div class="promo-filter-bar" role="toolbar" aria-label="Filter by category">
         <div class="promo-filter-list">
           <button type="button" class="promo-filter-chip active" data-filter="all">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M2 2h4v4H2zm6 0h4v4H8zM2 8h4v4H2zm6 0h4v4H8z" fill="currentColor"/></svg></span>
-            All Bonuses
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-all.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">All Bonuses</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="deposit">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1v12M3 5l4-4 4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg></span>
-            1st Deposit Bonus
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-deposit.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">1st Deposit Bonus</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="cashback">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M7 4v6M5 6.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
-            Cashback
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-cashback.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Cashback</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="promotions">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M7 1l1.5 4H13l-3.5 2.6L11 12 7 9.4 3 12l1.5-4.4L1 5h4.5L7 1z" fill="currentColor"/></svg></span>
-            Promotions
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-promotions.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Promotions</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="other">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="2" y="3" width="10" height="8" rx="1" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M4 6h6M4 8.5h4" stroke="currentColor" stroke-width="1.2"/></svg></span>
-            Other Deposit Bonuses
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-other.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Other Deposit Bonuses</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="sports">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.2" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M2.5 7h9M7 2.5c1.5 1.6 2.2 3.2 2.2 4.5S8.5 10 7 11.5C5.5 10 4.8 8.3 4.8 7S5.5 4.1 7 2.5z" stroke="currentColor" stroke-width="1.1" fill="none"/></svg></span>
-            Sports
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-sports.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Sports</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="games">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="2" y="3" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5" cy="7" r="1" fill="currentColor"/><circle cx="9" cy="7" r="1" fill="currentColor"/></svg></span>
-            1xGames
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-games.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">1xGames</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="casino">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><rect x="3" y="2" width="8" height="10" rx="1" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M5 5h4M5 7.5h4M5 10h2" stroke="currentColor" stroke-width="1.2"/></svg></span>
-            Casino
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-casino.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Casino</span>
           </button>
           <button type="button" class="promo-filter-chip" data-filter="esports">
-            <span class="promo-filter-ico" aria-hidden="true"><svg viewBox="0 0 14 14"><path d="M3 9l2-5h4l2 5H3z" stroke="currentColor" stroke-width="1.3" fill="none"/><circle cx="5.5" cy="7" r=".8" fill="currentColor"/><circle cx="8.5" cy="7" r=".8" fill="currentColor"/></svg></span>
-            Esports bonuses
+            <span class="promo-filter-ico" aria-hidden="true">
+              <img src="assets/icons/promo/tab-esports.svg" alt="" width="16" height="16" />
+            </span>
+            <span class="promo-filter-label">Esports bonuses</span>
           </button>
         </div>
         <form class="promo-search" role="search" action="#" onsubmit="return false;">
           <input type="search" placeholder="Search offers" aria-label="Search offers" />
           <button type="submit" aria-label="Search">
-            <svg viewBox="0 0 14 14"><circle cx="6" cy="6" r="4.2" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M9.2 9.2L12 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            <img src="assets/icons/promo/tab-search.svg" alt="" width="16" height="16" />
           </button>
         </form>
       </div>
@@ -264,7 +285,7 @@
       <!-- ── Promo card grid ───────────────────────────────── -->
       <div class="promo-card-grid" id="promo-grid">
 
-        <a href="#" class="promo-card" data-category="promotions sports">
+        <a href="promo-detail.html" class="promo-card" data-category="promotions sports">
           <div class="promo-card-media">
             <img class="promo-card-img" src="assets/images/promo/cards/card-1.png" alt="" loading="lazy" />
             <div class="promo-card-badges">

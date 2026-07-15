@@ -119,6 +119,42 @@
     }
   }
 
+  /* ── Single Promo hero slider ─────────────────────────────── */
+  function bindHeroSlider() {
+    const slides = $$("[data-promo-slide]");
+    if (!slides.length) return;
+
+    const indexEl = $("#promo-hero-index");
+    const totalEl = $("#promo-hero-total");
+    const prevBtn = $("#promo-hero-prev");
+    const nextBtn = $("#promo-hero-next");
+    let index = Math.max(0, slides.findIndex((slide) => slide.classList.contains("is-active")));
+
+    if (totalEl) totalEl.textContent = `/${slides.length}`;
+
+    function show(next) {
+      index = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("is-active", i === index);
+      });
+      if (indexEl) indexEl.textContent = String(index + 1);
+    }
+
+    prevBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(index - 1);
+    });
+
+    nextBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      show(index + 1);
+    });
+
+    show(index);
+  }
+
   /* ── Promo learn more / hero CTAs ─────────────────────────── */
   function bindLearnMore() {
     $$(".promo-card").forEach((card) => {
@@ -150,6 +186,7 @@
     bindNav();
     bindMobile();
     bindFilters();
+    bindHeroSlider();
     bindLearnMore();
   }
 

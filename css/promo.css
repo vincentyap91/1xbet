@@ -44,24 +44,49 @@
   line-height: 1.2;
 }
 
-/* ── Dual hero banners ───────────────────────────────────── */
-.promo-heroes {
-  display: grid;
-  grid-template-columns: 1.85fr 1fr;
-  gap: 8px;
+/* ── Single Promo hero slider ─────────────────────────────── */
+.promo-hero-slider {
+  position: relative;
   height: 248px;
   overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, .08);
 }
+
+.promo-hero-viewport,
+.promo-hero-track,
 .promo-hero-card {
+  height: 100%;
+}
+
+.promo-hero-viewport {
   position: relative;
   overflow: hidden;
+}
+
+.promo-hero-track {
+  position: relative;
+}
+
+.promo-hero-card {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: stretch;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(255,255,255,.08);
+  overflow: hidden;
   text-decoration: none;
   color: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
 }
+
+.promo-hero-card.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
+
 .promo-hero-art {
   position: absolute;
   inset: 0;
@@ -69,179 +94,275 @@
   background-position: center right;
   z-index: 0;
 }
+
 .promo-hero-norisk .promo-hero-art {
   background-image: url("../assets/images/promo/hero-norisk.png");
   background-color: #0a1528;
 }
+
 .promo-hero-codes .promo-hero-art {
   background-image: url("../assets/images/promo/hero-codes.png");
   background-color: #0a1a28;
 }
+
 .promo-hero-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(11,29,51,.92) 0%, rgba(11,29,51,.55) 42%, transparent 72%);
+  background: linear-gradient(90deg, rgba(11, 29, 51, .92) 0%, rgba(11, 29, 51, .55) 42%, transparent 72%);
   z-index: 1;
   pointer-events: none;
 }
+
 .promo-hero-content {
   position: relative;
   z-index: 2;
-  padding: 70px 30px 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 8px;
-  max-width: 56%;
+  max-width: 48%;
   height: 100%;
+  padding: 70px 30px 30px;
   box-sizing: border-box;
 }
+
 .promo-hero-meta {
   position: absolute;
   top: 20px;
   left: 21px;
+  z-index: 3;
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 16px;
   color: #fff;
-  z-index: 3;
 }
-.promo-hero-meta-label { font-weight: 700; padding-left: 4px; }
-.promo-hero-meta-num { font-weight: 400; padding-left: 5px; }
-.promo-hero-meta-total { color: var(--text-muted); }
+
+.promo-hero-meta-label {
+  padding-left: 4px;
+  font-weight: 700;
+}
+
+.promo-hero-meta-num {
+  padding-left: 5px;
+  font-weight: 400;
+}
+
+.promo-hero-meta-total {
+  color: rgba(255, 255, 255, .55);
+}
+
 .promo-hero-nav {
   display: inline-flex;
   gap: 0;
 }
-.promo-hero-nav button,
+
 .promo-hero-nav-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: rgba(22, 43, 69, .85);
-  color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: default;
-  padding: 0;
+  width: 24px;
+  height: 24px;
   margin-right: 4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(22, 43, 69, .85);
+  color: #fff;
+  cursor: pointer;
 }
-.promo-hero-nav button:hover,
-.promo-hero-nav-btn:hover { background: var(--header-action); }
-.promo-hero-nav svg { width: 10px; height: 10px; }
+
+.promo-hero-nav-btn:hover {
+  background: var(--header-action);
+}
+
+.promo-hero-nav svg {
+  width: 10px;
+  height: 10px;
+}
+
 .promo-hero-title {
-  font-size: 26px;
+  margin: 0;
+  font-size: 28px;
   font-weight: 700;
   color: #fff;
   letter-spacing: .02em;
   text-transform: uppercase;
   line-height: 1.25;
-  margin: 0;
 }
+
 .promo-hero-sub {
+  margin: 0;
+  max-width: 420px;
   font-size: 14px;
   color: #fff;
-  line-height: 1.25;
-  margin: 0;
-  max-width: 340px;
+  line-height: 1.35;
 }
+
 .promo-hero-cta {
   display: inline-block;
+  align-self: flex-start;
+  min-height: 32px;
+  margin-top: auto;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
   background: var(--action-green);
   color: #fff;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: .02em;
-  padding: 8px 16px;
-  min-height: 32px;
-  border-radius: var(--radius-sm);
+  line-height: 16px;
   text-decoration: none;
   text-transform: uppercase;
-  align-self: flex-start;
-  margin-top: auto;
   transition: background .15s;
-  line-height: 16px;
 }
-.promo-hero-cta:hover { background: var(--action-green-hover); }
 
-/* ── Filter bar ─────────────────────────────────────────── */
+.promo-hero-cta:hover {
+  background: var(--action-green-hover);
+}
+
+/* ── Filter bar: tabs left + search right (split row) ───── */
 .promo-filter-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 0;
-  margin-top: 8px;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  padding: 0;
+  min-height: 44px;
   background: transparent;
-  border-bottom: 1px solid var(--border-dark);
-  flex-wrap: nowrap;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
 }
+
 .promo-filter-list {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
-  flex: 1;
-  min-width: 0;
+  background: var(--header-nav-bg);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
 }
-.promo-filter-list::-webkit-scrollbar { display: none; }
+
+.promo-filter-list::-webkit-scrollbar {
+  display: none;
+}
+
 .promo-filter-chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--sidebar-bg);
-  border: 1px solid transparent;
-  color: rgba(255,255,255,.85);
-  font-size: 12px;
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 4px 14px 4px 10px;
+  border: none;
+  border-left: 1px solid rgba(255, 255, 255, .08);
+  border-radius: 0;
+  background: transparent;
+  color: var(--cyan-soft);
+  font-family: var(--font);
+  font-size: 13px;
   font-weight: 600;
-  padding: 4px 12px 4px 4px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background .15s, color .15s, border-color .15s;
   white-space: nowrap;
+  cursor: pointer;
+  transition: color .2s, background .2s, filter .2s;
 }
-.promo-filter-chip .promo-filter-ico {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
+
+.promo-filter-chip:first-child {
+  border-left: none;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.promo-filter-chip:last-child {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.promo-filter-ico {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
-  color: #fff;
+  color: var(--cyan-soft);
 }
-.promo-filter-chip .promo-filter-ico svg {
-  width: 14px;
-  height: 14px;
+
+.promo-filter-ico::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(62, 180, 240, .28) 0%, transparent 72%);
+  pointer-events: none;
 }
+
+.promo-filter-ico img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 16px;
+  height: 16px;
+  /* Live icons are filled black SVGs — tint to cyan / white via filter */
+  filter: brightness(0) saturate(100%) invert(78%) sepia(28%) saturate(654%) hue-rotate(167deg) brightness(101%) contrast(94%);
+  opacity: .95;
+}
+
+.promo-filter-label {
+  line-height: 1.2;
+}
+
 .promo-filter-chip:hover {
-  background: var(--sidebar-bg-hover);
   color: #fff;
+  background: rgba(255, 255, 255, .04);
 }
+
+.promo-filter-chip:hover .promo-filter-ico img {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
 .promo-filter-chip.active {
-  background: var(--header-action);
   color: #fff;
-  border-color: var(--header-action);
+  background: linear-gradient(90deg, var(--cyan-accent) 0%, var(--accent-blue) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+  z-index: 1;
 }
-.promo-filter-chip.active .promo-filter-ico {
-  background: rgba(0,0,0,.2);
+
+.promo-filter-chip.active:first-child {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
+
+.promo-filter-chip.active .promo-filter-ico::before {
+  display: none;
+}
+
+.promo-filter-chip.active .promo-filter-ico img {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+/* Search sits apart on the right — not nested inside the tab strip */
 .promo-search {
   display: flex;
   align-items: center;
-  flex-shrink: 0;
-  width: 200px;
-  height: 40px;
-  background: var(--sidebar-bg);
+  flex: 0 0 auto;
+  width: 220px;
+  margin: 0;
+  min-height: 40px;
+  align-self: center;
+  background: var(--header-bg);
   border: 1px solid var(--border-dark);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   overflow: hidden;
 }
+
 .promo-search input {
   flex: 1;
   min-width: 0;
@@ -253,20 +374,38 @@
   padding: 0 10px;
   outline: none;
 }
-.promo-search input::placeholder { color: var(--text-muted); }
+
+.promo-search input::placeholder {
+  color: rgba(255, 255, 255, .45);
+}
+
 .promo-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 100%;
   border: none;
   background: transparent;
-  color: rgba(255,255,255,.7);
+  color: rgba(255, 255, 255, .7);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-.promo-search button:hover { color: #fff; }
-.promo-search svg { width: 14px; height: 14px; }
+
+.promo-search button:hover {
+  color: #fff;
+}
+
+.promo-search button img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  opacity: .75;
+}
+
+.promo-search button:hover img {
+  opacity: 1;
+}
 
 /* ── Promo card grid ─────────────────────────────────────── */
 .promo-card-grid {
@@ -433,12 +572,21 @@
 }
 @media (max-width: 900px) {
   .promo-main { padding: 0 10px 24px; }
-  .promo-heroes { grid-template-columns: 1fr; height: auto; }
-  .promo-hero-card { min-height: 180px; }
+  .promo-hero-slider { height: 200px; }
   .promo-hero-content { max-width: 70%; }
   .promo-hero-title { font-size: 22px; }
-  .promo-filter-bar { flex-wrap: wrap; }
-  .promo-search { width: 100%; order: 3; }
+  .promo-filter-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .promo-filter-list {
+    width: 100%;
+  }
+  .promo-search {
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+  }
   .promo-card-grid { grid-template-columns: 1fr; gap: 10px; }
   .promo-card-media { width: 180px; max-width: 42%; }
 }
@@ -446,5 +594,7 @@
   .promo-card { flex-direction: column; }
   .promo-card-media { width: 100%; max-width: none; height: 160px; }
   .promo-card-img { min-height: 160px; }
-  .promo-hero-content { max-width: 100%; padding: 20px; }
+  .promo-hero-slider { height: 220px; }
+  .promo-hero-content { max-width: 100%; padding: 56px 16px 16px; }
+  .promo-hero-title { font-size: 20px; }
 }

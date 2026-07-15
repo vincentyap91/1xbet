@@ -1,0 +1,303 @@
+/* membership.css — VIP Club (account Extra)
+ * Structure/modules from live VIP · chrome/tokens from DESIGN_SYSTEM.md §4.1 + Referral
+ */
+
+.mem-hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acc-section-gap);
+  margin-bottom: 32px;
+}
+
+.mem-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-blue-soft);
+  background: var(--odds-bg);
+  color: var(--section-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mem-badge-icon {
+  color: var(--warning);
+  flex-shrink: 0;
+}
+
+.mem-hero-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--section-blue);
+}
+
+.mem-hero-text {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.mem-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--acc-card-gap);
+}
+
+.mem-stat-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 72px;
+  padding: var(--acc-panel-pad);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  box-shadow: 0 2px 10px rgba(11, 29, 51, 0.08);
+}
+
+.mem-stat-label {
+  display: block;
+  margin-bottom: var(--acc-label-gap);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.mem-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--section-blue);
+  line-height: 1.2;
+}
+
+.mem-stat-medal {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.mem-section {
+  margin-bottom: 32px;
+}
+
+.mem-section-title {
+  margin: 0 0 var(--acc-section-gap);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.mem-tier-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--acc-dense-gap);
+}
+
+.mem-tier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 8px;
+  border: 1px solid var(--accent-blue-soft);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.mem-tier img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.mem-tier:hover {
+  border-color: var(--accent-blue);
+  background: rgba(62, 180, 240, 0.08);
+  color: var(--accent-blue);
+}
+
+.mem-tier.is-active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: #fff;
+}
+
+.mem-subtabs {
+  display: flex;
+  align-items: stretch;
+  gap: var(--acc-label-gap);
+  margin: 0 0 var(--acc-section-gap);
+  padding: 0;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 40px;
+  background: transparent;
+}
+
+.mem-subtab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.mem-subtab:hover {
+  color: var(--accent-blue);
+}
+
+.mem-subtab.is-active {
+  color: var(--section-blue);
+}
+
+.mem-subtab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 2px;
+  background: var(--action-green);
+  border-radius: 2px 2px 0 0;
+}
+
+.mem-view[hidden] {
+  display: none;
+}
+
+.mem-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--acc-card-gap);
+}
+
+.mem-req-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--acc-card-gap);
+}
+
+.mem-table-card {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-primary);
+  box-shadow: 0 2px 10px rgba(11, 29, 51, 0.08);
+}
+
+.mem-table-head {
+  padding: 10px 14px;
+  background: var(--league-header);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mem-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mem-table td {
+  padding: 11px 14px;
+  font-size: 12px;
+  border-top: 1px solid #e4edf4;
+  vertical-align: middle;
+}
+
+.mem-table tr:first-child td {
+  border-top: none;
+}
+
+.mem-table tr:nth-child(even) td {
+  background: var(--row-alternate);
+}
+
+.mem-table td:first-child {
+  color: var(--text-secondary);
+  width: 62%;
+}
+
+.mem-table td:last-child {
+  color: var(--brand-blue);
+  font-weight: 700;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.mem-highlights {
+  padding: var(--acc-panel-pad);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-secondary);
+}
+
+.mem-highlights-title {
+  margin: 0 0 var(--acc-field-gap);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.mem-highlights-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 70ch;
+}
+
+@media (max-width: 980px) {
+  .mem-stat-grid,
+  .mem-benefits-grid,
+  .mem-req-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mem-tier-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mem-hero-title {
+    font-size: 18px;
+  }
+
+  .mem-tier-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

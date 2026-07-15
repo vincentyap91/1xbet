@@ -238,6 +238,24 @@ Figma `21:2`. No left sidebar — layout `.sportsbook-layout.ml-layout` is `1fr 
 
 Icons: reuse `te-*` / `sport-*` from Figma exports already in `assets/icons/`.
 
+#### Promo category tabs (`promo.html`)
+
+Structure/labels from live [bonus/rules](https://1xlite-46272.pro/en/bonus/rules) (`.bonus-navigation-tabs` + `.bonuses-navigation__search`). **Remap fills to tokens** — do not ship live cyber HSL hex.
+
+**Layout:** split row — tabs strip on the left, search pill on the right (`justify-content: space-between`). Search is **not** nested inside the tab shell.
+
+| Layer | Class | Token / style |
+|-------|-------|----------------|
+| Row | `.promo-filter-bar` | transparent; flex; `space-between`; gap `16px` |
+| Tab strip | `.promo-filter-list` | bg `--header-nav-bg`; border `--border-dark`; radius `--radius-md`; horizontal scroll |
+| Tab (default) | `.promo-filter-chip` | transparent on strip; text/icons `--cyan-soft`; soft vertical separators |
+| Tab hover | `.promo-filter-chip:hover` | `rgba(255,255,255,.04)` |
+| Tab active | `.promo-filter-chip.active` | gradient `--cyan-accent` → `--accent-blue` (90deg); text `#fff`; first tab keeps left `--radius-md` |
+| Icons | `.promo-filter-ico` + `assets/icons/promo/tab-*.svg` | Live SVG paths; inactive cyan tint, active white |
+| Search | `.promo-search` | separate field on the right; bg `--header-bg`; border `--border-dark`; radius `--radius-md` (not pill / `999px` — follow §4 spacing & radius); placeholder muted white |
+
+Icons: `assets/icons/promo/tab-all.svg`, `tab-deposit`, `tab-cashback`, `tab-promotions`, `tab-other`, `tab-sports`, `tab-games`, `tab-casino`, `tab-esports`, `tab-search`.
+
 #### Reuse checklist (new table or data block)
 
 1. [ ] Link `css/styles.css` (tokens + shared `.odd-btn` / `.odds-table-wrap` if possible)
@@ -327,6 +345,8 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 | Payment Queries | Toolbar owns the bottom border; body must not double the top pad |
 | Personal Profile / Security | Profile fields use `--acc-form-*`; progress banner + `--acc-section-gap`; security cards `--acc-card-gap` / `--acc-panel-pad` |
 | Referral | Homepage chrome on light account surface: invite banner `--sidebar-bg`→`--section-blue`; accordion / history toolbars section-blue gradient + `--action-green` underline; tables `--league-header` / `--row-alternate` / numeric `--brand-blue`; CTAs `--action-green`; major blocks `32px` apart |
+| Membership | Extra page (`membership.html` / `css/membership.css`): hero on light surface; VIP badge `--odds-bg` + `--accent-blue-soft`; titles `--section-blue`; tier chips `.filter-chip`-like (`--accent-blue` active); Benefits/Requirements use `--action-green` underline tabs; tables `--league-header` / `--row-alternate` / numeric `--brand-blue`; gaps `--acc-*` + major blocks `32px`. **Guest** (`membership-invite.html`): Multi-LIVE shell like `referral-invite.html`, VIP info shown directly (no login gate); reuses `.mem-*` markup/JS; logged-in redirects to `membership.html` |
+| Rebate | Extra page (`rebate.html` / `css/rebate.css`): `.rb-top-tabs` = Referral toolbar pattern (`--acc-toolbar-h`, `--action-green` underline); claim/stat cards `--acc-panel-pad` + `--brand-blue` values; list/benefit tables `--league-header` / `--row-alternate` / `--brand-blue`; empty states `--acc-empty-*`. **Guest** (`rebate-invite.html`): reuse `referral-invite.html` shell — crumbs + `ml-chip` tabs + centered `ml-board` gate (`.ri-login-btn` from `referral-invite.css`); **Rebate Benefit** board uses `.ri-board-how` content layout + `.ref-rate-table` with Normal column highlight; logged-in redirects to `rebate.html` |
 
 ---
 
@@ -527,10 +547,10 @@ When designing a **new page**:
 | `css/styles.css` | Tokens + shared UI |
 | `css/account.css` | Account shell + Deposit / Withdraw / History / Profile / Security / Referral / Payment Queries (`--acc-*` spacing) |
 | `css/top-events-theme.css` | WC2026 / MSI light theme |
-| `css/wc2026.css` / `css/msi.css` / `css/big-tournaments.css` / `css/long-term-bets.css` / `css/multi-live.css` | Page-specific styles |
+| `css/wc2026.css` / `css/msi.css` / `css/big-tournaments.css` / `css/long-term-bets.css` / `css/multi-live.css` / `css/promo.css` | Page-specific styles |
 | `js/script.js` | Homepage / national-team / live-national-team demo interactions |
 | `js/wc2026.js` / `js/msi.js` / `js/big-tournaments.js` / `js/long-term-bets.js` / `js/multi-live.js` | Page-specific scripts |
-| `assets/icons/` | UI icons (prefixed) |
+| `assets/icons/` | UI icons (prefixed); Promo filter tabs in `assets/icons/promo/tab-*.svg` |
 | `assets/images/` | Heroes, partners, art |
 | `assets/fonts/` / `assets/videos/` | Reserved static asset folders |
 | `assets/images/references/sports-home-reference-modified-color.png` | Color source of truth |
