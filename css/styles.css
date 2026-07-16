@@ -1265,8 +1265,20 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   z-index: 1;
 }
 
-.promo-slide-photo[data-slide="2"]::before {
+.promo-slide-photo[data-slide="3"]::before {
   background: linear-gradient(90deg, rgba(8, 24, 40, 0.55) 0%, rgba(8, 24, 40, 0.2) 40%, transparent 70%);
+}
+
+.promo-slide-deposit .promo-title {
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.promo-slide-deposit .promo-text {
+  max-width: 320px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .promo-slide-photo .promo-copy {
@@ -1334,6 +1346,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
+  text-decoration: none;
   color: #fff;
   background: var(--action-green);
   border-radius: var(--radius);
@@ -4474,7 +4487,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 1);
   border-radius: 50%;
 }
 

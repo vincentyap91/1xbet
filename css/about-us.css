@@ -137,37 +137,6 @@ body[data-page="about-us"] {
   object-fit: contain;
 }
 
-/* Vertical side labels */
-.about-side-labels {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  z-index: 3;
-}
-
-.about-side-label {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.45);
-  cursor: default;
-  transition: color .15s;
-}
-
-.about-side-label:hover { color: var(--cyan-accent); }
-
-.about-side-label.is-active {
-  color: var(--action-green);
-}
-
 /* ── Secure Gaming Platform Section ─────────────────────── */
 .about-secure {
   background: var(--header-bg);
@@ -481,7 +450,6 @@ body[data-page="about-us"] {
   .about-hero-art { min-height: 260px; width: 100%; padding: 0 16px 24px; }
   .about-hero-balls { max-height: 280px; }
   .about-hero-phone { max-height: 300px; }
-  .about-side-labels { display: none; }
   .about-secure { padding: 40px 16px; }
   .about-trusted { padding: 40px 16px; }
   .about-trusted-inner { flex-direction: column; gap: 32px; text-align: center; }

@@ -71,8 +71,13 @@
   border-radius: var(--radius-md);
   background: var(--odds-bg);
   border: 1px solid var(--accent-blue-soft);
-  color: var(--brand-blue);
   flex-shrink: 0;
+}
+
+.rb-claim-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .rb-claim-label,

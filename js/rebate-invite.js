@@ -1,4 +1,4 @@
-/* rebate-invite.js — Unclaim / Rebate Benefit tabs (same pattern as referral-invite.js) */
+/* rebate-invite.js — Multi-LIVE Rebate (standalone; not account Extra shell) */
 (function () {
   "use strict";
 
@@ -12,12 +12,8 @@
     }
   }
 
-  if (isLoggedInSession()) {
-    location.replace("rebate.html");
-    return;
-  }
-
   function activate(key) {
+    var loggedIn = isLoggedInSession();
     var tabs = Array.prototype.slice.call(document.querySelectorAll("[data-rbi-tab]"));
     var panels = Array.prototype.slice.call(document.querySelectorAll("[data-rbi-panel]"));
 
@@ -29,15 +25,49 @@
     });
 
     panels.forEach(function (panel) {
-      panel.hidden = panel.getAttribute("data-rbi-panel") !== key;
+      var matchKey = panel.getAttribute("data-rbi-panel") === key;
+      var isGuest = panel.classList.contains("ri-guest-only");
+      var isLogged = panel.classList.contains("ri-logged-only");
+      if (!matchKey) {
+        panel.hidden = true;
+        return;
+      }
+      if (isGuest) {
+        panel.hidden = loggedIn;
+      } else if (isLogged) {
+        panel.hidden = !loggedIn;
+      } else {
+        panel.hidden = false;
+      }
     });
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    if (isLoggedInSession()) {
-      location.replace("rebate.html");
+  function applyAuthPanels() {
+    var loggedIn = isLoggedInSession();
+    document.body.classList.toggle("is-logged-in", loggedIn);
+
+    var accountBoard = document.getElementById("rbi-panel-account");
+    if (accountBoard) {
+      accountBoard.hidden = !loggedIn;
+    }
+
+    var filters = document.querySelector("[data-rbi-tabs]");
+    if (filters) {
+      filters.hidden = loggedIn;
+    }
+
+    if (loggedIn) {
+      document.querySelectorAll("[data-rbi-panel]").forEach(function (panel) {
+        panel.hidden = true;
+      });
       return;
     }
+
+    activate("unclaim");
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    applyAuthPanels();
 
     var tablist = document.querySelector("[data-rbi-tabs]");
     if (!tablist) return;

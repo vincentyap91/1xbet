@@ -665,9 +665,9 @@
     {
       label: 'Extra',
       items: [
-        { key: 'referral', href: 'referral.html', label: 'Referral', pages: ['referral', 'my-rewards'] },
-        { key: 'membership', href: 'membership.html', label: 'Membership', pages: ['membership'], icon: 'rewards' },
-        { key: 'rebate', href: 'rebate.html', label: 'Rebate', pages: ['rebate'], icon: 'rebate' },
+        { key: 'referral', href: 'referral-invite.html', label: 'Referral' },
+        { key: 'membership', href: 'membership-invite.html', label: 'Membership', icon: 'rewards' },
+        { key: 'rebate', href: 'rebate-invite.html', label: 'Rebate', icon: 'rebate' },
         { key: 'gifts', label: 'Bonuses and Gifts', demo: 'Bonuses and Gifts (demo)' },
         { key: 'promo', href: 'promo.html', label: 'Promotions', pages: ['promo'] },
         { key: 'live-chat', href: 'live-chat.html', label: 'Live Chat', pages: ['live-chat'] }

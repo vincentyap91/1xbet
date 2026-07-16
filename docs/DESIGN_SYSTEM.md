@@ -340,13 +340,14 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 
 | Page | Notes |
 |------|--------|
-| Deposit / Withdraw | Method pick: `--acc-method-*`; details forms: `--acc-form-*`; stacks `--acc-section-gap`; sticky actions on `--acc-pad-x` |
+| Deposit / Withdraw | Method pick: `--acc-method-*`; details forms: `--acc-form-*`; stacks `--acc-section-gap`; sticky actions on `--acc-pad-x`. **Deposit / Withdraw Step 2:** shared deposit patterns — balance/min `.dep-summary`; light notes (`.dep-notes-banner`); bank cards selected `--odds-hover`/`--brand-blue`; amount presets + display `--section-blue`; white `.dep-details-card`; Submit `--section-blue` (`.dep-btn-primary--section`) |
 | Bet History / Transaction History | Restore body top pad; unify panel pad + list-row `12px` |
 | Payment Queries | Toolbar owns the bottom border; body must not double the top pad |
 | Personal Profile / Security | Profile fields use `--acc-form-*`; progress banner + `--acc-section-gap`; security cards `--acc-card-gap` / `--acc-panel-pad` |
-| Referral | Homepage chrome on light account surface: invite banner `--sidebar-bg`→`--section-blue`; accordion / history toolbars section-blue gradient + `--action-green` underline; tables `--league-header` / `--row-alternate` / numeric `--brand-blue`; CTAs `--action-green`; major blocks `32px` apart |
-| Membership | Extra page (`membership.html` / `css/membership.css`): hero on light surface; VIP badge `--odds-bg` + `--accent-blue-soft`; titles `--section-blue`; tier chips `.filter-chip`-like (`--accent-blue` active); Benefits/Requirements use `--action-green` underline tabs; tables `--league-header` / `--row-alternate` / numeric `--brand-blue`; gaps `--acc-*` + major blocks `32px`. **Guest** (`membership-invite.html`): Multi-LIVE shell like `referral-invite.html`, VIP info shown directly (no login gate); reuses `.mem-*` markup/JS; logged-in redirects to `membership.html` |
-| Rebate | Extra page (`rebate.html` / `css/rebate.css`): `.rb-top-tabs` = Referral toolbar pattern (`--acc-toolbar-h`, `--action-green` underline); claim/stat cards `--acc-panel-pad` + `--brand-blue` values; list/benefit tables `--league-header` / `--row-alternate` / `--brand-blue`; empty states `--acc-empty-*`. **Guest** (`rebate-invite.html`): reuse `referral-invite.html` shell — crumbs + `ml-chip` tabs + centered `ml-board` gate (`.ri-login-btn` from `referral-invite.css`); **Rebate Benefit** board uses `.ri-board-how` content layout + `.ref-rate-table` with Normal column highlight; logged-in redirects to `rebate.html` |
+| Referral | **Standalone** Multi-LIVE page (`referral-invite.html`): guest login gate + **How It Works** tab; **logged-in** users see full account `.ref-*` dashboard (Referral Info, My Rewards, downlines modal). Account **Extra → Referral** links out only. Legacy `referral.html` redirects here. |
+| Membership | **Standalone** Multi-LIVE page (`membership-invite.html` / `css/membership.css`): full VIP club board for all users. Account **Extra → Membership** links out. Legacy `membership.html` redirects here. |
+| Rebate | **Standalone** Multi-LIVE page (`rebate-invite.html`): guest login gate + **Rebate Benefit** tab; **logged-in** users see full account `.rb-*` dashboard (Unclaim, History, Rebate Benefit). Account **Extra → Rebate** links out. Legacy `rebate.html` redirects here. |
+| Partnership | Info page (`partnership.html` / `css/partnership.css`) like About us: light `--surface-secondary` main; titles `--section-blue`; subtitle / footnote `--brand-blue`; banner `--surface-primary` + `--accent-blue-soft` border; highlight values `--warning`; Verified pill + Visit CTA `--section-blue` (hover Visit `--brand-blue`); logos `assets/images/partnership/12win.png` + `lucky878.png` (black keyed out) on white logo strip. Visit: [12WIN](https://12winkh.vip/en/), [Lucky878](https://lucky878.riocity9.com/en/). Footer: **Useful links → Partnership** |
 
 ---
 
@@ -391,7 +392,7 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 | Piece | Implementation |
 |-------|----------------|
 | Top header | Dark `--header-bar-bg`; hamburger + logo; gift / account / `--action-green` Make a Deposit / messages as 36px `--header-action` squares |
-| Subcategory strip | `.acc-subnav` (≤900px only, horizontal scroll): all account sidebar links (Deposit, Withdraw, histories, Profile, Security, Referral, …). Active card `--odds-hover` + `--accent-blue` border; badges `--action-green`. Desktop keeps `.account-sidebar`; mobile hides the sidebar. |
+| Subcategory strip | `.acc-subnav` (≤900px only, horizontal scroll): all account sidebar links (Deposit, Withdraw, histories, Profile, Security, Referral, Membership, Rebate, …). Active card `--odds-hover` + `--accent-blue` border; badges `--action-green`. Desktop keeps `.account-sidebar`; mobile hides the sidebar. |
 | Bottom sticky nav | `.mobile-tabbar--account`: Home · Promotion · Deposit FAB (`--action-green` circle) · Livechat · Account (active `--action-green`) |
 
 Wired in `js/account.js` when `.account-main` is present.
@@ -489,7 +490,9 @@ New pages should reuse these modules’ classes and tokens rather than inventing
 
 **TOP-EVENTS pages** (`wc2026.html`, `msi.html`): shared light theme in `css/top-events-theme.css` + page CSS (tournament chrome; still use `.odd-btn` tokens for odds chips where present).
 
-**Referral** (`referral.html`): account shell + `css/account.css` `.ref-*`. Top tabs (`.ref-top-tabs`): **Referral Info** | **My Rewards** (`--action-green` underline; hash `#rewards` opens rewards). Referral Info hero: light intro + feature pills (`--odds-bg` / `--accent-blue-soft`), summary card with `--brand-blue` values and `--action-green` Downlines CTA; share utility nested under hero intro (light `.dep-info-card` copy rows + compact social chips — no section-blue banner). How-it-works step art in `assets/images/referral/`. Accordion/history headers section-blue gradient + `--action-green` active underline; commission tables `--league-header` / `--row-alternate` / numeric `--brand-blue`. **My Rewards** panel: claim cards + reward history tables. **Downlines modal** (`.dl-backdrop` / `.dl-modal`): section-blue header, summary/KPI tabs, date filters + period chips (`--accent-blue` active), stat cards on `--surface-secondary` with `--brand-blue` values. Do not use screenshot grey/red/yellow chrome hex.
+**Referral / Membership / Rebate** — canonical pages are **Multi-LIVE standalone** (`*-invite.html`), not Account Extra content panels. Account sidebar **Extra** group only **links out** to those pages (`referral-invite.html`, `membership-invite.html`, `rebate-invite.html` via `js/account.js` `ACCOUNT_NAV_GROUPS`). Top header uses the same invite URLs. After login on an invite page, stay on that page (reload); do not navigate into `.account-main` for these features. Detailed records remain on Account history pages (Commission Record, Rebate Record).
+
+**Referral (legacy account `.ref-*`)** — retired from Extra shell; commission tables on **Commission Record**. Do not use screenshot grey/red/yellow chrome hex.
 
 **Account profile dropdown** (logged-in header `.header-account-btn` → `.acc-menu` in `css/account.css`, wired in `js/auth-modals.js`): light popover on `--surface-primary` with soft shadow; text/icons `--section-blue`; hover `--odds-hover`; red badge `--danger`; balances + links to Deposit / Withdraw / Referral / Profile / Bet History / Security / Log out. Max weight `700`.
 

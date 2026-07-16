@@ -4,17 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rebate — 1xBet</title>
-  <script>
-    try {
-      if (sessionStorage.getItem("1xbet_logged_in") === "1") {
-        location.replace("rebate.html");
-      }
-    } catch (e) { /* ignore */ }
-  </script>
+
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/multi-live.css" />
   <link rel="stylesheet" href="css/referral-invite.css" />
   <link rel="stylesheet" href="css/rebate-invite.css" />
+  <link rel="stylesheet" href="css/rebate.css" />
+  <link rel="stylesheet" href="css/account.css" />
 </head>
 <body data-page="rebate-invite">
   <div class="page-shell">
@@ -195,12 +191,113 @@
           </button>
         </div>
 
-        <section class="ml-board" id="rbi-panel-unclaim" role="tabpanel" data-rbi-panel="unclaim" aria-labelledby="rbi-tab-unclaim" aria-label="Unclaim">
+        <section class="ml-board ri-guest-only" id="rbi-panel-unclaim" role="tabpanel" data-rbi-panel="unclaim" aria-labelledby="rbi-tab-unclaim" aria-label="Unclaim">
           <h1 class="ml-board-title">Log In to View Your Rebate Info</h1>
           <p class="ml-board-text">Sign in to see claimable rebates, lifetime totals, and your rebate history.</p>
           <button type="button" class="ri-login-btn btn-login">Log in</button>
         </section>
 
+        <section class="ml-board ri-board-account ri-logged-only" id="rbi-panel-account" aria-label="Rebate dashboard" hidden>
+<section class="account-content rb-content" aria-label="Rebate">
+
+          <div class="account-content-head">
+            <h1 class="account-content-title">Rebate</h1>
+            <p class="account-content-sub">Claim rebates, review history, and compare membership rates.</p>
+          </div>
+
+          <nav class="rb-top-tabs" role="tablist" aria-label="Rebate sections">
+            <button type="button" class="rb-top-tab is-active" role="tab" aria-selected="true" data-rb-tab="unclaim" id="rb-tab-unclaim" aria-controls="rb-panel-unclaim">Unclaim</button>
+            <button type="button" class="rb-top-tab" role="tab" aria-selected="false" data-rb-tab="history" id="rb-tab-history" aria-controls="rb-panel-history">History</button>
+            <button type="button" class="rb-top-tab" role="tab" aria-selected="false" data-rb-tab="benefit" id="rb-tab-benefit" aria-controls="rb-panel-benefit">Rebate Benefit</button>
+          </nav>
+
+          <div class="account-content-body rb-body">
+
+            <div class="rb-panel" id="rb-panel-unclaim" role="tabpanel" aria-labelledby="rb-tab-unclaim" data-rb-panel="unclaim">
+
+              <div class="rb-claim-card">
+                <span class="rb-claim-icon" aria-hidden="true">
+                  <img src="assets/images/star.png" alt="" width="28" height="28" />
+                </span>
+                <div class="rb-claim-text">
+                  <span class="rb-claim-label">Claimable Rebate</span>
+                  <strong class="rb-claim-value">MYR 0.000</strong>
+                </div>
+              </div>
+
+              <div class="rb-stat-grid">
+                <div class="rb-stat-card">
+                  <span class="rb-stat-label">Total Lifetime Rebate</span>
+                  <strong class="rb-stat-value">MYR 0.000</strong>
+                </div>
+                <div class="rb-stat-card">
+                  <span class="rb-stat-label">My Individual Sales</span>
+                  <strong class="rb-stat-value">MYR 0.000</strong>
+                </div>
+              </div>
+
+              <div class="rb-list-card">
+                <div class="rb-list-head">
+                  <span>Date</span>
+                  <span>Amount</span>
+                </div>
+                <div class="acc-empty-panel rb-empty" role="status">
+                  <p class="acc-empty-title">No Data Found</p>
+                  <p class="acc-empty-message">Rebate lines will show here when available.</p>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="rb-panel" id="rb-panel-history" role="tabpanel" aria-labelledby="rb-tab-history" data-rb-panel="history" hidden>
+
+              <div class="rb-list-card">
+                <div class="rb-list-head">
+                  <span>Date</span>
+                  <span>Amount</span>
+                </div>
+                <div class="acc-empty-panel rb-empty" role="status">
+                  <p class="acc-empty-title">No Data Found</p>
+                  <p class="acc-empty-message">Claimed rebate history will show here when available.</p>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="rb-panel" id="rb-panel-benefit" role="tabpanel" aria-labelledby="rb-tab-benefit" data-rb-panel="benefit" hidden>
+
+              <div class="rb-benefit-card">
+                <h2 class="rb-benefit-title">Membership Rebate</h2>
+                <div class="rb-table-wrap">
+                  <table class="rb-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Category</th>
+                        <th scope="col">Normal</th>
+                        <th scope="col">Bronze</th>
+                        <th scope="col">Silver</th>
+                        <th scope="col">Gold</th>
+                        <th scope="col">Platinum</th>
+                        <th scope="col">Diamond</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><th scope="row">Sport</th><td>5%</td><td>6%</td><td>7%</td><td>8%</td><td>9%</td><td>10%</td></tr>
+                      <tr><th scope="row">Live Casino</th><td>5%</td><td>6%</td><td>7%</td><td>8%</td><td>9%</td><td>10%</td></tr>
+                      <tr><th scope="row">Slot</th><td>5%</td><td>6%</td><td>7%</td><td>8%</td><td>9%</td><td>10%</td></tr>
+                      <tr><th scope="row">Fish Hunt</th><td>5%</td><td>6%</td><td>7%</td><td>8%</td><td>9%</td><td>10%</td></tr>
+                      <tr><th scope="row">ESport</th><td>5%</td><td>6%</td><td>7%</td><td>8%</td><td>9%</td><td>10%</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+        </section>
         <section class="ml-board ri-board-how rbi-board-benefit" id="rbi-panel-benefit" role="tabpanel" data-rbi-panel="benefit" aria-labelledby="rbi-tab-benefit" aria-label="Rebate Benefit" hidden>
           <section class="rbi-benefit" aria-labelledby="rbi-benefit-title">
             <h2 class="ref-section-title" id="rbi-benefit-title">Membership Rebate</h2>
@@ -479,6 +576,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <script src="js/multi-live.js"></script>
+  <script src="js/rebate.js"></script>
   <script src="js/rebate-invite.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

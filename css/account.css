@@ -3939,66 +3939,7 @@ body[data-page="live-chat"] .site-footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Withdraw details (step 2) — structure from screenshot; tokens from deposit */
-
-.wd-summary {
-  display: flex;
-  flex-direction: column;
-  gap: var(--acc-form-label-gap);
-}
-
-.wd-summary-card {
-  margin: 0;
-}
-
-.wd-summary-row span {
-  color: var(--text-secondary);
-  font-size: 13px;
-}
-
-.wd-summary-row strong {
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
-  font-size: 13px;
-}
-
-.wd-notes {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--acc-dense-gap);
-  margin-bottom: 0 !important;
-  padding: 10px 12px;
-  background: var(--odds-bg);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-}
-
-.wd-notes-copy {
-  min-width: 0;
-}
-
-.wd-notes-title {
-  display: block;
-  margin: 0 0 4px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.wd-notes ul {
-  margin: 0;
-  padding-left: 16px;
-  font-size: 11px;
-  line-height: 1.45;
-  color: var(--text-secondary);
-}
-
-.wd-notes li + li {
-  margin-top: 2px;
-}
+/* Withdraw details (step 2) — reuses deposit step 2 (.dep-summary / .dep-details-card / …) */
 
 .wd-alert {
   display: flex;
@@ -4155,8 +4096,28 @@ body[data-page="live-chat"] .site-footer {
 
 .dep-notes-banner {
   margin: 0 !important;
-  font-size: 11px;
+  padding: 14px 16px;
+  font-size: 13px;
   line-height: 1.55;
+  color: var(--text-secondary);
+  background: var(--odds-bg);
+  border: 1px solid var(--accent-blue-soft);
+  border-radius: var(--radius-md);
+}
+
+.dep-notes-banner.dep-promo-banner {
+  background: var(--odds-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--accent-blue-soft);
+}
+
+.dep-notes-title {
+  color: var(--section-blue);
+  font-weight: 700;
+}
+
+.dep-notes-text {
+  color: var(--text-secondary);
 }
 
 .dep-notes-accent {
@@ -4173,6 +4134,127 @@ body[data-page="live-chat"] .site-footer {
   text-transform: none;
   color: var(--text-muted);
   letter-spacing: 0;
+}
+
+/* Step 2 — screenshot layout */
+.dep-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.dep-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.dep-summary-row strong {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.dep-details-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acc-section-gap);
+  padding: var(--acc-panel-pad);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.dep-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--acc-form-label-gap);
+}
+
+.dep-panel-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.dep-field-label {
+  display: block;
+  margin: 0 0 var(--acc-form-label-gap);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.dep-bank-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--acc-method-grid-gap);
+}
+
+.dep-bank-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 96px;
+  padding: 12px 8px;
+  text-align: center;
+  background: var(--surface-primary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+  font-family: var(--font);
+}
+
+.dep-bank-card:hover {
+  border-color: var(--accent-blue);
+  background: rgba(62, 180, 240, .06);
+}
+
+.dep-bank-card.is-selected {
+  border-color: var(--brand-blue);
+  background: var(--odds-hover);
+  box-shadow: 0 2px 8px rgba(43, 120, 214, .12);
+}
+
+.dep-bank-card-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 28px;
+}
+
+.dep-bank-card-logo img {
+  max-width: 72px;
+  max-height: 28px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.dep-bank-card-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--section-blue);
+  line-height: 1.2;
+}
+
+.dep-bank-card-range {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .dep-amount-field {
@@ -4197,9 +4279,9 @@ body[data-page="live-chat"] .site-footer {
   font-weight: 700;
   font-family: var(--font);
   font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
+  color: var(--section-blue);
   background: var(--surface-primary);
-  border: 1px solid var(--accent-blue-soft);
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: background .15s, border-color .15s, color .15s;
@@ -4240,10 +4322,10 @@ body[data-page="live-chat"] .site-footer {
   flex-shrink: 0;
   min-width: 52px;
   padding: 0 12px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--text-secondary);
-  background: var(--surface-secondary);
+  color: var(--section-blue);
+  background: var(--odds-bg);
   border-right: 1px solid var(--border-light);
 }
 
@@ -4251,12 +4333,12 @@ body[data-page="live-chat"] .site-footer {
   flex: 1;
   min-width: 0;
   width: 100%;
-  padding: 16px;
-  font-size: 24px;
-  font-weight: 700;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
   font-family: var(--font);
   font-variant-numeric: tabular-nums;
-  color: var(--brand-blue);
+  color: var(--text-primary);
   background: #fff;
   border: none;
   outline: none;
@@ -4265,7 +4347,8 @@ body[data-page="live-chat"] .site-footer {
 
 .dep-amount-input::placeholder {
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 12px;
 }
 
 .profile-field.has-error .dep-amount-input-wrap {
@@ -4273,10 +4356,162 @@ body[data-page="live-chat"] .site-footer {
 }
 
 .dep-amount-hint {
-  margin: 0;
+  margin: 0 0 var(--acc-form-field-gap);
   font-size: 11px;
   line-height: 1.4;
   color: var(--text-muted);
+  text-align: right;
+}
+
+.dep-amount-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.dep-amount-display-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.dep-amount-display-value-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dep-amount-display-currency {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--section-blue);
+  background: var(--odds-bg);
+  border-radius: var(--radius-sm);
+}
+
+.dep-amount-display-value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--section-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.dep-account-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dep-account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.dep-account-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dep-account-row:first-child {
+  padding-top: 0;
+}
+
+.dep-account-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dep-account-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.dep-account-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  word-break: break-all;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+}
+
+.dep-reference-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dep-reference-input {
+  width: 100%;
+  padding-right: 44px;
+}
+
+.dep-copy-btn--ghost {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.dep-copy-btn--ghost:hover {
+  background: var(--odds-hover);
+  border-color: transparent;
+  color: var(--brand-blue);
+}
+
+.dep-upload-required {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.dep-upload-required span {
+  color: var(--danger);
+}
+
+.dep-details-actions--submit-only {
+  justify-content: stretch;
+}
+
+.dep-details-actions--submit-only .dep-btn-primary {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  font-size: 14px;
+}
+
+.dep-btn-primary--section {
+  background: var(--section-blue);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.dep-btn-primary--section:hover:not(:disabled) {
+  background: var(--section-blue-dark);
 }
 
 .dep-info-card {
@@ -4391,9 +4626,9 @@ body[data-page="live-chat"] .site-footer {
 .dep-upload-zone {
   display: block;
   width: 100%;
-  min-height: 148px;
+  min-height: 132px;
   padding: 20px 16px;
-  background: var(--surface-secondary);
+  background: var(--odds-bg);
   border: 1.5px dashed var(--accent-blue-soft);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -5763,6 +5998,28 @@ body[data-page="bet-history"] .account-main {
   .dep-upload-zone {
     min-height: 132px;
     padding: 16px 12px;
+  }
+
+  .dep-bank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dep-bank-card {
+    flex-direction: row;
+    justify-content: flex-start;
+    min-height: 64px;
+    padding: 10px 12px;
+    text-align: left;
+    gap: 10px;
+  }
+
+  .dep-bank-card-logo {
+    width: auto;
+    min-height: 0;
+  }
+
+  .dep-amount-display-value {
+    font-size: 24px;
   }
 }
 

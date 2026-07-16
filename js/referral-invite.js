@@ -1,6 +1,4 @@
-/* referral-invite.js — Invite Friends / How It Works tabs (Multi-LIVE chips)
- * Logged-in users see the same content as referral.html (redirect).
- */
+/* referral-invite.js — Multi-LIVE Referral (standalone; not account Extra shell) */
 (function () {
   "use strict";
 
@@ -14,13 +12,8 @@
     }
   }
 
-  /* Already signed in → account referral page (same invite / stats UI) */
-  if (isLoggedInSession()) {
-    location.replace("referral.html");
-    return;
-  }
-
   function activate(key) {
+    var loggedIn = isLoggedInSession();
     var tabs = Array.prototype.slice.call(document.querySelectorAll("[data-ri-tab]"));
     var panels = Array.prototype.slice.call(document.querySelectorAll("[data-ri-panel]"));
 
@@ -32,20 +25,88 @@
     });
 
     panels.forEach(function (panel) {
-      panel.hidden = panel.getAttribute("data-ri-panel") !== key;
+      var matchKey = panel.getAttribute("data-ri-panel") === key;
+      var isGuest = panel.classList.contains("ri-guest-only");
+      var isLogged = panel.classList.contains("ri-logged-only");
+      if (!matchKey) {
+        panel.hidden = true;
+        return;
+      }
+      if (isGuest) {
+        panel.hidden = loggedIn;
+      } else if (isLogged) {
+        panel.hidden = !loggedIn;
+      } else {
+        panel.hidden = false;
+      }
     });
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    if (isLoggedInSession()) {
-      location.replace("referral.html");
+  function applyAuthPanels() {
+    var loggedIn = isLoggedInSession();
+    document.body.classList.toggle("is-logged-in", loggedIn);
+
+    document.querySelectorAll(".ri-guest-only").forEach(function (el) {
+      if (!el.getAttribute("data-ri-panel") && !el.getAttribute("data-rbi-panel")) {
+        el.hidden = loggedIn;
+      }
+    });
+    document.querySelectorAll(".ri-logged-only").forEach(function (el) {
+      if (!el.getAttribute("data-ri-panel") && !el.getAttribute("data-rbi-panel")) {
+        el.hidden = !loggedIn;
+      }
+    });
+
+    var accountBoard = document.getElementById("ri-panel-account");
+    if (accountBoard) {
+      accountBoard.hidden = !loggedIn;
+    }
+
+    var filters = document.querySelector("[data-ri-tabs]");
+    if (filters) {
+      filters.hidden = loggedIn;
+    }
+
+    if (loggedIn) {
+      document.querySelectorAll("[data-ri-panel]").forEach(function (panel) {
+        panel.hidden = true;
+      });
       return;
     }
+
+    var activeTab = document.querySelector("[data-ri-tab].active, [data-rbi-tab].active");
+    if (activeTab) {
+      activate(activeTab.getAttribute("data-ri-tab") || activeTab.getAttribute("data-rbi-tab"));
+    }
+  }
+
+  function copyText(text) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () {});
+    }
+    if (typeof window.showToast === "function") {
+      window.showToast("Copied successfully");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    applyAuthPanels();
+
+    document.addEventListener("click", function (e) {
+      var copyBtn = e.target.closest("[data-ri-copy-target]");
+      if (!copyBtn) return;
+      var id = copyBtn.getAttribute("data-ri-copy-target");
+      var el = id ? document.getElementById(id) : null;
+      if (el) copyText(el.textContent.trim());
+    });
 
     var tablist = document.querySelector("[data-ri-tabs]");
     if (!tablist) return;
 
     var tabs = Array.prototype.slice.call(tablist.querySelectorAll("[data-ri-tab]"));
+    var hash = (location.hash || "").replace(/^#/, "");
+    if (hash === "rewards") activate("how");
 
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {

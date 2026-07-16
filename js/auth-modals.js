@@ -330,7 +330,7 @@
       '<a href="withdraw.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
       icons.withdraw +
       "</span>Withdraw Funds</a>" +
-      '<a href="referral.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
+      '<a href="referral-invite.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
       icons.invite +
       "</span>Invite friends</a>" +
       '<a href="personal-profile.html" class="acc-menu-link" role="menuitem"><span class="acc-menu-icon">' +
@@ -714,13 +714,8 @@
       setLoggedIn(true);
       toast("Demo only — signed in");
       closeAuth();
-      // Guest invite landings → account pages after login
-      if (/referral-invite\.html/i.test(location.pathname + location.href)) {
-        location.assign("referral.html");
-      } else if (/membership-invite\.html/i.test(location.pathname + location.href)) {
-        location.assign("membership.html");
-      } else if (/rebate-invite\.html/i.test(location.pathname + location.href)) {
-        location.assign("rebate.html");
+      if (/referral-invite\.html|membership-invite\.html|rebate-invite\.html/i.test(location.pathname + location.href)) {
+        location.reload();
       }
     });
 

@@ -4,16 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Referral — 1xBet</title>
-  <script>
-    try {
-      if (sessionStorage.getItem("1xbet_logged_in") === "1") {
-        location.replace("referral.html");
-      }
-    } catch (e) { /* ignore */ }
-  </script>
+
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/multi-live.css" />
   <link rel="stylesheet" href="css/referral-invite.css" />
+  <link rel="stylesheet" href="css/account.css" />
 </head>
 <body data-page="referral-invite">
   <div class="page-shell">
@@ -194,12 +189,361 @@
           </button>
         </div>
 
-        <section class="ml-board" id="ri-panel-invite" role="tabpanel" data-ri-panel="invite" aria-labelledby="ri-tab-invite" aria-label="Invite Friends">
+        <section class="ml-board ri-guest-only" id="ri-panel-invite" role="tabpanel" data-ri-panel="invite" aria-labelledby="ri-tab-invite" aria-label="Invite Friends">
           <h1 class="ml-board-title">Log In to View Your Unique Referral Info</h1>
           <p class="ml-board-text">Access your personal referral code, invite link, QR code, and reward tracking after signing in.</p>
           <button type="button" class="ri-login-btn btn-login">Log in</button>
         </section>
 
+        <section class="ml-board ri-board-account ri-logged-only" id="ri-panel-account" aria-label="Referral dashboard" hidden>
+<section class="account-content ref-content" aria-label="Referral">
+
+          <div class="account-content-head">
+            <h1 class="account-content-title">Referral</h1>
+            <p class="account-content-sub">Invite friends, track commissions, and claim referral rewards.</p>
+          </div>
+
+          <nav class="ref-top-tabs" role="tablist" aria-label="Referral sections">
+            <button type="button" class="ref-top-tab is-active" role="tab" aria-selected="true" id="ref-tab-info" data-ref-top="info" aria-controls="ref-panel-info">Referral Info</button>
+            <button type="button" class="ref-top-tab" role="tab" aria-selected="false" id="ref-tab-rewards" data-ref-top="rewards" aria-controls="ref-panel-rewards">My Rewards</button>
+          </nav>
+
+          <div class="account-content-body ref-panel" id="ref-panel-info" role="tabpanel" aria-labelledby="ref-tab-info" data-ref-panel="info">
+
+            <div class="ref-hero">
+              <div class="ref-hero-intro">
+                <h1 class="ref-hero-title">Invite friends now to get more reward</h1>
+                <p class="ref-hero-text">Invite your friends to join through our referral program! Share your unique code or link and earn rewards as they sign up and engage with our platform.</p>
+                <ul class="ref-feature-list" aria-label="Referral benefits">
+                  <li class="ref-feature-pill">
+                    <span class="ref-feature-icon" aria-hidden="true">
+                      <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M6.5 7V5.8A2.3 2.3 0 018.8 3.5h2.4A2.3 2.3 0 0113.5 5.8V7M4 7h12v8.2A1.8 1.8 0 0114.2 17H5.8A1.8 1.8 0 014 15.2V7z" stroke="currentColor" stroke-width="1.5"/><path d="M10 7v10" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 10.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </span>
+                    Commission on deposits
+                  </li>
+                  <li class="ref-feature-pill">
+                    <span class="ref-feature-icon" aria-hidden="true">
+                      <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><circle cx="7.2" cy="7" r="2.2" stroke="currentColor" stroke-width="1.5"/><circle cx="13.2" cy="7.5" r="1.8" stroke="currentColor" stroke-width="1.4"/><path d="M3.2 15.2c.4-2.1 2-3.3 4-3.3s3.6 1.2 4 3.3M11.2 12.4c1-.3 2.1-.1 2.9.7.7.7.9 1.5 1 2.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                    </span>
+                    Unlimited referrals
+                  </li>
+                  <li class="ref-feature-pill">
+                    <span class="ref-feature-icon" aria-hidden="true">
+                      <svg viewBox="0 0 20 20" width="16" height="16" fill="none"><path d="M11.2 2.5L5 11.2h4.2L8.8 17.5 15 8.8h-4.2L11.2 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                    </span>
+                    Earn from game play
+                  </li>
+                </ul>
+
+                <section class="ref-share-panel" aria-labelledby="ref-share-title">
+                  <h2 class="ref-share-panel-title" id="ref-share-title">Share your invite</h2>
+                  <div class="dep-info-card ref-share-card">
+                    <div class="dep-info-row">
+                      <div class="dep-info-main">
+                        <span class="dep-info-label">My Referral Link</span>
+                        <span class="dep-info-value" id="ref-link-value">https://1xbet.example/en/register?code=96sijCdCX</span>
+                      </div>
+                      <button type="button" class="dep-copy-btn" data-ref-copy-target="ref-link-value" aria-label="Copy referral link">
+                        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="ref-share-social">
+                    <span class="ref-share-label">Share via social media</span>
+                    <div class="ref-share-row">
+                      <a href="#" class="ref-share-btn ref-share-btn--facebook" aria-label="Share on Facebook" data-ref-share="facebook">
+                        <img src="assets/icons/facebook.svg" alt="" width="18" height="18" />
+                      </a>
+                      <a href="#" class="ref-share-btn ref-share-btn--telegram" aria-label="Share on Telegram" data-ref-share="telegram">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M21.5 3.2L2.8 10.5c-1.3.5-1.3 1.2-.2 1.5l4.8 1.5 1.8 5.6c.2.7.1.9.8.9.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8L22.7 4.6c.3-1.2-.4-1.7-1.2-1.4zM9.3 14.1l-.3 3.3-1.1-3.7 10-6.2-8.6 6.6z"/></svg>
+                      </a>
+                      <a href="#" class="ref-share-btn ref-share-btn--whatsapp" aria-label="Share on WhatsApp" data-ref-share="whatsapp">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M20.5 3.5A11 11 0 003.4 17.7L2 22l4.4-1.4A11 11 0 0020.5 3.5zM12 20a8 8 0 01-4.2-1.2l-.3-.2-2.5.8.8-2.4-.2-.3A8 8 0 1112 20zm4.4-5.7c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.8.9-.3.2-.5.1a6.6 6.6 0 01-2-1.2 7.4 7.4 0 01-1.4-1.7c-.1-.3 0-.4.1-.5l.4-.4.2-.3a.5.5 0 000-.5l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 2.9 2.9 0 00-.9 2.2 5 5 0 001.1 2.7 11.5 11.5 0 004.4 3.9 5.2 5.2 0 003.1.7 2.5 2.5 0 001.7-1.1 2 2 0 00.4-1.1c0-.1 0-.2-.2-.3z"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <aside class="ref-hero-aside" aria-label="Referral bonuses">
+                <div class="ref-summary-card">
+                  <div class="ref-stat-block">
+                    <div class="ref-stat-head">
+                      <span>Total Referral Commission Bonus</span>
+                      <span class="cpw-info-icon" title="Commission from downlines" aria-label="Info">i</span>
+                    </div>
+                    <strong class="ref-stat-value">MYR 0.00</strong>
+                  </div>
+                  <div class="ref-stat-block">
+                    <div class="ref-stat-head">
+                      <span>Total Referral Deposit Bonus</span>
+                      <span class="cpw-info-icon" title="Deposit bonus from referrals" aria-label="Info">i</span>
+                    </div>
+                    <strong class="ref-stat-value">MYR 0.00</strong>
+                  </div>
+                  <button type="button" class="ref-downlines-btn" id="ref-downlines-btn">Downlines</button>
+                </div>
+              </aside>
+            </div>
+
+            <section class="ref-how" aria-labelledby="ref-how-title">
+              <h2 class="ref-section-title" id="ref-how-title">Invite Your Friends to Earn Passive Income</h2>
+              <p class="ref-how-sub">Share your link, get friends registered, and earn bonuses from your downlines.</p>
+              <div class="ref-how-grid">
+                <article class="ref-how-card">
+                  <span class="ref-how-step">STEP 01</span>
+                  <span class="ref-how-icon">
+                    <img src="assets/images/referral/step1.jpg" alt="" width="200" height="160" loading="lazy">
+                  </span>
+                  <p>Share your Registration Link or Referral Code</p>
+                </article>
+                <article class="ref-how-card">
+                  <span class="ref-how-step">STEP 02</span>
+                  <span class="ref-how-icon">
+                    <img src="assets/images/referral/step2.jpg" alt="" width="200" height="160" loading="lazy">
+                  </span>
+                  <p>Friends Registered Successfully</p>
+                </article>
+                <article class="ref-how-card">
+                  <span class="ref-how-step">STEP 03</span>
+                  <span class="ref-how-icon">
+                    <img src="assets/images/referral/step3.jpg" alt="" width="200" height="160" loading="lazy">
+                  </span>
+                  <p>Earn Bonus from Your Downlines</p>
+                </article>
+              </div>
+            </section>
+
+            <section class="ref-rates" aria-labelledby="ref-rates-title">
+              <h2 class="ref-section-title" id="ref-rates-title">Game Commission Rate</h2>
+              <p class="ref-rates-sub">Listing of commission rates you earn from your downlines' bets by game type and provider.</p>
+
+              <div class="ref-accordion" id="ref-accordion">
+                <details class="ref-acc-item" open>
+                  <summary class="ref-acc-summary">
+                    <span class="ref-acc-label">Live Casino</span>
+                    <span class="ref-acc-chevron" aria-hidden="true"></span>
+                  </summary>
+                  <div class="ref-acc-body">
+                    <table class="ref-rate-table">
+                      <thead>
+                        <tr><th>Provider</th><th>Downlines L1</th><th>Downlines L2</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Pragmatic Play Casino</td><td>0.20</td><td>0.15</td></tr>
+                        <tr><td>WM Casino</td><td>0.20</td><td>0.15</td></tr>
+                        <tr><td>Evolution Gaming</td><td>0.20</td><td>0.15</td></tr>
+                        <tr><td>SA Gaming</td><td>0.18</td><td>0.12</td></tr>
+                        <tr><td>Sexy Baccarat</td><td>0.18</td><td>0.12</td></tr>
+                        <tr><td>Dream Gaming</td><td>0.18</td><td>0.12</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details class="ref-acc-item">
+                  <summary class="ref-acc-summary">
+                    <span class="ref-acc-label">Slots</span>
+                    <span class="ref-acc-chevron" aria-hidden="true"></span>
+                  </summary>
+                  <div class="ref-acc-body">
+                    <table class="ref-rate-table">
+                      <thead>
+                        <tr><th>Provider</th><th>Downlines L1</th><th>Downlines L2</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Pragmatic Play</td><td>0.25</td><td>0.18</td></tr>
+                        <tr><td>PG Soft</td><td>0.25</td><td>0.18</td></tr>
+                        <tr><td>Habanero</td><td>0.22</td><td>0.15</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details class="ref-acc-item">
+                  <summary class="ref-acc-summary">
+                    <span class="ref-acc-label">Fish Hunt</span>
+                    <span class="ref-acc-chevron" aria-hidden="true"></span>
+                  </summary>
+                  <div class="ref-acc-body">
+                    <table class="ref-rate-table">
+                      <thead>
+                        <tr><th>Provider</th><th>Downlines L1</th><th>Downlines L2</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Joker</td><td>0.20</td><td>0.14</td></tr>
+                        <tr><td>Spade Gaming</td><td>0.20</td><td>0.14</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details class="ref-acc-item">
+                  <summary class="ref-acc-summary">
+                    <span class="ref-acc-label">RNG</span>
+                    <span class="ref-acc-chevron" aria-hidden="true"></span>
+                  </summary>
+                  <div class="ref-acc-body">
+                    <table class="ref-rate-table">
+                      <thead>
+                        <tr><th>Provider</th><th>Downlines L1</th><th>Downlines L2</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Sexy Gaming RNG</td><td>0.15</td><td>0.10</td></tr>
+                        <tr><td>Pragmatic Play RNG</td><td>0.15</td><td>0.10</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+
+                <details class="ref-acc-item">
+                  <summary class="ref-acc-summary">
+                    <span class="ref-acc-label">Sports</span>
+                    <span class="ref-acc-chevron" aria-hidden="true"></span>
+                  </summary>
+                  <div class="ref-acc-body">
+                    <table class="ref-rate-table">
+                      <thead>
+                        <tr><th>Provider</th><th>Downlines L1</th><th>Downlines L2</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>1xBet Sportsbook</td><td>0.12</td><td>0.08</td></tr>
+                        <tr><td>SABA Sports</td><td>0.12</td><td>0.08</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </details>
+              </div>
+            </section>
+          </div>
+
+          <div class="account-content-body ref-panel rw-content" id="ref-panel-rewards" role="tabpanel" aria-labelledby="ref-tab-rewards" data-ref-panel="rewards" hidden>
+
+            <div class="ref-reward-grid">
+              <article class="ref-reward-card">
+                <div class="ref-reward-top">
+                  <div class="ref-reward-brand">
+                    <span class="ref-reward-icon">
+                      <img src="assets/images/referral/referral_commission_icon.png" alt="" width="44" height="44" loading="lazy">
+                    </span>
+                    <div class="ref-reward-copy">
+                      <h2>Referral Commission Bonus</h2>
+                      <p>Claim your available referral reward when ready.</p>
+                    </div>
+                  </div>
+                  <button type="button" class="ref-claim-btn ref-claim-btn--compact" data-ref-claim="commission">Claim</button>
+                </div>
+                <ul class="ref-reward-kpis">
+                  <li><span>Today</span><strong>MYR 0.00</strong></li>
+                  <li><span>This Month</span><strong>MYR 0.00</strong></li>
+                  <li><span>Total Claimed</span><strong>MYR 0.00</strong></li>
+                  <li class="is-unclaimed"><span>Unclaimed</span><strong>MYR 0.00</strong></li>
+                </ul>
+                <div class="ref-alert" role="note">
+                  <span class="cpw-info-icon" aria-hidden="true">i</span>
+                  <p>Bonus will be credited to Main Wallet.</p>
+                </div>
+              </article>
+
+              <article class="ref-reward-card">
+                <div class="ref-reward-top">
+                  <div class="ref-reward-brand">
+                    <span class="ref-reward-icon">
+                      <img src="assets/images/referral/referral_deposit_icon.png" alt="" width="44" height="44" loading="lazy">
+                    </span>
+                    <div class="ref-reward-copy">
+                      <h2>Referral Deposit Bonus</h2>
+                      <p>Claim your available referral reward when ready.</p>
+                    </div>
+                  </div>
+                  <button type="button" class="ref-claim-btn ref-claim-btn--compact" data-ref-claim="deposit">Claim</button>
+                </div>
+                <ul class="ref-reward-kpis">
+                  <li><span>Today</span><strong>MYR 0.00</strong></li>
+                  <li><span>This Month</span><strong>MYR 0.00</strong></li>
+                  <li><span>Total Claimed</span><strong>MYR 0.00</strong></li>
+                  <li class="is-unclaimed"><span>Unclaimed</span><strong>MYR 0.00</strong></li>
+                </ul>
+                <div class="ref-alert" role="note">
+                  <span class="cpw-info-icon" aria-hidden="true">i</span>
+                  <p>Bonus will be credited to Bonus Wallet (Coin).</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="rw-history-intro" aria-labelledby="rw-history-title">
+              <h2 class="rw-history-title" id="rw-history-title">Reward History</h2>
+              <p class="rw-history-sub">Review your past referral reward claims by reward type.</p>
+            </div>
+
+            <section class="ref-history" aria-label="Reward history">
+              <div class="ref-history-tabs" role="tablist" aria-label="Reward history">
+                <button type="button" class="ref-history-tab is-active" role="tab" aria-selected="true" data-ref-history="commission">Referral Commission Bonus</button>
+                <button type="button" class="ref-history-tab" role="tab" aria-selected="false" data-ref-history="deposit">Referral Deposit Bonus</button>
+              </div>
+
+              <div class="ref-history-panel" data-ref-history-panel="commission">
+                <div class="ref-table-wrap">
+                  <table class="ref-history-table">
+                    <thead>
+                      <tr><th>Date</th><th>Commission Amount</th><th>Status</th><th>Claimed Time</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>06 Mar 2026</td>
+                        <td>MYR 0.35</td>
+                        <td><span class="rw-status rw-status--pending">Unclaimed</span></td>
+                        <td>10 Mar 2026, 11:20</td>
+                      </tr>
+                      <tr>
+                        <td>05 Mar 2026</td>
+                        <td>MYR 1.20</td>
+                        <td><span class="rw-status rw-status--claimed">Claimed</span></td>
+                        <td>09 Mar 2026, 11:20</td>
+                      </tr>
+                      <tr>
+                        <td>04 Mar 2026</td>
+                        <td>MYR 0.55</td>
+                        <td><span class="rw-status rw-status--claimed">Claimed</span></td>
+                        <td>08 Mar 2026, 09:05</td>
+                      </tr>
+                      <tr>
+                        <td>03 Mar 2026</td>
+                        <td>MYR 2.10</td>
+                        <td><span class="rw-status rw-status--claimed">Claimed</span></td>
+                        <td>07 Mar 2026, 14:40</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="ref-history-panel" data-ref-history-panel="deposit" hidden>
+                <div class="ref-table-wrap">
+                  <table class="ref-history-table">
+                    <thead>
+                      <tr><th>Date</th><th>Commission Amount</th><th>Status</th><th>Claimed Time</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                  <div class="acc-empty-panel ref-history-empty" role="status">
+                    <div class="acc-empty-art" aria-hidden="true">
+                      <svg viewBox="0 0 120 96" width="96" height="76" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 28c0-5.5 4.5-10 10-10h26l8 8h30c5.5 0 10 4.5 10 10v36c0 5.5-4.5 10-10 10H28c-5.5 0-10-4.5-10-10V28z" fill="var(--surface-tertiary)" stroke="var(--accent-blue-soft)" stroke-width="2"/>
+                        <circle cx="86" cy="68" r="16" fill="var(--surface-secondary)" stroke="var(--section-blue)" stroke-width="3"/>
+                        <path d="M97 79l10 10" stroke="var(--section-blue)" stroke-width="3" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+                    <p class="acc-empty-message">Oops! There is no data yet!</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
+
+        </section>
+        </section>
         <section class="ml-board ri-board-how" id="ri-panel-how" role="tabpanel" data-ri-panel="how" aria-labelledby="ri-tab-how" aria-label="How It Works" hidden>
           <section class="ref-how" aria-labelledby="ri-how-title">
             <h2 class="ref-section-title" id="ri-how-title">Invite Your Friends to Earn Passive Income</h2>
@@ -561,8 +905,85 @@
     </button>
   </nav>
 
+  <!-- Downlines modal -->
+  <div class="dl-backdrop" id="dl-backdrop" hidden>
+    <div class="dl-modal" role="dialog" aria-modal="true" aria-labelledby="dl-title" tabindex="-1">
+      <div class="dl-modal-head">
+        <h2 class="dl-modal-title" id="dl-title">Downlines</h2>
+        <button type="button" class="dl-modal-close" id="dl-close" aria-label="Close">
+          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <div class="dl-tabs" role="tablist" aria-label="Downlines views">
+        <button type="button" class="dl-tab is-active" role="tab" aria-selected="true" data-dl-tab="summary">Downline Summary</button>
+        <button type="button" class="dl-tab" role="tab" aria-selected="false" data-dl-tab="kpi">Downlines KPIs</button>
+      </div>
+
+      <div class="dl-modal-body">
+        <div class="dl-panel" data-dl-panel="summary">
+          <div class="dl-date-grid">
+            <div class="profile-field">
+              <label for="dl-start-date">Start Date</label>
+              <input class="profile-input" id="dl-start-date" type="text" inputmode="numeric" placeholder="DD-MM-YYYY" value="07-07-2026" autocomplete="off" />
+            </div>
+            <div class="profile-field">
+              <label for="dl-end-date">End Date</label>
+              <input class="profile-input" id="dl-end-date" type="text" inputmode="numeric" placeholder="DD-MM-YYYY" value="13-07-2026" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="dl-period-row" role="group" aria-label="Quick date range">
+            <button type="button" class="dl-period-btn" data-dl-period="today">Today</button>
+            <button type="button" class="dl-period-btn" data-dl-period="yesterday">Yesterday</button>
+            <button type="button" class="dl-period-btn is-active" data-dl-period="this-week">This Week</button>
+            <button type="button" class="dl-period-btn" data-dl-period="last-week">Last Week</button>
+            <button type="button" class="dl-period-btn" data-dl-period="this-month">This Month</button>
+            <button type="button" class="dl-period-btn" data-dl-period="last-month">Last Month</button>
+          </div>
+
+          <div class="dl-stat-grid">
+            <div class="dl-stat-card">
+              <span class="dl-stat-label">New Downline L1</span>
+              <strong class="dl-stat-value">0</strong>
+            </div>
+            <div class="dl-stat-card">
+              <span class="dl-stat-label">New All Downlines</span>
+              <strong class="dl-stat-value">0</strong>
+            </div>
+          </div>
+
+          <p class="dl-section-label">Up To Now</p>
+
+          <div class="dl-stat-grid">
+            <div class="dl-stat-card">
+              <span class="dl-stat-label">Total Downline L1</span>
+              <strong class="dl-stat-value">0</strong>
+            </div>
+            <div class="dl-stat-card">
+              <span class="dl-stat-label">Total All Downlines</span>
+              <strong class="dl-stat-value">0</strong>
+            </div>
+            <div class="dl-stat-card">
+              <span class="dl-stat-label">Downline Tiers</span>
+              <strong class="dl-stat-value">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="dl-panel" data-dl-panel="kpi" hidden>
+          <div class="acc-empty-panel dl-kpi-empty" role="status">
+            <p class="acc-empty-title">Downlines KPIs</p>
+            <p class="acc-empty-message">KPI charts will appear here (demo).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <script src="js/multi-live.js"></script>
+  <script src="js/referral.js"></script>
   <script src="js/referral-invite.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

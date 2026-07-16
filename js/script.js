@@ -1286,7 +1286,11 @@
     });
 
     $$(".btn-promo").forEach((btn) => {
-      btn.addEventListener("click", () => showToast("Demo only — promotion not opened"));
+      btn.addEventListener("click", (e) => {
+        if (btn.tagName === "A" && btn.getAttribute("href") && btn.getAttribute("href") !== "#") return;
+        e.preventDefault();
+        showToast("Demo only — promotion not opened");
+      });
     });
 
     setInterval(() => setPromoSlide(state.promoIndex + 1), 6000);

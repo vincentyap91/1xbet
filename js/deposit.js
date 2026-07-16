@@ -96,16 +96,43 @@
       id: 'bank-transfer',
       name: 'Bank Transfer',
       type: 'transfer',
-      min: 50,
-      max: 50000,
+      min: 3,
+      max: 100000,
+      currency: 'MYR',
       logoType: 'placeholder',
       logoStyle: 'background:linear-gradient(135deg,#003087 0%,#001f5c 100%);',
-      logoText: 'FPX',
-      bankName: 'Maybank',
-      accountNumber: '512345678901',
-      accountHolder: '1xBet Malaysia Sdn Bhd',
-      instructions: 'Transfer the exact amount to the account below, then upload your payment receipt.',
-      fields: ['amount', 'bank', 'qr', 'reference', 'upload']
+      logoText: 'Bank',
+      instructions: 'Upload a screenshot of your payment receipt to notify us of your payment.',
+      fields: ['amount', 'bank', 'reference', 'upload'],
+      banks: [
+        {
+          id: 'aba',
+          name: 'ABA BANK',
+          min: 3,
+          max: 100000,
+          accountNumber: '013374386',
+          accountName: 'CHON NAM',
+          logo: 'assets/images/payments/banks/aba.svg'
+        },
+        {
+          id: 'wing',
+          name: 'WING BANK',
+          min: 3,
+          max: 100000,
+          accountNumber: '0011223344',
+          accountName: 'CHON NAM',
+          logo: 'assets/images/payments/banks/wing.svg'
+        },
+        {
+          id: 'acleda',
+          name: 'ACLEDA BANK',
+          min: 3,
+          max: 100000,
+          accountNumber: '0987654321',
+          accountName: 'CHON NAM',
+          logo: 'assets/images/payments/banks/acleda.svg'
+        }
+      ]
     },
     bitcoin: {
       id: 'bitcoin',
@@ -202,7 +229,8 @@
 
   var state = {
     methodId: null,
-    amount: 50,
+    bankId: null,
+    amount: 0,
     reference: '',
     file: null,
     fileName: ''
@@ -227,6 +255,37 @@
 
   function getMethod() {
     return state.methodId ? METHODS[state.methodId] : null;
+  }
+
+  function getCurrency(method) {
+    return (method && method.currency) || 'MYR';
+  }
+
+  function getSelectedBank(method) {
+    if (!method || !method.banks || !method.banks.length) return null;
+    var id = state.bankId || method.banks[0].id;
+    for (var i = 0; i < method.banks.length; i++) {
+      if (method.banks[i].id === id) return method.banks[i];
+    }
+    return method.banks[0];
+  }
+
+  function getActiveLimits(method) {
+    var bank = getSelectedBank(method);
+    if (bank) {
+      return { min: bank.min, max: bank.max };
+    }
+    return { min: method.min, max: method.max };
+  }
+
+  function formatAmount(value) {
+    var n = Number(value);
+    if (!isFinite(n)) n = 0;
+    return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function formatRange(min, max) {
+    return min + ' - ' + max.toLocaleString();
   }
 
   function methodLogoHtml(method, large) {
@@ -268,9 +327,9 @@
         '<div class="dep-selected-method-info">' +
           '<div class="dep-selected-method-name">' + escapeHtml(method.name) + '</div>' +
           '<div class="dep-selected-method-limits">' +
-            '<span>Min <strong>' + method.min + ' MYR</strong></span>' +
+            '<span>Min <strong>' + method.min + ' ' + getCurrency(method) + '</strong></span>' +
             '<span class="dep-selected-method-sep">/</span>' +
-            '<span>Max <strong>' + method.max.toLocaleString() + ' MYR</strong></span>' +
+            '<span>Max <strong>' + method.max.toLocaleString() + ' ' + getCurrency(method) + '</strong></span>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -282,7 +341,7 @@
   function renderPresetButtons() {
     return PRESET_AMOUNTS.map(function (amt) {
       var label = amt >= 1000 ? '1k' : String(amt);
-      var active = state.amount === amt ? ' is-active' : '';
+      var active = Number(state.amount) === amt ? ' is-active' : '';
       return '<button type="button" class="dep-preset-btn' + active + '" data-dep-preset="' + amt + '">' + label + '</button>';
     }).join('');
   }
@@ -294,23 +353,75 @@
     });
   }
 
-  function renderAmountSection(method) {
+  function syncAmountDisplay(amount) {
+    var el = document.getElementById('dep-amount-display-value');
+    if (el) el.textContent = formatAmount(amount);
+  }
+
+  function renderSummary(method) {
+    var limits = getActiveLimits(method);
+    var balanceText = '0.00';
+    var headerBal = document.querySelector('.header-balance-row span:last-child');
+    if (headerBal) {
+      balanceText = headerBal.textContent.trim();
+      if (balanceText && balanceText.indexOf('.') === -1) balanceText = balanceText + '.00';
+    }
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Deposit amount</legend>' +
+      '<div class="dep-summary" aria-label="Deposit summary">' +
+        '<div class="dep-summary-row"><span>Balance</span><strong>' + escapeHtml(balanceText) + '</strong></div>' +
+        '<div class="dep-summary-row"><span>Min Deposit</span><strong id="dep-summary-min">' + limits.min + '</strong></div>' +
+      '</div>'
+    );
+  }
+
+  function renderBankPicker(method) {
+    if (!method.banks || !method.banks.length) return '';
+    var selected = getSelectedBank(method);
+    var cards = method.banks.map(function (bank) {
+      var isActive = selected && selected.id === bank.id;
+      return (
+        '<button type="button" class="dep-bank-card' + (isActive ? ' is-selected' : '') + '" data-dep-bank="' + escapeHtml(bank.id) + '" aria-pressed="' + (isActive ? 'true' : 'false') + '">' +
+          '<span class="dep-bank-card-logo"><img src="' + escapeHtml(bank.logo) + '" alt="" width="72" height="24" /></span>' +
+          '<span class="dep-bank-card-name">' + escapeHtml(bank.name) + '</span>' +
+          '<span class="dep-bank-card-range">' + formatRange(bank.min, bank.max) + '</span>' +
+        '</button>'
+      );
+    }).join('');
+
+    return (
+      '<section class="dep-panel dep-bank-pick" aria-labelledby="dep-bank-pick-title">' +
+        '<h2 class="dep-panel-title" id="dep-bank-pick-title">Select Bank</h2>' +
+        '<div class="dep-bank-grid" role="group" aria-label="Banks">' + cards + '</div>' +
+      '</section>'
+    );
+  }
+
+  function renderAmountSection(method) {
+    var currency = getCurrency(method);
+    var limits = getActiveLimits(method);
+    var amountValue = state.amount > 0 ? String(state.amount) : '';
+    return (
+      '<section class="dep-panel dep-amount-panel" aria-labelledby="dep-amount-title">' +
+        '<h2 class="dep-panel-title" id="dep-amount-title">Please Select or Enter Deposit Amount</h2>' +
         '<div class="profile-field dep-amount-field" id="dep-field-amount">' +
-          '<label for="dep-amount-input">Amount (MYR)</label>' +
           '<div class="dep-preset-grid" aria-label="Quick deposit amounts">' +
             renderPresetButtons() +
           '</div>' +
           '<div class="dep-amount-input-wrap">' +
-            '<span class="dep-amount-currency" aria-hidden="true">MYR</span>' +
-            '<input type="number" id="dep-amount-input" class="dep-amount-input" min="' + method.min + '" max="' + method.max + '" step="1" value="' + state.amount + '" inputmode="decimal" placeholder="0" />' +
+            '<span class="dep-amount-currency" aria-hidden="true">' + escapeHtml(currency) + '</span>' +
+            '<input type="number" id="dep-amount-input" class="dep-amount-input" min="' + limits.min + '" max="' + limits.max + '" step="1" value="' + escapeHtml(amountValue) + '" inputmode="decimal" placeholder="Enter the amount (' + currency + ' ' + limits.min + ' - ' + currency + ' ' + limits.max.toLocaleString() + ')" />' +
           '</div>' +
           '<span class="profile-field-error" id="dep-amount-error" role="alert" hidden></span>' +
-          '<p class="dep-amount-hint">Allowed range: ' + method.min + ' – ' + method.max.toLocaleString() + ' MYR</p>' +
+          '<p class="dep-amount-hint">' + currency + ' ' + limits.min + ' - ' + currency + ' ' + limits.max.toLocaleString() + '</p>' +
+          '<div class="dep-amount-display" aria-live="polite">' +
+            '<span class="dep-amount-display-label">Deposit Amount</span>' +
+            '<div class="dep-amount-display-value-wrap">' +
+              '<span class="dep-amount-display-currency">' + escapeHtml(currency) + '</span>' +
+              '<strong class="dep-amount-display-value" id="dep-amount-display-value">' + formatAmount(state.amount) + '</strong>' +
+            '</div>' +
+          '</div>' +
         '</div>' +
-      '</fieldset>'
+      '</section>'
     );
   }
 
@@ -331,30 +442,45 @@
     );
   }
 
-  function renderCopyRow(label, value, id) {
+  function renderCopyRow(label, value, id, opts) {
+    opts = opts || {};
+    var showCopy = opts.copy !== false;
     return (
-      '<div class="dep-info-row">' +
-        '<div class="dep-info-main">' +
-          '<span class="dep-info-label">' + escapeHtml(label) + '</span>' +
-          '<span class="dep-info-value" id="' + id + '">' + escapeHtml(value) + '</span>' +
+      '<div class="dep-account-row">' +
+        '<div class="dep-account-main">' +
+          '<span class="dep-account-label">' + escapeHtml(label) + '</span>' +
+          '<span class="dep-account-value" id="' + id + '">' + escapeHtml(value) + '</span>' +
         '</div>' +
-        '<button type="button" class="dep-copy-btn" data-dep-copy-target="' + id + '" aria-label="Copy ' + escapeHtml(label) + '">' +
-          '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
-        '</button>' +
+        (showCopy
+          ? '<button type="button" class="dep-copy-btn" data-dep-copy-target="' + id + '" aria-label="Copy ' + escapeHtml(label) + '">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
+            '</button>'
+          : '') +
       '</div>'
     );
   }
 
   function renderBankSection(method) {
+    var bank = getSelectedBank(method);
+    if (!bank) {
+      return (
+        '<section class="dep-panel dep-account-panel">' +
+          '<div class="dep-account-card">' +
+            renderCopyRow('Bank Name', method.bankName || method.name, 'dep-bank-name', { copy: false }) +
+            renderCopyRow('Account Number', method.accountNumber || '—', 'dep-account-number') +
+            renderCopyRow('Account Name', method.accountHolder || '—', 'dep-account-holder') +
+          '</div>' +
+        '</section>'
+      );
+    }
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Bank account information</legend>' +
-        '<div class="dep-info-card">' +
-          renderCopyRow('Bank name', method.bankName, 'dep-bank-name') +
-          renderCopyRow('Account number', method.accountNumber, 'dep-account-number') +
-          renderCopyRow('Account holder', method.accountHolder, 'dep-account-holder') +
+      '<section class="dep-panel dep-account-panel" id="dep-account-panel">' +
+        '<div class="dep-account-card">' +
+          renderCopyRow('Bank Name', bank.name, 'dep-bank-name', { copy: false }) +
+          renderCopyRow('Account Number', bank.accountNumber, 'dep-account-number') +
+          renderCopyRow('Account Name', bank.accountName, 'dep-account-holder') +
         '</div>' +
-      '</fieldset>'
+      '</section>'
     );
   }
 
@@ -363,7 +489,15 @@
       '<fieldset class="profile-fieldset dep-details-section">' +
         '<legend>Wallet information</legend>' +
         '<div class="dep-info-card">' +
-          renderCopyRow('Wallet number', method.walletNumber, 'dep-wallet-number') +
+          '<div class="dep-info-row">' +
+            '<div class="dep-info-main">' +
+              '<span class="dep-info-label">Wallet number</span>' +
+              '<span class="dep-info-value" id="dep-wallet-number">' + escapeHtml(method.walletNumber) + '</span>' +
+            '</div>' +
+            '<button type="button" class="dep-copy-btn" data-dep-copy-target="dep-wallet-number" aria-label="Copy Wallet number">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
+            '</button>' +
+          '</div>' +
         '</div>' +
       '</fieldset>'
     );
@@ -374,8 +508,24 @@
       '<fieldset class="profile-fieldset dep-details-section">' +
         '<legend>Cryptocurrency details</legend>' +
         '<div class="dep-info-card">' +
-          renderCopyRow('Network', method.network, 'dep-crypto-network') +
-          renderCopyRow('Wallet address', method.address, 'dep-crypto-address') +
+          '<div class="dep-info-row">' +
+            '<div class="dep-info-main">' +
+              '<span class="dep-info-label">Network</span>' +
+              '<span class="dep-info-value" id="dep-crypto-network">' + escapeHtml(method.network) + '</span>' +
+            '</div>' +
+            '<button type="button" class="dep-copy-btn" data-dep-copy-target="dep-crypto-network" aria-label="Copy Network">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
+            '</button>' +
+          '</div>' +
+          '<div class="dep-info-row">' +
+            '<div class="dep-info-main">' +
+              '<span class="dep-info-label">Wallet address</span>' +
+              '<span class="dep-info-value" id="dep-crypto-address">' + escapeHtml(method.address) + '</span>' +
+            '</div>' +
+            '<button type="button" class="dep-copy-btn" data-dep-copy-target="dep-crypto-address" aria-label="Copy Wallet address">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
+            '</button>' +
+          '</div>' +
         '</div>' +
       '</fieldset>'
     );
@@ -383,13 +533,17 @@
 
   function renderReferenceSection() {
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Reference / Transaction ID <span class="dep-optional">(optional)</span></legend>' +
+      '<section class="dep-panel dep-reference-panel">' +
         '<div class="profile-field" id="dep-field-reference">' +
-          '<label for="dep-reference-input">Transaction reference</label>' +
-          '<input type="text" id="dep-reference-input" class="profile-input" placeholder="Enter reference or transaction ID" value="' + escapeHtml(state.reference) + '" autocomplete="off" />' +
+          '<label class="dep-field-label" for="dep-reference-input">Reference / Transaction ID (Optional)</label>' +
+          '<div class="dep-reference-wrap">' +
+            '<input type="text" id="dep-reference-input" class="profile-input dep-reference-input" placeholder="" value="' + escapeHtml(state.reference) + '" autocomplete="off" />' +
+            '<button type="button" class="dep-copy-btn dep-copy-btn--ghost" data-dep-copy-target="dep-reference-input" data-dep-copy-input="dep-reference-input" aria-label="Copy reference">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="4" y="4" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M3 10V3a1 1 0 011-1h7" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>' +
+            '</button>' +
+          '</div>' +
         '</div>' +
-      '</fieldset>'
+      '</section>'
     );
   }
 
@@ -397,42 +551,54 @@
     var fileLabel = state.fileName || 'Tap to upload file';
     var hasFile = !!state.fileName;
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Upload payment receipt</legend>' +
+      '<section class="dep-panel dep-upload-panel">' +
+        '<p class="dep-upload-required">Upload a screenshot or PDF of your payment receipt to notify us of your payment <span aria-hidden="true">*</span></p>' +
         '<div class="profile-field" id="dep-field-upload">' +
           '<label class="dep-upload-zone' + (hasFile ? ' has-file' : '') + '" id="dep-upload-zone" tabindex="0" role="button">' +
             '<input type="file" id="dep-upload-input" accept="image/*,.pdf" hidden />' +
             '<span class="dep-upload-inner">' +
               '<span class="dep-upload-icon-wrap" aria-hidden="true">' +
-                '<svg class="dep-upload-icon-default" width="22" height="22" viewBox="0 0 24 24"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 18v2h16v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+                '<svg class="dep-upload-icon-default" width="28" height="28" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M14 2v6h6M12 18v-6m0 0l-2.5 2.5M12 12l2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
                 '<svg class="dep-upload-icon-success" width="22" height="22" viewBox="0 0 24 24"><path d="M7 12.5l3.5 3.5L17 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
               '</span>' +
               '<span class="dep-upload-text" id="dep-upload-label">' + escapeHtml(fileLabel) + '</span>' +
-              '<span class="dep-upload-hint">Upload a screenshot or PDF of your payment receipt</span>' +
-              '<span class="dep-upload-formats">PNG, JPG, PDF</span>' +
             '</span>' +
           '</label>' +
           '<span class="profile-field-error" id="dep-upload-error" role="alert" hidden></span>' +
         '</div>' +
-      '</fieldset>'
+      '</section>'
     );
-  }
-
-  function highlightNotes(text) {
-    var escaped = escapeHtml(text);
-    return escaped.replace(/Scan the QR code/gi, '<span class="dep-notes-accent">Scan the QR code</span>');
   }
 
   function renderInstructions(method) {
     if (!method.instructions) return '';
     return (
-      '<div class="dep-promo-banner dep-notes-banner">' +
-        '<strong>Notes:</strong> ' + highlightNotes(method.instructions) +
+      '<aside class="dep-notes-banner" aria-label="Notes">' +
+        '<strong class="dep-notes-title">Notes :</strong> ' +
+        '<span class="dep-notes-text">' + escapeHtml(method.instructions) + '</span>' +
+      '</aside>'
+    );
+  }
+
+  function renderTransferDetailsForm(method) {
+    return (
+      renderSummary(method) +
+      '<div class="dep-details-card">' +
+        renderInstructions(method) +
+        renderBankPicker(method) +
+        renderAmountSection(method) +
+        renderBankSection(method) +
+        renderReferenceSection() +
+        renderUploadSection() +
       '</div>'
     );
   }
 
   function renderDetailsForm(method) {
+    if (method.type === 'transfer' && method.banks) {
+      return renderTransferDetailsForm(method);
+    }
+
     var html = renderMethodCard(method) + renderInstructions(method);
 
     if (method.fields.indexOf('amount') !== -1) {
@@ -460,18 +626,39 @@
     return html;
   }
 
+  function updateActionsBar(method) {
+    var actions = document.getElementById('dep-details-actions');
+    var backBottom = document.getElementById('dep-details-back-bottom');
+    var isTransfer = method && method.type === 'transfer';
+    if (actions) actions.classList.toggle('dep-details-actions--submit-only', !!isTransfer);
+    if (backBottom) backBottom.hidden = !!isTransfer;
+    if (submitBtn) submitBtn.classList.toggle('dep-btn-primary--section', !!isTransfer);
+    if (submitLabel) {
+      submitLabel.textContent = isTransfer
+        ? 'Submit'
+        : (method.type === 'card' || method.type === 'banking' ? 'Continue' : 'Submit deposit');
+    }
+  }
+
   function openDetails(methodId) {
     var method = METHODS[methodId];
     if (!method) return;
 
     state.methodId = methodId;
-
-    if (detailsTitle) detailsTitle.textContent = 'Deposit via ' + method.name;
-    if (detailsSub) detailsSub.textContent = 'Enter your deposit details to continue';
-
-    if (submitLabel) {
-      submitLabel.textContent = method.type === 'card' || method.type === 'banking' ? 'Continue' : 'Submit deposit';
+    state.bankId = method.banks && method.banks[0] ? method.banks[0].id : null;
+    state.amount = method.type === 'transfer' ? 0 : (state.amount || method.min);
+    if (method.type !== 'transfer' && (!state.amount || state.amount < method.min)) {
+      state.amount = method.min;
     }
+
+    if (detailsTitle) detailsTitle.textContent = method.type === 'transfer' ? 'Deposit' : ('Deposit via ' + method.name);
+    if (detailsSub) {
+      detailsSub.textContent = method.type === 'transfer'
+        ? 'Complete your bank transfer details'
+        : 'Enter your deposit details to continue';
+    }
+
+    updateActionsBar(method);
 
     if (detailsContent) {
       detailsContent.innerHTML = renderDetailsForm(method);
@@ -488,12 +675,13 @@
     var uploadZone = document.getElementById('dep-upload-zone');
 
     if (amountInput) {
-      amountInput.value = String(state.amount);
       amountInput.addEventListener('input', function () {
         state.amount = Number(amountInput.value) || 0;
         syncPresetButtons(state.amount);
+        syncAmountDisplay(state.amount);
         clearFieldError('dep-field-amount', 'dep-amount-error');
       });
+      syncAmountDisplay(state.amount);
     }
 
     if (referenceInput) {
@@ -516,13 +704,7 @@
         state.file = file || null;
         state.fileName = file ? file.name : '';
         var label = document.getElementById('dep-upload-label');
-        var hint = uploadZone.querySelector('.dep-upload-hint');
         if (label) label.textContent = state.fileName || 'Tap to upload file';
-        if (hint) {
-          hint.textContent = file
-            ? 'Tap again to replace this file'
-            : 'Upload a screenshot or PDF of your payment receipt';
-        }
         uploadZone.classList.toggle('has-file', !!file);
         clearFieldError('dep-field-upload', 'dep-upload-error');
       });
@@ -534,25 +716,47 @@
     }
   }
 
+  function selectBank(bankId) {
+    var method = getMethod();
+    if (!method || !method.banks) return;
+    state.bankId = bankId;
+    if (detailsContent) {
+      detailsContent.innerHTML = renderDetailsForm(method);
+      bindFieldEvents();
+    }
+  }
+
   function handleDetailsClick(e) {
+    var bankBtn = e.target.closest('[data-dep-bank]');
     var presetBtn = e.target.closest('[data-dep-preset]');
     var copyBtn = e.target.closest('[data-dep-copy-target]');
     var amountInput = document.getElementById('dep-amount-input');
 
+    if (bankBtn) {
+      selectBank(bankBtn.getAttribute('data-dep-bank'));
+      return;
+    }
+
     if (presetBtn && amountInput) {
       var method = getMethod();
-      var min = method ? method.min : 1;
-      var max = method ? method.max : 999999;
+      var limits = method ? getActiveLimits(method) : { min: 1, max: 999999 };
       var preset = Number(presetBtn.getAttribute('data-dep-preset'));
-      var next = Math.min(max, Math.max(min, preset));
+      var next = Math.min(limits.max, Math.max(limits.min, preset));
       amountInput.value = String(next);
       state.amount = next;
       syncPresetButtons(next);
+      syncAmountDisplay(next);
       clearFieldError('dep-field-amount', 'dep-amount-error');
       return;
     }
 
     if (copyBtn) {
+      var inputId = copyBtn.getAttribute('data-dep-copy-input');
+      if (inputId) {
+        var input = document.getElementById(inputId);
+        if (input) copyText(input.value || '');
+        return;
+      }
       var targetId = copyBtn.getAttribute('data-dep-copy-target');
       var target = document.getElementById(targetId);
       if (target) copyText(target.textContent);
@@ -561,6 +765,10 @@
   }
 
   function copyText(text) {
+    if (!text) {
+      toast('Nothing to copy');
+      return;
+    }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () {
         toast('Copied successfully');
@@ -598,6 +806,8 @@
 
     var valid = true;
     var amountInput = document.getElementById('dep-amount-input');
+    var limits = getActiveLimits(method);
+    var currency = getCurrency(method);
 
     if (method.fields.indexOf('amount') !== -1 && amountInput) {
       var amount = Number(amountInput.value);
@@ -605,11 +815,11 @@
       if (!amount || amount <= 0) {
         setFieldError('dep-field-amount', 'dep-amount-error', 'Please enter a deposit amount.');
         valid = false;
-      } else if (amount < method.min) {
-        setFieldError('dep-field-amount', 'dep-amount-error', 'Minimum deposit is ' + method.min + ' MYR.');
+      } else if (amount < limits.min) {
+        setFieldError('dep-field-amount', 'dep-amount-error', 'Minimum deposit is ' + limits.min + ' ' + currency + '.');
         valid = false;
-      } else if (amount > method.max) {
-        setFieldError('dep-field-amount', 'dep-amount-error', 'Maximum deposit is ' + method.max.toLocaleString() + ' MYR.');
+      } else if (amount > limits.max) {
+        setFieldError('dep-field-amount', 'dep-amount-error', 'Maximum deposit is ' + limits.max.toLocaleString() + ' ' + currency + '.');
         valid = false;
       } else {
         clearFieldError('dep-field-amount', 'dep-amount-error');
@@ -636,7 +846,9 @@
       if (loading) {
         submitLabel.textContent = 'Processing…';
       } else if (method) {
-        submitLabel.textContent = method.type === 'card' || method.type === 'banking' ? 'Continue' : 'Submit deposit';
+        submitLabel.textContent = method.type === 'transfer'
+          ? 'Submit'
+          : (method.type === 'card' || method.type === 'banking' ? 'Continue' : 'Submit deposit');
       }
     }
     if (submitSpinner) submitSpinner.hidden = !loading;
@@ -656,18 +868,24 @@
   }
 
   function goBack() {
+    var actions = document.getElementById('dep-details-actions');
+    var backBottom = document.getElementById('dep-details-back-bottom');
+    if (actions) actions.classList.remove('dep-details-actions--submit-only');
+    if (backBottom) backBottom.hidden = false;
+    if (submitBtn) submitBtn.classList.remove('dep-btn-primary--section');
     showStep('methods');
   }
 
   function resetFlow() {
     state.methodId = null;
-    state.amount = 50;
+    state.bankId = null;
+    state.amount = 0;
     state.reference = '';
     state.file = null;
     state.fileName = '';
     isSubmitting = false;
     if (detailsContent) detailsContent.innerHTML = '';
-    showStep('methods');
+    goBack();
   }
 
   function initMethodSelection() {

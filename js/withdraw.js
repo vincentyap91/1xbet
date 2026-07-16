@@ -1,11 +1,12 @@
-/* withdraw.js — multi-step withdraw flow (methods → details → success) */
+/* withdraw.js — multi-step withdraw flow (methods → details → success)
+   Step 2 layout/tokens aligned with deposit step 2 (DESIGN_SYSTEM.md) */
 (function () {
   'use strict';
 
   if (document.body.dataset.page !== 'withdraw') return;
 
   var SUBMIT_MS = 1400;
-  var BALANCE = 0;
+  var PRESET_AMOUNTS = [5, 10, 50, 100, 500, 1000];
 
   var METHODS = {
     touchngo: {
@@ -60,8 +61,8 @@
       id: 'bank-transfer',
       name: 'Normal Bank Transfer',
       type: 'transfer',
-      min: 50,
-      max: 50000,
+      min: 3,
+      max: 100000,
       fields: ['amount', 'bank']
     },
     bitcoin: {
@@ -91,16 +92,27 @@
   };
 
   var BANKS = [
-    'Maybank',
-    'CIMB Bank',
-    'Public Bank',
-    'RHB Bank',
-    'Hong Leong Bank',
-    'AmBank',
-    'Bank Islam',
-    'Bank Rakyat',
-    'OCBC Bank',
-    'HSBC Bank'
+    {
+      id: 'aba',
+      name: 'ABA BANK',
+      min: 3,
+      max: 100000,
+      logo: 'assets/images/payments/banks/aba.svg'
+    },
+    {
+      id: 'wing',
+      name: 'WING BANK',
+      min: 3,
+      max: 100000,
+      logo: 'assets/images/payments/banks/wing.svg'
+    },
+    {
+      id: 'acleda',
+      name: 'ACLEDA BANK',
+      min: 3,
+      max: 100000,
+      logo: 'assets/images/payments/banks/acleda.svg'
+    }
   ];
 
   var stepMethods = document.getElementById('wd-step-methods');
@@ -115,11 +127,11 @@
 
   var state = {
     methodId: null,
-    bankName: '',
+    bankId: '',
     accountName: '',
     accountNumber: '',
     cryptoAddress: '',
-    amount: ''
+    amount: 0
   };
 
   var isSubmitting = false;
@@ -150,6 +162,37 @@
     return state.methodId ? METHODS[state.methodId] : null;
   }
 
+  function readBalance() {
+    var headerBal = document.querySelector('.header-balance-row span:last-child');
+    if (!headerBal) return 0;
+    var n = Number(String(headerBal.textContent).replace(/[^\d.-]/g, ''));
+    return isFinite(n) ? n : 0;
+  }
+
+  function getSelectedBank() {
+    if (!state.bankId) return BANKS[0] || null;
+    for (var i = 0; i < BANKS.length; i++) {
+      if (BANKS[i].id === state.bankId) return BANKS[i];
+    }
+    return BANKS[0] || null;
+  }
+
+  function getActiveLimits(method) {
+    var bank = (method.fields.indexOf('bank') !== -1) ? getSelectedBank() : null;
+    if (bank) return { min: bank.min, max: bank.max };
+    return { min: method.min, max: method.max };
+  }
+
+  function formatAmount(value) {
+    var n = Number(value);
+    if (!isFinite(n)) n = 0;
+    return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function formatRange(min, max) {
+    return min + ' - ' + max.toLocaleString();
+  }
+
   function showStep(step) {
     var steps = [
       { el: stepMethods, name: 'methods' },
@@ -170,150 +213,193 @@
 
   function notesFor(method) {
     if (method.type === 'transfer' || method.type === 'banking') {
-      return [
-        'Bank transfer takes up to 24 hours to reflect in your bank account.',
-        'If the entered and bank account details are inconsistent, the company reserves the right to reject the application.'
-      ];
+      return 'Upload accurate bank details. Transfers may take up to 24 hours. Mismatched account details can be rejected.';
     }
     if (method.type === 'crypto') {
-      return [
-        'Crypto withdrawals may take up to 1 hour depending on network confirmation.',
-        'Double-check the wallet address and network before submitting.'
-      ];
+      return 'Crypto withdrawals may take up to 1 hour. Double-check the wallet address and network before submitting.';
     }
-    return [
-      'E-wallet withdrawals are usually processed within 15 minutes.',
-      'Make sure the account name matches your registered profile.'
-    ];
-  }
-
-  function minLabel(method) {
-    return method.min != null ? method.min.toFixed(2) + ' MYR' : '—';
+    return 'E-wallet withdrawals are usually processed within 15 minutes. Account name must match your registered profile.';
   }
 
   function renderSummary(method) {
-    var notes = notesFor(method).map(function (n) {
-      return '<li>' + escapeHtml(n) + '</li>';
-    }).join('');
-
+    var limits = getActiveLimits(method);
+    var balance = readBalance();
     return (
-      '<div class="wd-summary">' +
-        '<div class="dep-info-card wd-summary-card">' +
-          '<div class="dep-info-row wd-summary-row"><span>Balance</span><strong>MYR ' + BALANCE.toFixed(2) + '</strong></div>' +
-          '<div class="dep-info-row wd-summary-row"><span>Min Withdrawal</span><strong>' + escapeHtml(minLabel(method)) + '</strong></div>' +
-        '</div>' +
-        '<div class="wd-notes" role="note">' +
-          '<span class="cpw-info-icon" aria-hidden="true">i</span>' +
-          '<div class="wd-notes-copy">' +
-            '<span class="wd-notes-title">Notes</span>' +
-            '<ul>' + notes + '</ul>' +
-          '</div>' +
-        '</div>' +
+      '<div class="dep-summary" aria-label="Withdrawal summary">' +
+        '<div class="dep-summary-row"><span>Balance</span><strong>' + formatAmount(balance) + '</strong></div>' +
+        '<div class="dep-summary-row"><span>Min Withdrawal</span><strong id="wd-summary-min">' + limits.min + '</strong></div>' +
       '</div>'
+    );
+  }
+
+  function renderNotes(method) {
+    return (
+      '<aside class="dep-notes-banner" aria-label="Notes">' +
+        '<strong class="dep-notes-title">Notes :</strong> ' +
+        '<span class="dep-notes-text">' + escapeHtml(notesFor(method)) + '</span>' +
+      '</aside>'
     );
   }
 
   function renderBalanceAlert() {
-    if (BALANCE > 0) return '';
+    var balance = readBalance();
+    if (balance > 0) return '';
     return (
       '<div class="wd-alert" role="alert">' +
         '<span class="wd-alert-icon" aria-hidden="true">!</span>' +
-        '<p>Your Account Balance is ' + BALANCE.toFixed(2) + '</p>' +
+        '<p>Your Account Balance is ' + formatAmount(balance) + '</p>' +
       '</div>'
     );
   }
 
-  function renderBankFields(method) {
-    var options = ['<option value=\"\">Please Select Bank</option>'].concat(
-      BANKS.map(function (bank) {
-        var selected = state.bankName === bank ? ' selected' : '';
-        return '<option value=\"' + escapeHtml(bank) + '\"' + selected + '>' + escapeHtml(bank) + '</option>';
-      })
-    ).join('');
+  function renderBankPicker(method) {
+    if (method.fields.indexOf('bank') === -1) return '';
+    var selected = getSelectedBank();
+    var cards = BANKS.map(function (bank) {
+      var isActive = selected && selected.id === bank.id;
+      return (
+        '<button type="button" class="dep-bank-card' + (isActive ? ' is-selected' : '') + '" data-wd-bank="' + escapeHtml(bank.id) + '" aria-pressed="' + (isActive ? 'true' : 'false') + '">' +
+          '<span class="dep-bank-card-logo"><img src="' + escapeHtml(bank.logo) + '" alt="" width="72" height="24" /></span>' +
+          '<span class="dep-bank-card-name">' + escapeHtml(bank.name) + '</span>' +
+          '<span class="dep-bank-card-range">' + formatRange(bank.min, bank.max) + '</span>' +
+        '</button>'
+      );
+    }).join('');
 
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Bank Account Info</legend>' +
-        '<div class="profile-field" id="wd-field-bank">' +
-          '<label for="wd-bank-name">Bank Name</label>' +
-          '<select class="profile-select" id="wd-bank-name" required>' + options + '</select>' +
-          '<span class="profile-field-error" id="wd-bank-error" role="alert" hidden></span>' +
+      '<section class="dep-panel dep-bank-pick" aria-labelledby="wd-bank-pick-title">' +
+        '<h2 class="dep-panel-title" id="wd-bank-pick-title">Select Bank</h2>' +
+        '<div class="dep-bank-grid" role="group" aria-label="Banks">' + cards + '</div>' +
+        '<span class="profile-field-error" id="wd-bank-error" role="alert" hidden></span>' +
+      '</section>'
+    );
+  }
+
+  function renderPresetButtons() {
+    return PRESET_AMOUNTS.map(function (amt) {
+      var label = amt >= 1000 ? '1k' : String(amt);
+      var active = Number(state.amount) === amt ? ' is-active' : '';
+      return '<button type="button" class="dep-preset-btn' + active + '" data-wd-preset="' + amt + '">' + label + '</button>';
+    }).join('');
+  }
+
+  function syncPresetButtons(amount) {
+    document.querySelectorAll('[data-wd-preset]').forEach(function (btn) {
+      btn.classList.toggle('is-active', Number(btn.getAttribute('data-wd-preset')) === amount);
+    });
+  }
+
+  function syncAmountDisplay(amount) {
+    var el = document.getElementById('wd-amount-display-value');
+    if (el) el.textContent = formatAmount(amount);
+  }
+
+  function renderAmountSection(method) {
+    var limits = getActiveLimits(method);
+    var amountValue = state.amount > 0 ? String(state.amount) : '';
+    return (
+      '<section class="dep-panel dep-amount-panel" aria-labelledby="wd-amount-title">' +
+        '<h2 class="dep-panel-title" id="wd-amount-title">Please Select or Enter Withdrawal Amount</h2>' +
+        '<div class="profile-field dep-amount-field" id="wd-field-amount">' +
+          '<div class="dep-preset-grid" aria-label="Quick withdrawal amounts">' +
+            renderPresetButtons() +
+          '</div>' +
+          '<div class="dep-amount-input-wrap">' +
+            '<span class="dep-amount-currency" aria-hidden="true">MYR</span>' +
+            '<input type="number" id="wd-amount-input" class="dep-amount-input" min="' + limits.min + '" max="' + limits.max + '" step="0.01" value="' + escapeHtml(amountValue) + '" inputmode="decimal" placeholder="Enter the amount (MYR ' + limits.min + ' - MYR ' + limits.max.toLocaleString() + ')" />' +
+          '</div>' +
+          '<span class="profile-field-error" id="wd-amount-error" role="alert" hidden></span>' +
+          '<p class="dep-amount-hint">MYR ' + limits.min + ' - MYR ' + limits.max.toLocaleString() + '</p>' +
+          '<div class="dep-amount-display" aria-live="polite">' +
+            '<span class="dep-amount-display-label">Withdrawal Amount</span>' +
+            '<div class="dep-amount-display-value-wrap">' +
+              '<span class="dep-amount-display-currency">MYR</span>' +
+              '<strong class="dep-amount-display-value" id="wd-amount-display-value">' + formatAmount(state.amount) + '</strong>' +
+            '</div>' +
+          '</div>' +
         '</div>' +
+      '</section>'
+    );
+  }
+
+  function renderBankAccountFields() {
+    return (
+      '<section class="dep-panel">' +
+        '<h2 class="dep-panel-title">Bank Account Info</h2>' +
+        renderBalanceAlert() +
         '<div class="profile-field" id="wd-field-account-name">' +
-          '<label for="wd-account-name">Account Name</label>' +
+          '<label class="dep-field-label" for="wd-account-name">Account Name</label>' +
           '<input class="profile-input" id="wd-account-name" type="text" placeholder="Enter Your Account Name" autocomplete="name" value="' + escapeHtml(state.accountName) + '" required />' +
           '<span class="profile-field-error" id="wd-account-name-error" role="alert" hidden></span>' +
         '</div>' +
-        renderBalanceAlert() +
         '<div class="profile-field" id="wd-field-account-number">' +
-          '<label for="wd-account-number">Account Number</label>' +
+          '<label class="dep-field-label" for="wd-account-number">Account Number</label>' +
           '<input class="profile-input" id="wd-account-number" type="text" inputmode="numeric" placeholder="Enter Your Account Number" value="' + escapeHtml(state.accountNumber) + '" required />' +
           '<span class="profile-field-error" id="wd-account-number-error" role="alert" hidden></span>' +
         '</div>' +
-        renderAmountField(method) +
-      '</fieldset>'
+      '</section>'
     );
   }
 
-  function renderAccountField(method) {
+  function renderWalletAccountFields() {
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Account Info</legend>' +
+      '<section class="dep-panel">' +
+        '<h2 class="dep-panel-title">Account Info</h2>' +
+        renderBalanceAlert() +
         '<div class="profile-field" id="wd-field-account-name">' +
-          '<label for="wd-account-name">Account Name</label>' +
+          '<label class="dep-field-label" for="wd-account-name">Account Name</label>' +
           '<input class="profile-input" id="wd-account-name" type="text" placeholder="Enter Your Account Name" value="' + escapeHtml(state.accountName) + '" required />' +
           '<span class="profile-field-error" id="wd-account-name-error" role="alert" hidden></span>' +
         '</div>' +
-        renderBalanceAlert() +
         '<div class="profile-field" id="wd-field-account-number">' +
-          '<label for="wd-account-number">Account / Wallet ID</label>' +
+          '<label class="dep-field-label" for="wd-account-number">Account / Wallet ID</label>' +
           '<input class="profile-input" id="wd-account-number" type="text" placeholder="Enter Your Account Number" value="' + escapeHtml(state.accountNumber) + '" required />' +
           '<span class="profile-field-error" id="wd-account-number-error" role="alert" hidden></span>' +
         '</div>' +
-        renderAmountField(method) +
-      '</fieldset>'
+      '</section>'
     );
   }
 
-  function renderCryptoFields(method) {
+  function renderCryptoFields() {
     return (
-      '<fieldset class="profile-fieldset dep-details-section">' +
-        '<legend>Wallet Info</legend>' +
+      '<section class="dep-panel">' +
+        '<h2 class="dep-panel-title">Wallet Info</h2>' +
         renderBalanceAlert() +
         '<div class="profile-field" id="wd-field-crypto">' +
-          '<label for="wd-crypto-address">Wallet Address</label>' +
+          '<label class="dep-field-label" for="wd-crypto-address">Wallet Address</label>' +
           '<input class="profile-input" id="wd-crypto-address" type="text" placeholder="Enter Your Wallet Address" value="' + escapeHtml(state.cryptoAddress) + '" required />' +
           '<span class="profile-field-error" id="wd-crypto-error" role="alert" hidden></span>' +
         '</div>' +
-        renderAmountField(method) +
-      '</fieldset>'
-    );
-  }
-
-  function renderAmountField(method) {
-    return (
-      '<div class="profile-field dep-amount-field" id="wd-field-amount">' +
-        '<label for="wd-amount-input">Amount</label>' +
-        '<div class="dep-amount-input-wrap">' +
-          '<span class="dep-amount-currency" aria-hidden="true">MYR</span>' +
-          '<input type="number" id="wd-amount-input" class="dep-amount-input" min="' + method.min + '" max="' + method.max + '" step="0.01" value="' + escapeHtml(state.amount) + '" inputmode="decimal" placeholder="Please Enter Amount" />' +
-        '</div>' +
-        '<span class="profile-field-error" id="wd-amount-error" role="alert" hidden></span>' +
-        '<p class="dep-amount-hint">Min ' + method.min + ' – Max ' + method.max.toLocaleString() + ' MYR</p>' +
-      '</div>'
+      '</section>'
     );
   }
 
   function renderDetailsForm(method) {
-    var html = renderSummary(method);
+    var body = renderNotes(method);
+
     if (method.fields.indexOf('bank') !== -1) {
-      html += renderBankFields(method);
+      body += renderBankPicker(method) + renderBankAccountFields();
     } else if (method.fields.indexOf('crypto') !== -1) {
-      html += renderCryptoFields(method);
+      body += renderCryptoFields();
     } else {
-      html += renderAccountField(method);
+      body += renderWalletAccountFields();
     }
-    return html;
+
+    body += renderAmountSection(method);
+
+    return (
+      renderSummary(method) +
+      '<div class="dep-details-card">' + body + '</div>'
+    );
+  }
+
+  function updateActionsBar() {
+    var actions = document.getElementById('wd-details-actions');
+    var backBottom = document.getElementById('wd-details-back-bottom');
+    if (actions) actions.classList.add('dep-details-actions--submit-only');
+    if (backBottom) backBottom.hidden = true;
+    if (submitBtn) submitBtn.classList.add('dep-btn-primary--section');
+    if (submitLabel) submitLabel.textContent = 'Submit';
   }
 
   function openDetails(methodId) {
@@ -321,9 +407,13 @@
     if (!method) return;
 
     state.methodId = methodId;
-    if (detailsTitle) detailsTitle.textContent = method.name;
-    if (detailsSub) detailsSub.textContent = 'Enter your withdrawal details to continue';
-    if (submitLabel) submitLabel.textContent = 'Withdraw';
+    state.bankId = method.fields.indexOf('bank') !== -1 ? BANKS[0].id : '';
+    state.amount = 0;
+
+    if (detailsTitle) detailsTitle.textContent = 'Withdraw';
+    if (detailsSub) detailsSub.textContent = 'Complete your withdrawal details';
+    updateActionsBar();
+
     if (detailsContent) {
       detailsContent.innerHTML = renderDetailsForm(method);
       bindFieldEvents();
@@ -352,18 +442,11 @@
   }
 
   function bindFieldEvents() {
-    var bank = document.getElementById('wd-bank-name');
     var accountName = document.getElementById('wd-account-name');
     var accountNumber = document.getElementById('wd-account-number');
     var crypto = document.getElementById('wd-crypto-address');
     var amount = document.getElementById('wd-amount-input');
 
-    if (bank) {
-      bank.addEventListener('change', function () {
-        state.bankName = bank.value;
-        clearFieldError('wd-field-bank', 'wd-bank-error');
-      });
-    }
     if (accountName) {
       accountName.addEventListener('input', function () {
         state.accountName = accountName.value;
@@ -384,9 +467,46 @@
     }
     if (amount) {
       amount.addEventListener('input', function () {
-        state.amount = amount.value;
+        state.amount = Number(amount.value) || 0;
+        syncPresetButtons(state.amount);
+        syncAmountDisplay(state.amount);
         clearFieldError('wd-field-amount', 'wd-amount-error');
       });
+      syncAmountDisplay(state.amount);
+    }
+  }
+
+  function selectBank(bankId) {
+    var method = getMethod();
+    if (!method) return;
+    state.bankId = bankId;
+    clearFieldError('wd-field-bank', 'wd-bank-error');
+    if (detailsContent) {
+      detailsContent.innerHTML = renderDetailsForm(method);
+      bindFieldEvents();
+    }
+  }
+
+  function handleDetailsClick(e) {
+    var bankBtn = e.target.closest('[data-wd-bank]');
+    var presetBtn = e.target.closest('[data-wd-preset]');
+    var amountInput = document.getElementById('wd-amount-input');
+
+    if (bankBtn) {
+      selectBank(bankBtn.getAttribute('data-wd-bank'));
+      return;
+    }
+
+    if (presetBtn && amountInput) {
+      var method = getMethod();
+      var limits = method ? getActiveLimits(method) : { min: 1, max: 999999 };
+      var preset = Number(presetBtn.getAttribute('data-wd-preset'));
+      var next = Math.min(limits.max, Math.max(limits.min, preset));
+      amountInput.value = String(next);
+      state.amount = next;
+      syncPresetButtons(next);
+      syncAmountDisplay(next);
+      clearFieldError('wd-field-amount', 'wd-amount-error');
     }
   }
 
@@ -395,9 +515,15 @@
     if (!method) return false;
     var valid = true;
     var amount = Number(state.amount);
+    var limits = getActiveLimits(method);
+    var balance = readBalance();
 
-    if (method.fields.indexOf('bank') !== -1 && !state.bankName) {
-      setFieldError('wd-field-bank', 'wd-bank-error', 'Please select a bank.');
+    if (method.fields.indexOf('bank') !== -1 && !state.bankId) {
+      var bankErr = document.getElementById('wd-bank-error');
+      if (bankErr) {
+        bankErr.hidden = false;
+        bankErr.textContent = 'Please select a bank.';
+      }
       valid = false;
     }
 
@@ -417,16 +543,16 @@
       valid = false;
     }
 
-    if (!state.amount || Number.isNaN(amount)) {
+    if (!state.amount || Number.isNaN(amount) || amount <= 0) {
       setFieldError('wd-field-amount', 'wd-amount-error', 'Please enter an amount.');
       valid = false;
-    } else if (amount < method.min) {
-      setFieldError('wd-field-amount', 'wd-amount-error', 'Minimum withdrawal is ' + method.min + ' MYR.');
+    } else if (amount < limits.min) {
+      setFieldError('wd-field-amount', 'wd-amount-error', 'Minimum withdrawal is ' + limits.min + ' MYR.');
       valid = false;
-    } else if (amount > method.max) {
-      setFieldError('wd-field-amount', 'wd-amount-error', 'Maximum withdrawal is ' + method.max.toLocaleString() + ' MYR.');
+    } else if (amount > limits.max) {
+      setFieldError('wd-field-amount', 'wd-amount-error', 'Maximum withdrawal is ' + limits.max.toLocaleString() + ' MYR.');
       valid = false;
-    } else if (amount > BALANCE) {
+    } else if (amount > balance) {
       setFieldError('wd-field-amount', 'wd-amount-error', 'Amount exceeds your available balance.');
       valid = false;
     }
@@ -439,7 +565,7 @@
     if (!submitBtn) return;
     submitBtn.disabled = loading;
     submitBtn.classList.toggle('is-loading', loading);
-    if (submitLabel) submitLabel.textContent = loading ? 'Processing…' : 'Withdraw';
+    if (submitLabel) submitLabel.textContent = loading ? 'Processing…' : 'Submit';
     if (submitSpinner) submitSpinner.hidden = !loading;
   }
 
@@ -459,19 +585,24 @@
   }
 
   function goBack() {
+    var actions = document.getElementById('wd-details-actions');
+    var backBottom = document.getElementById('wd-details-back-bottom');
+    if (actions) actions.classList.remove('dep-details-actions--submit-only');
+    if (backBottom) backBottom.hidden = false;
+    if (submitBtn) submitBtn.classList.remove('dep-btn-primary--section');
     showStep('methods');
   }
 
   function resetFlow() {
     state.methodId = null;
-    state.bankName = '';
+    state.bankId = '';
     state.accountName = '';
     state.accountNumber = '';
     state.cryptoAddress = '';
-    state.amount = '';
+    state.amount = 0;
     isSubmitting = false;
     if (detailsContent) detailsContent.innerHTML = '';
-    showStep('methods');
+    goBack();
   }
 
   function init() {
@@ -499,6 +630,7 @@
     if (backBottom) backBottom.addEventListener('click', goBack);
     if (submitBtn) submitBtn.addEventListener('click', submitWithdraw);
     if (successAgain) successAgain.addEventListener('click', resetFlow);
+    if (detailsContent) detailsContent.addEventListener('click', handleDetailsClick);
   }
 
   init();
