@@ -54,9 +54,9 @@ body[data-page="referral-invite"] {
 /* ── How it works (match referral.html / account.css) ───── */
 .ri-board-how .ref-section-title {
   margin: 0 0 var(--acc-form-label-gap);
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--section-blue);
   text-align: center;
 }
 
@@ -70,6 +70,10 @@ body[data-page="referral-invite"] {
 
 .ri-board-how .ref-how {
   margin-bottom: 0;
+  padding: var(--acc-panel-pad);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: linear-gradient(180deg, var(--surface-secondary) 0%, var(--odds-bg) 100%);
 }
 
 .ri-board-how .ref-how-grid {
@@ -89,13 +93,14 @@ body[data-page="referral-invite"] {
   background: var(--surface-primary);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  box-shadow: 0 1px 4px rgba(11, 29, 51, .06);
-  transition: border-color .15s, box-shadow .15s;
+  box-shadow: 0 2px 10px rgba(11, 29, 51, .06);
+  transition: border-color .15s, box-shadow .15s, transform .15s;
 }
 
 .ri-board-how .ref-how-card:hover {
   border-color: var(--accent-blue-soft);
-  box-shadow: 0 2px 10px rgba(43, 120, 214, .1);
+  box-shadow: 0 8px 22px rgba(43, 120, 214, .12);
+  transform: translateY(-2px);
 }
 
 .ri-board-how .ref-how-step {
@@ -108,7 +113,7 @@ body[data-page="referral-invite"] {
   letter-spacing: .04em;
   line-height: 1.2;
   color: var(--text-inverse);
-  background: var(--warning);
+  background: var(--section-blue);
   border-radius: var(--radius-sm);
   font-variant-numeric: tabular-nums;
 }

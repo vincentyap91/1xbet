@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sportsbook � Live &amp; Line</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body>
   <div class="page-shell">
@@ -24,7 +25,7 @@
         </div>
 
         <div class="header-actions">
-          <button type="button" class="icon-btn icon-btn-square" aria-label="Bonus" title="Bonus">
+          <button type="button" class="icon-btn icon-btn-square header-gift-btn" aria-label="Bonus" title="Bonus">
             <span class="icon-btn-inner">
               <img src="assets/icons/icon-gift.svg" alt="" width="16" height="16" />
               <span class="icon-badge">1</span>
@@ -514,7 +515,11 @@
           <span>Collapse block</span>
           <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="9" height="10" />
         </button>
-        <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close panel">Close</button>
+        <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close bet slip">
+          <span class="mobile-drawer-handle" aria-hidden="true"></span>
+          <span class="mobile-drawer-close-title">Bet slip</span>
+          <span class="mobile-drawer-close-action">Close</span>
+        </button>
 
         <div class="reg-panel">
           <h2 class="reg-title">REGISTRATION</h2>

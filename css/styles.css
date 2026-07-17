@@ -230,7 +230,8 @@ a:focus-visible {
 .mobile-menu-btn,
 .mobile-tabbar,
 .drawer-backdrop,
-.mobile-drawer-close {
+.mobile-drawer-close,
+.mobile-betslip-fab {
   display: none;
 }
 
@@ -1554,6 +1555,8 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .te-stack {
@@ -1561,6 +1564,13 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   flex-direction: column;
   gap: 1px;
   margin-top: 1px;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: visible;
+  position: relative;
+  z-index: 4;
+}
+
+.te-stack > .te-toolbar {
   border-radius: var(--radius-md) var(--radius-md) 0 0;
   overflow: hidden;
 }
@@ -1854,6 +1864,9 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   min-height: 40px;
   background: var(--section-blue-dark);
   color: #fff;
+  position: relative;
+  z-index: 5;
+  overflow: visible;
 }
 
 .te-stream-toggle {
@@ -1971,6 +1984,16 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   align-items: center;
   flex-shrink: 0;
   position: relative;
+  z-index: 6;
+}
+
+.te-more-wrap {
+  position: relative;
+  z-index: 6;
+}
+
+.te-more-wrap.open {
+  z-index: 80;
 }
 
 .te-country-filter {
@@ -2000,10 +2023,6 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 
 .te-country-filter img:last-child {
   opacity: 0.7;
-}
-
-.te-more-wrap {
-  position: relative;
 }
 
 .te-more-btn {
@@ -2039,7 +2058,7 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
-  z-index: 40;
+  z-index: 100;
   width: min(280px, calc(100vw - 24px));
   max-height: 360px;
   display: flex;
@@ -2366,6 +2385,12 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   color: var(--text-primary);
 }
 
+/* Football / draw sports: 1 X 2 | 1X 12 2X | O Total U | More */
+.league-block--dc .league-header,
+.league-block--dc .event-row {
+  grid-template-columns: minmax(220px, 1.4fr) 36px 40px 40px 40px 40px 40px 40px 40px 44px 40px 40px;
+}
+
 .league-header .league-info {
   display: flex;
   align-items: center;
@@ -2440,6 +2465,28 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   font-size: var(--table-text-meta);
   font-weight: 700;
   color: var(--text-secondary);
+  position: relative;
+  cursor: default;
+}
+
+.col-label--tip:hover::after,
+.col-label[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-primary);
+  border: 1px solid var(--accent-blue-soft);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(11, 29, 51, 0.12);
+  pointer-events: none;
 }
 
 .event-row {
@@ -4681,7 +4728,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 @media (max-width: 900px) {
   :root {
     --header-h: 56px;
-    --mobile-tabbar-h: 58px;
+    --mobile-tabbar-h: 64px;
   }
 
   body {
@@ -4753,9 +4800,41 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     min-width: 36px;
   }
 
-  .header-meta-group,
   .desktop-only-action {
     display: none;
+  }
+
+  /* Guest mobile: hamburger | logo | gift | Login | Register | Language */
+  body:not(.is-logged-in) .header-actions > .icon-btn.desktop-only-action {
+    display: none;
+  }
+
+  body:not(.is-logged-in) .header-actions > .icon-btn-square:not(.desktop-only-action),
+  body:not(.is-logged-in) .header-gift-btn {
+    display: inline-flex;
+    order: 0;
+  }
+
+  body:not(.is-logged-in) .header-meta-group {
+    display: flex;
+    align-items: center;
+    order: 3;
+  }
+
+  body:not(.is-logged-in) .btn-login {
+    order: 1;
+  }
+
+  body:not(.is-logged-in) .btn-register {
+    order: 2;
+  }
+
+  .header-lang-btn {
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 8px;
+    box-sizing: border-box;
   }
 
   .btn-register,
@@ -4824,7 +4903,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     display: block;
     position: fixed;
     inset: 0;
-    z-index: 85;
+    z-index: 90;
     background: rgba(8, 18, 32, 0.55);
     opacity: 0;
     pointer-events: none;
@@ -4842,7 +4921,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     top: var(--header-h);
     bottom: var(--mobile-tabbar-h);
     width: min(300px, 86vw);
-    z-index: 95;
+    z-index: 118;
     transform: translateX(-105%);
     transition: transform 0.22s ease;
     overflow-y: auto;
@@ -4869,111 +4948,261 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     display: initial;
   }
 
+  /* Bet slip = bottom sheet (DESIGN_SYSTEM § Mobile chrome) */
   .right-sidebar {
     position: fixed;
+    left: 0;
     right: 0;
-    top: var(--header-h);
-    bottom: var(--mobile-tabbar-h);
-    z-index: 110;
+    top: auto;
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px));
+    z-index: 120;
     display: flex;
     flex-direction: column;
     gap: 0;
-    width: min(340px, 92vw);
-    max-height: none;
+    width: 100%;
+    max-width: none;
+    max-height: min(85vh, calc(100dvh - var(--header-h) - var(--mobile-tabbar-h) - 8px));
     padding: 0;
-    background: var(--sidebar-bg);
-    border-radius: var(--radius-md) 0 0 var(--radius-md);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.35);
-    transform: translateX(105%);
-    transition: transform 0.24s ease;
+    background: var(--surface-tertiary);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -12px 36px rgba(0, 0, 0, 0.4);
+    transform: translateY(110%);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
     overflow: hidden;
   }
 
   .right-sidebar.is-open {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 
   .right-collapse {
-    display: none;
+    display: none !important;
   }
 
   .mobile-drawer-close {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    height: 40px;
-    margin: 8px 8px 0;
+    gap: 8px;
+    min-height: 48px;
+    margin: 0;
+    padding: 10px 14px 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: var(--surface-primary);
+    border: none;
+    border-bottom: 1px solid #e4edf4;
+    border-radius: 16px 16px 0 0;
+    cursor: pointer;
+  }
+
+  .mobile-drawer-handle {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 40px;
+    height: 4px;
+    margin-bottom: 6px;
+    border-radius: 999px;
+    background: #c5d4e3;
+  }
+
+  .mobile-drawer-close-title {
+    grid-column: 2;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .mobile-drawer-close-action {
+    grid-column: 3;
+    justify-self: end;
     font-size: 12px;
     font-weight: 700;
+    color: var(--header-action);
     text-transform: uppercase;
-    color: #fff;
-    background: var(--header-action);
-    border-radius: var(--radius-md);
   }
 
   .right-sidebar .generator-panel,
-  .right-sidebar .app-panel {
-    display: none;
-  }
-
-  .right-sidebar .reg-panel,
-  .right-sidebar .bet-slip-panel {
-    margin: 8px;
+  .right-sidebar .app-panel,
+  .right-sidebar .reg-panel {
+    display: none !important;
   }
 
   .right-sidebar .bet-slip-panel {
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
     overflow: hidden;
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
+    background: transparent;
+    border-radius: 0;
   }
 
-  .right-sidebar .bet-slip-body {
-    height: 100%;
+  .right-sidebar .bet-slip-tabs {
+    flex-shrink: 0;
+  }
+
+  .right-sidebar .bet-slip-body,
+  .right-sidebar .my-bets-body {
+    flex: 1 1 auto;
+    height: auto;
     min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: 20px;
   }
 
   .right-sidebar .bet-list {
-    flex: 1;
+    flex: 0 0 auto;
     min-height: 0;
-    padding-right: 2px;
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 
+  /* Let Place Bet + Save/load scroll together — sticky was clipping the link */
   .right-sidebar .bet-footer.is-sticky {
-    position: sticky;
-    bottom: 0;
-    z-index: 2;
-    padding-bottom: 8px;
-    box-shadow: 0 -8px 14px rgba(229, 236, 242, 0.92);
+    position: static;
+    box-shadow: none;
+    padding-bottom: 0;
+  }
+
+  .right-sidebar .btn-place {
+    min-height: 44px;
+    height: auto;
+    font-size: 14px;
+  }
+
+  .right-sidebar .bet-save-link,
+  .right-sidebar .btn-slip-reg {
+    flex-shrink: 0;
+    margin-bottom: 12px;
+  }
+
+  .mobile-betslip-fab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: fixed;
+    right: 12px;
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px) + 12px);
+    z-index: 125;
+    min-height: 44px;
+    padding: 0 14px 0 16px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--action-green);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .mobile-betslip-fab[hidden],
+  .mobile-betslip-fab.is-open {
+    display: none !important;
+  }
+
+  .mobile-betslip-fab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--action-green);
+    background: #fff;
+    border-radius: 999px;
   }
 
   .mobile-tabbar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
+    justify-items: stretch;
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 130;
     height: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px));
-    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    padding: 0 0 env(safe-area-inset-bottom, 0px);
     background: var(--header-bg);
     border-top: 1px solid var(--border-dark);
     box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.28);
+    overflow: visible;
+  }
+
+  body.has-account-tabbar {
+    --mobile-tabbar-h: 64px;
+  }
+
+  .mobile-tabbar--account {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .mobile-tab {
     position: relative;
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 3px;
+    justify-content: flex-end;
+    gap: 4px;
+    width: 100%;
+    height: 100%;
     min-width: 0;
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+    padding: 0 2px 10px;
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.88);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+  }
+
+  .mobile-tab-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  .mobile-tab-label {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.15;
+  }
+
+  .mobile-tab svg {
+    display: block;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    color: currentColor;
   }
 
   .mobile-tab img {
@@ -4982,6 +5211,15 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     object-fit: contain;
     filter: brightness(0) invert(1);
     opacity: 0.9;
+  }
+
+  .mobile-tabbar--account .mobile-tab img {
+    filter: none;
+    opacity: 1;
+  }
+
+  .mobile-tab.is-active {
+    color: var(--action-green);
   }
 
   .mobile-tab-live {
@@ -4995,17 +5233,56 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
   .mobile-tab-badge {
     position: absolute;
-    top: 0;
-    right: calc(50% - 22px);
+    top: -4px;
+    right: -8px;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: 16px;
     height: 16px;
     padding: 0 4px;
     border-radius: 999px;
-    background: var(--action-green);
+    background: var(--danger);
     color: #fff;
     font-size: 10px;
-    line-height: 16px;
-    text-align: center;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 0 0 0 2px var(--header-bg);
+  }
+
+  .mobile-tab--fab {
+    z-index: 2;
+    color: #fff !important;
+  }
+
+  .mobile-tab--fab .mobile-tab-icon {
+    width: 52px;
+    height: 52px;
+    margin-top: -26px;
+  }
+
+  .mobile-tab-fab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--action-green);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(136, 175, 42, 0.4);
+    border: 3px solid var(--header-bg);
+  }
+
+  .mobile-tab-fab-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-tab--fab.is-active .mobile-tab-fab-btn,
+  .mobile-tab--fab:hover .mobile-tab-fab-btn {
+    background: var(--action-green-hover);
   }
 
   .promo-slider {
@@ -5156,6 +5433,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     min-width: 0;
     min-height: 0;
     padding: 10px;
+    border-radius: 0;
   }
 
   .event-row > .stats-cell,
@@ -5165,25 +5443,80 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
   .event-main {
     width: 100%;
+    padding-bottom: 2px;
   }
 
   .event-odds-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    padding-top: 8px;
+    border-top: 1px solid #e4edf4;
+  }
+
+  .mobile-odds-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
     width: 100%;
   }
 
-  .event-odds-mobile .odd-btn,
-  .event-odds-mobile .more-link {
+  .mobile-odds-row--total,
+  .mobile-odds-row--hcap {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .mobile-odd-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .mobile-odd-lab {
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .mobile-odd-wrap .odd-btn {
     width: 100%;
-    min-height: 34px;
+    min-height: 36px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .mobile-total-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: end;
+    min-width: 44px;
+    min-height: 36px;
+    padding: 0 8px;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    background: var(--league-header);
+    border-radius: var(--radius-md);
   }
 
   .event-odds-mobile .more-link {
-    grid-column: 1 / -1;
-    justify-self: end;
-    width: auto;
+    align-self: flex-end;
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--header-action);
+    background: var(--odds-bg);
+    border-radius: var(--radius-md);
   }
 
   .accumulators {

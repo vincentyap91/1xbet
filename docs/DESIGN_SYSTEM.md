@@ -95,7 +95,7 @@ Reference for designing **new pages** in this project. Preserve desktop visual i
 
 **Sports / Big Tournaments** must match the homepage table/data map in **§2.1** below (same tokens + same class patterns). Do **not** use light Figma list backgrounds (`--surface-tertiary`) for Sports left-nav lists.
 
-**Esports exception:** Live + Sports match lists on `esports.html` use dark navy rows and labeled W1/W2 chips (`.es-odd`) to mirror [1xBet esports/real](https://1xlite-46272.pro/en/esports/real). Reuse project tokens (`--sidebar-bg`, `--header-nav-bg`, `--accent-blue`, `--action-green`, `--section-blue`); do not invent a second light table palette for that page.
+**Esports exception:** Live + Sports match lists on `esports.html` use dark navy rows and labeled W1/W2 chips (`.es-odd`) to mirror [1xBet esports/real](https://1xlite-46272.pro/en/esports/real). Reuse project tokens (`--sidebar-bg`, `--header-nav-bg`, `--accent-blue`, `--action-green`, `--section-blue`); do not invent a second light table palette for that page. **Right collapse block** (`.es-right`): dark chrome like live — Collapse + Bet slip / My bets + app QR panel + Subscribe; active tabs use brand→accent→section blue gradient (not live purple); Registration CTA stays `--action-green`; Free download is dark pill (`--header-nav-bg`).
 
 ### 2.1 Odds tables & data surfaces (homepage canon — reuse this)
 
@@ -138,6 +138,8 @@ Outright / custom tables (e.g. Big Tournaments) may use semantic `<table>` marku
 | **Odds chip hover** | `.odd-btn:hover` | `--odds-hover` | `--text-primary` | — |
 | **Odds chip selected** | `.odd-btn.selected` | `--odds-selected` | `#fff` | border `#1a8fc4`; white corner dot |
 | **Odds disabled** | `.odd-btn:disabled` | (same) | opacity `0.4` | — |
+
+**Football / draw sports** (`.league-block--dc`): column set is `1 · X · 2 · 1X · 12 · 2X · O · Total · U · More`. `X` = Draw (`1X2`); `12` = Double Chance. Interaction: **one odd per match** in the bet slip — selecting another market on the same event replaces the previous pick. Ticket labels: `1X2: X`, `Double Chance: 12`.
 
 **Do not** paint LIVE/LINE league headers with dark navy — those stay light (`--league-header`). Outright market-group headers (1-3RD PLACE → Winner) use **`--section-blue`** + white text (never `--header-bg` / page navy — it crashes into the shell); title bar uses `--accent-blue`; see Outright / Yes–No below.
 
@@ -319,7 +321,7 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 | `--acc-method-label-gap` | `12px` | Category label → method card grid |
 | `--acc-method-grid-gap` | `12px` | Row/column gap between `.pay-method-card` cells |
 | `--acc-card-gap` | `12px` | Menu / reward / security card grids |
-| `--acc-dense-gap` | `8px` | Dense lists, filter rows, logo→name inside method cards |
+| `--acc-dense-gap` | `8px` | Dense lists, filter rows, logo→name inside method cards; **mobile** deposit/withdraw: promo banner → method accordion |
 | `--acc-panel-pad` | `16px` | Nested white panels (history filters/results, tx panel, method cards) |
 | `--acc-toolbar-h` | `44px` | Full-bleed under-title tab bars (Payment Queries, Referral) |
 | `--acc-empty-pad` | `40px 20px` | Empty states |
@@ -340,14 +342,15 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 
 | Page | Notes |
 |------|--------|
-| Deposit / Withdraw | Method pick: `--acc-method-*`; details forms: `--acc-form-*`; stacks `--acc-section-gap`; sticky actions on `--acc-pad-x`. **Deposit / Withdraw Step 2:** shared deposit patterns — balance/min `.dep-summary`; light notes (`.dep-notes-banner`); bank cards selected `--odds-hover`/`--brand-blue`; amount presets + display `--section-blue`; white `.dep-details-card`; Submit `--section-blue` (`.dep-btn-primary--section`) |
+| Deposit / Withdraw | Method pick: `--acc-method-*`; details forms: `--acc-form-*`; stacks `--acc-section-gap`; sticky actions on `--acc-pad-x`. **Category filters:** desktop left rail (`.dep-categories`); mobile ≤900px accordion only (`.dep-section--accordion` / `.dep-section-toggle`) — no category select. **Mobile spacing:** promo / intro → accordion uses `--acc-dense-gap` (`8px`); `.dep-layout` gap `0` (no empty band under the banner). **Step 2:** shared deposit patterns — balance/min `.dep-summary`; light notes (`.dep-notes-banner`); bank cards selected `--odds-hover`/`--brand-blue`; amount presets + display `--section-blue`; white `.dep-details-card`; Submit `--section-blue` (`.dep-btn-primary--section`) |
 | Bet History / Transaction History | Restore body top pad; unify panel pad + list-row `12px` |
 | Payment Queries | Toolbar owns the bottom border; body must not double the top pad |
 | Personal Profile / Security | Profile fields use `--acc-form-*`; progress banner + `--acc-section-gap`; security cards `--acc-card-gap` / `--acc-panel-pad` |
-| Referral | **Standalone** Multi-LIVE page (`referral-invite.html`): guest login gate + **How It Works** tab; **logged-in** users see full account `.ref-*` dashboard (Referral Info, My Rewards, downlines modal). Account **Extra → Referral** links out only. Legacy `referral.html` redirects here. |
+| Referral | **Standalone** Multi-LIVE page (`referral-invite.html`): guest login gate + **How It Works** tab; **logged-in** users see full account `.ref-*` dashboard (Referral Info, My Rewards, downlines modal). Hero uses soft odds/cyan atmosphere + bonus summary icons; steps on `--surface-secondary` band with `--section-blue` badges; CTAs `--action-green`. Account **Extra → Referral** links out only. Legacy `referral.html` redirects here. |
 | Membership | **Standalone** Multi-LIVE page (`membership-invite.html` / `css/membership.css`): full VIP club board for all users. Account **Extra → Membership** links out. Legacy `membership.html` redirects here. |
 | Rebate | **Standalone** Multi-LIVE page (`rebate-invite.html`): guest login gate + **Rebate Benefit** tab; **logged-in** users see full account `.rb-*` dashboard (Unclaim, History, Rebate Benefit). Account **Extra → Rebate** links out. Legacy `rebate.html` redirects here. |
 | Partnership | Info page (`partnership.html` / `css/partnership.css`) like About us: light `--surface-secondary` main; titles `--section-blue`; subtitle / footnote `--brand-blue`; banner `--surface-primary` + `--accent-blue-soft` border; highlight values `--warning`; Verified pill + Visit CTA `--section-blue` (hover Visit `--brand-blue`); logos `assets/images/partnership/12win.png` + `lucky878.png` (black keyed out) on white logo strip. Visit: [12WIN](https://12winkh.vip/en/), [Lucky878](https://lucky878.riocity9.com/en/). Footer: **Useful links → Partnership** |
+| Daily Check-In | Account Extra (`daily-checkin.html`): `.pq-panel` board — section-blue loyalty header (`coin.svg` only); body on `--surface-secondary`; day cards white + `--odds-bg` icon wells (`diamond.svg` / `coin.svg`); claimable uses `--odds-hover` / `--accent-blue-soft` (green only on Claim CTA); claimed check `--section-blue`; values `--brand-blue`; T&C panel with `--action-green` underline. After Claim: auth confirm chrome (`.auth-backdrop` + `.auth-dialog--confirm`) with `claimed.svg`, brand-blue title, `--action-green` OK. History → `checkin-record.html`. |
 
 ---
 
@@ -382,18 +385,19 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 ### Mobile chrome (≤900px)
 
 - Hamburger → primary nav drawer (`#header-bottom.is-open`)
-- Bottom tab bar (sportsbook): Sports / Live / Bet slip / Menu
-- Left sports = left drawer; bet slip/reg = bottom sheet
+- Bottom tab bar: Home / Promotion / Deposit FAB / Livechat / Account (guest + logged-in). Guest taps on Deposit, Livechat, or Account open the login modal (`data-auth-open="login"`).
+- Left sports = left drawer; bet slip = bottom sheet (`.right-sidebar.is-open`); hide desktop `.right-collapse` + `.reg-panel` (auth via header)
+- Floating `.mobile-betslip-fab` when slip has picks (tab bar has no Bet slip tab)
 - Backdrop `#drawer-backdrop`; body `.drawer-open` locks scroll
-- Event rows → card layout with 1X2 only (`.event-odds-mobile`); hide `.desktop-odds`
+- Event rows → card layout; hide `.desktop-odds`. Mobile odds (`.event-odds-mobile`) mirror table markets: labeled rows for 1X2, Double Chance (football), Totals O/line/U, Handicap (non-DC)
 
 **Logged-in account pages (mobile)** — structure from reference screenshots; colors from tokens (not 12WIN yellow/white chrome):
 
 | Piece | Implementation |
 |-------|----------------|
-| Top header | Dark `--header-bar-bg`; hamburger + logo; gift / account / `--action-green` Make a Deposit / messages as 36px `--header-action` squares |
-| Subcategory strip | `.acc-subnav` (≤900px only, horizontal scroll): all account sidebar links (Deposit, Withdraw, histories, Profile, Security, Referral, Membership, Rebate, …). Active card `--odds-hover` + `--accent-blue` border; badges `--action-green`. Desktop keeps `.account-sidebar`; mobile hides the sidebar. |
-| Bottom sticky nav | `.mobile-tabbar--account`: Home · Promotion · Deposit FAB (`--action-green` circle) · Livechat · Account (active `--action-green`) |
+| Top header | Dark `--header-bar-bg`. **Guest mobile:** hamburger · logo · **gift** · Login · Register · language. **Logged-in mobile:** hamburger · logo · balance + refresh · **gift** · language. Gift (`.header-gift-btn`, green `.icon-badge`): guest → login modal; logged-in → `daily-checkin.html` (wired in `js/auth-modals.js`). |
+| Subcategory strip | `.acc-subnav` (≤900px). **Icons:** Figma [`96:9`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/Untitled?node-id=96-9) exports in `assets/icons/account-subnav/` rendered as `<img>` with fill `#1a4f8a` (`--section-blue`) so glyphs stay visible on light cards. Deposit/Withdraw→wallet; tx→exchange; queries→info-circle; security→key; etc. Active card `--odds-hover` + `--section-blue` border. Badges `--action-green`. |
+| Bottom sticky nav | `.mobile-tabbar--account` (all pages via `js/auth-modals.js`): Home · Promotion · Deposit FAB · Livechat · Account. Guest: Deposit / Livechat / Account open login. Logged-in: normal links; active `--action-green`. |
 
 Wired in `js/account.js` when `.account-main` is present.
 
@@ -488,13 +492,17 @@ New pages should reuse these modules’ classes and tokens rather than inventing
 
 **World Flight 26** (`world-flight-26.html`, Figma `23:17704`): 1xGames promo landing; hero background `assets/images/world-flight-26/hero.png`; `css/world-flight-26.css` + `js/world-flight-26.js`.
 
+**Live Casino** (`live-casino.html`, `css/live-casino.css`): dark casino shell; hero carousel — slide 1 art may bake left chrome; slides 2–3 use `.lc-hero-slide--fade` (photo right via `.lc-hero-photo`, solid `--page-bg` left + soft `.lc-hero-fade` gradient into image). PLAY CTA stays `--action-green`.
+
 **TOP-EVENTS pages** (`wc2026.html`, `msi.html`): shared light theme in `css/top-events-theme.css` + page CSS (tournament chrome; still use `.odd-btn` tokens for odds chips where present).
 
-**Referral / Membership / Rebate** — canonical pages are **Multi-LIVE standalone** (`*-invite.html`), not Account Extra content panels. Account sidebar **Extra** group only **links out** to those pages (`referral-invite.html`, `membership-invite.html`, `rebate-invite.html` via `js/account.js` `ACCOUNT_NAV_GROUPS`). Top header uses the same invite URLs. After login on an invite page, stay on that page (reload); do not navigate into `.account-main` for these features. Detailed records remain on Account history pages (Commission Record, Rebate Record).
+**Referral / Membership / Rebate** — canonical pages are **Multi-LIVE standalone** (`*-invite.html`), not Account Extra content panels. Account sidebar **Extra** group only **links out** to those pages (`referral-invite.html`, `membership-invite.html`, `rebate-invite.html` via `js/account.js` `ACCOUNT_NAV_GROUPS`). Top header uses the same invite URLs. After login on an invite page, stay on that page (reload); do not navigate into `.account-main` for these features. **History Record** sidebar keeps Transaction History, Bet History, Promotion Record — each uses the same **Type** + **Status** 2-column selects. Commission / Rebate / Daily Check In remain under Transaction History Type options.
 
 **Referral (legacy account `.ref-*`)** — retired from Extra shell; commission tables on **Commission Record**. Do not use screenshot grey/red/yellow chrome hex.
 
 **Account profile dropdown** (logged-in header `.header-account-btn` → `.acc-menu` in `css/account.css`, wired in `js/auth-modals.js`): light popover on `--surface-primary` with soft shadow; text/icons `--section-blue`; hover `--odds-hover`; red badge `--danger`; balances + links to Deposit / Withdraw / Referral / Profile / Bet History / Security / Log out. Max weight `700`.
+
+**Auth popups** (`js/auth-modals.js` + `css/auth-modals.css`): shared `.auth-dialog` chrome (dark head + art column + light form). **Register flow:** Register → **Verify Your Number** (6-digit TAC, masked `*******####`, timer `--warning`, CS CTA `--warning`; demo code `123456` auto-opens complete, wrong code shows error under timer) → **Registration Completed!** (same split dialog, header “Log In”, body title + `--brand-blue` Log In). Confirm-only dialogs (logout / forgot) stay `.auth-dialog--confirm`. Deep-link demos: `?modal=login|register|verify|complete|logout`.
 
 ---
 
@@ -502,6 +510,8 @@ New pages should reuse these modules’ classes and tokens rather than inventing
 
 - Demo toasts via `showToast()` — no real auth/payments
 - Odds toggle into bet slip; sync `.selected` on buttons
+- **One selection per match:** clicking any odd on a match (e.g. Draw `X` or Double Chance `12`) replaces any previous pick for that same event; click again to remove
+- Football / draw sports (`.league-block--dc`): columns `1 X 2 | 1X 12 2X | O Total U` — bet slip labels `1X2: X` and `Double Chance: 12`
 - Dropdowns: click outside / Escape to close
 - Mobile drawers: one open at a time; backdrop closes all
 - Overflow sport chips → more menu (measure width, don’t horizontal-scroll the bar forever)

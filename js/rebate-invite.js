@@ -4,6 +4,13 @@
 
   var AUTH_KEY = "1xbet_logged_in";
 
+  /* Deep-link for Figma / demos: ?auth=1 (must run before DOMContentLoaded) */
+  try {
+    if (new URLSearchParams(window.location.search).get("auth") === "1") {
+      sessionStorage.setItem(AUTH_KEY, "1");
+    }
+  } catch (e) { /* ignore */ }
+
   function isLoggedInSession() {
     try {
       return sessionStorage.getItem(AUTH_KEY) === "1";

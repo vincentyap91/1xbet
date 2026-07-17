@@ -6,6 +6,21 @@
 (function () {
   "use strict";
 
+  /* Force mobile layout viewport for Figma captures: ?mobile=1 */
+  try {
+    if (new URLSearchParams(window.location.search).get("mobile") === "1") {
+      var meta = document.querySelector('meta[name="viewport"]');
+      if (meta) meta.setAttribute("content", "width=390, initial-scale=1");
+      else {
+        meta = document.createElement("meta");
+        meta.name = "viewport";
+        meta.content = "width=390, initial-scale=1";
+        document.head.appendChild(meta);
+      }
+      document.documentElement.classList.add("capture-mobile");
+    }
+  } catch (e) { /* ignore */ }
+
   const EYE_OFF =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
   const EYE_ON =
@@ -15,6 +30,43 @@
 
   let otpTimerId = null;
   let otpSeconds = 0;
+  /* Demo TAC — any other 6-digit code shows error */
+  const DEMO_TAC = "123456";
+
+  function clearOtpError() {
+    const err = $("#auth-otp-error");
+    if (err) {
+      err.hidden = true;
+      err.textContent = "Invalid code. Please try again.";
+    }
+    $$("#auth-otp input").forEach((input) => input.classList.remove("is-invalid"));
+  }
+
+  function showOtpError(msg) {
+    const err = $("#auth-otp-error");
+    if (err) {
+      err.textContent = msg || "Invalid code. Please try again.";
+      err.hidden = false;
+    }
+    $$("#auth-otp input").forEach((input) => input.classList.add("is-invalid"));
+  }
+
+  function readOtpCode() {
+    return $$("#auth-otp input")
+      .map((i) => i.value)
+      .join("");
+  }
+
+  function checkOtpAndAdvance() {
+    const code = readOtpCode();
+    if (code.length < 6) return;
+    if (code === DEMO_TAC) {
+      clearOtpError();
+      openPanel("complete");
+      return;
+    }
+    showOtpError("Invalid code. Please try again.");
+  }
 
   function ensureCss() {
     if (document.getElementById("auth-modals-css")) return;
@@ -216,19 +268,19 @@
         secondaryAttr: "data-auth-close",
       }) +
       "</div>" +
-      /* VERIFY */
+      /* VERIFY — TAC after Register step 1 (split auth-dialog) */
       '<div class="auth-panel" data-auth-panel="verify" role="dialog" aria-modal="true" aria-labelledby="auth-verify-title" hidden>' +
       '<div class="auth-dialog">' +
       head("Verify Your Number", "auth-verify-title") +
       '<div class="auth-dialog-body">' +
       artCol() +
-      '<form class="auth-dialog-form" id="auth-verify-form" novalidate>' +
+      '<form class="auth-dialog-form auth-verify-form" id="auth-verify-form" novalidate>' +
       '<div class="auth-verify-copy">' +
       "<h3>Verify Your Number</h3>" +
-      '<p id="auth-verify-sub">Enter the code we sent to your phone.</p>' +
+      '<p id="auth-verify-sub">Enter the code we sent to *******0000.</p>' +
       "</div>" +
       '<div class="auth-otp" id="auth-otp">' +
-      '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" />' +
+      '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" autocomplete="one-time-code" />' +
       '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" />' +
       '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" />' +
       '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" />' +
@@ -236,25 +288,21 @@
       '<input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />' +
       "</div>" +
       '<p class="auth-otp-timer" id="auth-otp-timer">TAC Code Sent. 60s</p>' +
-      '<button type="submit" class="auth-btn auth-btn--register auth-btn--block">Confirm and Join Now</button>' +
+      '<p class="auth-otp-error" id="auth-otp-error" hidden role="alert">Invalid code. Please try again.</p>' +
+      '<button type="button" class="auth-btn auth-btn--cs auth-btn--block" data-auth-action="live-chat">Contact Customer Service</button>' +
       "</form>" +
       "</div></div></div>" +
-      /* COMPLETE — confirm style success */
+      /* COMPLETE — same split auth-dialog as Login / Register */
       '<div class="auth-panel" data-auth-panel="complete" role="dialog" aria-modal="true" aria-labelledby="auth-complete-title" hidden>' +
-      confirmDialog({
-        titleId: "auth-complete-title",
-        title: "Registration Completed!",
-        text: "Your account is ready. Log in to start playing.",
-        icon: "!",
-        warn: true,
-        primary: "Log In",
-        secondary: "Close",
-        primaryAttr: 'data-auth-open="login"',
-        secondaryAttr: "data-auth-close",
-        primaryClass: "auth-btn--login",
-        secondaryClass: "auth-btn--ghost",
-      }) +
+      '<div class="auth-dialog">' +
+      head("Log In", "auth-complete-title") +
+      '<div class="auth-dialog-body">' +
+      artCol() +
+      '<div class="auth-dialog-form auth-complete-form">' +
+      "<h3>Registration Completed!</h3>" +
+      '<button type="button" class="auth-btn auth-btn--login auth-btn--block" data-auth-open="login">Log In</button>' +
       "</div>" +
+      "</div></div></div>" +
       "</div>"
     );
   }
@@ -467,11 +515,17 @@
     $$(".desktop-only-action", actions).forEach((el) => el.classList.add("header-guest-only"));
 
     // Upgrade gift / lang icons to Figma assets when present
-    const giftImg = $('button[aria-label="Bonus"] img, button[aria-label="Bonus"] .icon-btn-inner img', actions);
-    if (giftImg) giftImg.src = "assets/images/account/icon-gift.svg";
+    const giftBtn = $('button[aria-label="Bonus"], button.header-gift-btn, a.header-gift-btn', actions);
+    if (giftBtn) {
+      giftBtn.classList.add("header-gift-btn");
+      const giftImg = $("img", giftBtn);
+      if (giftImg) giftImg.src = "assets/images/account/icon-gift.svg";
+    }
     $$(".header-lang-btn .meta-chevron, .header-account-btn .meta-chevron, .header-msg-btn .meta-chevron", actions).forEach((img) => {
       img.src = "assets/images/account/icon-chevron.svg";
     });
+
+    wireHeaderGiftBtn();
 
     if (hasStaticUser) return;
 
@@ -481,6 +535,41 @@
     } else {
       actions.insertAdjacentHTML("beforeend", userHeaderHtml());
     }
+  }
+
+  function wireHeaderGiftBtn() {
+    const gift =
+      document.querySelector(".header-actions .header-gift-btn") ||
+      document.querySelector('.header-actions button[aria-label="Bonus"]');
+    if (!gift || gift.dataset.giftWired === "1") {
+      syncHeaderGiftBtn();
+      return;
+    }
+    gift.classList.add("header-gift-btn");
+    gift.dataset.giftWired = "1";
+    gift.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (isLoggedIn()) {
+        window.location.href = "daily-checkin.html";
+        return;
+      }
+      openPanel("login");
+    });
+    syncHeaderGiftBtn();
+  }
+
+  function syncHeaderGiftBtn() {
+    const gift =
+      document.querySelector(".header-actions .header-gift-btn") ||
+      document.querySelector('.header-actions button[aria-label="Bonus"]');
+    if (!gift) return;
+    gift.classList.add("header-gift-btn");
+    const loggedIn = isLoggedIn();
+    gift.setAttribute(
+      "aria-label",
+      loggedIn ? "Daily Check-In" : "Bonus — log in to claim"
+    );
+    gift.setAttribute("title", loggedIn ? "Daily Check-In" : "Log in");
   }
 
   function setLoggedIn(on) {
@@ -498,8 +587,17 @@
       el.hidden = !!on;
     });
 
+    syncHeaderGiftBtn();
+
     if (on) initAccountDropdowns();
     else closeAccountMenus();
+
+    const tabbar = document.querySelector(".mobile-tabbar");
+    if (tabbar) {
+      delete tabbar.dataset.mainTabbar;
+      delete tabbar.dataset.accountTabbar;
+    }
+    initMobileTabbar();
   }
 
   function isLoggedIn() {
@@ -600,10 +698,13 @@
 
   function wireOtp() {
     const inputs = $$("#auth-otp input");
+
     inputs.forEach((input, i) => {
       input.addEventListener("input", () => {
         input.value = input.value.replace(/\D/g, "").slice(0, 1);
+        clearOtpError();
         if (input.value && inputs[i + 1]) inputs[i + 1].focus();
+        checkOtpAndAdvance();
       });
       input.addEventListener("keydown", (e) => {
         if (e.key === "Backspace" && !input.value && inputs[i - 1]) {
@@ -612,12 +713,14 @@
       });
       input.addEventListener("paste", (e) => {
         e.preventDefault();
+        clearOtpError();
         const text = (e.clipboardData || window.clipboardData).getData("text").replace(/\D/g, "").slice(0, 6);
         text.split("").forEach((ch, idx) => {
           if (inputs[idx]) inputs[idx].value = ch;
         });
         const next = inputs[Math.min(text.length, inputs.length - 1)];
         next?.focus();
+        checkOtpAndAdvance();
       });
     });
   }
@@ -729,27 +832,127 @@
         toast("Please meet the password requirements");
         return;
       }
-      const phone = ($("#auth-reg-phone")?.value || "").trim();
-      const cc = $("#auth-reg-cc")?.value || "+60";
-      const masked = phone ? cc + " *******" + phone.slice(-4) : "your phone";
+      const phone = ($("#auth-reg-phone")?.value || "").replace(/\D/g, "");
+      const last4 = phone.length >= 4 ? phone.slice(-4) : "0000";
       const sub = $("#auth-verify-sub");
-      if (sub) sub.textContent = "Enter the code we sent to " + masked + ".";
+      if (sub) sub.textContent = "Enter the code we sent to *******" + last4 + ".";
+      $$("#auth-otp input").forEach((input) => {
+        input.value = "";
+      });
+      clearOtpError();
       openPanel("verify");
     });
 
     $("#auth-verify-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const code = $$("#auth-otp input")
-        .map((i) => i.value)
-        .join("");
-      if (code.length < 6) {
-        toast("Enter the 6-digit code");
-        return;
-      }
-      openPanel("complete");
+      checkOtpAndAdvance();
     });
 
     wireOtp();
+  }
+
+  function initMobileTabbar() {
+    const tabbar = document.querySelector(".mobile-tabbar");
+    if (!tabbar || tabbar.dataset.mainTabbar === "1") return;
+
+    const loggedIn = isLoggedIn() || document.body.classList.contains("is-logged-in");
+    const page = document.body.dataset.page || "";
+    const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+
+    const accountPages = [
+      "personal-profile", "security", "change-password", "information-center", "change-language",
+      "deposit", "withdraw", "payment-queries", "transaction-history", "bet-history",
+      "commission-record", "rebate-record", "checkin-record", "promotion-record",
+      "daily-checkin", "live-chat"
+    ];
+
+    let active = "home";
+    if (file === "promo.html" || page === "promo") active = "promo";
+    else if (file === "deposit.html" || page === "deposit") active = "deposit";
+    else if (file === "live-chat.html" || page === "live-chat") active = "livechat";
+    else if (accountPages.indexOf(page) !== -1 || document.querySelector(".account-main")) {
+      active = "account";
+    }
+
+    function tabClass(key) {
+      return "mobile-tab" + (active === key ? " is-active" : "");
+    }
+
+    function iconWrap(svg, badge) {
+      return (
+        '<span class="mobile-tab-icon" aria-hidden="true">' +
+        svg +
+        (badge ? '<span class="mobile-tab-badge">' + badge + "</span>" : "") +
+        "</span>"
+      );
+    }
+
+    const iconHome =
+      '<svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+    const iconPromo =
+      '<svg viewBox="0 0 24 24" fill="none"><path d="M12 7v14M8 7V5.5A2 2 0 0110 3.5h4A2 2 0 0116 5.5V7M5 7h14v12.5A1.5 1.5 0 0117.5 21h-11A1.5 1.5 0 015 19.5V7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 11.5c2 1.2 4 1.2 7 0s5-1.2 7 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+    const iconPlus =
+      '<svg viewBox="0 0 24 24" fill="none"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+    const iconChat =
+      '<svg viewBox="0 0 24 24" fill="none"><path d="M7 15.5H5.8A1.8 1.8 0 014 13.7V6.8A1.8 1.8 0 015.8 5h9.4A1.8 1.8 0 0117 6.8v1.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10.5h9.2A1.8 1.8 0 0120 12.3v6.4a.8.8 0 01-1.3.6L16 17.5H9.8A1.8 1.8 0 018 15.7v-3.4A1.8 1.8 0 019.8 10.5H9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+    const iconAccount =
+      '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 19c.8-3.2 3.3-5 6.5-5s5.7 1.8 6.5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+
+    function authItem(key, label, iconHtml, extraClass) {
+      return (
+        '<button type="button" class="' +
+        tabClass(key) +
+        (extraClass ? " " + extraClass : "") +
+        '" data-auth-open="login">' +
+        iconHtml +
+        '<span class="mobile-tab-label">' +
+        label +
+        "</span>" +
+        "</button>"
+      );
+    }
+
+    function linkItem(key, href, label, iconHtml, extraClass, id) {
+      return (
+        '<a href="' +
+        href +
+        '" class="' +
+        tabClass(key) +
+        (extraClass ? " " + extraClass : "") +
+        '"' +
+        (id ? ' id="' + id + '"' : "") +
+        (active === key ? ' aria-current="page"' : "") +
+        ">" +
+        iconHtml +
+        '<span class="mobile-tab-label">' +
+        label +
+        "</span>" +
+        "</a>"
+      );
+    }
+
+    const home = linkItem("home", "index.html", "Home", iconWrap(iconHome));
+    const promo = linkItem("promo", "promo.html", "Promotion", iconWrap(iconPromo, "1"));
+    const depositIcon =
+      '<span class="mobile-tab-icon" aria-hidden="true"><span class="mobile-tab-fab-btn">' +
+      iconPlus +
+      "</span></span>";
+    const deposit = loggedIn
+      ? linkItem("deposit", "deposit.html", "Deposit", depositIcon, "mobile-tab--fab")
+      : authItem("deposit", "Deposit", depositIcon, "mobile-tab--fab");
+    const livechat = loggedIn
+      ? linkItem("livechat", "live-chat.html", "Livechat", iconWrap(iconChat, "1"), "", "mobile-livechat-btn")
+      : authItem("livechat", "Livechat", iconWrap(iconChat, "1"));
+    const account = loggedIn
+      ? linkItem("account", "personal-profile.html", "Account", iconWrap(iconAccount))
+      : authItem("account", "Account", iconWrap(iconAccount));
+
+    document.body.classList.add("has-account-tabbar");
+    tabbar.classList.add("mobile-tabbar--account");
+    tabbar.setAttribute("aria-label", "Mobile navigation");
+    tabbar.dataset.mainTabbar = "1";
+    tabbar.dataset.accountTabbar = "1";
+    tabbar.innerHTML = home + promo + deposit + livechat + account;
   }
 
   function init() {
@@ -767,12 +970,36 @@
     if (isLoggedIn()) setLoggedIn(true);
     else setLoggedIn(false);
 
+    initMobileTabbar();
+
     window.AuthModals = {
       open: openPanel,
       close: closeAuth,
       setLoggedIn: setLoggedIn,
       isLoggedIn: isLoggedIn,
     };
+
+    /* Deep-link for Figma / demos: ?modal=login|register|logout|verify|complete */
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const modal = (params.get("modal") || "").toLowerCase();
+      if (
+        modal === "login" ||
+        modal === "register" ||
+        modal === "logout" ||
+        modal === "verify" ||
+        modal === "complete" ||
+        modal === "forgot"
+      ) {
+        if (modal === "logout") setLoggedIn(true);
+        else setLoggedIn(false);
+        if (modal === "verify") {
+          const sub = $("#auth-verify-sub");
+          if (sub) sub.textContent = "Enter the code we sent to *******4894.";
+        }
+        requestAnimationFrame(() => openPanel(modal));
+      }
+    } catch (e) { /* ignore */ }
   }
 
   if (document.readyState === "loading") {

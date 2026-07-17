@@ -33,21 +33,64 @@
 .lc-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(10,25,50,.85) 0%, rgba(10,25,50,.35) 60%, transparent 100%);
+  background: linear-gradient(90deg, rgba(11, 29, 51, 0.72) 0%, rgba(11, 29, 51, 0.28) 55%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
 .lc-hero-slide .casino-hero-content { z-index: 2; position: relative; }
 
+/* Slide 1: art already has solid left + subject right */
 .lc-slide-football-studio {
-  background: url("../assets/images/live-casino/hero-football-studio.png") center/cover no-repeat, #0d2240;
+  background: url("../assets/images/live-casino/hero-football-studio.png") center/cover no-repeat, var(--page-bg);
 }
-.lc-slide-mega-roulette,
-.lc-slide-las-vegas {
-  background: url("../assets/images/live-casino/hero-las-vegas-roulette.png") center/cover no-repeat, #0d2240;
+
+/*
+  Slides 2–3: image on right, solid navy left fading into photo
+  (matches live lobby banner pattern; colors from DESIGN_SYSTEM tokens)
+*/
+.lc-hero-slide--fade {
+  background: var(--page-bg);
 }
-.lc-slide-lightning-baccarat {
-  background: url("../assets/images/live-casino/hero-lightning-baccarat.png") center/cover no-repeat, #0d2240;
+
+.lc-hero-slide--fade .lc-hero-photo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 64%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.lc-slide-las-vegas .lc-hero-photo {
+  object-position: 72% center;
+}
+
+.lc-slide-lightning-baccarat .lc-hero-photo {
+  object-position: 78% center;
+}
+
+.lc-hero-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--page-bg) 0%,
+    var(--page-bg) 30%,
+    rgba(11, 29, 51, 0.94) 42%,
+    rgba(15, 39, 68, 0.55) 58%,
+    rgba(15, 39, 68, 0.12) 72%,
+    transparent 86%
+  );
+}
+
+.lc-hero-slide--fade .casino-hero-content {
+  max-width: min(420px, 48%);
 }
 
 .lc-mini-1 {
@@ -389,6 +432,26 @@
 
 @media (max-width: 900px) {
   .lc-hero-slide { min-height: 180px; }
+
+  .lc-hero-slide--fade .lc-hero-photo {
+    width: 72%;
+  }
+
+  .lc-hero-fade {
+    background: linear-gradient(
+      90deg,
+      var(--page-bg) 0%,
+      var(--page-bg) 22%,
+      rgba(11, 29, 51, 0.9) 38%,
+      rgba(15, 39, 68, 0.4) 58%,
+      transparent 78%
+    );
+  }
+
+  .lc-hero-slide--fade .casino-hero-content {
+    max-width: min(280px, 58%);
+  }
+
   .lc-filters.casino-filters { padding: 0 8px; }
   .lc-section.casino-section { padding: 8px; }
 }

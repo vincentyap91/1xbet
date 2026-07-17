@@ -920,4 +920,16 @@
 
   initMethodSelection();
   initActions();
+
+  /* Deep-link for Figma / demos: ?step=details&method=touchngo */
+  (function openStepFromQuery() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var step = (params.get('step') || '').toLowerCase();
+      if (step !== '2' && step !== 'details') return;
+      var methodId = params.get('method') || 'touchngo';
+      if (!METHODS[methodId]) methodId = 'touchngo';
+      openDetails(methodId);
+    } catch (err) { /* ignore */ }
+  })();
 })();

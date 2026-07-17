@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transaction Record — 1xBet</title>
+  <title>Transaction Record â€” 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="transaction-history" class="is-logged-in history-record-page">
   <div class="page-shell">
@@ -188,7 +189,7 @@
     <main class="account-main" id="main-content">
       <div class="account-shell">
 
-        <!-- ── LEFT SIDEBAR ──────────────────────────────────── -->
+        <!-- â”€â”€ LEFT SIDEBAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <aside class="account-sidebar" aria-label="Account menu">
 
           <div class="acc-card">
@@ -201,7 +202,7 @@
                 <div class="acc-ring-label">1/5</div>
               </div>
               <div class="acc-card-info">
-                <div class="acc-card-number">Account №1733760863</div>
+                <div class="acc-card-number">Account â„–1733760863</div>
                 <div class="acc-card-email">m***@gmail.com</div>
               </div>
             </div>
@@ -251,7 +252,7 @@
           <button type="button" class="account-logout" data-auth-open="logout">Log out</button>
         </aside>
 
-        <!-- ── RIGHT CONTENT ─────────────────────────────────── -->
+        <!-- â”€â”€ RIGHT CONTENT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
         <section class="account-content tx-record-content" aria-label="Transaction Record">
 
           <div class="account-content-head">
@@ -259,13 +260,31 @@
           </div>
 
           <div class="account-content-body">
-            <nav class="tx-record-tabs" role="tablist" aria-label="Transaction type">
-              <button type="button" class="tx-record-tab is-active" role="tab" aria-selected="true" data-tx-type="deposits">Deposits</button>
-              <button type="button" class="tx-record-tab" role="tab" aria-selected="false" data-tx-type="withdrawals">Withdrawals</button>
-            </nav>
-
             <section class="pq-panel tx-record-panel" aria-label="Filters">
               <form class="tx-record-form" id="tx-record-form" action="#" novalidate>
+                <div class="tx-record-filter-stack">
+                  <label class="tx-record-select-field">
+                    <span class="tx-record-label">Type</span>
+                    <select class="tx-record-select" id="tx-filter-type" name="type" aria-label="Type">
+                      <option value="deposits" selected>Deposit</option>
+                      <option value="withdrawals">Withdrawal</option>
+                      <option value="commission-record.html">Commission Record</option>
+                      <option value="rebate-record.html">Rebate Record</option>
+                      <option value="checkin-record.html">Daily Check In Record</option>
+                    </select>
+                  </label>
+                  <label class="tx-record-select-field">
+                    <span class="tx-record-label">Status</span>
+                    <select class="tx-record-select" id="tx-filter-status" name="status" aria-label="Status">
+                      <option value="all" selected>All</option>
+                      <option value="completed">Completed</option>
+                      <option value="pending">Pending</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </label>
+                </div>
+
                 <div class="tx-record-date-grid">
                   <label class="tx-record-field">
                     <span class="tx-record-label">Start date</span>

@@ -235,6 +235,35 @@
   /** LIVE dashboard — from live site snapshot */
   const homeLiveLeagues = [
     {
+      id: "usa-mls",
+      name: "USA. MLS",
+      sport: "football",
+      icon: "US",
+      events: [
+        {
+          id: "lv-mls1",
+          time: "Live",
+          live: true,
+          clock: "22:48 / 1st half",
+          stream: true,
+          home: "CF Montreal",
+          away: "Toronto",
+          scoreH: 0,
+          scoreA: 0,
+          o1: 2.375,
+          ox: 3.36,
+          o2: 3.205,
+          dc1x: 1.375,
+          dc12: 1.345,
+          dc2x: 1.615,
+          total: 2.5,
+          over: 2.21,
+          under: 1.73,
+          more: 637,
+        },
+      ],
+    },
+    {
       id: "nba-summer",
       name: "NBA. Summer League",
       sport: "basketball",
@@ -280,7 +309,26 @@
       sport: "football",
       icon: "NZ",
       events: [
-        { id: "lv9", time: "Live", live: true, home: "West Coast Rangers (Women)", away: "Western Springs (Women)", scoreH: 1, scoreA: 0, o1: 1.65, ox: 3.80, o2: 4.50, total: 2.5, over: 1.95, under: 1.84, hcap: "-0.5", h1: 1.90, h2: 1.88, more: 6 },
+        {
+          id: "lv9",
+          time: "Live",
+          live: true,
+          clock: "67'",
+          home: "West Coast Rangers (Women)",
+          away: "Western Springs (Women)",
+          scoreH: 1,
+          scoreA: 0,
+          o1: 1.65,
+          ox: 3.80,
+          o2: 4.50,
+          dc1x: 1.16,
+          dc12: 1.22,
+          dc2x: 2.05,
+          total: 2.5,
+          over: 1.95,
+          under: 1.84,
+          more: 6,
+        },
       ],
     },
     {
@@ -444,7 +492,27 @@
       sport: "football",
       icon: "WC",
       events: [
-        { id: "ln1", time: "10 July", live: false, home: "Spain", away: "Belgium", scoreH: null, scoreA: null, o1: 2.15, ox: 3.20, o2: 3.45, total: 2.5, over: 1.95, under: 1.84, hcap: "0", h1: 1.70, h2: 2.15, more: 1444 },
+        {
+          id: "ln1",
+          time: "10 July",
+          live: false,
+          home: "Spain",
+          away: "Belgium",
+          homeLogo: "assets/icons/lnt/flag-spain.svg",
+          awayLogo: "assets/icons/lnt/flag-belgium.svg",
+          scoreH: null,
+          scoreA: null,
+          o1: 2.15,
+          ox: 3.20,
+          o2: 3.45,
+          dc1x: 1.29,
+          dc12: 1.32,
+          dc2x: 1.66,
+          total: 2.5,
+          over: 1.95,
+          under: 1.84,
+          more: 1444,
+        },
       ],
     },
     {
@@ -650,6 +718,67 @@
     return items.reduce((acc, b) => acc * Number(b.odds), 1);
   }
 
+  /** Sports that offer Draw (X) + Double Chance columns (live-site football table). */
+  function sportHasDoubleChance(sport) {
+    return sport === "football" || sport === "hockey" || sport === "handball" || sport === "futsal";
+  }
+
+  function combineImpliedOdds(a, b) {
+    if (a == null || b == null || Number(a) <= 1 || Number(b) <= 1) return null;
+    const p = 1 / Number(a) + 1 / Number(b);
+    if (p <= 0) return null;
+    return Math.max(1.01, Math.round((1 / p) * 1000) / 1000);
+  }
+
+  function doubleChanceOdd(event, selection) {
+    if (selection === "1X") {
+      if (event.dc1x != null) return event.dc1x;
+      return combineImpliedOdds(event.o1, event.ox);
+    }
+    if (selection === "12") {
+      if (event.dc12 != null) return event.dc12;
+      return combineImpliedOdds(event.o1, event.o2);
+    }
+    if (selection === "2X") {
+      if (event.dc2x != null) return event.dc2x;
+      return combineImpliedOdds(event.o2, event.ox);
+    }
+    return null;
+  }
+
+  function oddTitle(market, selection) {
+    if (market === "1X2" && selection === "X") return "Draw";
+    if (market === "1X2" && selection === "1") return "Team 1 to win";
+    if (market === "1X2" && selection === "2") return "Team 2 to win";
+    if (market === "Double Chance" && selection === "1X") return "Team 1 to win or draw";
+    if (market === "Double Chance" && selection === "12") return "Team 1 to win or team 2 to win";
+    if (market === "Double Chance" && selection === "2X") return "Team 2 to win or draw";
+    if (market === "Total" && selection === "Over") return "Over";
+    if (market === "Total" && selection === "Under") return "Under";
+    return `${market}: ${selection}`;
+  }
+
+  function formatTicketMarket(b) {
+    if (!b) return "";
+    if (b.market === "Double Chance") return `Double Chance: ${b.selection}`;
+    if (b.market === "1X2") return `1X2: ${b.selection}`;
+    return `${b.market}: ${b.selection}`;
+  }
+
+  function betEventId(data) {
+    if (!data) return "";
+    if (data.eventId) return String(data.eventId);
+    const id = String(data.id || "");
+    const markets = ["Double Chance", "1X2", "Total", "Handicap"];
+    for (let i = 0; i < markets.length; i++) {
+      const token = "-" + markets[i] + "-";
+      const idx = id.indexOf(token);
+      if (idx > 0) return id.slice(0, idx);
+    }
+    const cut = id.lastIndexOf("-");
+    return cut > 0 ? id.slice(0, cut) : id;
+  }
+
   /* ---------- Table rendering ---------- */
 
   function oddButton(event, market, selection, value, leagueName) {
@@ -658,18 +787,84 @@
     }
     const id = `${event.id}-${market}-${selection}`;
     const selected = state.betSlip.some((b) => b.id === id) ? " selected" : "";
+    const title = oddTitle(market, selection);
     const payload = JSON.stringify({
       id,
+      eventId: event.id,
       league: leagueName,
-      match: `${event.home} vs ${event.away}`,
+      match: `${event.home} - ${event.away}`,
       market,
       selection,
       odds: value,
     }).replace(/"/g, "&quot;");
-    return `<button type="button" class="odd-btn${selected}" data-odd="${payload}" aria-pressed="${selected ? "true" : "false"}">${formatOdd(value)}</button>`;
+    return `<button type="button" class="odd-btn${selected}" data-odd="${payload}" title="${title}" aria-label="${title}" aria-pressed="${selected ? "true" : "false"}">${formatOdd(value)}</button>`;
   }
 
-  function renderEventRow(event, leagueName, searchQuery) {
+  function renderEventOddsCells(event, leagueName, sport) {
+    if (sportHasDoubleChance(sport)) {
+      return `
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "2X", doubleChanceOdd(event, "2X"), leagueName)}</div>
+        <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
+        <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
+        <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
+        <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>
+        <div class="event-odds-mobile event-odds-mobile--dc">
+          <div class="mobile-odds-row" role="group" aria-label="1X2">
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">X</span>${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
+          </div>
+          <div class="mobile-odds-row" role="group" aria-label="Double Chance">
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1X</span>${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName)}</div>
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">12</span>${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName)}</div>
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2X</span>${oddButton(event, "Double Chance", "2X", doubleChanceOdd(event, "2X"), leagueName)}</div>
+          </div>
+          <div class="mobile-odds-row mobile-odds-row--total" role="group" aria-label="Total">
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">O</span>${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
+            <div class="mobile-total-pill" title="Total">${event.total != null ? event.total : "—"}</div>
+            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">U</span>${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
+          </div>
+          <a href="#" class="more-link">+${event.more}</a>
+        </div>`;
+    }
+
+    return `
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
+      <div class="event-odds-mobile event-odds-mobile--std">
+        <div class="mobile-odds-row" role="group" aria-label="1X2">
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">X</span>${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
+        </div>
+        <div class="mobile-odds-row mobile-odds-row--total" role="group" aria-label="Total">
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">O</span>${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
+          <div class="mobile-total-pill" title="Total">${event.total != null ? event.total : "—"}</div>
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">U</span>${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
+        </div>
+        <div class="mobile-odds-row mobile-odds-row--hcap" role="group" aria-label="Handicap">
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "Handicap", "1", event.h1, leagueName)}</div>
+          <div class="mobile-total-pill" title="Handicap">${event.hcap != null ? event.hcap : "—"}</div>
+          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "Handicap", "2", event.h2, leagueName)}</div>
+        </div>
+        <a href="#" class="more-link">+${event.more}</a>
+      </div>
+      <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
+      <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
+      <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
+      <div class="handicap-val desktop-odds">${event.hcap != null ? event.hcap : "—"}</div>
+      <div class="desktop-odds">${oddButton(event, "Handicap", "1", event.h1, leagueName)}</div>
+      <div class="desktop-odds">${oddButton(event, "Handicap", "2", event.h2, leagueName)}</div>
+      <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>`;
+  }
+
+  function renderEventRow(event, leagueName, searchQuery, sport) {
     const fav = state.favorites.has(event.id) ? " active" : "";
     const timeClass = event.live ? "event-time live" : "event-time";
     const timeLabel = event.live ? (event.clock || event.time || "Live") : event.time;
@@ -704,22 +899,7 @@
         <div class="stats-cell" title="Statistics">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 20V10h3v10H4zm7 0V4h3v16h-3zm7 0v-7h3v7h-3z"/></svg>
         </div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-        <div class="event-odds-mobile">
-          ${oddButton(event, "1X2", "1", event.o1, leagueName)}
-          ${oddButton(event, "1X2", "X", event.ox, leagueName)}
-          ${oddButton(event, "1X2", "2", event.o2, leagueName)}
-          <a href="#" class="more-link">+${event.more}</a>
-        </div>
-        <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
-        <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
-        <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
-        <div class="handicap-val desktop-odds">${event.hcap != null ? event.hcap : "—"}</div>
-        <div class="desktop-odds">${oddButton(event, "Handicap", "1", event.h1, leagueName)}</div>
-        <div class="desktop-odds">${oddButton(event, "Handicap", "2", event.h2, leagueName)}</div>
-        <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>
+        ${renderEventOddsCells(event, leagueName, sport)}
       </div>
     `;
   }
@@ -738,14 +918,44 @@
     return `${sport}${flag}`;
   }
 
+  function renderLeagueHeaders(sport) {
+    if (sportHasDoubleChance(sport)) {
+      return `
+          <div class="col-label">Stats</div>
+          <div class="col-label" title="Team 1 to win">1</div>
+          <div class="col-label col-label--tip" title="Draw">X</div>
+          <div class="col-label" title="Team 2 to win">2</div>
+          <div class="col-label" title="Team 1 to win or draw">1X</div>
+          <div class="col-label col-label--tip" title="Team 1 to win or team 2 to win">12</div>
+          <div class="col-label" title="Team 2 to win or draw">2X</div>
+          <div class="col-label" title="Over">O</div>
+          <div class="col-label" title="Total">Total</div>
+          <div class="col-label" title="Under">U</div>
+          <div class="col-label">More</div>`;
+    }
+    return `
+          <div class="col-label">Stats</div>
+          <div class="col-label">1</div>
+          <div class="col-label" title="Draw">X</div>
+          <div class="col-label">2</div>
+          <div class="col-label">Total</div>
+          <div class="col-label">Over</div>
+          <div class="col-label">Under</div>
+          <div class="col-label">Hcap</div>
+          <div class="col-label">1</div>
+          <div class="col-label">2</div>
+          <div class="col-label">More</div>`;
+  }
+
   function renderLeague(league, filterSport, searchQuery) {
     if (filterSport && filterSport !== "stream" && league.sport !== filterSport) {
       return "";
     }
     const collapsed = state.collapsedLeagues.has(league.id);
     const favLeague = state.favorites.has("league-" + league.id) ? " active" : "";
+    const dcClass = sportHasDoubleChance(league.sport) ? " league-block--dc" : "";
     return `
-      <section class="league-block" data-league="${league.id}" data-sport="${league.sport}">
+      <section class="league-block${dcClass}" data-league="${league.id}" data-sport="${league.sport}">
         <header class="league-header">
           <div class="league-info">
             ${leagueIconHtml(league)}
@@ -757,20 +967,10 @@
               </button>
             </div>
           </div>
-          <div class="col-label">Stats</div>
-          <div class="col-label">1</div>
-          <div class="col-label">X</div>
-          <div class="col-label">2</div>
-          <div class="col-label">Total</div>
-          <div class="col-label">Over</div>
-          <div class="col-label">Under</div>
-          <div class="col-label">Hcap</div>
-          <div class="col-label">1</div>
-          <div class="col-label">2</div>
-          <div class="col-label">More</div>
+          ${renderLeagueHeaders(league.sport)}
         </header>
         <div class="league-body" ${collapsed ? "hidden" : ""}>
-          ${league.events.map((e) => renderEventRow(e, league.name, searchQuery)).join("")}
+          ${league.events.map((e) => renderEventRow(e, league.name, searchQuery, league.sport)).join("")}
         </div>
       </section>
     `;
@@ -1053,10 +1253,36 @@
 
   function syncMobileBetCount() {
     const badge = $("#mobile-bet-count");
-    if (!badge) return;
     const n = state.betSlip.length;
-    badge.hidden = n === 0;
-    badge.textContent = String(n);
+    if (badge) {
+      badge.hidden = n === 0;
+      badge.textContent = String(n);
+    }
+
+    let fab = $("#mobile-betslip-fab");
+    if (!fab) {
+      fab = document.createElement("button");
+      fab.type = "button";
+      fab.id = "mobile-betslip-fab";
+      fab.className = "mobile-betslip-fab";
+      fab.setAttribute("aria-controls", "right-sidebar");
+      fab.setAttribute("aria-expanded", "false");
+      fab.innerHTML =
+        '<span class="mobile-betslip-fab-label">Bet slip</span>' +
+        '<span class="mobile-betslip-fab-count" id="mobile-betslip-fab-count">0</span>';
+      document.body.appendChild(fab);
+      fab.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if ($("#right-sidebar")?.classList.contains("is-open")) closeAllMobileDrawers();
+        else openRightDrawer();
+      });
+    }
+    const fabCount = $("#mobile-betslip-fab-count");
+    if (fabCount) fabCount.textContent = String(n);
+    const sheetOpen = Boolean($("#right-sidebar")?.classList.contains("is-open"));
+    fab.hidden = n === 0 || !isMobileViewport() || sheetOpen;
+    fab.setAttribute("aria-expanded", sheetOpen ? "true" : "false");
+    fab.classList.toggle("is-open", sheetOpen);
   }
 
   function syncBetTabCount() {
@@ -1141,22 +1367,26 @@
 
   function hydrateTicketData(data) {
     const source = { ...data };
+    const sourceEventId = betEventId(source);
     for (const league of [...liveLeagues, ...lineLeagues]) {
-      const event = league.events.find((ev) => source.id && source.id.startsWith(`${ev.id}-`));
+      const event = league.events.find(
+        (ev) => ev.id === sourceEventId || (source.id && source.id.startsWith(`${ev.id}-`))
+      );
       if (!event) continue;
       const score = event.scoreH != null || event.scoreA != null ? `[ ${event.scoreH ?? 0}:${event.scoreA ?? 0} ]` : "";
       return {
         ...source,
-        eventId: event.id.replace(/\D/g, "") || event.id,
+        eventId: event.id,
         league: source.league || league.name,
         live: Boolean(event.live),
         score,
+        match: source.match || `${event.home} - ${event.away}`,
         sportIcon: sportHeaderIconMap[league.sport] || `assets/icons/sport-${league.sport}.svg`,
       };
     }
     return {
       ...source,
-      eventId: source.eventId || source.id,
+      eventId: sourceEventId || source.eventId || source.id,
       live: Boolean(source.live),
       score: source.score || "",
     };
@@ -1178,7 +1408,7 @@
         ${ticketScore(b) ? `<div class="ticket-score">${ticketScore(b)}</div>` : ""}
         <div class="ticket-selection-row">
           <span class="ticket-odds-pill">${formatOdd(b.odds)}</span>
-          <span class="ticket-market">${b.market}: ${b.selection}</span>
+          <span class="ticket-market">${formatTicketMarket(b)}</span>
         </div>
       </article>`
       )
@@ -1243,8 +1473,14 @@
 
   function toggleOdd(data) {
     const idx = state.betSlip.findIndex((b) => b.id === data.id);
-    if (idx >= 0) state.betSlip.splice(idx, 1);
-    else state.betSlip.push(hydrateTicketData(data));
+    if (idx >= 0) {
+      state.betSlip.splice(idx, 1);
+    } else {
+      // One selection per match: Draw (X), Double Chance 12, or any other market replaces the previous pick.
+      const eventId = betEventId(data);
+      state.betSlip = state.betSlip.filter((b) => betEventId(b) !== eventId);
+      state.betSlip.push(hydrateTicketData({ ...data, eventId }));
+    }
     renderBetSlip();
     openRightDrawer();
   }
@@ -1390,12 +1626,7 @@
         try {
           const data = JSON.parse(btn.getAttribute("data-odd"));
           if (!data.odds) return;
-          const exists = state.betSlip.findIndex((b) => b.id === data.id);
-          if (exists >= 0) state.betSlip.splice(exists, 1);
-          else state.betSlip.push(hydrateTicketData(data));
-          renderBetSlip();
-          openRightDrawer();
-          syncOddButtons();
+          toggleOdd(data);
           $$(".tg-odd").forEach((b) => {
             try {
               const d = JSON.parse(b.getAttribute("data-odd"));
@@ -2054,6 +2285,7 @@
     if (sportsBtn) sportsBtn.setAttribute("aria-expanded", "false");
     if (betBtn) betBtn.setAttribute("aria-expanded", "false");
     setDrawerBackdrop(false);
+    syncMobileBetCount();
   }
 
   function openLeftDrawer() {
@@ -2084,6 +2316,7 @@
     right?.classList.add("is-open");
     $("#mobile-betslip-btn")?.setAttribute("aria-expanded", "true");
     setDrawerBackdrop(true);
+    syncMobileBetCount();
   }
 
   function toggleMobileNav() {
@@ -2134,6 +2367,7 @@
 
     window.addEventListener("resize", () => {
       if (!isMobileViewport()) closeAllMobileDrawers();
+      syncMobileBetCount();
       layoutLiveFilterOverflow();
     });
 
@@ -2148,8 +2382,14 @@
     });
 
     document.querySelectorAll('a[href="#reg-form"]').forEach((link) => {
-      link.addEventListener("click", () => {
+      link.addEventListener("click", (e) => {
         if (!isMobileViewport()) return;
+        e.preventDefault();
+        const loginTrigger = document.querySelector('[data-auth-open="register"], [data-auth-open="login"]');
+        if (loginTrigger) {
+          loginTrigger.click();
+          return;
+        }
         openRightDrawer();
       });
     });

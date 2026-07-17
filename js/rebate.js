@@ -22,6 +22,15 @@
       });
     });
 
-    activate("unclaim");
+    /* Deep-link for Figma / demos: ?tab=unclaim|history|benefit */
+    var initial = "unclaim";
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var tab = (params.get("tab") || "").toLowerCase();
+      if (tab === "unclaim" || tab === "history" || tab === "benefit") {
+        initial = tab;
+      }
+    } catch (e) { /* ignore */ }
+    activate(initial);
   });
 })();

@@ -153,7 +153,85 @@
     });
   }
 
+  var RECORD_TYPE_OPTIONS = [
+    { page: 'transaction-history', href: 'transaction-history.html', label: 'Transaction Record' },
+    { page: 'commission-record', href: 'commission-record.html', label: 'Commission Record' },
+    { page: 'rebate-record', href: 'rebate-record.html', label: 'Rebate Record' },
+    { page: 'checkin-record', href: 'checkin-record.html', label: 'Daily Check In Record' }
+  ];
+
+  var STATUS_OPTIONS = [
+    { value: 'all', label: 'All' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'pending', label: 'Pending' },
+    { value: 'rejected', label: 'Rejected' },
+    { value: 'cancelled', label: 'Cancelled' }
+  ];
+
+  function fillSelect(select, options, selectedValue) {
+    if (!select) return;
+    select.innerHTML = '';
+    options.forEach(function (opt) {
+      var option = document.createElement('option');
+      var value = opt.value || opt.href;
+      option.value = value;
+      option.textContent = opt.label;
+      if (opt.page === selectedValue || value === selectedValue) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+  }
+
+  function initTypeStatusFilters() {
+    var form = document.getElementById('tx-record-form');
+    if (!form) return;
+
+    var nestedPages = RECORD_TYPE_OPTIONS.map(function (opt) {
+      return opt.page;
+    }).filter(function (page) {
+      return page !== 'transaction-history';
+    });
+
+    var typeSelect = document.getElementById('tx-filter-type');
+    var statusSelect = document.getElementById('tx-filter-status');
+
+    /* Nested record pages: inject Type + Status if missing */
+    if (nestedPages.indexOf(pageKey) !== -1 && !document.querySelector('.tx-record-filter-stack')) {
+      var stack = document.createElement('div');
+      stack.className = 'tx-record-filter-stack';
+      stack.innerHTML =
+        '<label class="tx-record-select-field">' +
+          '<span class="tx-record-label">Type</span>' +
+          '<select class="tx-record-select" id="tx-filter-type" name="type" aria-label="Type"></select>' +
+        '</label>' +
+        '<label class="tx-record-select-field">' +
+          '<span class="tx-record-label">Status</span>' +
+          '<select class="tx-record-select" id="tx-filter-status" name="status" aria-label="Status"></select>' +
+        '</label>';
+      form.insertBefore(stack, form.firstChild);
+      typeSelect = document.getElementById('tx-filter-type');
+      statusSelect = document.getElementById('tx-filter-status');
+      fillSelect(typeSelect, RECORD_TYPE_OPTIONS, pageKey);
+      fillSelect(statusSelect, STATUS_OPTIONS, 'all');
+    }
+
+    if (typeSelect) {
+      typeSelect.addEventListener('change', function () {
+        var value = typeSelect.value;
+        if (!value) return;
+        if (value.indexOf('.html') !== -1) {
+          window.location.href = value;
+          return;
+        }
+        renderResults([], readColumns());
+      });
+    }
+  }
+
   function init() {
+    initTypeStatusFilters();
+
     var form = document.getElementById('tx-record-form');
     var startInput = document.getElementById('tx-start-date');
     var endInput = document.getElementById('tx-end-date');
@@ -162,6 +240,8 @@
     var columns = readColumns();
     var recordLabel = document.querySelector('.account-content-title');
     var labelText = recordLabel ? recordLabel.textContent.trim() : 'Record';
+    var typeSelect = document.getElementById('tx-filter-type');
+    var statusSelect = document.getElementById('tx-filter-status');
 
     function setPeriod(key) {
       var range = periodRange(key);
@@ -209,7 +289,18 @@
         }
 
         renderResults([], columns);
-        toast('No ' + labelText.toLowerCase() + ' found for selected period (demo)');
+        var typeLabel = typeSelect && typeSelect.options[typeSelect.selectedIndex]
+          ? typeSelect.options[typeSelect.selectedIndex].text
+          : labelText;
+        var statusLabel = statusSelect && statusSelect.value !== 'all'
+          ? statusSelect.options[statusSelect.selectedIndex].text
+          : '';
+        toast(
+          'No ' +
+            typeLabel.toLowerCase() +
+            (statusLabel ? ' (' + statusLabel.toLowerCase() + ')' : '') +
+            ' found for selected period (demo)'
+        );
       });
     }
   }

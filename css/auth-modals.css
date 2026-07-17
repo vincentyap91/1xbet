@@ -401,6 +401,17 @@
   flex: none;
 }
 
+/* Contact Customer Service — warning gold (TAC help CTA, per reference) */
+.auth-btn--cs {
+  background: var(--warning, #f1b630);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(241, 182, 48, .35);
+}
+.auth-btn--cs:hover {
+  background: #f5c44a;
+  color: #fff;
+}
+
 .auth-switch {
   margin: 18px 0 0;
   text-align: center;
@@ -629,15 +640,19 @@
   padding: 8px 20px;
 }
 
-/* Verify (still split layout) */
+/* Verify TAC — split auth-dialog (after Register step 1) */
+.auth-verify-form {
+  justify-content: center;
+}
+
 .auth-verify-copy {
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .auth-verify-copy h3 {
   margin: 0 0 8px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--section-blue, #1a4f8a);
 }
@@ -645,6 +660,7 @@
 .auth-verify-copy p {
   margin: 0;
   font-size: 13px;
+  line-height: 1.45;
   color: var(--text-secondary, #5a738a);
 }
 
@@ -652,14 +668,14 @@
   display: flex;
   justify-content: center;
   gap: 8px;
-  margin: 8px 0 12px;
+  margin: 4px 0 12px;
 }
 
 .auth-otp input {
-  width: 36px;
-  height: 40px;
+  width: 40px;
+  height: 44px;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   border: 1px solid var(--border-light, #c9d7e4);
   border-radius: 8px;
@@ -675,29 +691,51 @@
 
 .auth-otp-timer {
   text-align: center;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted, #8a9db0);
-  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--warning, #f1b630);
+  margin: 0 0 8px;
 }
 
-.auth-complete {
+.auth-otp-error {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--danger, #e95555);
+  margin: 0 0 14px;
+  min-height: 1.2em;
+}
+
+.auth-otp-error[hidden] {
+  display: none !important;
+}
+
+.auth-otp input.is-invalid {
+  border-color: var(--danger, #e95555);
+  box-shadow: 0 0 0 2px rgba(233, 85, 85, .15);
+}
+
+/* Registration completed — same split dialog, centered CTA */
+.auth-complete-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 280px;
   text-align: center;
-  padding: 28px 24px;
-  background: var(--surface-tertiary, #e8eef5);
-  width: 100%;
+  gap: 22px;
+  min-height: 280px;
 }
 
-.auth-complete h3 {
-  margin: 0 0 20px;
+.auth-complete-form h3 {
+  margin: 0;
   font-size: 24px;
   font-weight: 700;
-  color: var(--text-primary, #1a3048);
+  color: var(--section-blue, #1a4f8a);
+  line-height: 1.25;
+}
+
+.auth-complete-form .auth-btn {
+  max-width: 220px;
 }
 
 .auth-panel[hidden] { display: none !important; }

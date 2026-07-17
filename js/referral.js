@@ -151,6 +151,8 @@
       topPanels.forEach(function (panel) {
         panel.hidden = panel.getAttribute("data-ref-panel") !== key;
       });
+      /* Don't clobber Figma capture hash (#figmacapture=...) */
+      if ((location.hash || "").indexOf("figmacapture") !== -1) return;
       if (history.replaceState) {
         history.replaceState(null, "", key === "rewards" ? "#rewards" : (location.pathname + location.search));
       }
@@ -162,9 +164,15 @@
       });
     });
 
-    if ((location.hash || "").toLowerCase() === "#rewards") {
-      setReferralTopTab("rewards");
-    }
+    /* Deep-link: #rewards or ?tab=info|rewards */
+    var topKey = "info";
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var tab = (params.get("tab") || "").toLowerCase();
+      if (tab === "rewards" || tab === "info") topKey = tab;
+    } catch (e) { /* ignore */ }
+    if ((location.hash || "").toLowerCase() === "#rewards") topKey = "rewards";
+    setReferralTopTab(topKey);
 
     Array.prototype.slice.call(document.querySelectorAll("[data-ref-claim]")).forEach(function (btn) {
       btn.addEventListener("click", function () {

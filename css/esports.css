@@ -1077,129 +1077,322 @@
   font-size: var(--table-text-meta);
 }
 
-/* ── Right sidebar ──────────────────────────────────────── */
+/* ── Right sidebar — live esports/real collapse block ─────
+   Structure: live site | Colors: DESIGN_SYSTEM tokens
+   (no live purple gradient — use section/brand/cyan + action-green CTA)
+*/
 .es-right {
-  background: var(--surface-tertiary);
-  padding: 8px;
+  background: transparent;
+  padding: 0 0 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-height: calc(100vh - 136px);
+  align-self: start;
+  width: 100%;
 }
 
-/* Bet slip panel */
-.bet-slip-panel {
-  background: var(--surface-primary);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  border: 1px solid var(--border-light);
+.es-right-collapse {
+  color: #fff;
+  background: var(--sidebar-bg-hover);
 }
-.bet-slip-tabs {
-  display: flex;
-  background: var(--header-nav-bg);
-}
-.bet-tab {
-  flex: 1;
-  background: none;
-  border: none;
-  color: rgba(255,255,255,.55);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 9px 8px;
-  cursor: pointer;
-  position: relative;
-  transition: color .15s;
-}
-.bet-tab.active {
+
+.es-right-collapse:hover {
   background: var(--section-blue);
   color: #fff;
 }
-.bet-tab-count {
+
+.es-right.collapsed .es-bet-slip,
+.es-right.collapsed .es-app-panel,
+.es-right.collapsed .es-subscribe {
+  display: none;
+}
+
+.es-right.collapsed .es-right-collapse img {
+  transform: scaleX(-1);
+}
+
+/* Dark bet slip shell */
+.es-right .es-bet-slip {
+  background: var(--sidebar-bg);
+  border: none;
+  border-radius: var(--radius-md);
+  color: #fff;
+  overflow: hidden;
+}
+
+.es-right .bet-slip-tabs {
+  display: flex;
+  background: var(--header-nav-bg);
+}
+
+.es-right .bet-tab {
+  flex: 1;
+  background: var(--header-nav-bg);
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 8px;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.es-right .bet-tab.active {
+  color: #fff;
+  background: linear-gradient(90deg, var(--brand-blue) 0%, var(--accent-blue) 55%, var(--section-blue) 100%);
+}
+
+.es-right .bet-tab-count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
+  min-width: 16px;
   height: 16px;
-  background: var(--action-green);
+  padding: 0 4px;
+  margin-left: 4px;
   border-radius: 50%;
+  background: var(--action-green);
   font-size: 10px;
   font-weight: 700;
   color: #fff;
-  margin-left: 4px;
   vertical-align: middle;
 }
-.bet-slip-body {
-  padding: 12px;
-  min-height: 120px;
+
+.es-right .bet-slip-body,
+.es-right .my-bets-body {
+  background: var(--sidebar-bg);
+  padding: 0 0 8px;
+  min-height: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
 }
-.bet-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 0;
-  text-align: center;
+
+.es-right .bet-toolbar {
+  padding: 8px 10px 4px;
 }
-.bet-empty p {
+
+.es-right .bet-toolbar-title {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.es-right .bet-icon-btn {
+  background: var(--header-nav-bg);
+  border: none;
+  cursor: pointer;
+}
+
+.es-right .bet-icon-btn:hover {
+  background: var(--section-blue);
+}
+
+.es-right .bet-icon-btn img {
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.es-right .bet-empty {
+  background: var(--header-nav-bg);
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 4px 8px 8px;
+  min-height: 110px;
+}
+
+.es-right .bet-empty-text {
+  margin: 0;
   font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.78);
 }
-.btn-slip-reg {
+
+.es-right .my-bets-body .bet-empty-text {
+  margin: 16px 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.es-right .btn-slip-reg {
   display: block;
+  width: calc(100% - 16px);
+  margin: 0 8px 8px;
+  padding: 11px 12px;
+  border: none;
+  border-radius: var(--radius-md);
   background: var(--action-green);
   color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .04em;
-  padding: 10px;
   text-decoration: none;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  transition: background .15s;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.15s;
 }
-.btn-slip-reg:hover { background: var(--action-green-hover); }
 
-/* App panel */
-.es-app-panel {
-  background: var(--surface-primary);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  border: 1px solid var(--border-light);
+.es-right .btn-slip-reg:hover {
+  background: var(--action-green-hover);
+  color: #fff;
 }
-.app-panel-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-}
-.app-panel-copy {
+
+.es-right .bet-save-link {
+  display: block;
+  width: 100%;
+  margin: 0 0 4px;
+  padding: 6px 8px 10px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 10px;
+  font-family: var(--font);
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
-.app-panel-btns {
-  display: flex;
-  gap: 8px;
+
+.es-right .bet-save-link:hover {
+  color: var(--cyan-soft);
 }
-.app-btn {
+
+.es-right .stake-label,
+.es-right .bet-totals {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.es-right .bet-totals strong {
+  color: var(--cyan-soft);
+}
+
+.es-right .stake-label input {
+  background: var(--header-nav-bg);
+  border: 1px solid var(--border-dark);
+  color: #fff;
+}
+
+/* App promo — dark chrome matching live */
+.es-right .es-app-panel {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.es-right .app-tabs {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
+}
+
+.es-right .app-tab {
+  color: rgba(255, 255, 255, 0.55);
+  background: var(--header-nav-bg);
+  font-size: 13px;
+}
+
+.es-right .app-tab.active {
+  color: #fff;
+  background: linear-gradient(90deg, var(--brand-blue) 0%, var(--accent-blue) 55%, var(--section-blue) 100%);
+}
+
+.es-right .app-tab img {
+  filter: none;
+  opacity: 0.7;
+}
+
+.es-right .app-tab.active img {
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+.es-right .app-close {
+  background: var(--section-blue);
+}
+
+.es-right .app-body {
+  background: var(--sidebar-bg);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.es-right .app-label {
+  color: #fff;
+}
+
+.es-right .btn-app-download {
+  background: var(--header-nav-bg);
+  border-radius: 999px;
+  max-width: none;
+  padding: 0 12px 0 0;
+}
+
+.es-right .btn-app-download:hover {
+  background: var(--section-blue);
+  color: #fff;
+}
+
+/* Subscribe — live social card */
+.es-subscribe {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: var(--accent-blue);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 7px 12px;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  transition: background .15s;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 14px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--sidebar-bg);
 }
-.app-btn:hover { background: var(--accent-blue-hover); }
+
+.es-subscribe-label {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.es-subscribe-x {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--header-nav-bg);
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.es-subscribe-x:hover {
+  background: var(--section-blue);
+  color: #fff;
+}
+
+.es-subscribe-art {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 90px;
+  opacity: 0.45;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(62, 180, 240, 0.55) 0 10px, transparent 11px),
+    radial-gradient(circle at 58% 28%, rgba(47, 105, 177, 0.7) 0 14px, transparent 15px),
+    radial-gradient(circle at 72% 62%, rgba(126, 208, 245, 0.45) 0 9px, transparent 10px),
+    radial-gradient(circle at 48% 70%, rgba(43, 120, 214, 0.5) 0 12px, transparent 13px),
+    linear-gradient(135deg, transparent 40%, rgba(26, 79, 138, 0.55) 100%);
+}
 
 /* ── Responsive ─────────────────────────────────────────── */
-@media (max-width: 1200px) {
+@media (max-width: 1200px) and (min-width: 901px) {
   .es-layout { grid-template-columns: 230px 1fr; }
   .es-right { display: none; }
   .es-comp-card { flex-basis: calc(50% - 6px); }
@@ -1207,6 +1400,23 @@
 @media (max-width: 900px) {
   .es-layout { grid-template-columns: 1fr; }
   .es-sidebar { display: none; }
+  .es-right {
+    background: var(--sidebar-bg);
+  }
+  .es-right .mobile-drawer-close {
+    color: #fff;
+    background: var(--header-nav-bg);
+  }
+  .es-right .es-subscribe,
+  .es-right .es-app-panel {
+    display: none;
+  }
+  .es-right .es-bet-slip {
+    border-radius: 0;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+  }
   .es-hero-banner { height: 180px; }
   .es-hero-banner-title { font-size: 22px; }
   .es-subnav-inner { overflow-x: auto; }

@@ -6,6 +6,7 @@
   <title>Esports Betting — 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/esports.css" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="esports">
   <div class="page-shell">
@@ -1051,45 +1052,99 @@
 
       </main>
 
-      <!-- ── Right sidebar ─────────────────────────────────── -->
-      <aside class="right-sidebar es-right" aria-label="Bet slip">
+      <!-- ── Right sidebar (live esports/real collapse block) ─ -->
+      <aside class="right-sidebar es-right" id="right-sidebar" aria-label="Bet slip">
+        <button type="button" class="right-collapse es-right-collapse" id="es-right-collapse" aria-label="Collapse block" aria-expanded="true">
+          <span>Collapse block</span>
+          <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="9" height="10" />
+        </button>
+        <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close bet slip">
+          <span class="mobile-drawer-handle" aria-hidden="true"></span>
+          <span class="mobile-drawer-close-title">Bet slip</span>
+          <span class="mobile-drawer-close-action">Close</span>
+        </button>
 
-        <!-- Bet slip stub -->
-        <div class="bet-slip-panel">
-          <div class="bet-slip-tabs">
-            <button type="button" class="bet-tab active">Bet slip <span class="bet-tab-count">0</span></button>
-            <button type="button" class="bet-tab">My bets</button>
+        <div class="bet-slip-panel es-bet-slip">
+          <div class="bet-slip-tabs" role="tablist">
+            <button type="button" class="bet-tab active" role="tab" aria-selected="true" data-bet-tab="slip">
+              Bet slip <span class="bet-tab-count">0</span>
+            </button>
+            <button type="button" class="bet-tab" role="tab" aria-selected="false" data-bet-tab="mybets">My bets</button>
           </div>
-          <div class="bet-slip-body">
-            <div class="bet-empty">
-              <svg viewBox="0 0 48 48" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="6" width="32" height="36" rx="3" stroke="var(--border-light)" stroke-width="2"/>
-                <line x1="14" y1="18" x2="34" y2="18" stroke="var(--border-light)" stroke-width="1.8"/>
-                <line x1="14" y1="24" x2="34" y2="24" stroke="var(--border-light)" stroke-width="1.8"/>
-                <line x1="14" y1="30" x2="26" y2="30" stroke="var(--border-light)" stroke-width="1.8"/>
-              </svg>
-              <p>Your bet slip is empty. Add selections from the matches above.</p>
+          <div class="bet-slip-body" id="bet-slip-body">
+            <div class="bet-toolbar">
+              <span class="bet-toolbar-title">Your bets</span>
+              <button type="button" class="bet-icon-btn" aria-label="Share" title="Share">
+                <img src="assets/icons/rb-share.svg" alt="" width="12" height="12" />
+              </button>
+              <button type="button" class="bet-icon-btn" aria-label="Settings" title="Settings">
+                <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
+              </button>
+            </div>
+            <div class="bet-empty" id="bet-empty">
+              <p class="bet-empty-text">Add events to the bet slip or<br />enter a code to load events</p>
+            </div>
+            <div class="bet-list" id="bet-list" hidden></div>
+            <div class="bet-footer" id="bet-footer" hidden>
+              <label class="stake-label">
+                Stake
+                <input type="number" id="stake-input" min="1" step="1" value="10" />
+              </label>
+              <div class="bet-totals">
+                <div><span>Total odds</span><strong id="total-odds">1.00</strong></div>
+                <div><span>Potential return</span><strong id="potential-return">0.00</strong></div>
+              </div>
+              <div class="bet-actions">
+                <button type="button" class="btn-clear" id="clear-bets">Clear All</button>
+                <button type="button" class="btn-place" id="place-bet">Place Bet</button>
+              </div>
+            </div>
+            <button type="button" class="btn-slip-reg btn-register" id="bet-reg-cta">Registration</button>
+            <button type="button" class="bet-save-link">Save/load events</button>
+          </div>
+          <div class="my-bets-body" id="my-bets-body" hidden>
+            <p class="bet-empty-text">No open bets. Place a bet to see it here.</p>
+          </div>
+        </div>
+
+        <div class="app-panel es-app-panel" id="es-app-panel">
+          <div class="app-tabs">
+            <button type="button" class="app-tab active" data-app="android">
+              <img src="assets/icons/rb-android.svg" alt="" width="16" height="16" />
+              Android
+            </button>
+            <button type="button" class="app-tab" data-app="ios">
+              <img src="assets/icons/rb-apple.svg" alt="" width="16" height="16" />
+              iOS
+            </button>
+            <button type="button" class="app-close" id="es-app-close" aria-label="Close">
+              <img src="assets/icons/rb-close.svg" alt="" width="10" height="10" />
+            </button>
+          </div>
+          <div class="app-body">
+            <div class="app-phone">
+              <img src="assets/images/rb-phone-qr.png" alt="QR code" width="118" height="125" />
+            </div>
+            <div class="app-meta">
+              <img src="assets/icons/rb-logo.svg" alt="1xBet" class="app-logo" width="65" height="14" />
+              <p class="app-label">Mobile<br />application</p>
+              <a href="#" class="btn-app-download" id="es-app-download">
+                <img src="assets/icons/rb-android.svg" alt="" width="16" height="16" class="app-dl-icon" data-app-icon />
+                Free&nbsp;download
+              </a>
             </div>
           </div>
-          <a href="#reg-form" class="btn-slip-reg">REGISTER &amp; BET</a>
         </div>
 
-        <!-- App promo -->
-        <div class="app-panel es-app-panel">
-          <div class="app-panel-title">1xBet App</div>
-          <p class="app-panel-copy">Download our app for a better mobile experience. Bet on esports anytime, anywhere.</p>
-          <div class="app-panel-btns">
-            <a href="#" class="app-btn">
-              <img src="assets/icons/ft-ios.svg" alt="" width="14" height="14" />
-              iOS
-            </a>
-            <a href="#" class="app-btn">
-              <img src="assets/icons/ft-android.svg" alt="" width="14" height="14" />
-              Android
-            </a>
-          </div>
+        <div class="es-subscribe" aria-label="Subscribe">
+          <span class="es-subscribe-label">Subscribe</span>
+          <a href="#" class="es-subscribe-x" aria-label="Follow on X">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.727-8.835L1.99 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+            </svg>
+          </a>
+          <div class="es-subscribe-art" aria-hidden="true"></div>
         </div>
-
       </aside>
 
     </div><!-- /sportsbook-layout -->

@@ -106,6 +106,100 @@
       });
     }
 
+    function isMobileDepositViewport() {
+      return window.matchMedia('(max-width: 900px)').matches;
+    }
+
+    function enhanceMobileAccordions(container, cat) {
+      var sections = Array.prototype.slice.call(
+        container.querySelectorAll('.dep-section')
+      );
+      if (!sections.length || !isMobileDepositViewport()) return;
+
+      var useAccordion = cat === 'all';
+
+      sections.forEach(function (section, index) {
+        var label = section.querySelector('.dep-group-label, .dep-section-toggle');
+        var grid = section.querySelector('.dep-grid');
+        if (!grid) return;
+
+        var titleText = '';
+        if (label) {
+          titleText = (label.querySelector('.dep-section-toggle-title') || label)
+            .textContent
+            .trim();
+        }
+        if (!titleText) titleText = section.dataset.section || 'Methods';
+
+        var body = section.querySelector('.dep-section-body');
+        if (!body) {
+          body = document.createElement('div');
+          body.className = 'dep-section-body';
+          grid.parentNode.insertBefore(body, grid);
+          body.appendChild(grid);
+        }
+
+        var count = grid.querySelectorAll('.pay-method-card').length;
+        var toggle = section.querySelector('.dep-section-toggle');
+
+        if (!toggle) {
+          toggle = document.createElement('button');
+          toggle.type = 'button';
+          toggle.className = 'dep-section-toggle';
+          if (label && label.parentNode === section) {
+            section.replaceChild(toggle, label);
+          } else {
+            section.insertBefore(toggle, body);
+          }
+        }
+
+        toggle.innerHTML =
+          '<span class="dep-section-toggle-text">' +
+            '<span class="dep-section-toggle-title"></span>' +
+          '</span>' +
+          '<span class="dep-section-toggle-count"></span>' +
+          '<span class="dep-section-chevron" aria-hidden="true"></span>';
+        toggle.querySelector('.dep-section-toggle-title').textContent = titleText;
+        toggle.querySelector('.dep-section-toggle-count').textContent = String(count);
+
+        section.classList.toggle('dep-section--accordion', useAccordion);
+
+        if (!useAccordion) {
+          section.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.disabled = true;
+          toggle.setAttribute('tabindex', '-1');
+          return;
+        }
+
+        toggle.disabled = false;
+        toggle.removeAttribute('tabindex');
+
+        var shouldOpen =
+          section.dataset.section === 'recommended' ||
+          (index === 0 && !container.querySelector('[data-section="recommended"]'));
+        section.classList.toggle('is-open', shouldOpen);
+        toggle.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+      });
+
+      if (!useAccordion) return;
+
+      container.querySelectorAll('.dep-section-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function () {
+          var section = toggle.closest('.dep-section');
+          if (!section) return;
+          var willOpen = !section.classList.contains('is-open');
+
+          container.querySelectorAll('.dep-section--accordion').forEach(function (s) {
+            var open = willOpen && s === section;
+            s.classList.toggle('is-open', open);
+            var t = s.querySelector('.dep-section-toggle');
+            if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+        });
+      });
+    }
+
     function scrollMethodsToTop() {
       if (depMethods) {
         depMethods.scrollTop = 0;
@@ -120,6 +214,7 @@
       var applyContent = function () {
         sectionsPanel.innerHTML = '';
         sectionsPanel.appendChild(buildCategoryContent(cat));
+        enhanceMobileAccordions(sectionsPanel, cat);
         bindMethodCardSelection(sectionsPanel);
         scrollMethodsToTop();
 
@@ -143,23 +238,37 @@
       }
     }
 
+    function syncCategoryControls(cat) {
+      catBtns.forEach(function (b) {
+        var on = b.dataset.cat === cat;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    function selectCategory(cat, animate) {
+      if (cat === activeCategory && animate) return;
+      syncCategoryControls(cat);
+      renderCategory(cat, animate);
+    }
+
     catBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var cat = btn.dataset.cat;
-        if (cat === activeCategory) return;
-
-        catBtns.forEach(function (b) {
-          b.classList.remove('is-active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        btn.classList.add('is-active');
-        btn.setAttribute('aria-selected', 'true');
-
-        renderCategory(cat, true);
+        selectCategory(btn.dataset.cat, true);
       });
     });
 
     renderCategory('all', false);
+
+    var wasMobileDeposit = isMobileDepositViewport();
+    window.addEventListener('resize', function () {
+      var nowMobile = isMobileDepositViewport();
+      if (nowMobile === wasMobileDeposit) return;
+      wasMobileDeposit = nowMobile;
+      /* Mobile always uses All-methods accordion; restore rail filter on desktop */
+      if (nowMobile) selectCategory('all', false);
+      else renderCategory(activeCategory, false);
+    });
   } else {
     /* Fallback: payment card selection when sections panel is absent */
     var methodCards = Array.prototype.slice.call(document.querySelectorAll('.pay-method-card'));
@@ -420,6 +529,60 @@
     });
   }
 
+  /* ── Daily Check-In ────────────────────────────────────── */
+  if (pageKey === 'daily-checkin') {
+    var claimedIcon =
+      '<svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var claimBackdrop = document.getElementById('dci-claim-backdrop');
+    var claimText = document.getElementById('dci-claim-text');
+    var claimOk = document.getElementById('dci-claim-ok');
+    var claimModal = claimBackdrop && claimBackdrop.querySelector('.dci-claim-modal');
+
+    function openClaimPopup(reward) {
+      if (!claimBackdrop) return;
+      if (claimText) {
+        claimText.textContent = 'You have earned ' + reward + ' in your wallet.';
+      }
+      claimBackdrop.hidden = false;
+      claimBackdrop.classList.add('is-open');
+      document.body.classList.add('dci-claim-open');
+      if (claimModal) claimModal.focus();
+    }
+
+    function closeClaimPopup() {
+      if (!claimBackdrop) return;
+      claimBackdrop.classList.remove('is-open');
+      claimBackdrop.hidden = true;
+      document.body.classList.remove('dci-claim-open');
+    }
+
+    if (claimOk) claimOk.addEventListener('click', closeClaimPopup);
+    if (claimBackdrop) {
+      claimBackdrop.addEventListener('click', function (e) {
+        if (e.target === claimBackdrop) closeClaimPopup();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && claimBackdrop && !claimBackdrop.hidden) closeClaimPopup();
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll('[data-dci-claim]')).forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var card = btn.closest('.dci-day');
+        if (!card || card.classList.contains('is-claimed')) return;
+        var reward = card.getAttribute('data-reward') || 'reward';
+        card.classList.remove('is-claimable');
+        card.classList.add('is-claimed');
+        btn.classList.remove('dci-day-btn--claim');
+        btn.removeAttribute('data-dci-claim');
+        btn.disabled = true;
+        btn.innerHTML = claimedIcon;
+        btn.setAttribute('aria-label', 'Claimed');
+        openClaimPopup(reward);
+      });
+    });
+  }
+
   /* ── Live chat ─────────────────────────────────────────── */
   if (pageKey === 'live-chat') {
     var lcForm = document.getElementById('lc-form');
@@ -654,11 +817,13 @@
     {
       label: 'History Record',
       items: [
-        { key: 'transaction-history', href: 'transaction-history.html', label: 'Transaction History', pages: ['transaction-history'] },
+        {
+          key: 'transaction-history',
+          href: 'transaction-history.html',
+          label: 'Transaction History',
+          pages: ['transaction-history', 'commission-record', 'rebate-record', 'checkin-record']
+        },
         { key: 'bet-history', href: 'bet-history.html', label: 'Bet History', pages: ['bet-history'] },
-        { key: 'commission-record', href: 'commission-record.html', label: 'Commission Record', pages: ['commission-record'] },
-        { key: 'rebate-record', href: 'rebate-record.html', label: 'Rebate Record', pages: ['rebate-record'] },
-        { key: 'checkin-record', href: 'checkin-record.html', label: 'Daily Check In Record', pages: ['checkin-record'] },
         { key: 'promotion-record', href: 'promotion-record.html', label: 'Promotion Record', pages: ['promotion-record'] }
       ]
     },
@@ -668,7 +833,7 @@
         { key: 'referral', href: 'referral-invite.html', label: 'Referral' },
         { key: 'membership', href: 'membership-invite.html', label: 'Membership', icon: 'rewards' },
         { key: 'rebate', href: 'rebate-invite.html', label: 'Rebate', icon: 'rebate' },
-        { key: 'gifts', label: 'Bonuses and Gifts', demo: 'Bonuses and Gifts (demo)' },
+        { key: 'daily-checkin', href: 'daily-checkin.html', label: 'Daily Check In', pages: ['daily-checkin'] },
         { key: 'promo', href: 'promo.html', label: 'Promotions', pages: ['promo'] },
         { key: 'live-chat', href: 'live-chat.html', label: 'Live Chat', pages: ['live-chat'] }
       ]
@@ -791,46 +956,68 @@
   }
 
   var SUBNAV_ICON_KEYS = {
-    deposit: 'deposit',
-    withdraw: 'withdraw',
-    'bet-history': 'history',
-    'transaction-history': 'transactions',
-    'payment-queries': 'queries',
-    'commission-record': 'commission',
-    'rebate-record': 'rebate',
-    'checkin-record': 'checkin',
-    'promotion-record': 'promotion',
-    'personal-profile': 'profile',
-    security: 'security',
-    referral: 'referral',
-    membership: 'rewards',
-    rebate: 'rebate',
-    gifts: 'gifts',
-    promo: 'promo',
-    'live-chat': 'support'
+    deposit: 'wallet',
+    withdraw: 'wallet',
+    'bet-history': 'dice',
+    'transaction-history': 'exchange',
+    'payment-queries': 'info-circle',
+    'commission-record': 'percent',
+    'rebate-record': 'gift',
+    'checkin-record': 'calendar-check',
+    'promotion-record': 'bullhorn',
+    'personal-profile': 'user-circle',
+    security: 'key',
+    referral: 'user-plus',
+    membership: 'gift',
+    rebate: 'percent',
+    'daily-checkin': 'calendar-check',
+    promo: 'bullhorn',
+    'live-chat': 'headset'
   };
 
+  /* Figma 96:9 exported glyphs → assets/icons/account-subnav/*.svg (mask + currentColor) */
   function accSubnavIcon(name) {
-    var icons = {
-      deposit: '<path d="M4 8.5h16v10.5A1.5 1.5 0 0118.5 20.5h-13A1.5 1.5 0 014 19V8.5z" stroke="currentColor" stroke-width="1.6"/><path d="M4 10.5h16M8 8.5V7a2 2 0 012-2h4a2 2 0 012 2v1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M9 14.5h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      withdraw: '<path d="M12 4v9M8.5 9.5L12 13l3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 16.5c1 1.8 3.2 3 7 3s6-1.2 7-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      history: '<path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12a8 8 0 1 0 1.5-4.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M4 4v4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
-      transactions: '<path d="M7 7h13M7 12h13M7 17h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="4.5" cy="7" r="1.2" fill="currentColor"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="17" r="1.2" fill="currentColor"/>',
-      queries: '<path d="M5 6.5A2.5 2.5 0 017.5 4h9A2.5 2.5 0 0119 6.5v7A2.5 2.5 0 0116.5 16H11l-4 3v-3H7.5A2.5 2.5 0 015 13.5v-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>',
-      profile: '<circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M5 19c.8-3.2 3.2-5 7-5s6.2 1.8 7 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      security: '<path d="M12 3.5l7 3v5.2c0 4.2-2.8 7.3-7 8.8-4.2-1.5-7-4.6-7-8.8V6.5l7-3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9.5 12l1.8 1.8L15 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
-      settings: '<circle cx="12" cy="12" r="2.4" stroke="currentColor" stroke-width="1.5"/><path d="M12 4.5v2M12 17.5v2M4.5 12h2M17.5 12h2M6.6 6.6l1.4 1.4M16 16l1.4 1.4M17.4 6.6L16 8M8 16l-1.4 1.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
-      referral: '<circle cx="9" cy="8" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M4 19c.7-2.8 2.6-4.2 5-4.2s4.3 1.4 5 4.2M16 8h4M18 6v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      rewards: '<path d="M12 3.5l2.2 4.5 4.9.7-3.5 3.4.8 4.9L12 14.8 7.6 16.5l.8-4.9L5 8.7l4.9-.7L12 3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
-      commission: '<path d="M9 7.5a3 3 0 116 0c0 2.2-3 2.8-3 4.5M12 17v1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      rebate: '<path d="M8 8V6.5A2 2 0 0110 4.5h4A2 2 0 0116 6.5V8M5 8h14v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 015 19V8z" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v12.5" stroke="currentColor" stroke-width="1.6"/>',
-      checkin: '<path d="M8 5h8a1.5 1.5 0 011.5 1.5V19a1.5 1.5 0 01-1.5 1.5H8A1.5 1.5 0 016.5 19V6.5A1.5 1.5 0 018 5z" stroke="currentColor" stroke-width="1.6"/><path d="M9 4v2M15 4v2M8 10h8M10.5 13.5l1.5 1.5 3-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
-      promotion: '<path d="M6 9l2-4h8l2 4v8H6V9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 14h6M12 9v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      gifts: '<path d="M8 8V6.5A2 2 0 0110 4.5h4A2 2 0 0116 6.5V8M5 8h14v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 015 19V8z" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v12.5" stroke="currentColor" stroke-width="1.6"/>',
-      promo: '<path d="M5 9l2-5h10l2 5H5zM5 9v10h14V9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 14h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
-      support: '<path d="M5.5 11a2.5 2.5 0 012.5-2.5h1V16H8A2.5 2.5 0 015.5 13.5V11zM18.5 11a2.5 2.5 0 00-2.5-2.5h-1V16H16a2.5 2.5 0 002.5-2.5V11z" stroke="currentColor" stroke-width="1.6"/><path d="M8 8.5a4 4 0 018 0" stroke="currentColor" stroke-width="1.6"/>'
+    var fileMap = {
+      wallet: 'wallet.svg',
+      'user-plus': 'user-plus.svg',
+      percent: 'percent.svg',
+      'user-circle': 'user-circle.svg',
+      exchange: 'exchange.svg',
+      dice: 'dice.svg',
+      gift: 'gift.svg',
+      'calendar-check': 'calendar-check.svg',
+      bullhorn: 'bullhorn.svg',
+      globe: 'globe.svg',
+      key: 'key.svg',
+      headset: 'headset.svg',
+      'info-circle': 'info-circle.svg',
+      deposit: 'wallet.svg',
+      withdraw: 'wallet.svg',
+      history: 'dice.svg',
+      transactions: 'exchange.svg',
+      queries: 'info-circle.svg',
+      profile: 'user-circle.svg',
+      security: 'key.svg',
+      referral: 'user-plus.svg',
+      rewards: 'gift.svg',
+      commission: 'percent.svg',
+      rebate: 'percent.svg',
+      checkin: 'calendar-check.svg',
+      promotion: 'bullhorn.svg',
+      gifts: 'gift.svg',
+      promo: 'bullhorn.svg',
+      support: 'headset.svg',
+      language: 'globe.svg',
+      password: 'key.svg',
+      info: 'info-circle.svg'
     };
-    return '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">' + (icons[name] || icons.profile) + '</svg>';
+    var file = fileMap[name] || 'user-circle.svg';
+    var url = 'assets/icons/account-subnav/' + file;
+    return (
+      '<span class="acc-subnav-icon" aria-hidden="true">' +
+        '<img src="' + url + '" alt="" width="18" height="18" decoding="async" />' +
+      '</span>'
+    );
   }
 
   function initAccSubnav() {
@@ -898,44 +1085,9 @@
   }
 
   function initAccountTabbar() {
+    /* Universal tabbar is built in js/script.js (guest + logged-in). */
     var tabbar = document.querySelector('.mobile-tabbar');
-    if (!tabbar || !document.querySelector('.account-main')) return;
-    if (tabbar.dataset.accountTabbar === '1') return;
-
-    document.body.classList.add('has-account-tabbar');
-    tabbar.classList.add('mobile-tabbar--account');
-    tabbar.setAttribute('aria-label', 'Account mobile navigation');
-    tabbar.dataset.accountTabbar = '1';
-    tabbar.innerHTML =
-      '<a href="index.html" class="mobile-tab">' +
-        '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>' +
-        '<span>Home</span>' +
-      '</a>' +
-      '<a href="promo.html" class="mobile-tab">' +
-        '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 7V5.8A1.8 1.8 0 019.8 4h4.4A1.8 1.8 0 0116 5.8V7M5 7h14v12a2 2 0 01-2 2H7a2 2 0 01-2-2V7z" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5M9.5 13.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>' +
-        '<span>Promotion</span>' +
-      '</a>' +
-      '<a href="deposit.html" class="mobile-tab mobile-tab--fab">' +
-        '<span class="mobile-tab-fab-btn" aria-hidden="true">' +
-          '<svg viewBox="0 0 24 24" fill="none"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>' +
-        '</span>' +
-        '<span>Deposit</span>' +
-      '</a>' +
-      '<a href="live-chat.html" class="mobile-tab" id="mobile-livechat-btn">' +
-        '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 6.5A2.5 2.5 0 017.5 4h9A2.5 2.5 0 0119 6.5v7A2.5 2.5 0 0116.5 16H11l-4 3v-3H7.5A2.5 2.5 0 015 13.5v-7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="12" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/></svg>' +
-        '<span>Livechat</span>' +
-      '</a>' +
-      '<a href="personal-profile.html" class="mobile-tab is-active">' +
-        '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 19c.8-3.2 3.3-5 6.5-5s5.7 1.8 6.5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>' +
-        '<span>Account</span>' +
-      '</a>';
-
-    var chatBtn = document.getElementById('mobile-livechat-btn');
-    if (chatBtn && accountPageKey() === 'live-chat') {
-      chatBtn.classList.add('is-active');
-      var accountTab = tabbar.querySelector('a[href="personal-profile.html"]');
-      if (accountTab) accountTab.classList.remove('is-active');
-    }
+    if (tabbar && tabbar.dataset.mainTabbar === '1') return;
   }
 
   initAccountSidebar();

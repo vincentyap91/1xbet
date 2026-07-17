@@ -258,12 +258,103 @@
     });
   }
 
+  /* ── Right collapse block (bet slip / app / subscribe) ───── */
+  function bindRightRail() {
+    const rail = $(".es-right");
+    const collapse = $("#es-right-collapse");
+    if (collapse && rail) {
+      collapse.addEventListener("click", () => {
+        const collapsed = rail.classList.toggle("collapsed");
+        collapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      });
+    }
+
+    $$(".es-bet-slip .bet-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const which = tab.getAttribute("data-bet-tab");
+        $$(".es-bet-slip .bet-tab").forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        const slipBody = $("#bet-slip-body");
+        const myBets = $("#my-bets-body");
+        if (slipBody) slipBody.hidden = which === "mybets";
+        if (myBets) myBets.hidden = which !== "mybets";
+      });
+    });
+
+    const appPanel = $("#es-app-panel");
+    $("#es-app-close")?.addEventListener("click", () => {
+      if (appPanel) appPanel.hidden = true;
+    });
+
+    $$("#es-app-panel .app-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        $$("#es-app-panel .app-tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        const os = tab.getAttribute("data-app") || "android";
+        const icon = $("#es-app-download [data-app-icon]");
+        if (icon) {
+          icon.src = os === "ios" ? "assets/icons/rb-apple.svg" : "assets/icons/rb-android.svg";
+        }
+        toast(os === "ios" ? "iOS app QR ready" : "Android app QR ready");
+      });
+    });
+
+    $(".bet-save-link")?.addEventListener("click", () => {
+      toast("Save/load events — demo only");
+    });
+
+    $$(".es-bet-slip .bet-icon-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        toast(btn.getAttribute("aria-label") || "Bet slip action");
+      });
+    });
+  }
+
+  /* ── Mobile bet slip drawer ───────────────────────────────── */
+  function bindMobileBetSlip() {
+    const rail = $("#right-sidebar");
+    const backdrop = $("#drawer-backdrop");
+    const betBtn = $("#mobile-betslip-btn");
+    const closeBtn = $("#right-drawer-close");
+
+    function closeRail() {
+      rail && rail.classList.remove("is-open");
+      if (backdrop && !$("#header-bottom")?.classList.contains("is-open")) {
+        backdrop.hidden = true;
+        document.body.classList.remove("drawer-open");
+      }
+      betBtn && betBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function openRail() {
+      $("#header-bottom")?.classList.remove("is-open");
+      $("#mobile-menu-btn")?.setAttribute("aria-expanded", "false");
+      $("#mobile-menu-tab")?.setAttribute("aria-expanded", "false");
+      rail && rail.classList.add("is-open");
+      if (backdrop) backdrop.hidden = false;
+      document.body.classList.add("drawer-open");
+      betBtn && betBtn.setAttribute("aria-expanded", "true");
+    }
+
+    betBtn?.addEventListener("click", () => {
+      if (rail?.classList.contains("is-open")) closeRail();
+      else openRail();
+    });
+    closeBtn?.addEventListener("click", closeRail);
+    backdrop?.addEventListener("click", closeRail);
+  }
+
   /* ── Init ─────────────────────────────────────────────────── */
   function init() {
     tickClock();
     setInterval(tickClock, 30000);
     bindNav();
     bindMobile();
+    bindMobileBetSlip();
+    bindRightRail();
     bindSubnavTabs();
     bindDisciplines();
     bindModeTabs();
