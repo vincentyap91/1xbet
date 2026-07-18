@@ -781,13 +781,17 @@
 
   /* ---------- Table rendering ---------- */
 
-  function oddButton(event, market, selection, value, leagueName) {
-    if (value == null) {
-      return `<span class="odd-btn odd-btn-locked" aria-disabled="true" title="Suspended"><img src="assets/icons/lnt/icon-lock.svg" alt="" width="11" height="12" /></span>`;
-    }
+  function oddButton(event, market, selection, value, leagueName, stackLab) {
     const id = `${event.id}-${market}-${selection}`;
     const selected = state.betSlip.some((b) => b.id === id) ? " selected" : "";
     const title = oddTitle(market, selection);
+    const stackClass = stackLab ? " odd-btn--stack" : "";
+    if (value == null) {
+      const lockInner = stackLab
+        ? `<span class="odd-btn-lab">${stackLab}</span><span class="odd-btn-val"><img src="assets/icons/lnt/icon-lock.svg" alt="" width="11" height="12" /></span>`
+        : `<img src="assets/icons/lnt/icon-lock.svg" alt="" width="11" height="12" />`;
+      return `<span class="odd-btn odd-btn-locked${stackClass}" aria-disabled="true" title="Suspended">${lockInner}</span>`;
+    }
     const payload = JSON.stringify({
       id,
       eventId: event.id,
@@ -797,7 +801,10 @@
       selection,
       odds: value,
     }).replace(/"/g, "&quot;");
-    return `<button type="button" class="odd-btn${selected}" data-odd="${payload}" title="${title}" aria-label="${title}" aria-pressed="${selected ? "true" : "false"}">${formatOdd(value)}</button>`;
+    const inner = stackLab
+      ? `<span class="odd-btn-lab">${stackLab}</span><span class="odd-btn-val">${formatOdd(value)}</span>`
+      : formatOdd(value);
+    return `<button type="button" class="odd-btn${stackClass}${selected}" data-odd="${payload}" title="${title}" aria-label="${title}" aria-pressed="${selected ? "true" : "false"}">${inner}</button>`;
   }
 
   function renderEventOddsCells(event, leagueName, sport) {
@@ -813,21 +820,13 @@
         <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
         <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
         <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>
-        <div class="event-odds-mobile event-odds-mobile--dc">
-          <div class="mobile-odds-row" role="group" aria-label="1X2">
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">X</span>${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-          </div>
-          <div class="mobile-odds-row" role="group" aria-label="Double Chance">
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1X</span>${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName)}</div>
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">12</span>${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName)}</div>
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2X</span>${oddButton(event, "Double Chance", "2X", doubleChanceOdd(event, "2X"), leagueName)}</div>
-          </div>
-          <div class="mobile-odds-row mobile-odds-row--total" role="group" aria-label="Total">
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">O</span>${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
-            <div class="mobile-total-pill" title="Total">${event.total != null ? event.total : "—"}</div>
-            <div class="mobile-odd-wrap"><span class="mobile-odd-lab">U</span>${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
+        <div class="event-odds-mobile event-odds-mobile--card">
+          <div class="mobile-odds-row mobile-odds-row--markets" role="group" aria-label="Main markets">
+            ${oddButton(event, "1X2", "1", event.o1, leagueName, "W1")}
+            ${oddButton(event, "1X2", "X", event.ox, leagueName, "DRAW")}
+            ${oddButton(event, "1X2", "2", event.o2, leagueName, "W2")}
+            ${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName, "1X")}
+            ${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName, "12")}
           </div>
           <a href="#" class="more-link">+${event.more}</a>
         </div>`;
@@ -837,21 +836,11 @@
       <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
       <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
       <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-      <div class="event-odds-mobile event-odds-mobile--std">
-        <div class="mobile-odds-row" role="group" aria-label="1X2">
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">X</span>${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-        </div>
-        <div class="mobile-odds-row mobile-odds-row--total" role="group" aria-label="Total">
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">O</span>${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
-          <div class="mobile-total-pill" title="Total">${event.total != null ? event.total : "—"}</div>
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">U</span>${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
-        </div>
-        <div class="mobile-odds-row mobile-odds-row--hcap" role="group" aria-label="Handicap">
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">1</span>${oddButton(event, "Handicap", "1", event.h1, leagueName)}</div>
-          <div class="mobile-total-pill" title="Handicap">${event.hcap != null ? event.hcap : "—"}</div>
-          <div class="mobile-odd-wrap"><span class="mobile-odd-lab">2</span>${oddButton(event, "Handicap", "2", event.h2, leagueName)}</div>
+      <div class="event-odds-mobile event-odds-mobile--card">
+        <div class="mobile-odds-row mobile-odds-row--markets mobile-odds-row--markets-3" role="group" aria-label="Main markets">
+          ${oddButton(event, "1X2", "1", event.o1, leagueName, "W1")}
+          ${oddButton(event, "1X2", "X", event.ox, leagueName, "DRAW")}
+          ${oddButton(event, "1X2", "2", event.o2, leagueName, "W2")}
         </div>
         <a href="#" class="more-link">+${event.more}</a>
       </div>
@@ -877,23 +866,36 @@
         ? " hidden-event"
         : "";
     const homeLogo = event.homeLogo
-      ? `<img class="team-logo" src="${event.homeLogo}" alt="" width="16" height="16" />`
+      ? `<img class="team-logo" src="${event.homeLogo}" alt="" width="18" height="18" />`
       : "";
     const awayLogo = event.awayLogo
-      ? `<img class="team-logo" src="${event.awayLogo}" alt="" width="16" height="16" />`
+      ? `<img class="team-logo" src="${event.awayLogo}" alt="" width="18" height="18" />`
       : "";
     const streamIcon = event.stream
-      ? `<img class="event-stream-icon" src="assets/icons/lnt/icon-stream.svg" alt="" width="12" height="11" title="Live stream" />`
+      ? `<img class="event-stream-icon" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
       : "";
+    const sportSrc = sportHeaderIconMap[sport] || `assets/icons/sport-${sport}.svg`;
 
     return `
       <div class="event-row${hidden}" data-event-id="${event.id}">
+        <div class="event-card-top">
+          <div class="event-card-status">
+            <img class="event-sport-icon" src="${sportSrc}" alt="" width="16" height="16" />
+            <div class="${timeClass}">${timeLabel}</div>
+            ${streamIcon}
+          </div>
+          <div class="event-card-actions">
+            <button type="button" class="icon-tiny fav${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+            <button type="button" class="icon-tiny event-card-more" aria-label="More options">⋯</button>
+          </div>
+        </div>
+        <div class="event-card-league">${leagueName}</div>
         <div class="event-main">
-          <button type="button" class="icon-tiny fav${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+          <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
           <div class="event-teams">
             <div class="team-line">${homeLogo}<span>${event.home}</span><span class="score">${scoreH}</span></div>
             <div class="team-line">${awayLogo}<span>${event.away}</span><span class="score">${scoreA}</span></div>
-            <div class="${timeClass}">${timeLabel}${streamIcon}</div>
+            <div class="${timeClass} event-time--desktop">${timeLabel}${streamIcon}</div>
           </div>
         </div>
         <div class="stats-cell" title="Statistics">

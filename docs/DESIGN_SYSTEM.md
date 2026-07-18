@@ -143,6 +143,41 @@ Outright / custom tables (e.g. Big Tournaments) may use semantic `<table>` marku
 
 **Do not** paint LIVE/LINE league headers with dark navy — those stay light (`--league-header`). Outright market-group headers (1-3RD PLACE → Winner) use **`--section-blue`** + white text (never `--header-bg` / page navy — it crashes into the shell); title bar uses `--accent-blue`; see Outright / Yes–No below.
 
+#### Mobile match cards (≤900px — homepage canon)
+
+At `max-width: 900px`, LIVE/LINE events switch from dense table rows to **self-contained match cards** so status, teams, scores, and markets scan top-to-bottom. Desktop grid markup stays; mobile shows the card chrome + stacked odds. Source: `js/script.js` (`renderEventRow`, `event-odds-mobile--card`) + `css/styles.css` (`@media (max-width: 900px)` event-card rules).
+
+```
+.event-row                          ← white card shell
+  .event-card-top                   ← status + actions
+    .event-card-status              ← sport icon · time/clock · stream
+    .event-card-actions             ← favourite · more
+  .event-card-league                ← league name (in-card)
+  .event-main / .event-teams        ← team lines + scores (right)
+  .event-odds-mobile--card
+    .mobile-odds-row--markets       ← W1 · DRAW · W2 · 1X · 12 (draw sports)
+    .more-link                      ← +N markets
+```
+
+| Layer | Classes | Tokens / rules |
+|-------|---------|----------------|
+| **Card shell** | `.event-row` | `--surface-primary`; `1px solid var(--border-light)`; radius `--radius-md`; light shadow; gap 8px; padding ~10–12px |
+| **Status row** | `.event-card-top` / `.event-card-status` | Sport icon 16px; time `--text-secondary` 12px; LIVE time `--danger` bold |
+| **Actions** | `.event-card-actions` `.icon-tiny` | Fav / more; fav active `--warning` |
+| **League line** | `.event-card-league` | `--text-secondary` 12px / 600 |
+| **Teams** | `.team-line` | `--text-primary` 14px / 700; logos 18px; scores right-aligned, LIVE scores `--danger` |
+| **Odds row** | `.mobile-odds-row--markets` | Draw sports: **5** equal columns `W1 · DRAW · W2 · 1X · 12`. Other sports: **3** cols `W1 · DRAW · W2` (`.mobile-odds-row--markets-3`) |
+| **Odds chip** | `.odd-btn.odd-btn--stack` | Min-height **44px**; lab 9px muted above value 13px bold; default `--odds-bg`; selected `--odds-selected` + white lab/value |
+| **+more** | `.more-link` | Trailing; `--header-action` on `--odds-bg` (not accent pill) |
+| **League bar** | `.league-header` | Still groups cards; column labels hidden on mobile |
+| **Hidden on mobile** | `.desktop-odds`, `.stats-cell`, `.fav--desktop`, `.event-time--desktop` | Desktop-only |
+
+**UX rules (mobile cards):**
+1. One primary market strip only — do not stack Total / Handicap / second DC rows on the card (those stay behind `+more` / desktop).
+2. Labels live **inside** the chip (`.odd-btn-lab` + `.odd-btn-val`), not as separate captions above buttons.
+3. Prefer card gap + radius over zebra striping; even rows use the same white surface.
+4. Do not invent a second mobile match palette — reuse §2.1 tokens.
+
 #### Sport filter chips (above / beside tables)
 
 | State | Class | Background | Text / border |
@@ -430,12 +465,13 @@ Full token/class map: **§2.1**. Summary:
 |-------|--------|
 | Wrap | `.odds-table-wrap` under `.live-events-block` (or same tokens) |
 | League bar | `.league-header` → `--league-header` |
-| Rows | `.event-row` + zebra `--row-alternate` |
+| Rows | `.event-row` + zebra `--row-alternate` (desktop) |
+| Mobile cards | §2.1 **Mobile match cards** — `.event-card-*` + `.odd-btn--stack` / `W1·DRAW·W2·1X·12` |
 | Odds | `.odd-btn` / `.selected` → `--odds-bg` / `--odds-selected` |
-| +more | `.more-link` → `--accent-blue` |
+| +more | `.more-link` → `--accent-blue` (desktop); mobile card uses `--header-action` on `--odds-bg` |
 | Filters | `.filter-chip` → accent-blue soft / active |
 
-New pages with tables **must** follow §2.1 — do not fork a second table theme.
+New pages with tables **must** follow §2.1 — do not fork a second table theme. Mobile lists that show matches **must** use the mobile match-card pattern (≤900px), not a shrunk desktop grid.
 
 ### Cards / panels
 

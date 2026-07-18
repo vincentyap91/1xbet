@@ -2368,10 +2368,6 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   overflow-x: auto;
 }
 
-.league-block {
-  border-bottom: 1px solid var(--border-light);
-}
-
 .league-header {
   display: grid;
   grid-template-columns: minmax(220px, 1.4fr) 36px 44px 44px 44px 40px 44px 44px 48px 44px 44px 40px;
@@ -2511,6 +2507,44 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .event-odds-mobile {
   display: none;
+}
+
+.event-card-top,
+.event-card-league,
+.event-card-actions,
+.event-sport-icon {
+  display: none;
+}
+
+.odd-btn--stack {
+  flex-direction: column;
+  gap: 1px;
+  height: auto;
+  min-height: 28px;
+  padding: 4px 2px;
+  line-height: 1.15;
+}
+
+.odd-btn-lab {
+  display: none;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  line-height: 1.1;
+}
+
+.odd-btn-val {
+  font-size: inherit;
+  font-weight: inherit;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  line-height: 1.15;
+}
+
+.odd-btn--stack.selected .odd-btn-lab {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .event-main {
@@ -5413,16 +5447,32 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
   .odds-table-wrap {
     overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 10px 8px 10px;
+  }
+
+  .league-block {
+    margin-bottom: 10px;
   }
 
   .league-header {
     display: flex;
     min-width: 0;
     padding: 8px 10px;
+    margin: 0 0 8px;
+    border-radius: var(--radius-md);
   }
 
   .league-header .col-label {
     display: none;
+  }
+
+  .league-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .event-row {
@@ -5432,24 +5482,118 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     gap: 8px;
     min-width: 0;
     min-height: 0;
-    padding: 10px;
-    border-radius: 0;
+    padding: 10px 12px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    border-top: 1px solid var(--border-light);
+    background: var(--surface-primary);
+    box-shadow: 0 1px 4px rgba(11, 29, 51, 0.08);
+  }
+
+  .event-row:nth-child(even) {
+    background: var(--surface-primary);
   }
 
   .event-row > .stats-cell,
-  .event-row > .desktop-odds {
+  .event-row > .desktop-odds,
+  .event-row > .odd-cell.desktop-odds,
+  .event-main .fav--desktop,
+  .event-time--desktop {
     display: none !important;
+  }
+
+  .event-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .event-card-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .event-sport-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+
+  .event-card-status .event-time {
+    width: auto;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .event-card-status .event-time.live {
+    color: var(--danger);
+    font-weight: 700;
+  }
+
+  .event-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .event-card-more {
+    font-size: 16px;
+    line-height: 1;
+    color: var(--text-muted);
+  }
+
+  .event-card-league {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.25;
+    margin-top: -2px;
   }
 
   .event-main {
     width: 100%;
-    padding-bottom: 2px;
+    padding: 0;
+  }
+
+  .event-teams {
+    width: 100%;
+  }
+
+  .event-teams .event-time {
+    display: none;
+  }
+
+  .team-line {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.4;
+    gap: 8px;
+  }
+
+  .team-logo {
+    width: 18px;
+    height: 18px;
+  }
+
+  .team-line .score {
+    min-width: 18px;
+    font-size: 14px;
+    font-weight: 700;
   }
 
   .event-odds-mobile {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
     padding-top: 8px;
     border-top: 1px solid #e4edf4;
@@ -5462,50 +5606,40 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
     width: 100%;
   }
 
-  .mobile-odds-row--total,
-  .mobile-odds-row--hcap {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: stretch;
+  .mobile-odds-row--markets {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
   }
 
-  .mobile-odd-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+  .mobile-odds-row--markets-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
 
-  .mobile-odd-lab {
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    text-align: center;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-  }
-
-  .mobile-odd-wrap .odd-btn {
+  .mobile-odds-row--markets .odd-btn--stack {
     width: 100%;
-    min-height: 36px;
+    min-height: 44px;
+    padding: 5px 2px 6px;
+    border-radius: var(--radius-sm);
+    gap: 2px;
+  }
+
+  .mobile-odds-row--markets .odd-btn-lab {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .mobile-odds-row--markets .odd-btn-val {
     font-size: 13px;
     font-weight: 700;
+    color: var(--text-primary);
   }
 
-  .mobile-total-pill {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: end;
-    min-width: 44px;
-    min-height: 36px;
-    padding: 0 8px;
-    font-size: 12px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--text-primary);
-    background: var(--league-header);
-    border-radius: var(--radius-md);
+  .mobile-odds-row--markets .odd-btn--stack.selected .odd-btn-lab,
+  .mobile-odds-row--markets .odd-btn--stack.selected .odd-btn-val {
+    color: #fff;
   }
 
   .event-odds-mobile .more-link {
