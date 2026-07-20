@@ -988,6 +988,7 @@ body.is-logged-in .header-lang-btn .lang-flag {
   background: var(--surface-primary);
   border-radius: var(--radius-md);
   overflow: hidden;
+  width: 100%;
 }
 
 .account-content-head {

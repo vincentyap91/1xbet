@@ -24,14 +24,25 @@
     return `assets/icons/marble/sport-${fileSlug}.svg`;
   }
 
+  /* Circular country flags from https://1xlite-46272.pro/en (ui-champ-icon SVGs) */
   const flagIconMap = {
-    MY: "assets/icons/lnt/flag-my-league.png",
+    MY: "assets/icons/lnt/flag-my.svg",
+    US: "assets/icons/lnt/flag-us.svg",
+    NZ: "assets/icons/lnt/flag-nz.svg",
+    JP: "assets/icons/lnt/flag-jp.svg",
+    FR: "assets/icons/lnt/flag-fr.svg",
+    PE: "assets/icons/lnt/flag-pe.svg",
+    EC: "assets/icons/lnt/flag-ec.svg",
+    CO: "assets/icons/lnt/flag-co.svg",
+    MX: "assets/icons/lnt/flag-mx.svg",
+    CA: "assets/icons/lnt/flag-ca.svg",
     ES: "assets/icons/lnt/flag-spain.svg",
     BE: "assets/icons/lnt/flag-belgium.svg",
     NO: "assets/icons/lnt/flag-norway.svg",
     GB: "assets/icons/lnt/flag-england.svg",
     AR: "assets/icons/lnt/flag-argentina.svg",
     CH: "assets/icons/lnt/flag-switzerland.svg",
+    WC: "assets/icons/lnt/crumb-trophy.svg",
   };
 
   const sportHeaderIconMap = {
@@ -651,9 +662,37 @@
 
   /* ---------- State ---------- */
 
+  const PINNED_STORAGE_KEY = "1xbet_pinned_matches";
+
+  function loadPinnedMatches() {
+    try {
+      const raw = localStorage.getItem(PINNED_STORAGE_KEY);
+      if (!raw) return [];
+      const data = JSON.parse(raw);
+      const list = Array.isArray(data)
+        ? data
+        : data && Array.isArray(data.pinnedMatches)
+          ? data.pinnedMatches
+          : [];
+      return [...new Set(list.filter((id) => typeof id === "string"))];
+    } catch (_) {
+      /* ignore corrupt storage */
+    }
+    return [];
+  }
+
+  function savePinnedMatches(ids) {
+    try {
+      localStorage.setItem(PINNED_STORAGE_KEY, JSON.stringify({ pinnedMatches: ids }));
+    } catch (_) {
+      /* quota / private mode */
+    }
+  }
+
   const state = {
     betSlip: [],
     favorites: new Set(),
+    pinnedMatches: loadPinnedMatches(),
     collapsedLeagues: new Set(),
     activeLiveFilter: null,
     activeLineFilter: null,
@@ -665,6 +704,9 @@
     promoIndex: 0,
     myBetsTab: "open",
   };
+
+  const PIN_ICON_SVG =
+    '<svg class="pin-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>';
 
   const MOCK_RUNNING_BETS = [
     {
@@ -853,8 +895,28 @@
       <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>`;
   }
 
+  function isEventPinned(eventId) {
+    return state.pinnedMatches.includes(eventId);
+  }
+
+  function togglePinnedMatch(eventId) {
+    const idx = state.pinnedMatches.indexOf(eventId);
+    if (idx >= 0) state.pinnedMatches.splice(idx, 1);
+    else state.pinnedMatches.push(eventId);
+    savePinnedMatches(state.pinnedMatches);
+    renderTables();
+  }
+
+  function pinButtonHtml(eventId, extraClass) {
+    const pinned = isEventPinned(eventId);
+    const tip = pinned ? "Unpin Match" : "Pin Match";
+    const cls = `icon-tiny pin${pinned ? " active" : ""}${extraClass ? ` ${extraClass}` : ""}`;
+    return `<button type="button" class="${cls}" data-pin="${eventId}" data-tooltip="${tip}" title="${tip}" aria-label="${tip}" aria-pressed="${pinned ? "true" : "false"}">${PIN_ICON_SVG}</button>`;
+  }
+
   function renderEventRow(event, leagueName, searchQuery, sport) {
     const fav = state.favorites.has(event.id) ? " active" : "";
+    const pinned = isEventPinned(event.id);
     const timeClass = event.live ? "event-time live" : "event-time";
     const timeLabel = event.live ? (event.clock || event.time || "Live") : event.time;
     const scoreH = event.scoreH != null ? event.scoreH : "";
@@ -877,7 +939,7 @@
     const sportSrc = sportHeaderIconMap[sport] || `assets/icons/sport-${sport}.svg`;
 
     return `
-      <div class="event-row${hidden}" data-event-id="${event.id}">
+      <div class="event-row${pinned ? " event-row--pinned" : ""}${hidden}" data-event-id="${event.id}">
         <div class="event-card-top">
           <div class="event-card-status">
             <img class="event-sport-icon" src="${sportSrc}" alt="" width="16" height="16" />
@@ -885,13 +947,17 @@
             ${streamIcon}
           </div>
           <div class="event-card-actions">
+            ${pinButtonHtml(event.id)}
             <button type="button" class="icon-tiny fav${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
             <button type="button" class="icon-tiny event-card-more" aria-label="More options">⋯</button>
           </div>
         </div>
         <div class="event-card-league">${leagueName}</div>
         <div class="event-main">
-          <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+          <div class="event-side-actions">
+            ${pinButtonHtml(event.id, "pin--desktop")}
+            <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+          </div>
           <div class="event-teams">
             <div class="team-line">${homeLogo}<span>${event.home}</span><span class="score">${scoreH}</span></div>
             <div class="team-line">${awayLogo}<span>${event.away}</span><span class="score">${scoreA}</span></div>
@@ -949,10 +1015,17 @@
           <div class="col-label">More</div>`;
   }
 
-  function renderLeague(league, filterSport, searchQuery) {
-    if (filterSport && filterSport !== "stream" && league.sport !== filterSport) {
+  function leagueMatchesFilter(league, filterSport) {
+    if (!filterSport || filterSport === "stream") return true;
+    return league.sport === filterSport;
+  }
+
+  function renderLeague(league, filterSport, searchQuery, eventsOverride) {
+    if (eventsOverride == null && filterSport && filterSport !== "stream" && league.sport !== filterSport) {
       return "";
     }
+    const events = eventsOverride || league.events;
+    if (!events.length) return "";
     const collapsed = state.collapsedLeagues.has(league.id);
     const favLeague = state.favorites.has("league-" + league.id) ? " active" : "";
     const dcClass = sportHasDoubleChance(league.sport) ? " league-block--dc" : "";
@@ -972,24 +1045,60 @@
           ${renderLeagueHeaders(league.sport)}
         </header>
         <div class="league-body" ${collapsed ? "hidden" : ""}>
-          ${league.events.map((e) => renderEventRow(e, league.name, searchQuery, league.sport)).join("")}
+          ${events.map((e) => renderEventRow(e, league.name, searchQuery, league.sport)).join("")}
         </div>
       </section>
     `;
+  }
+
+  /** Pinned matches first (pin order), then remaining leagues in default API order. */
+  function renderOrderedLeagues(leagues, filterSport, searchQuery) {
+    const eventIndex = new Map();
+    leagues.forEach((league) => {
+      if (!leagueMatchesFilter(league, filterSport)) return;
+      league.events.forEach((event) => {
+        eventIndex.set(event.id, { league, event });
+      });
+    });
+
+    const pinnedIds = state.pinnedMatches.filter((id) => eventIndex.has(id));
+    const pinnedSet = new Set(pinnedIds);
+    const sections = [];
+
+    pinnedIds.forEach((id) => {
+      const { league, event } = eventIndex.get(id);
+      const last = sections[sections.length - 1];
+      if (last && last.league.id === league.id) last.events.push(event);
+      else sections.push({ league, events: [event] });
+    });
+
+    leagues.forEach((league) => {
+      if (!leagueMatchesFilter(league, filterSport)) return;
+      const events = league.events.filter((event) => !pinnedSet.has(event.id));
+      if (events.length) sections.push({ league, events });
+    });
+
+    return sections
+      .map(({ league, events }) => renderLeague(league, null, searchQuery, events))
+      .join("");
   }
 
   function renderTables() {
     const liveEl = $("#live-table");
     const lineEl = $("#line-table");
     if (liveEl) {
-      liveEl.innerHTML = liveLeagues
-        .map((l) => renderLeague(l, state.activeLiveFilter, state.liveSearch))
-        .join("");
+      liveEl.innerHTML = renderOrderedLeagues(
+        liveLeagues,
+        state.activeLiveFilter,
+        state.liveSearch
+      );
     }
     if (lineEl) {
-      lineEl.innerHTML = lineLeagues
-        .map((l) => renderLeague(l, state.activeLineFilter, state.lineSearch))
-        .join("");
+      lineEl.innerHTML = renderOrderedLeagues(
+        lineLeagues,
+        state.activeLineFilter,
+        state.lineSearch
+      );
     }
   }
 
@@ -1755,6 +1864,14 @@
         e.preventDefault();
         const data = parseOddAttr(oddBtn);
         if (data) toggleOdd(data);
+        return;
+      }
+
+      const pinBtn = e.target.closest("[data-pin]");
+      if (pinBtn) {
+        e.preventDefault();
+        const id = pinBtn.getAttribute("data-pin");
+        if (id) togglePinnedMatch(id);
         return;
       }
 

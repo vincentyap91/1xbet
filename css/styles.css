@@ -2413,11 +2413,8 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  object-fit: contain;
-}
-
-.league-flag-icon {
-  border-radius: 2px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* Marble sport SVGs use Figma #1D4268 — correct on light league headers; sidebar/chips invert to white */
@@ -2454,6 +2451,68 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .icon-tiny.fav.active {
   color: var(--warning);
+}
+
+.icon-tiny.pin {
+  position: relative;
+  color: var(--text-muted);
+}
+
+.icon-tiny.pin .pin-icon {
+  display: block;
+  transform: rotate(35deg);
+}
+
+.icon-tiny.pin.active {
+  color: var(--brand-blue);
+}
+
+.icon-tiny.pin[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  z-index: 6;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(11, 29, 51, 0.12);
+  pointer-events: none;
+}
+
+.icon-tiny.pin[data-tooltip]:hover::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  transform: translateX(-50%);
+  z-index: 6;
+  border: 5px solid transparent;
+  border-top-color: var(--surface-primary);
+  filter: drop-shadow(0 1px 0 var(--border-light));
+  pointer-events: none;
+}
+
+.event-side-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 0 6px 0 0;
+  margin-right: 2px;
+  border-right: 1px solid var(--border-light);
+}
+
+.event-row--pinned .icon-tiny.pin.active {
+  color: var(--brand-blue);
 }
 
 .col-label {
@@ -5248,6 +5307,8 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   }
 
   .mobile-tabbar--account .mobile-tab img {
+    width: 22px;
+    height: 22px;
     filter: none;
     opacity: 1;
   }
@@ -5497,7 +5558,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   .event-row > .stats-cell,
   .event-row > .desktop-odds,
   .event-row > .odd-cell.desktop-odds,
-  .event-main .fav--desktop,
+  .event-main .event-side-actions,
   .event-time--desktop {
     display: none !important;
   }

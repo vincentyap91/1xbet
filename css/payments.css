@@ -307,6 +307,14 @@
   .payments-layout { flex-direction: column; }
   .payments-grid { grid-template-columns: repeat(2, 1fr); }
   .payments-content { padding: 12px 8px 24px; }
+  .payments-crumbs-bar { padding: 0 10px; }
+  .payments-crumbs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+  .payments-crumbs::-webkit-scrollbar { display: none; }
 }
 
 @media (max-width: 480px) {

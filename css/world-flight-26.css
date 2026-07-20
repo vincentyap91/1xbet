@@ -221,6 +221,18 @@
 }
 
 @media (max-width: 800px) {
+  .wf-crumbs {
+    padding: 10px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+
+  .wf-crumbs::-webkit-scrollbar {
+    display: none;
+  }
+
   .wf-hero {
     min-height: 560px;
     padding: 20px 14px 48px;

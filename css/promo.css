@@ -589,6 +589,14 @@
   }
   .promo-card-grid { grid-template-columns: 1fr; gap: 10px; }
   .promo-card-media { width: 180px; max-width: 42%; }
+  .promo-crumbs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  .promo-crumbs::-webkit-scrollbar { display: none; }
 }
 @media (max-width: 600px) {
   .promo-card { flex-direction: column; }

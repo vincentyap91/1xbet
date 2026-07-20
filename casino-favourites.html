@@ -1,12 +1,11 @@
-???<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Casino � Favourites � 1xBet</title>
+  <title>My Casino — Favourites — 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/casino.css" />
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="casino-favourites">
   <div class="page-shell">
@@ -148,7 +147,7 @@
               <div class="dropdown dropdown-wide" role="menu">
                 <a href="#" role="menuitem">Bingo</a>
                 <a href="#" role="menuitem">Toto</a>
-                <a href="#" role="menuitem">Results</a>
+                <a href="results.html" role="menuitem">Results</a>
                 <a href="#" role="menuitem">Statistics</a>
                 <a href="#" role="menuitem">Poker</a>
                 <a href="#" role="menuitem">TV Games</a>
@@ -247,50 +246,136 @@
         <!-- Main content -->
         <main class="casino-main" id="main-content">
 
-          <!-- -- Weekend Booster hero + Login card ----------- -->
-          <section class="mycasino-hero" aria-label="Weekend booster">
+          <!-- Guest: Weekend Booster + Login ---------------------------------------- -->
+          <section class="mycasino-hero mycasino-guest-only" aria-label="Weekend booster">
 
-            <!-- Weekend Booster banner -->
-            <div class="mycasino-booster">
-              <img class="booster-bg-img" src="assets/images/casino/promos/weekend-booster.png" alt="" loading="lazy" />
-              
-              <div class="mycasino-booster-content">
+            <article class="mycasino-booster">
+              <div class="mycasino-booster-media">
+                <img
+                  class="mycasino-booster-img"
+                  src="assets/images/casino/promos/weekend-booster.png"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="mycasino-booster-body">
                 <h2 class="mycasino-booster-title">
-                  <svg viewBox="0 0 16 16" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><polygon points="8,1 10,6 15,6 11,9.5 12.5,14.5 8,11.5 3.5,14.5 5,9.5 1,6 6,6" fill="#f1b630"/></svg>
-                  WEEKEND BOOSTER
+                  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><polygon points="8,1 10,6 15,6 11,9.5 12.5,14.5 8,11.5 3.5,14.5 5,9.5 1,6 6,6" fill="currentColor"/></svg>
+                  Weekend Booster
                 </h2>
-                <p class="mycasino-booster-desc">Make a Deposit every Friday and get a bonus credited to your account!</p>
-                <a href="#" class="btn-find-out">FIND OUT MORE</a>
+                <p class="mycasino-booster-desc">Make a deposit every Friday and get a bonus credited to your account.</p>
+                <a href="promo.html" class="btn-find-out">Find out more</a>
               </div>
-            </div>
+            </article>
 
-            <!-- Please Log In card -->
-            <div class="mycasino-login-card" aria-label="Login prompt">
-              <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#1a3a6a,#2b78d6);display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid var(--accent-blue);overflow:hidden;"><img src="assets/images/casino/games/serengeti-sunrise.png" alt="" style="width:100%;height:100%;object-fit:cover;" /></div>
-              <p class="login-card-msg">PLEASE LOG IN!</p>
-              <p class="login-card-sub">My Casino is a section that will be filled based on your preferences � but you need to log in first</p>
-              <div class="mycasino-login-btns">
-                <a href="#reg-form" class="btn-mc-reg">REGISTRATION</a>
-                <button type="button" class="btn-mc-login">LOG IN</button>
+            <aside class="mycasino-login-card" aria-labelledby="mycasino-login-title">
+              <div class="mycasino-login-avatar" aria-hidden="true">
+                <img src="assets/images/casino/games/serengeti-sunrise.png" alt="" width="72" height="72" />
               </div>
-            </div>
+              <h2 class="login-card-msg" id="mycasino-login-title">Please log in</h2>
+              <p class="login-card-sub">My Casino fills with games and offers based on your play. Sign in to unlock favourites, history, and personalised picks.</p>
+              <div class="mycasino-login-btns">
+                <button type="button" class="btn-mc-reg" data-auth-open="register">Registration</button>
+                <button type="button" class="btn-mc-login" data-auth-open="login">Log in</button>
+              </div>
+            </aside>
 
           </section>
 
-          <!-- -- TOP GAMES ------------------------------------ -->
-          <section aria-label="Top games">
+          <!-- Logged-in: Loyalty + Mobile app --------------------------------------- -->
+          <section class="mycasino-dash mycasino-logged-only" aria-label="My Casino account">
+            <article class="mycasino-loyalty" aria-labelledby="mycasino-hello">
+              <button type="button" class="mycasino-loyalty-info" aria-label="Loyalty programme info" title="Loyalty info">
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 7v4.5M8 5.2h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </button>
+              <div class="mycasino-loyalty-top">
+                <div class="mycasino-loyalty-badge" aria-hidden="true">
+                  <img src="assets/images/membership/tier-bronze.webp" alt="" width="64" height="64" />
+                </div>
+                <div class="mycasino-loyalty-meta">
+                  <div class="mycasino-loyalty-hello-row">
+                    <h2 class="mycasino-loyalty-hello" id="mycasino-hello">Hello, <span data-mc-user-id>1737116847</span></h2>
+                    <span class="mycasino-loyalty-id">
+                      id: <span data-mc-user-id>1737116847</span>
+                      <button type="button" class="mycasino-loyalty-copy" data-mc-copy-id aria-label="Copy user id" title="Copy id">
+                        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><rect x="5" y="5" width="8" height="8" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 10.5V3.8A1.3 1.3 0 014.8 2.5h6.7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                      </button>
+                    </span>
+                  </div>
+                  <p class="mycasino-loyalty-level">Level: <strong>copper</strong></p>
+                  <div class="mycasino-loyalty-xp">
+                    <div class="mycasino-loyalty-bar" role="progressbar" aria-valuemin="0" aria-valuemax="300000" aria-valuenow="618" aria-label="Loyalty experience">
+                      <span class="mycasino-loyalty-bar-fill" style="width: 0.21%"></span>
+                    </div>
+                    <div class="mycasino-loyalty-xp-label">
+                      <span>Experience: <b data-mc-xp-cur>618</b></span>
+                      <span>/ <span data-mc-xp-max>300 000</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mycasino-loyalty-actions">
+                <a href="rebate-invite.html" class="mycasino-loyalty-action">
+                  <span class="mycasino-loyalty-action-ico" aria-hidden="true">
+                    <svg viewBox="0 0 28 28" width="28" height="28"><path d="M9.2 11.2h9.6l2 3.6H7.2l2-3.6z" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linejoin="round"/><path d="M8 15h12v8.4c0 .9-.7 1.6-1.6 1.6H9.6c-.9 0-1.6-.7-1.6-1.6V15z" fill="none" stroke="currentColor" stroke-width="1.55"/><path d="M14 17.4v4M11.8 19.4h4.4" stroke="currentColor" stroke-width="1.55" stroke-linecap="round"/><path d="M14 5.2c1.4 0 2.5 1.1 2.5 2.5S15.4 10.2 14 10.2 11.5 9.1 11.5 7.7 12.6 5.2 14 5.2z" fill="none" stroke="currentColor" stroke-width="1.45"/><path d="M14 6.4v2.6M12.9 7.7h2.2" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/></svg>
+                  </span>
+                  <span>Cashback</span>
+                </a>
+                <a href="promo.html" class="mycasino-loyalty-action">
+                  <span class="mycasino-loyalty-action-ico" aria-hidden="true">
+                    <svg viewBox="0 0 28 28" width="28" height="28"><circle cx="14" cy="14.2" r="8.6" fill="none" stroke="currentColor" stroke-width="1.55"/><circle cx="14" cy="14.2" r="5.4" fill="none" stroke="currentColor" stroke-width="1.35"/><path d="M14 9.8l1.05 2.15 2.35.25-1.8 1.55.55 2.3L14 14.8l-2.15 1.25.55-2.3-1.8-1.55 2.35-.25L14 9.8z" fill="currentColor"/></svg>
+                  </span>
+                  <span>My bonuses</span>
+                </a>
+                <button type="button" class="mycasino-loyalty-action" data-mc-promo-code>
+                  <span class="mycasino-loyalty-action-ico" aria-hidden="true">
+                    <svg viewBox="0 0 28 28" width="28" height="28"><path d="M4.8 10.4A2.6 2.6 0 017.4 7.8H19.8a2.2 2.2 0 012.2 2.2v1.5a2 2 0 000 3.8v1.5a2.2 2.2 0 01-2.2 2.2H7.4a2.6 2.6 0 01-2.6-2.6v-6z" fill="none" stroke="currentColor" stroke-width="1.55"/><path d="M12.2 10.8l3.8 5.2M16 10.8l-3.8 5.2" stroke="currentColor" stroke-width="1.45" stroke-linecap="round"/><path d="M19.6 7.2l.85-1.25.85 1.25 1.4.15-1.05.95.35 1.4-1.25-.7-1.25.7.35-1.4-1.05-.95 1.4-.15z" fill="currentColor"/></svg>
+                  </span>
+                  <span>Promo code</span>
+                </button>
+              </div>
+            </article>
+
+            <aside class="mycasino-app" aria-labelledby="mycasino-app-title">
+              <div class="mycasino-app-copy">
+                <h2 class="mycasino-app-title" id="mycasino-app-title">Mobile application</h2>
+                <p class="mycasino-app-desc">Download the 1xBet app, for even easier access to all the fun!</p>
+                <div class="mycasino-app-stores">
+                  <a href="#" class="mycasino-app-store mycasino-app-store--ios" aria-label="Download on the App Store">
+                    <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M11.2 8.1c0-1.7 1.4-2.5 1.5-2.6-0.8-1.2-2.1-1.3-2.5-1.4-1.1-0.1-2 .6-2.6.6-.6 0-1.4-.6-2.3-.6-1.2 0-2.3.7-2.9 1.8-1.2 2.2-.3 5.4.9 7.1.6.9 1.3 1.8 2.2 1.8.9 0 1.2-.6 2.3-.6s1.4.6 2.3.6c1 0 1.6-.9 2.2-1.7.7-1 1-2 1-2.1-.1 0-1.8-.7-1.8-2.9zM9.7 2.8c.5-.6.8-1.4.7-2.3-.7 0-1.6.5-2.1 1.1-.5.5-.9 1.4-.8 2.2.8.1 1.6-.4 2.2-1z" fill="currentColor"/></svg>
+                  </a>
+                  <a href="#" class="mycasino-app-store mycasino-app-store--android" aria-label="Get it on Google Play">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M17.6 4.6l1.5-2.6M6.4 4.6L4.9 2M7.2 15.8v3.6M16.8 15.8v3.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7.4 7.2h9.2a4.2 4.2 0 014.2 4.2v1.6a4.2 4.2 0 01-4.2 4.2H7.4A4.2 4.2 0 013.2 13V11.4A4.2 4.2 0 017.4 7.2z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="9.2" cy="11.4" r="1.1" fill="currentColor"/><circle cx="14.8" cy="11.4" r="1.1" fill="currentColor"/></svg>
+                  </a>
+                </div>
+              </div>
+              <div class="mycasino-app-visual">
+                <img
+                  class="mycasino-app-phone"
+                  src="assets/images/casino/mycasino-app-phone.webp"
+                  alt="1xBet mobile app"
+                  width="180"
+                  height="220"
+                  loading="lazy"
+                />
+              </div>
+            </aside>
+          </section>
+
+          <!-- Guest: TOP GAMES ------------------------------------------------------ -->
+          <section class="mycasino-section mycasino-guest-only" aria-label="Top games">
             <div class="casino-section-hdr">
               <h2 class="casino-section-hdr-title">
-                <svg viewBox="0 0 14 14" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M7 1L8.2 4.8H12.5L9.1 7.3L10.3 11.1L7 8.7L3.7 11.1L4.9 7.3L1.5 4.8H5.8L7 1Z" fill="#f1b630"/></svg>
-                TOP GAMES
+                <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M7 1L8.2 4.8H12.5L9.1 7.3L10.3 11.1L7 8.7L3.7 11.1L4.9 7.3L1.5 4.8H5.8L7 1Z" fill="currentColor"/></svg>
+                Top Games
               </h2>
-              <a href="casino.html" class="casino-section-hdr-more" aria-label="View all games">�</a>
+              <a href="casino.html" class="casino-section-hdr-more" aria-label="View all games">View all</a>
             </div>
             <div class="casino-top-games" role="list">
 
               <div class="top-game-card" data-game="Chicken Road" role="listitem">
-                <img src="assets/images/casino/games/chicken-road.png" alt="Chicken Road" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
-                <div class="top-game-card-badge live">inHot</div>
+                <img src="assets/images/casino/games/chicken-road.png" alt="Chicken Road" loading="lazy" />
+                <div class="top-game-card-badge hot">HOT</div>
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">Chicken Road</div>
                   <div class="top-game-card-provider">Smartsoft</div>
@@ -298,7 +383,7 @@
               </div>
 
               <div class="top-game-card" data-game="PlinkoX" role="listitem">
-                <img src="assets/images/casino/games/plinko-x.png" alt="PlinkoX" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
+                <img src="assets/images/casino/games/plinko-x.png" alt="PlinkoX" loading="lazy" />
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">PlinkoX</div>
                   <div class="top-game-card-provider">Smartsoft</div>
@@ -306,7 +391,7 @@
               </div>
 
               <div class="top-game-card" data-game="Chicken Road InOut" role="listitem">
-                <img src="assets/images/casino/games/chicken-road.png" alt="Chicken Road InOut" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
+                <img src="assets/images/casino/games/chicken-road.png" alt="Chicken Road InOut" loading="lazy" />
                 <div class="top-game-card-badge new">NEW</div>
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">Chicken Road</div>
@@ -315,8 +400,8 @@
               </div>
 
               <div class="top-game-card" data-game="Speed Baccarat" role="listitem">
-                <img src="assets/images/casino/games/speed-baccarat.png" alt="Speed Baccarat" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
-                <div class="top-game-card-badge live">live</div>
+                <img src="assets/images/casino/games/speed-baccarat.png" alt="Speed Baccarat" loading="lazy" />
+                <div class="top-game-card-badge live">LIVE</div>
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">Speed Baccarat</div>
                   <div class="top-game-card-provider">1XLive</div>
@@ -324,25 +409,25 @@
               </div>
 
               <div class="top-game-card" data-game="1xBet FC Barcelona Baccarat" role="listitem">
-                <img src="assets/images/casino/games/barcelona-baccarat.png" alt="Barcelona Baccarat" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
-                <div class="top-game-card-badge live">live</div>
+                <img src="assets/images/casino/games/barcelona-baccarat.png" alt="Barcelona Baccarat" loading="lazy" />
+                <div class="top-game-card-badge live">LIVE</div>
                 <div class="top-game-card-footer">
-                  <div class="top-game-card-name">1xBet FC Barcelona...</div>
+                  <div class="top-game-card-name">1xBet FC Barcelona Baccarat</div>
                   <div class="top-game-card-provider">1XLive</div>
                 </div>
               </div>
 
               <div class="top-game-card" data-game="Korean Speed Baccarat" role="listitem">
-                <img src="assets/images/casino/games/korean-baccarat.png" alt="Korean Baccarat" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
-                <div class="top-game-card-badge live">live</div>
+                <img src="assets/images/casino/games/korean-baccarat.png" alt="Korean Baccarat" loading="lazy" />
+                <div class="top-game-card-badge live">LIVE</div>
                 <div class="top-game-card-footer">
-                  <div class="top-game-card-name">Korean Speed...</div>
+                  <div class="top-game-card-name">Korean Speed Baccarat</div>
                   <div class="top-game-card-provider">1XLive</div>
                 </div>
               </div>
 
               <div class="top-game-card" data-game="Aviator" role="listitem">
-                <img src="assets/images/casino/games/aviator.png" alt="Aviator" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
+                <img src="assets/images/casino/games/aviator.png" alt="Aviator" loading="lazy" />
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">Aviator</div>
                   <div class="top-game-card-provider">Aviator</div>
@@ -350,7 +435,7 @@
               </div>
 
               <div class="top-game-card" data-game="Aviator Studio" role="listitem">
-                <img src="assets/images/casino/games/aviator.png" alt="Aviator Studio" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
+                <img src="assets/images/casino/games/aviator.png" alt="Aviator Studio" loading="lazy" />
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">Aviator</div>
                   <div class="top-game-card-provider">Aviator Studio</div>
@@ -358,7 +443,7 @@
               </div>
 
               <div class="top-game-card" data-game="JetX" role="listitem">
-                <img src="assets/images/casino/games/jetx-tall.png" alt="JetX" style="width:100%;height:175px;object-fit:cover;display:block;" loading="lazy" />
+                <img src="assets/images/casino/games/jetx-tall.png" alt="JetX" loading="lazy" />
                 <div class="top-game-card-badge deluxe">DELUXE</div>
                 <div class="top-game-card-footer">
                   <div class="top-game-card-name">JetX</div>
@@ -366,7 +451,117 @@
                 </div>
               </div>
 
-            </div><!-- /casino-top-games -->
+            </div>
+          </section>
+
+          <!-- Logged-in: RECOMMENDED ----------------------------------------------- -->
+          <section class="mycasino-section mycasino-recommended mycasino-logged-only" aria-label="Recommended games">
+            <div class="casino-section-hdr mycasino-rec-hdr">
+              <h2 class="casino-section-hdr-title">
+                <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M6.2 9.2L4 11.8V6.5c0-.8.4-1.5 1.1-1.9L8.2 2.8c.4-.3 1-.2 1.3.2l.8 1.1c.2.3.6.4.9.3l1.5-.4c.6-.2 1.2.3 1.2.9v2.1c0 .3-.1.6-.3.8l-2.8 3.4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.2 9.2H3.8c-.6 0-1.1.5-1.1 1.1v1.3c0 .6.5 1.1 1.1 1.1h3.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Recommended
+              </h2>
+              <a href="casino.html" class="casino-section-hdr-more mycasino-rec-more" aria-label="View all recommended games">»</a>
+            </div>
+            <div class="mycasino-rec-wrap">
+              <button type="button" class="mycasino-rec-nav mycasino-rec-nav--prev" aria-label="Previous games" data-mc-rec-prev>
+                <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M7.5 2L3.5 6l4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="mycasino-rec-track" data-mc-rec-track role="list">
+                <a href="casino.html" class="mycasino-rec-card" data-game="Chicken Road" role="listitem">
+                  <img src="assets/images/casino/games/chicken-road.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-badge">PROMO</span>
+                  <span class="mycasino-rec-name">Chicken Road</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Aviator" role="listitem">
+                  <img src="assets/images/casino/games/aviator.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Aviator</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="PlinkoX" role="listitem">
+                  <img src="assets/images/casino/games/plinko-x.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-badge mycasino-rec-badge--drops">DROPS &amp; WINS</span>
+                  <span class="mycasino-rec-name">Plinko X</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Speed Baccarat" role="listitem">
+                  <img src="assets/images/casino/games/speed-baccarat.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Speed Baccarat</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Barcelona Baccarat" role="listitem">
+                  <img src="assets/images/casino/games/barcelona-baccarat.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-badge">PROMO</span>
+                  <span class="mycasino-rec-name">FC Barcelona Baccarat</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="JetX" role="listitem">
+                  <img src="assets/images/casino/games/jetx-tall.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">JetX</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Crazy Time" role="listitem">
+                  <img src="assets/images/casino/games/crazy-time.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Crazy Time</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Korean Baccarat" role="listitem">
+                  <img src="assets/images/casino/games/korean-baccarat.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-badge">PROMO</span>
+                  <span class="mycasino-rec-name">Korean Speed Baccarat</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Cabaret Roulette" role="listitem">
+                  <img src="assets/images/casino/games/cabaret-roulette.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Cabaret Roulette</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Bang Bang" role="listitem">
+                  <img src="assets/images/casino/games/bang-bang.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Golden Dragon Inferno</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Serengeti" role="listitem">
+                  <img src="assets/images/casino/games/serengeti-sunrise.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-badge mycasino-rec-badge--drops">DROPS &amp; WINS</span>
+                  <span class="mycasino-rec-name">Serengeti Sunrise</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+                <a href="casino.html" class="mycasino-rec-card" data-game="Chicken Road 2" role="listitem">
+                  <img src="assets/images/casino/games/chicken-road.png" alt="" loading="lazy" />
+                  <span class="mycasino-rec-name">Chicken Road InOut</span>
+                                  <button type="button" class="mycasino-rec-fav" data-mc-rec-fav aria-label="Add to favourites" aria-pressed="false">
+                    <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 1.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6L8 10l-3.2 1.7.6-3.6L2.8 5.6l3.6-.5L8 1.8z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                  </button>
+                </a>
+              </div>
+              <button type="button" class="mycasino-rec-nav mycasino-rec-nav--next" aria-label="Next games" data-mc-rec-next>
+                <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M4.5 2L8.5 6l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
           </section>
 
           <!-- -- PROMOTIONS ------------------------------------ -->
@@ -376,7 +571,7 @@
                 <svg viewBox="0 0 14 14" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M2 7h10M7 2v10" stroke="#3eb4f0" stroke-width="1.5" stroke-linecap="round"/></svg>
                 PROMOTIONS
               </h2>
-              <a href="#" class="casino-section-hdr-more" aria-label="View all promotions">�</a>
+              <a href="promo.html" class="casino-section-hdr-more" aria-label="View all promotions">View all</a>
             </div>
             <div class="casino-promos">
 
@@ -425,7 +620,7 @@
               <div class="casino-activities-left">
                 <h2 class="casino-activities-title">EVEN MORE<br><span>ACTIVITIES</span></h2>
                 <p class="casino-activities-sub">Best collections have already been created for you. All you need to do is register!</p>
-                <a href="#reg-form" class="btn-find-out" style="margin-top:8px;">REGISTER</a>
+                <button type="button" class="btn-find-out" data-auth-open="register">Register</button>
               </div>
               <div class="casino-activities-games">
                 <div class="activity-game-card" data-game="Golden Dragon Inferno">
@@ -460,7 +655,7 @@
                 <svg viewBox="0 0 14 14" width="14" height="14" xmlns="http://www.w3.org/2000/svg"><polygon points="7,1 8.5,5.5 13,5.5 9,8.5 10.5,13 7,10.5 3.5,13 5,8.5 1,5.5 5.5,5.5" fill="#f1b630"/></svg>
                 THIS MONTH'S TOURNAMENTS
               </h2>
-              <a href="#" class="casino-section-hdr-more" aria-label="View all tournaments">�</a>
+              <a href="#" class="casino-section-hdr-more" aria-label="View all tournaments">View all</a>
             </div>
             <div class="mycasino-tournaments">
 
@@ -468,7 +663,7 @@
                 <img src="assets/images/casino/tournaments/stand-for-victory.png" alt="Stand for Victory" style="width:100%;height:140px;object-fit:cover;display:block;" loading="lazy" />
                 <div class="month-tourn-body">
                   <div class="month-tourn-name">STAND FOR<br>VICTORY</div>
-                  <div class="month-tourn-prize">� 250,000</div>
+                  <div class="month-tourn-prize">€ 250,000</div>
                 </div>
               </div>
 
@@ -476,7 +671,7 @@
                 <img src="assets/images/casino/tournaments/cash-splash.png" alt="Cash Splash" style="width:100%;height:140px;object-fit:cover;display:block;" loading="lazy" />
                 <div class="month-tourn-body">
                   <div class="month-tourn-name">CASH<br>SPLASH</div>
-                  <div class="month-tourn-prize">� 250,000</div>
+                  <div class="month-tourn-prize">€ 250,000</div>
                 </div>
               </div>
 
@@ -484,7 +679,7 @@
                 <img src="assets/images/casino/tournaments/royal-catch.png" alt="Royal Catch" style="width:100%;height:140px;object-fit:cover;display:block;" loading="lazy" />
                 <div class="month-tourn-body">
                   <div class="month-tourn-name">ROYAL<br>CATCH</div>
-                  <div class="month-tourn-prize">� 20,000</div>
+                  <div class="month-tourn-prize">€ 20,000</div>
                 </div>
               </div>
 
@@ -492,7 +687,7 @@
                 <img src="assets/images/casino/tournaments/codename-casino.png" alt="Codename Casino" style="width:100%;height:140px;object-fit:cover;display:block;" loading="lazy" />
                 <div class="month-tourn-body">
                   <div class="month-tourn-name">CODENAME<br>CASINO</div>
-                  <div class="month-tourn-prize">� 3,000</div>
+                  <div class="month-tourn-prize">€ 3,000</div>
                 </div>
               </div>
 
@@ -500,7 +695,7 @@
                 <img src="assets/images/casino/tournaments/rainbow-fortune.png" alt="Rainbow Fortune" style="width:100%;height:140px;object-fit:cover;display:block;" loading="lazy" />
                 <div class="month-tourn-body">
                   <div class="month-tourn-name">RAINBOW<br>FORTUNE</div>
-                  <div class="month-tourn-prize">� 2,000</div>
+                  <div class="month-tourn-prize">€ 2,000</div>
                 </div>
               </div>
 
@@ -562,7 +757,7 @@
         <div class="footer-col">
           <h3>Statistics</h3>
           <a href="#">Statistics</a>
-          <a href="#">Results</a>
+          <a href="results.html">Results</a>
         </div>
         <div class="footer-col">
           <h3>Useful links</h3>

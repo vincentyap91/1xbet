@@ -152,4 +152,12 @@
   .info-main {
     padding: 12px 8px;
   }
+  .info-crumbs-bar { padding: 0 10px; }
+  .info-crumbs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+  .info-crumbs::-webkit-scrollbar { display: none; }
 }

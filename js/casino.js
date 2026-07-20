@@ -208,12 +208,10 @@
 
   /* ── Promo banners ──────────────────────────────────────── */
   function bindPromos() {
-    $$(".promo-banner .btn-find-out, .btn-mc-reg, .btn-mc-login").forEach((btn) => {
+    $$(".promo-banner .btn-find-out").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
-        if (btn.classList.contains("btn-mc-reg")) toast("Registration — demo only");
-        else if (btn.classList.contains("btn-mc-login")) toast("Login — demo only");
-        else toast("Promotion details — demo only");
+        toast("Promotion details — demo only");
       });
     });
   }
@@ -228,6 +226,83 @@
     });
   }
 
+  /* ── My Casino logged-in dashboard ─────────────────────── */
+  function bindMyCasino() {
+    if (!$(".mycasino-dash") && !$(".mycasino-recommended")) return;
+
+    // Demo deep-link: casino-favourites.html?auth=1
+    try {
+      if (new URLSearchParams(window.location.search).get("auth") === "1") {
+        sessionStorage.setItem("1xbet_logged_in", "1");
+        document.body.classList.add("is-logged-in");
+      }
+    } catch (e) { /* ignore */ }
+
+    $$("[data-mc-promo-code]").forEach((btn) => {
+      btn.addEventListener("click", () => toast("Enter promo code — demo only"));
+    });
+
+    $$(".mycasino-loyalty-info").forEach((btn) => {
+      btn.addEventListener("click", () => toast("Loyalty levels — demo only"));
+    });
+
+    $$("[data-mc-copy-id]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const idEl = btn.closest(".mycasino-loyalty-id")?.querySelector("[data-mc-user-id]");
+        const id = (idEl?.textContent || "").trim();
+        if (!id) return;
+        try {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(id);
+          } else {
+            const ta = document.createElement("textarea");
+            ta.value = id;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand("copy");
+            ta.remove();
+          }
+          toast("ID copied");
+        } catch (e) {
+          toast("Could not copy ID");
+        }
+      });
+    });
+
+    $$(".mycasino-app-store").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        toast("App download — demo only");
+      });
+    });
+
+    $$("[data-mc-rec-fav]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const on = btn.classList.toggle("is-active");
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        toast(on ? "Added to favourites" : "Removed from favourites");
+      });
+    });
+
+    const track = $("[data-mc-rec-track]");
+    const prev = $("[data-mc-rec-prev]");
+    const next = $("[data-mc-rec-next]");
+    if (track && prev && next) {
+      const step = () => Math.max(track.clientWidth * 0.9, 200);
+      prev.addEventListener("click", () => {
+        track.scrollBy({ left: -step(), behavior: "smooth" });
+      });
+      next.addEventListener("click", () => {
+        track.scrollBy({ left: step(), behavior: "smooth" });
+      });
+    }
+  }
+
   /* ── Init ───────────────────────────────────────────────── */
   tickClock();
   setInterval(tickClock, 30000);
@@ -240,4 +315,5 @@
   bindPopup();
   bindPromos();
   bindSearch();
+  bindMyCasino();
 })();

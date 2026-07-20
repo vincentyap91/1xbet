@@ -279,4 +279,12 @@
   .terms-toc { width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid var(--border-light); }
   .terms-toc-list { max-height: 200px; }
   .terms-content { padding: 16px; }
+  .terms-crumbs-bar { padding: 0 10px; }
+  .terms-crumbs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+  }
+  .terms-crumbs::-webkit-scrollbar { display: none; }
 }

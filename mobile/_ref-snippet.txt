@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html><html  dir="ltr" xlang="en" data-capo="" lang="en"><head><script>window.cdn={cdnURL:"https://v3.traincdn.com",scripts:[{"type":"module","src":"/sys-static/sys-v3-host-app-static/Mobile/Default/entry-4361926ec9.js","crossorigin":true}]};(()=>{var f;const c=document,s=(f=window.cdn)!=null?f:window.cdn={},{cdnURL:n="",scripts:l=[]}=s;if(!n)return;let a=!1;const r=e=>{a?e():c.addEventListener("DOMContentLoaded",e,{once:!0})};r(()=>{a=!0});const i=()=>new Promise(e=>{setTimeout(()=>r(e),1e4);const t=c.querySelectorAll('link[rel="stylesheet"]');let o=0;const u=()=>{o++,o===t.length&&r(e)};t.forEach(d=>{try{d.sheet?u():(d.addEventListener("load",u),d.addEventListener("error",()=>r(e)))}catch(y){r(e)}}),t.length===0&&r(e)}),h=e=>{const t=c.createElement("script");for(const o in e)t.setAttribute(o,e[o]);c.body.appendChild(t)};Promise.race([fetch(`${n}/version.json`,{cache:"no-store"}).then(e=>e.text()),new Promise((e,t)=>setTimeout(t,4e3))]).then(()=>{i().then(()=>{l.forEach(e=>{e.src=n+e.src,h(e)})})}).catch(()=>{s.failed=s.cdnURL,s.cdnURL="",i().then(()=>l.forEach(h)),c.querySelectorAll(`link[href^="${n}"][rel="stylesheet"]`).forEach(e=>e.setAttribute("href",e.href.replace(n,""))),c.querySelectorAll(`img[src^="${n}"]`).forEach(e=>e.setAttribute("src",e.src.replace(n,"")))})})();
+</script>
+<title>1xBet</title>
+<meta data-head-key="og:type" property="og:type" content="website">
+<meta data-head-key="twitter:card" name="twitter:card" content="summary">
+<meta data-head-key="og:url" property="og:url" content="https://1xlite-46272.pro/en">
+<meta data-head-key="og:title" property="og:title" content="1xBet">
+<meta data-head-key="robots" name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://1xlite-46272.pro/en" />
+<link rel="stylesheet" href="https://v3.traincdn.com/genfiles/seostatic/styles/4493be31d55107c1.css" type="text/css" id="seo-content-styles" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=0">
+<link rel="stylesheet" href="https://v3.traincdn.com/genfiles/site-admin/colors/21d423b56b1e281cf24b3493379983d1.css">
+<link rel="stylesheet" href="https://v3.traincdn.com/genfiles/site-admin/css_vars/06c9b68c4f5819c83cc220a9024bbee1.css">
+<link href="https://v3.traincdn.com/sys-ui/4.0.108/Mobile/Default/client.l.css" rel="stylesheet" type="text/css">
+<style title="brand-book">:root {  }</style>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/c09363ebe1.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/shared-assets/Mobile/__shared_css_3c5663.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/7eb465a001.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/6c863304f7.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/ef3cd552be.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/1b945781e5.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/eecff7e4f1.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/578707b8d4.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/2910ada823.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/0ac1e3e1d2.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/09d283a214.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/ca19330be9.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/1a7823f83a.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/04bc7f1cc1.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/3bad9e18ec.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/cf247e2959.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/5ebc1fd8a6.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/5897b2fbce.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/75b1e816e2.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/fb4f4483ed.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/349bdf43b5.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/963ca733a9.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/259e68645c.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/108a5b0027.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/69ead326c0.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/530dd8790d.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/ceaf255df7.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/8acd9d2705.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/1461c20906.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/59a2515463.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/e2bf975d22.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/1af7e91587.css" crossorigin>
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/b1ea306bda.css" crossorigin>
+<link href="https://v3.traincdn.com/genfiles/cms/1-285/desktop/media_asset/12256f33914d5a00e117534984161a0a.png" rel="icon" type="image/x-icon" data-head-key="icon">
+<link href="https://v3.traincdn.com/genfiles/cms/1-285/desktop/media_asset/12256f33914d5a00e117534984161a0a.png" rel="shortcut icon" data-head-key="shortcut_icon">
+<meta data-head-key="og:image" property="og:image" content="https://v3.traincdn.com/genfiles/cms/1-285/desktop/media_asset/12256f33914d5a00e117534984161a0a.png">
+<link rel="stylesheet" href="https://v3.traincdn.com/sys-static/sys-v3-host-app-static/Mobile/Default/non-embedded_c53.css" /><link rel="stylesheet" href="/sys-ui/4.0.108/Mobile/Default/client.l.css"><link rel="stylesheet" href="/sys-static/sys-banners-client-static/Mobile/Default/9401868885.css"><link rel="stylesheet" href="/sys-static/shared-assets/Mobile/__shared_css_3c5663.css"><link rel="stylesheet" href="/sys-static/sys-banners-client-static/Mobile/Default/bf67181ff2.css"><link rel="stylesheet" href="/sys-static/sys-banners-client-static/Mobile/Default/b483378af3.css"><link rel="stylesheet" href="/sys-static/sys-banners-client-static/Mobile/Default/72961acf3a.css"><link rel="stylesheet" href="/sys-static/sys-banners-cli

@@ -1,0 +1,122 @@
+{
+  "ok": 98,
+  "fail": 0,
+  "files": {
+    "chrome": {
+      "logo-1xbet": "assets/images/mobile-home/chrome/logo-1xbet.svg",
+      "flag-my": "assets/images/mobile-home/chrome/flag-my.svg"
+    },
+    "promos": {
+      "world-win-26": "assets/images/mobile-home/promos/world-win-26.webp",
+      "stand-for-victory": "assets/images/mobile-home/promos/stand-for-victory.webp",
+      "first-deposit-bonus": "assets/images/mobile-home/promos/first-deposit-bonus.webp",
+      "higher-or-lower": "assets/images/mobile-home/promos/higher-or-lower.webp",
+      "esports-cashback": "assets/images/mobile-home/promos/esports-cashback.webp",
+      "sport-single": "assets/images/mobile-home/promos/sport-single.webp",
+      "wnba-cashback": "assets/images/mobile-home/promos/wnba-cashback.webp",
+      "first-deposit-megabonus": "assets/images/mobile-home/promos/first-deposit-megabonus.webp",
+      "happy-monday": "assets/images/mobile-home/promos/happy-monday.webp",
+      "chickpoint": "assets/images/mobile-home/promos/chickpoint.webp",
+      "go-rosh": "assets/images/mobile-home/promos/go-rosh.webp",
+      "crypto-freebet": "assets/images/mobile-home/promos/crypto-freebet.webp",
+      "aviator-thursday": "assets/images/mobile-home/promos/aviator-thursday.webp",
+      "1xtennis-challenge": "assets/images/mobile-home/promos/1xtennis-challenge.webp",
+      "ace-arena": "assets/images/mobile-home/promos/ace-arena.webp"
+    },
+    "circles": {
+      "1xgames": "assets/images/mobile-home/circles/1xgames.jpg",
+      "world-flight-26": "assets/images/mobile-home/circles/world-flight-26.jpg",
+      "crash": "assets/images/mobile-home/circles/crash.jpg",
+      "crystal": "assets/images/mobile-home/circles/crystal.jpg",
+      "fruit-cocktail": "assets/images/mobile-home/circles/fruit-cocktail.jpg",
+      "burning-hot": "assets/images/mobile-home/circles/burning-hot.jpg",
+      "western-slot": "assets/images/mobile-home/circles/western-slot.jpg",
+      "solitaire": "assets/images/mobile-home/circles/solitaire.jpg",
+      "under-and-over-7": "assets/images/mobile-home/circles/under-and-over-7.jpg",
+      "vampire-curse": "assets/images/mobile-home/circles/vampire-curse.jpg",
+      "crash-point": "assets/images/mobile-home/circles/crash-point.jpg",
+      "21": "assets/images/mobile-home/circles/21.jpg",
+      "apple-of-fortune": "assets/images/mobile-home/circles/apple-of-fortune.jpg",
+      "spin-and-win": "assets/images/mobile-home/circles/spin-and-win.jpg",
+      "gems-odyssey": "assets/images/mobile-home/circles/gems-odyssey.jpg",
+      "las-vegas": "assets/images/mobile-home/circles/las-vegas.jpg"
+    },
+    "casino": {
+      "wild-mining": "assets/images/mobile-home/casino/wild-mining.webp",
+      "soaked-by-seamen": "assets/images/mobile-home/casino/soaked-by-seamen.webp",
+      "sweet-bonanza-1000": "assets/images/mobile-home/casino/sweet-bonanza-1000.webp",
+      "gates-of-olympus-1000": "assets/images/mobile-home/casino/gates-of-olympus-1000.webp",
+      "coin-craze-powerup": "assets/images/mobile-home/casino/coin-craze-powerup.webp",
+      "royalty-of-olympus": "assets/images/mobile-home/casino/royalty-of-olympus.webp",
+      "elven-hold-and-win": "assets/images/mobile-home/casino/elven-hold-and-win.webp",
+      "tiger-jackpots": "assets/images/mobile-home/casino/tiger-jackpots.webp"
+    },
+    "1xlive": {
+      "barcelona-blackjack": "assets/images/mobile-home/1xlive/barcelona-blackjack.webp",
+      "barcelona-baccarat": "assets/images/mobile-home/1xlive/barcelona-baccarat.webp",
+      "roulette-x": "assets/images/mobile-home/1xlive/roulette-x.webp",
+      "golden-blackjack-2": "assets/images/mobile-home/1xlive/golden-blackjack-2.webp",
+      "japanese-speed-baccarat": "assets/images/mobile-home/1xlive/japanese-speed-baccarat.webp",
+      "golden-blackjack-vip": "assets/images/mobile-home/1xlive/golden-blackjack-vip.webp",
+      "football-studio": "assets/images/mobile-home/1xlive/football-studio.webp",
+      "mega-sic-bo": "assets/images/mobile-home/1xlive/mega-sic-bo.webp"
+    },
+    "live-casino": {
+      "mega-roulette": "assets/images/mobile-home/live-casino/mega-roulette.webp",
+      "venice-blackjack-vip": "assets/images/mobile-home/live-casino/venice-blackjack-vip.webp",
+      "powerup-roulette": "assets/images/mobile-home/live-casino/powerup-roulette.webp",
+      "funky-time": "assets/images/mobile-home/live-casino/funky-time.webp",
+      "red-door-roulette": "assets/images/mobile-home/live-casino/red-door-roulette.webp",
+      "baccarat-b": "assets/images/mobile-home/live-casino/baccarat-b.webp",
+      "brazilian-roulette": "assets/images/mobile-home/live-casino/brazilian-roulette.webp",
+      "monopoly-live": "assets/images/mobile-home/live-casino/monopoly-live.webp"
+    },
+    "tv-games": {
+      "andar-bahar": "assets/images/mobile-home/tv-games/andar-bahar.webp",
+      "teen-patti": "assets/images/mobile-home/tv-games/teen-patti.webp",
+      "wheelbet": "assets/images/mobile-home/tv-games/wheelbet.webp",
+      "poker": "assets/images/mobile-home/tv-games/poker.webp",
+      "fast-keno": "assets/images/mobile-home/tv-games/fast-keno.webp",
+      "spin2wheels": "assets/images/mobile-home/tv-games/spin2wheels.webp",
+      "wheelbet-bonus": "assets/images/mobile-home/tv-games/wheelbet-bonus.webp",
+      "roulette": "assets/images/mobile-home/tv-games/roulette.webp"
+    },
+    "partners": {
+      "barcelona": "assets/images/mobile-home/partners/barcelona.webp",
+      "serie-a": "assets/images/mobile-home/partners/serie-a.webp",
+      "psg": "assets/images/mobile-home/partners/psg.webp",
+      "partner-4": "assets/images/mobile-home/partners/partner-4.webp",
+      "volleyball": "assets/images/mobile-home/partners/volleyball.webp",
+      "fiba": "assets/images/mobile-home/partners/fiba.webp",
+      "partner-7": "assets/images/mobile-home/partners/partner-7.webp",
+      "partner-8": "assets/images/mobile-home/partners/partner-8.webp",
+      "partner-9": "assets/images/mobile-home/partners/partner-9.webp",
+      "partner-10": "assets/images/mobile-home/partners/partner-10.webp",
+      "partner-11": "assets/images/mobile-home/partners/partner-11.webp",
+      "partner-12": "assets/images/mobile-home/partners/partner-12.webp",
+      "partner-13": "assets/images/mobile-home/partners/partner-13.webp",
+      "partner-14": "assets/images/mobile-home/partners/partner-14.webp",
+      "partner-15": "assets/images/mobile-home/partners/partner-15.webp"
+    },
+    "teams": {
+      "team-01": "assets/images/mobile-home/teams/team-01.webp",
+      "team-02": "assets/images/mobile-home/teams/team-02.webp",
+      "team-03": "assets/images/mobile-home/teams/team-03.webp",
+      "team-04": "assets/images/mobile-home/teams/team-04.webp",
+      "team-05": "assets/images/mobile-home/teams/team-05.webp",
+      "team-06": "assets/images/mobile-home/teams/team-06.webp",
+      "team-07": "assets/images/mobile-home/teams/team-07.webp",
+      "team-08": "assets/images/mobile-home/teams/team-08.webp",
+      "team-09": "assets/images/mobile-home/teams/team-09.webp",
+      "team-10": "assets/images/mobile-home/teams/team-10.webp",
+      "team-11": "assets/images/mobile-home/teams/team-11.webp",
+      "team-12": "assets/images/mobile-home/teams/team-12.webp",
+      "team-13": "assets/images/mobile-home/teams/team-13.webp",
+      "team-14": "assets/images/mobile-home/teams/team-14.webp",
+      "team-15": "assets/images/mobile-home/teams/team-15.webp",
+      "team-16": "assets/images/mobile-home/teams/team-16.webp",
+      "team-17": "assets/images/mobile-home/teams/team-17.webp",
+      "team-18": "assets/images/mobile-home/teams/team-18.webp"
+    }
+  }
+}

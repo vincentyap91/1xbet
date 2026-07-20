@@ -1,0 +1,173 @@
+/* Page refinements */
+
+.m-panel[hidden] {
+  display: none !important;
+}
+
+.m-promo-hero {
+  margin: 0 0 16px;
+  aspect-ratio: 16 / 9;
+  background: var(--section-blue);
+}
+
+.m-promo-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.m-promo-detail {
+  padding-left: var(--m-gutter);
+  padding-right: var(--m-gutter);
+}
+
+.m-promo-detail h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.m-promo-detail p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.m-profile-hero {
+  background: var(--header-bg);
+  color: var(--text-inverse);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.m-profile-hero__id {
+  font-size: 12px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.m-profile-hero__name {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.m-settings-group {
+  margin-bottom: 16px;
+}
+
+.m-settings-group__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.m-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 12px;
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.m-switch-row:first-child {
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.m-switch-row:last-child {
+  border-bottom: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.m-switch {
+  width: 44px;
+  height: 26px;
+  border-radius: 13px;
+  background: var(--border-light);
+  position: relative;
+  transition: background var(--m-ease);
+  flex-shrink: 0;
+}
+
+.m-switch.is-on {
+  background: var(--action-green);
+}
+
+.m-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--surface-primary);
+  transition: transform var(--m-ease);
+}
+
+.m-switch.is-on::after {
+  transform: translateX(18px);
+}
+
+.m-search-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--surface-primary);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  box-shadow: var(--m-shadow-card);
+}
+
+.m-search-result__meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.m-sticky-cta {
+  position: sticky;
+  bottom: calc(var(--m-tabbar-h) + 8px + env(safe-area-inset-bottom, 0px));
+  margin-top: 20px;
+  padding-top: 8px;
+  background: linear-gradient(to top, var(--surface-secondary) 70%, transparent);
+}
+
+.m-gate {
+  text-align: center;
+  padding: 32px 16px;
+  background: var(--surface-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--m-shadow-card);
+}
+
+.m-gate p {
+  color: var(--text-secondary);
+  margin: 8px 0 16px;
+  font-size: 13px;
+}
+
+body.is-logged-in .m-guest-only {
+  display: none !important;
+}
+
+body:not(.is-logged-in) .m-logged-only {
+  display: none !important;
+}
+
+/* Casino / sports page chrome */
+.m-page-head {
+  padding: 12px var(--m-gutter) 0;
+}
+
+.m-page-head .m-page-title {
+  margin-bottom: 10px;
+}

@@ -727,11 +727,12 @@
 
   function bindTriggers() {
     document.addEventListener("click", (e) => {
-      const logoutOpen = e.target.closest("[data-auth-open='logout']");
-      if (logoutOpen) {
+      const authOpen = e.target.closest("[data-auth-open]");
+      if (authOpen) {
         e.preventDefault();
-        closeAccountMenus();
-        openPanel("logout");
+        const panel = authOpen.getAttribute("data-auth-open");
+        if (panel === "logout") closeAccountMenus();
+        openPanel(panel);
         return;
       }
 
@@ -890,7 +891,7 @@
     const iconHome =
       '<svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
     const iconPromo =
-      '<svg viewBox="0 0 24 24" fill="none"><path d="M12 7v14M8 7V5.5A2 2 0 0110 3.5h4A2 2 0 0116 5.5V7M5 7h14v12.5A1.5 1.5 0 0117.5 21h-11A1.5 1.5 0 015 19.5V7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 11.5c2 1.2 4 1.2 7 0s5-1.2 7 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
+      '<img src="assets/icons/icon-bottom-promo.svg" alt="" width="22" height="22" />';
     const iconPlus =
       '<svg viewBox="0 0 24 24" fill="none"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
     const iconChat =
@@ -979,9 +980,12 @@
       isLoggedIn: isLoggedIn,
     };
 
-    /* Deep-link for Figma / demos: ?modal=login|register|logout|verify|complete */
+    /* Deep-link for Figma / demos: ?modal=… or ?auth=1 (logged-in shell) */
     try {
       const params = new URLSearchParams(window.location.search);
+      if (params.get("auth") === "1") {
+        setLoggedIn(true);
+      }
       const modal = (params.get("modal") || "").toLowerCase();
       if (
         modal === "login" ||
