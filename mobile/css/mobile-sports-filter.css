@@ -1,0 +1,304 @@
+/* =========================================================
+   Mobile — Sports filter modal (dashboard-filter-sport-modal)
+   Scoped under body.mh-page--sports
+   ========================================================= */
+
+.mh-sf {
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: flex;
+  flex-direction: column;
+  background: #eef2f6;
+  color: var(--text-primary);
+  transform: translateX(100%);
+  transition: transform 0.22s ease;
+  visibility: hidden;
+}
+
+.mh-sf.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.mh-sf__head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 10px;
+  padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+}
+
+.mh-sf__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+}
+
+.mh-sf__back img {
+  width: 10px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+.mh-sf__title {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+}
+
+.mh-sf__search {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 10px 0;
+  padding: 0 12px;
+  min-height: 42px;
+  border-radius: 8px;
+  background: var(--surface-primary);
+  border: 1px solid var(--odds-bg, #e8eef5);
+  box-sizing: border-box;
+}
+
+.mh-sf__search:focus-within {
+  border-color: var(--cyan-accent);
+}
+
+.mh-sf__search img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.45;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(18%) saturate(700%) hue-rotate(169deg);
+}
+
+.mh-sf__search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.mh-sf__search input::placeholder {
+  color: #8a9bb0;
+}
+
+.mh-sf__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 12px 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  -webkit-overflow-scrolling: touch;
+}
+
+.mh-sf__popular {
+  padding: 0 10px 14px;
+}
+
+.mh-sf__popular-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--header-action);
+}
+
+.mh-sf__popular-rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.mh-sf__popular-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-sf__pop {
+  flex: 0 0 112px;
+  width: 112px;
+  height: 132px;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  color: var(--text-inverse);
+  text-align: left;
+}
+
+.mh-sf__pop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 28%, rgba(11, 29, 51, 0.75) 100%);
+}
+
+.mh-sf__pop span {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.mh-sf__pop--football {
+  background-image:
+    linear-gradient(160deg, rgba(136, 175, 42, 0.55), rgba(11, 29, 51, 0.35)),
+    radial-gradient(circle at 30% 30%, #88af2a, #1a4f8a 70%);
+}
+
+.mh-sf__pop--cricket {
+  background-image:
+    linear-gradient(160deg, rgba(62, 180, 240, 0.55), rgba(11, 29, 51, 0.4)),
+    radial-gradient(circle at 70% 20%, #3eb4f0, #162b45 72%);
+}
+
+.mh-sf__pop--esports {
+  background-image:
+    linear-gradient(160deg, rgba(122, 72, 200, 0.55), rgba(11, 29, 51, 0.45)),
+    radial-gradient(circle at 40% 40%, #7a48c8, #0f2744 70%);
+}
+
+.mh-sf__pop--basketball {
+  background-image:
+    linear-gradient(160deg, rgba(214, 64, 120, 0.55), rgba(11, 29, 51, 0.4)),
+    radial-gradient(circle at 60% 30%, #d64078, #1a4f8a 72%);
+}
+
+.mh-sf__pop img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -62%);
+  z-index: 1;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.mh-sf__section {
+  margin: 0 0 8px;
+  background: var(--surface-primary);
+}
+
+.mh-sf__section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: none;
+  background: var(--odds-bg, #e8eef5);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.mh-sf__section-head img {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.15s ease;
+  filter: brightness(0) saturate(100%) invert(28%) sepia(28%) saturate(900%) hue-rotate(176deg);
+}
+
+.mh-sf__section-head[aria-expanded="false"] img {
+  transform: rotate(-90deg);
+}
+
+.mh-sf__section-body[hidden] {
+  display: none !important;
+}
+
+.mh-sf__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  border: none;
+  border-bottom: 1px solid var(--odds-bg, #e8eef5);
+  background: var(--surface-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--header-action);
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.mh-sf__row:last-child {
+  border-bottom: none;
+}
+
+.mh-sf__row[hidden] {
+  display: none !important;
+}
+
+.mh-sf__row img:first-child {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(40%) saturate(700%) hue-rotate(176deg);
+}
+
+.mh-sf__row-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mh-sf__row-count {
+  color: #8a9bb0;
+  font-weight: 600;
+}
+
+.mh-sf__row-chev {
+  width: 12px !important;
+  height: 12px !important;
+  opacity: 0.45;
+  filter: none !important;
+}
+
+body.mh-page--sports.mh-sf-open {
+  overflow: hidden;
+}
+
+.mh-sp-chip--more img {
+  filter: none;
+  width: 18px;
+  height: 18px;
+}

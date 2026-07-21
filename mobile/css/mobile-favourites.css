@@ -1,0 +1,268 @@
+/* =========================================================
+   Mobile — Favourites
+   Scoped to body.mh-page.mh-page--favourites
+   ========================================================= */
+
+body.mh-page.mh-page--favourites {
+  --mh-subbar-h: 44px;
+  background: #eef2f6;
+  color: var(--text-primary);
+}
+
+body.mh-page.mh-page--favourites .mh-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 10px 10px 16px;
+  background: #eef2f6;
+  box-sizing: border-box;
+}
+
+.mh-fv-subbar {
+  position: sticky;
+  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--mh-subbar-h);
+  padding: 6px 8px;
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+}
+
+.mh-fv-subbar__back {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+}
+
+.mh-fv-subbar__back img {
+  width: 10px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.mh-fv-subbar__title {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-inverse);
+}
+
+.mh-fv-panel {
+  border-radius: 8px;
+  background: var(--surface-primary);
+  overflow: hidden;
+}
+
+.mh-fv-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.mh-fv-panel__chev {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s ease;
+  filter: brightness(0) saturate(100%) invert(28%) sepia(28%) saturate(900%) hue-rotate(176deg);
+}
+
+.mh-fv-panel__head[aria-expanded="false"] .mh-fv-panel__chev {
+  transform: rotate(180deg);
+}
+
+.mh-fv-panel__body {
+  padding: 0 10px 12px;
+}
+
+.mh-fv-panel__body[hidden] {
+  display: none !important;
+}
+
+.mh-fv-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 10px;
+  border-bottom: 1px solid var(--odds-bg, #e8eef5);
+}
+
+.mh-fv-tab {
+  min-height: 36px;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a9bb0;
+  cursor: pointer;
+}
+
+.mh-fv-tab.is-active {
+  color: var(--text-primary);
+  border-bottom-color: var(--action-green);
+}
+
+.mh-fv-tabs__clock {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--odds-bg, #e8eef5);
+  border-radius: 6px;
+  background: var(--surface-primary);
+  cursor: pointer;
+}
+
+.mh-fv-tabs__clock img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(40%) saturate(700%) hue-rotate(176deg);
+}
+
+.mh-fv-empty {
+  padding: 28px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #8a9bb0;
+}
+
+.mh-fv-empty[hidden],
+.mh-fv-list[hidden] {
+  display: none !important;
+}
+
+/* Match card (favourites + shared event card) */
+.mh-ev-card {
+  margin: 0 0 8px;
+  padding: 10px;
+  border: 1px solid var(--odds-bg, #e8eef5);
+  border-radius: 8px;
+  background: var(--surface-primary);
+  box-sizing: border-box;
+}
+
+.mh-ev-card__top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--odds-bg, #e8eef5);
+}
+
+.mh-ev-card__sport {
+  width: 14px;
+  height: 14px;
+  opacity: 0.75;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(40%) saturate(700%) hue-rotate(176deg);
+}
+
+.mh-ev-card__time {
+  flex: 1 1 auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mh-ev-card__more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mh-ev-card__more img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(18%) saturate(600%) hue-rotate(169deg);
+}
+
+.mh-ev-card__league {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--header-action);
+  text-decoration: none;
+}
+
+.mh-ev-card__team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mh-ev-card__team img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--odds-bg);
+}
+
+.mh-ev-card__note {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--header-action);
+}
+
+.mh-ev-card__odds {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.mh-ev-card__odds::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-ev-card__odds .mh-odds__btn {
+  flex: 0 0 64px;
+  min-height: 40px;
+  border-radius: 4px;
+}
+
+body.mh-page.mh-page--favourites .mh-ev-card__odds {
+  display: none;
+}

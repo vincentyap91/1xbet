@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Transaction Record - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-history-record.css" />
+</head>
+<body class="mh-page mh-page--history-record mh-page--tx-history is-logged-in" data-page="transaction-history">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-hr-subbar">
+    <a href="profile.html" class="mh-hr-subbar__back" aria-label="Back to profile">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-hr-subbar__title">Transaction record</h1>
+  </div>
+
+  <main class="mh-main">
+    <section class="mh-hr-panel mh-hr-panel--filters" aria-label="Filters">
+      <form class="mh-hr-form" id="mh-hr-form" action="#" novalidate>
+        <div class="mh-hr-filter-stack">
+          <label class="mh-hr-field">
+            <span class="mh-hr-label">Type</span>
+            <select class="mh-hr-select" id="mh-hr-type" name="type" aria-label="Type">
+              <option value="deposits" selected>Deposit</option>
+              <option value="withdrawals">Withdrawal</option>
+              <option value="commission-record.html">Commission Record</option>
+              <option value="rebate-record.html">Rebate Record</option>
+              <option value="checkin-record.html">Daily Check In Record</option>
+            </select>
+          </label>
+          <label class="mh-hr-field">
+            <span class="mh-hr-label">Status</span>
+            <select class="mh-hr-select" id="mh-hr-status" name="status" aria-label="Status">
+              <option value="all" selected>All</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="mh-hr-date-grid">
+          <label class="mh-hr-field">
+            <span class="mh-hr-label">Start date</span>
+            <input class="mh-hr-input" type="text" id="mh-hr-start" name="start" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
+          </label>
+          <label class="mh-hr-field">
+            <span class="mh-hr-label">End date</span>
+            <input class="mh-hr-input" type="text" id="mh-hr-end" name="end" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="mh-hr-period" role="group" aria-label="Quick date range">
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="today">Today</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="yesterday">Yesterday</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-week">Last Week</button>
+          <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="this-week">This Week</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-month">This Month</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-month">Last Month</button>
+        </div>
+
+        <button type="submit" class="mh-hr-submit">Submit</button>
+      </form>
+    </section>
+
+    <section class="mh-hr-panel mh-hr-panel--results" aria-label="Results">
+      <div class="mh-hr-table-head" aria-hidden="true">
+        <div data-col="date">Date</div>
+        <div data-col="amount">Amount</div>
+        <div data-col="status">Status</div>
+        <div data-col="description">Description</div>
+      </div>
+      <div class="mh-hr-table-body" id="mh-hr-body" aria-live="polite">
+        <div class="mh-hr-empty" role="status">
+          <p class="mh-hr-empty__title">No Data Found</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-history-record.js"></script>
+</body>
+</html>

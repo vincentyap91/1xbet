@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Change Language - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-security.css" />
+</head>
+<body class="mh-page mh-page--security-flow mh-page--change-language is-logged-in" data-page="change-language">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-sec-subbar">
+    <a href="security.html" class="mh-sec-subbar__back" aria-label="Back to security">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-sec-subbar__title">Change language</h1>
+  </div>
+
+  <main class="mh-main">
+    <p class="mh-sec-intro__sub mh-sec-intro__sub--solo">Choose your preferred interface language and regional settings.</p>
+
+    <div class="mh-lang-list" id="mh-lang-list" role="listbox" aria-label="Languages">
+      <button type="button" class="mh-lang-chip is-active" role="option" aria-selected="true" data-lang="en">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-gb.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">English</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="zh-cn">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-cn.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">简体中文</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="zh-tw">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-tw.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">繁體中文</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="th">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-th.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">ไทย</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="ko">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-kr.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">한국어</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="vi">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-vn.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">Tiếng Việt</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="id">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-id.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">Indonesia</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="hi">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-in.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">हिन्दी</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="km">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-kh.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">Khmer</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="my">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-mm.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">မြန်မာ</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+      <button type="button" class="mh-lang-chip" role="option" aria-selected="false" data-lang="ja">
+        <span class="mh-lang-chip__flag"><img src="assets/account/flags/flag-jp.svg" alt="" width="28" height="28" /></span>
+        <span class="mh-lang-chip__label">日本語</span>
+        <span class="mh-lang-chip__check" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </button>
+    </div>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-security.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Withdrawal - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-deposit.css" />
+  <link rel="stylesheet" href="css/mobile-withdraw.css" />
+</head>
+<body class="mh-page mh-page--withdraw is-logged-in" data-page="withdraw">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-dep-subbar">
+    <button type="button" class="mh-dep-subbar__back" data-mh-wd-back aria-label="Back">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </button>
+    <h1 class="mh-dep-subbar__title" id="mh-wd-subbar-title">Withdrawal</h1>
+  </div>
+
+  <div class="mh-dep-mode" role="tablist" aria-label="Deposit or withdrawal">
+    <a href="deposit.html" class="mh-dep-mode__btn" role="tab" aria-selected="false">Deposit</a>
+    <a href="withdraw.html" class="mh-dep-mode__btn is-active" role="tab" aria-selected="true" aria-current="page">Withdrawal</a>
+  </div>
+
+  <main class="mh-main">
+    <!-- Methods -->
+    <div class="mh-dep-step" data-mh-wd-step="methods">
+      <div class="mh-dep-panel">
+        <div class="mh-dep-account">
+          <span class="mh-wd-account-label">Withdrawing from account <strong>1737116847</strong></span>
+          <button type="button" class="mh-dep-account__copy" data-mh-wd-copy="1737116847" aria-label="Copy account number">
+            <img src="assets/icons/profile/pf-copy.svg" alt="" width="11" height="12" />
+          </button>
+        </div>
+
+        <div class="mh-wd-toolbar">
+          <button type="button" class="mh-dep-chip" data-mh-wd-types aria-haspopup="dialog" aria-expanded="false" aria-controls="mh-wd-type-sheet">
+            Types of payment systems
+          </button>
+          <button type="button" class="mh-wd-btn-requests" data-mh-toast="Withdrawal requests (demo)">
+            Withdrawal requests
+            <span class="mh-wd-btn-requests__chev" aria-hidden="true">▾</span>
+          </button>
+        </div>
+
+        <div class="mh-wd-confirm">
+          <span>Confirm transactions via:</span>
+          <button type="button" class="mh-wd-confirm__app" data-mh-toast="Confirm via App (demo)">App</button>
+        </div>
+
+        <div id="mh-wd-methods-list"></div>
+      </div>
+    </div>
+
+    <!-- Amount / details -->
+    <div class="mh-dep-step mh-dep-panel" data-mh-wd-step="amount" hidden>
+      <div id="mh-wd-amount-method" class="mh-dep-method-summary"></div>
+      <div class="mh-wd-balance">
+        <span>Available balance</span>
+        <strong>0.00 MYR</strong>
+      </div>
+      <p class="mh-wd-notes" id="mh-wd-notes"></p>
+      <div id="mh-wd-dest-fields"></div>
+      <div class="mh-dep-limits">
+        <span>Min <strong id="mh-wd-min">10 MYR</strong></span>
+        <span>Max <strong id="mh-wd-max">5,000 MYR</strong></span>
+      </div>
+      <div class="mh-dep-presets" id="mh-wd-presets"></div>
+      <div class="mh-dep-field mh-wd-field">
+        <label for="mh-wd-amount-input">Withdrawal amount</label>
+        <div class="mh-dep-amount">
+          <span class="mh-dep-amount__cur">MYR</span>
+          <input id="mh-wd-amount-input" type="number" inputmode="decimal" min="0" step="1" placeholder="0" autocomplete="off" />
+        </div>
+      </div>
+      <div class="mh-dep-actions">
+        <button type="button" class="mh-dep-btn mh-dep-btn--secondary" data-mh-wd-back>Back</button>
+        <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-wd-to-confirm>Continue</button>
+      </div>
+    </div>
+
+    <!-- Confirm -->
+    <div class="mh-dep-step mh-dep-panel" data-mh-wd-step="confirm" hidden>
+      <div id="mh-wd-confirm-method" class="mh-dep-method-summary"></div>
+      <ul class="mh-dep-confirm-rows" id="mh-wd-confirm-rows"></ul>
+      <p class="mh-dep-note">This is a demo confirmation. No real withdrawal is processed.</p>
+      <div class="mh-dep-actions">
+        <button type="button" class="mh-dep-btn mh-dep-btn--secondary" data-mh-wd-back>Back</button>
+        <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-wd-submit>Confirm withdrawal</button>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="mh-dep-step" data-mh-wd-step="success" hidden>
+      <div class="mh-dep-success">
+        <div class="mh-dep-success__ico" aria-hidden="true">✓</div>
+        <h2 class="mh-dep-success__title">Withdrawal submitted</h2>
+        <p class="mh-dep-success__desc" id="mh-wd-success-desc">Your withdrawal request was submitted.</p>
+        <div class="mh-dep-actions" style="justify-content:center">
+          <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-wd-again style="max-width:220px">Withdraw again</button>
+          <a href="profile.html" class="mh-dep-btn mh-dep-btn--secondary" style="max-width:200px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none">Profile</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="mh-dep-type-sheet" id="mh-wd-type-sheet" hidden>
+    <div class="mh-dep-type-sheet__backdrop" data-mh-wd-types-close></div>
+    <div class="mh-dep-type-sheet__panel" role="dialog" aria-label="Types of payment systems">
+      <div class="mh-dep-type-sheet__head">
+        <strong>Types of payment systems</strong>
+        <button type="button" class="mh-dep-type-sheet__close" data-mh-wd-types-close aria-label="Cancel">✕</button>
+      </div>
+      <ul class="mh-dep-type-list" id="mh-wd-type-list" role="listbox" aria-label="Payment system type"></ul>
+    </div>
+  </div>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-withdraw.js"></script>
+</body>
+</html>

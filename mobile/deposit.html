@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Deposit - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-deposit.css" />
+</head>
+<body class="mh-page mh-page--deposit is-logged-in" data-page="deposit">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit aria-current="page">Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-dep-subbar">
+    <button type="button" class="mh-dep-subbar__back" data-mh-dep-back aria-label="Back">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </button>
+    <h1 class="mh-dep-subbar__title" id="mh-dep-subbar-title">Deposit</h1>
+  </div>
+
+  <div class="mh-dep-mode" role="tablist" aria-label="Deposit or withdrawal">
+    <a href="deposit.html" class="mh-dep-mode__btn is-active" role="tab" aria-selected="true" aria-current="page">Deposit</a>
+    <a href="withdraw.html" class="mh-dep-mode__btn" role="tab" aria-selected="false">Withdrawal</a>
+  </div>
+
+  <main class="mh-main">
+    <!-- Step: methods -->
+    <div class="mh-dep-step" data-mh-dep-step="methods">
+      <div id="mh-dep-deposit-panel" class="mh-dep-panel">
+        <div class="mh-dep-account">
+          <span class="mh-dep-account__label">Account <strong data-mh-dep-account>1737116847</strong></span>
+          <button type="button" class="mh-dep-account__copy" data-mh-dep-copy="1737116847" aria-label="Copy account number">
+            <img src="assets/icons/profile/pf-copy.svg" alt="" width="11" height="12" />
+          </button>
+        </div>
+
+        <div class="mh-dep-filters">
+          <button type="button" class="mh-dep-chip" data-mh-dep-types aria-haspopup="dialog" aria-expanded="false" aria-controls="mh-dep-type-sheet">
+            Types of payment systems
+          </button>
+          <label class="mh-dep-check">
+            <input type="checkbox" checked data-mh-dep-region />
+            <span class="mh-dep-check__box" aria-hidden="true"></span>
+            <span>Payment systems in your region</span>
+          </label>
+        </div>
+
+        <aside class="mh-dep-promo" role="note">
+          <p>
+            Jana pendapatan dengan membantu orang lain deposit dan join
+            <strong>1xBet Family</strong>. Join telegram channel
+            <a href="https://t.me/Malaysia_Mobile_Agents" target="_blank" rel="noopener noreferrer">Malaysia_Mobile_Agents</a>.
+          </p>
+        </aside>
+
+        <div id="mh-dep-methods-list"></div>
+      </div>
+    </div>
+
+    <!-- Step: amount -->
+    <div class="mh-dep-step mh-dep-panel" data-mh-dep-step="amount" hidden>
+      <div id="mh-dep-amount-method" class="mh-dep-method-summary"></div>
+      <div class="mh-dep-limits">
+        <span>Min <strong id="mh-dep-min">10 MYR</strong></span>
+        <span>Max <strong id="mh-dep-max">5,000 MYR</strong></span>
+      </div>
+      <div class="mh-dep-presets" id="mh-dep-presets"></div>
+      <div class="mh-dep-field">
+        <label for="mh-dep-amount-input">Amount</label>
+        <div class="mh-dep-amount">
+          <span class="mh-dep-amount__cur">MYR</span>
+          <input id="mh-dep-amount-input" type="number" inputmode="decimal" min="0" step="1" placeholder="0" autocomplete="off" />
+        </div>
+      </div>
+      <p class="mh-dep-note">Select a preset or enter a custom amount within the limits for this method.</p>
+      <div id="mh-dep-amount-extra"></div>
+      <div class="mh-dep-actions">
+        <button type="button" class="mh-dep-btn mh-dep-btn--secondary" data-mh-dep-back>Back</button>
+        <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-dep-to-confirm>Continue</button>
+      </div>
+    </div>
+
+    <!-- Step: confirm -->
+    <div class="mh-dep-step mh-dep-panel" data-mh-dep-step="confirm" hidden>
+      <div id="mh-dep-confirm-method" class="mh-dep-method-summary"></div>
+      <ul class="mh-dep-confirm-rows" id="mh-dep-confirm-rows"></ul>
+      <p class="mh-dep-note">This is a demo confirmation. No real payment is processed.</p>
+      <div class="mh-dep-actions">
+        <button type="button" class="mh-dep-btn mh-dep-btn--secondary" data-mh-dep-back>Back</button>
+        <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-dep-submit>Confirm deposit</button>
+      </div>
+    </div>
+
+    <!-- Step: success -->
+    <div class="mh-dep-step" data-mh-dep-step="success" hidden>
+      <div class="mh-dep-success">
+        <div class="mh-dep-success__ico" aria-hidden="true">✓</div>
+        <h2 class="mh-dep-success__title">Deposit submitted</h2>
+        <p class="mh-dep-success__desc" id="mh-dep-success-desc">Your deposit was submitted.</p>
+        <div class="mh-dep-actions" style="justify-content:center">
+          <button type="button" class="mh-dep-btn mh-dep-btn--primary" data-mh-dep-again style="max-width:200px">Deposit again</button>
+          <a href="profile.html" class="mh-dep-btn mh-dep-btn--secondary" style="max-width:200px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none">Profile</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="mh-dep-type-sheet" id="mh-dep-type-sheet" hidden>
+    <div class="mh-dep-type-sheet__backdrop" data-mh-dep-types-close></div>
+    <div class="mh-dep-type-sheet__panel" role="dialog" aria-label="Types of payment systems">
+      <div class="mh-dep-type-sheet__head">
+        <strong>Types of payment systems</strong>
+        <button type="button" class="mh-dep-type-sheet__close" data-mh-dep-types-close aria-label="Cancel">✕</button>
+      </div>
+      <ul class="mh-dep-type-list" id="mh-dep-type-list" role="listbox" aria-label="Payment system type"></ul>
+    </div>
+  </div>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-deposit.js"></script>
+</body>
+</html>

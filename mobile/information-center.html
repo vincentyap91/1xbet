@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Information Center - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-security.css" />
+</head>
+<body class="mh-page mh-page--security-flow mh-page--information-center is-logged-in" data-page="information-center">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-sec-subbar">
+    <a href="security.html" class="mh-sec-subbar__back" aria-label="Back to security">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-sec-subbar__title">Information center</h1>
+  </div>
+
+  <main class="mh-main">
+    <div class="mh-info-empty" role="status">
+      <svg viewBox="0 0 120 96" width="120" height="96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M18 28c0-5.5 4.5-10 10-10h26l8 8h30c5.5 0 10 4.5 10 10v36c0 5.5-4.5 10-10 10H28c-5.5 0-10-4.5-10-10V28z" fill="var(--odds-bg)" stroke="var(--accent-blue-soft)" stroke-width="2"/>
+        <path d="M18 38h84" stroke="var(--border-light)" stroke-width="2"/>
+        <circle cx="86" cy="68" r="16" fill="var(--surface-primary)" stroke="var(--section-blue)" stroke-width="3"/>
+        <path d="M97 79l10 10" stroke="var(--section-blue)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="86" cy="68" r="7" stroke="var(--section-blue)" stroke-width="2.5"/>
+      </svg>
+      <p class="mh-info-empty__msg">Oops! There is no data yet!</p>
+    </div>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-security.js"></script>
+</body>
+</html>

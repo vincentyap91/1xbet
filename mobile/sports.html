@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Sports - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-sports.css" />
+  <link rel="stylesheet" href="css/mobile-sports-filter.css" />
+</head>
+<body class="mh-page mh-page--sports" data-page="sports">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions">
+      <button type="button" class="btn-login mh-btn-login" data-auth-open="login">Log in</button>
+      <a href="#reg-form" class="btn-register mh-btn-register" data-auth-open="register">Registration</a>
+    </div>
+  </header>
+
+  <div class="mh-sp-subbar">
+    <a href="index.html" class="mh-sp-subbar__back" aria-label="Back">
+      <img src="assets/icons/sp-back.svg" alt="" width="12" height="18" />
+    </a>
+    <h1 class="mh-sp-subbar__title">Sports</h1>
+    <div class="mh-sp-subbar__actions">
+      <a href="search.html" class="mh-sp-subbar__btn" aria-label="Search">
+        <img src="assets/icons/sp-search.svg" alt="" width="18" height="18" />
+      </a>
+      <a href="favourites.html" class="mh-sp-subbar__btn" aria-label="Favourites">
+        <img src="assets/icons/sp-star.svg" alt="" width="18" height="18" />
+      </a>
+      <button type="button" class="mh-sp-subbar__btn" aria-label="Filter" data-mh-toast="Filters coming soon">
+        <img src="assets/icons/sp-filter.svg" alt="" width="18" height="18" />
+      </button>
+    </div>
+  </div>
+
+  <main class="mh-main">
+    <nav class="mh-sp-chips" aria-label="Sports categories" data-mh-scroll data-mh-drag-scroll>
+      <button type="button" class="mh-sp-chip is-active" data-mh-sp-chip="football">
+        <img src="assets/icons/sport-football.svg" alt="" width="18" height="18" />
+        <span>Football</span>
+      </button>
+      <button type="button" class="mh-sp-chip" data-mh-sp-chip="cricket">
+        <img src="assets/icons/sport-cricket.svg" alt="" width="18" height="18" />
+        <span>Cricket</span>
+      </button>
+      <button type="button" class="mh-sp-chip" data-mh-sp-chip="esports">
+        <img src="assets/icons/sport-esports.svg" alt="" width="18" height="18" />
+        <span>Esports</span>
+      </button>
+      <button type="button" class="mh-sp-chip" data-mh-sp-chip="basketball">
+        <img src="assets/icons/sport-basketball.svg" alt="" width="18" height="18" />
+        <span>Basketball</span>
+      </button>
+      <button type="button" class="mh-sp-chip" data-mh-sp-chip="tennis">
+        <img src="assets/icons/sport-tennis.svg" alt="" width="18" height="18" />
+        <span>Tennis</span>
+      </button>
+      <button type="button" class="mh-sp-chip" data-mh-sp-chip="hockey">
+        <img src="assets/icons/sport-hockey.svg" alt="" width="18" height="18" />
+        <span>Ice Hockey</span>
+      </button>
+      <button type="button" class="mh-sp-chip mh-sp-chip--more" data-mh-sf-open aria-label="More sports" aria-controls="mh-sf" aria-expanded="false">
+        <img src="assets/icons/sp-list.svg" alt="" width="18" height="18" />
+      </button>
+    </nav>
+
+    <section class="mh-sp-section" aria-label="Top Sports">
+      <div class="mh-sp-section__head">
+        <img src="assets/icons/icon-fire.svg" alt="" width="16" height="16" />
+        <h2>Top Sports</h2>
+      </div>
+      <div class="mh-sp-rail" data-mh-scroll data-mh-drag-scroll>
+        <article class="mh-sp-card" data-mh-event
+          data-event-id="serie-a-inter-monza"
+          data-event-sport="football"
+          data-event-sport-icon="assets/icons/sport-football.svg"
+          data-event-time="23/08 00:30"
+          data-event-league="Italy. Serie A"
+          data-event-home="Internazionale Milano"
+          data-event-home-logo="assets/logos/partner-serie-a.webp"
+          data-event-away="Monza 1912"
+          data-event-away-logo="assets/logos/partner-barcelona.webp"
+          data-event-note="Round 1"
+          data-event-scope="sports">
+          <div class="mh-sp-card__top">
+            <img class="mh-sp-card__sport" src="assets/icons/sport-football.svg" alt="" width="16" height="16" />
+            <span class="mh-sp-card__time">23/08 00:30</span>
+            <button type="button" class="mh-sp-card__more" aria-label="Event info" data-mh-event-info>
+              <img src="assets/icons/icon-more.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+          <p class="mh-sp-card__league">Italy. Serie A</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/partner-serie-a.webp" alt="" width="20" height="20" />Internazionale Milano</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/partner-barcelona.webp" alt="" width="20" height="20" />Monza 1912</p>
+          <p class="mh-sp-card__note">Round 1</p>
+          <div class="mh-sp-card__odds mh-odds">
+            <button type="button" class="mh-odds__btn" data-odd="1.264"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">1.264</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="6.67"><span class="mh-odds__lab">DRAW</span><span class="mh-odds__val">6.67</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="9.8"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">9.8</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="1.95"><span class="mh-odds__lab">HANDICAP</span><span class="mh-odds__val">1.95</span></button>
+          </div>
+        </article>
+        <article class="mh-sp-card" data-mh-event
+          data-event-id="ucl-psg-dortmund"
+          data-event-sport="football"
+          data-event-sport-icon="assets/icons/sport-football.svg"
+          data-event-time="22/07 21:00"
+          data-event-league="UEFA Champions League"
+          data-event-home="Paris Saint-Germain"
+          data-event-home-logo="assets/logos/psg.webp"
+          data-event-away="Borussia Dortmund"
+          data-event-away-logo="assets/logos/partner-fiba.webp"
+          data-event-note="Group Stage"
+          data-event-scope="sports">
+          <div class="mh-sp-card__top">
+            <img class="mh-sp-card__sport" src="assets/icons/sport-football.svg" alt="" width="16" height="16" />
+            <span class="mh-sp-card__time">22/07 21:00</span>
+            <button type="button" class="mh-sp-card__more" aria-label="Event info" data-mh-event-info>
+              <img src="assets/icons/icon-more.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+          <p class="mh-sp-card__league">UEFA Champions League</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/psg.webp" alt="" width="20" height="20" />Paris Saint-Germain</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/partner-fiba.webp" alt="" width="20" height="20" />Borussia Dortmund</p>
+          <p class="mh-sp-card__note">Group Stage</p>
+          <div class="mh-sp-card__odds mh-odds">
+            <button type="button" class="mh-odds__btn" data-odd="2.15"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">2.15</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="3.40"><span class="mh-odds__lab">DRAW</span><span class="mh-odds__val">3.40</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="3.25"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">3.25</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="1.88"><span class="mh-odds__lab">HANDICAP</span><span class="mh-odds__val">1.88</span></button>
+          </div>
+        </article>
+        <article class="mh-sp-card" data-mh-event
+          data-event-id="laliga-madrid-barca"
+          data-event-sport="football"
+          data-event-sport-icon="assets/icons/sport-football.svg"
+          data-event-time="23/07 20:00"
+          data-event-league="Spain. La Liga"
+          data-event-home="Real Madrid"
+          data-event-home-logo="assets/logos/partner-barcelona.webp"
+          data-event-away="Barcelona"
+          data-event-away-logo="assets/logos/partner-psg.webp"
+          data-event-note="Round 1"
+          data-event-scope="sports">
+          <div class="mh-sp-card__top">
+            <img class="mh-sp-card__sport" src="assets/icons/sport-football.svg" alt="" width="16" height="16" />
+            <span class="mh-sp-card__time">23/07 20:00</span>
+            <button type="button" class="mh-sp-card__more" aria-label="Event info" data-mh-event-info>
+              <img src="assets/icons/icon-more.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+          <p class="mh-sp-card__league">Spain. La Liga</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/partner-barcelona.webp" alt="" width="20" height="20" />Real Madrid</p>
+          <p class="mh-sp-card__team"><img src="assets/logos/partner-psg.webp" alt="" width="20" height="20" />Barcelona</p>
+          <p class="mh-sp-card__note">Round 1</p>
+          <div class="mh-sp-card__odds mh-odds">
+            <button type="button" class="mh-odds__btn" data-odd="2.20"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">2.20</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="3.50"><span class="mh-odds__lab">DRAW</span><span class="mh-odds__val">3.50</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="3.15"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">3.15</span></button>
+            <button type="button" class="mh-odds__btn" data-odd="1.90"><span class="mh-odds__lab">HANDICAP</span><span class="mh-odds__val">1.90</span></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="mh-sp-links">
+      <a href="../long-term-bets.html" class="mh-sp-link">
+        <span>Accumulators of the day (24)</span>
+        <img src="assets/icons/icon-chevron-right.svg" alt="" width="14" height="14" />
+      </a>
+      <a href="../long-term-bets.html" class="mh-sp-link">
+        <span>Long-term bets (646)</span>
+        <img src="assets/icons/icon-chevron-right.svg" alt="" width="14" height="14" />
+      </a>
+    </div>
+
+    <section class="mh-sp-section" aria-label="Tournaments">
+      <div class="mh-sp-rail" data-mh-scroll data-mh-drag-scroll>
+        <a href="#" class="mh-sp-tourney" data-mh-toast="UEFA Champions League">
+          <img class="mh-sp-tourney__sport" src="assets/icons/sport-football.svg" alt="" width="16" height="16" />
+          <span class="mh-sp-tourney__badge">
+            <img src="assets/tourneys/badge-ucl.svg" alt="" width="44" height="44" />
+          </span>
+          <span class="mh-sp-tourney__name">UEFA Champions League</span>
+        </a>
+        <a href="#" class="mh-sp-tourney" data-mh-toast="UEFA Conference League">
+          <img class="mh-sp-tourney__sport" src="assets/icons/sport-football.svg" alt="" width="16" height="16" />
+          <span class="mh-sp-tourney__badge">
+            <img src="assets/tourneys/badge-uecl.svg" alt="" width="44" height="44" />
+          </span>
+          <span class="mh-sp-tourney__name">UEFA Conference League</span>
+        </a>
+        <a href="#" class="mh-sp-tourney" data-mh-toast="KBO South Korea">
+          <img class="mh-sp-tourney__sport" src="assets/icons/sport-baseball.svg" alt="" width="16" height="16" />
+          <span class="mh-sp-tourney__badge mh-sp-tourney__badge--flag">
+            <img src="assets/flags/flag-kr.svg" alt="" width="44" height="44" />
+          </span>
+          <span class="mh-sp-tourney__name">KBO. South Korea</span>
+        </a>
+        <a href="#" class="mh-sp-tourney" data-mh-toast="Japan. NPB">
+          <img class="mh-sp-tourney__sport" src="assets/icons/sport-baseball.svg" alt="" width="16" height="16" />
+          <span class="mh-sp-tourney__badge mh-sp-tourney__badge--flag">
+            <img src="assets/flags/flag-jp.svg" alt="" width="44" height="44" />
+          </span>
+          <span class="mh-sp-tourney__name">Japan. NPB</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="mh-sp-list">
+      <section class="mh-sp-sport" data-mh-sp-league="football">
+        <button type="button" class="mh-sp-sport__head" data-mh-acc aria-expanded="true" aria-controls="mh-sp-football">
+          <img src="assets/icons/sport-football.svg" alt="" width="18" height="18" />
+          <span>Football</span>
+          <img class="mh-sp-sport__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="14" height="14" />
+        </button>
+        <div class="mh-sp-sport__panel" id="mh-sp-football">
+          <section class="mh-sp-league">
+            <button type="button" class="mh-sp-league__head" data-mh-acc aria-expanded="true" aria-controls="mh-sp-ucl">
+              <img src="assets/icons/icon-trophy.svg" alt="" width="18" height="18" />
+              <span>UEFA Champions League (14)</span>
+              <img class="mh-sp-league__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="14" height="14" />
+            </button>
+            <div class="mh-sp-league__panel" id="mh-sp-ucl">
+              <article class="mh-sp-match" data-mh-event
+                data-event-id="ucl-ararat-shamrock"
+                data-event-sport="football"
+                data-event-sport-icon="assets/icons/sport-football.svg"
+                data-event-time="22/07 00:00"
+                data-event-league="UEFA Champions League"
+                data-event-home="Ararat - Armenia"
+                data-event-home-logo="assets/logos/partner-caf.webp"
+                data-event-away="Shamrock Rovers"
+                data-event-away-logo="assets/logos/partner-volleyball.webp"
+                data-event-note="2nd Qualification Round. Champions path. 1st Leg"
+                data-event-scope="sports">
+                <div class="mh-sp-match__top">
+                  <img class="mh-sp-match__sport" src="assets/icons/sport-football.svg" alt="" width="14" height="14" />
+                  <span class="mh-sp-match__time">22/07 00:00</span>
+                  <button type="button" class="mh-sp-match__more" aria-label="Event info" data-mh-event-info>
+                    <img src="assets/icons/icon-more.svg" alt="" width="14" height="14" />
+                  </button>
+                </div>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-caf.webp" alt="" width="20" height="20" />Ararat - Armenia</p>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-volleyball.webp" alt="" width="20" height="20" />Shamrock Rovers</p>
+                <p class="mh-sp-card__note">2nd Qualification Round. Champions path. 1st Leg</p>
+                <div class="mh-sp-match__odds mh-odds">
+                  <button type="button" class="mh-odds__btn" data-odd="2.10"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">2.10</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.20"><span class="mh-odds__lab">X</span><span class="mh-odds__val">3.20</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.45"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">3.45</span></button>
+                </div>
+              </article>
+              <article class="mh-sp-match" data-mh-event
+                data-event-id="ucl-iberia-slovan"
+                data-event-sport="football"
+                data-event-sport-icon="assets/icons/sport-football.svg"
+                data-event-time="22/07 00:00"
+                data-event-league="UEFA Champions League"
+                data-event-home="Iberia 1999"
+                data-event-home-logo="assets/logos/partner-barcelona.webp"
+                data-event-away="Slovan Bratislava"
+                data-event-away-logo="assets/logos/partner-serie-a.webp"
+                data-event-note="2nd Qualification Round. Champions path. 1st Leg"
+                data-event-scope="sports">
+                <div class="mh-sp-match__top">
+                  <img class="mh-sp-match__sport" src="assets/icons/sport-football.svg" alt="" width="14" height="14" />
+                  <span class="mh-sp-match__time">22/07 00:00</span>
+                  <button type="button" class="mh-sp-match__more" aria-label="Event info" data-mh-event-info>
+                    <img src="assets/icons/icon-more.svg" alt="" width="14" height="14" />
+                  </button>
+                </div>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-barcelona.webp" alt="" width="20" height="20" />Iberia 1999</p>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-serie-a.webp" alt="" width="20" height="20" />Slovan Bratislava</p>
+                <p class="mh-sp-card__note">2nd Qualification Round. Champions path. 1st Leg</p>
+                <div class="mh-sp-match__odds mh-odds">
+                  <button type="button" class="mh-odds__btn" data-odd="3.555"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">3.555</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.62"><span class="mh-odds__lab">DRAW</span><span class="mh-odds__val">3.62</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="1.96"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">1.96</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="1.8"><span class="mh-odds__lab">1X</span><span class="mh-odds__val">1.8</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="1.26"><span class="mh-odds__lab">12</span><span class="mh-odds__val">1.26</span></button>
+                </div>
+              </article>
+              <article class="mh-sp-match" data-mh-event
+                data-event-id="ucl-sabah-kuopio"
+                data-event-sport="football"
+                data-event-sport-icon="assets/icons/sport-football.svg"
+                data-event-time="22/07 20:30"
+                data-event-league="UEFA Champions League"
+                data-event-home="Sabah Baku"
+                data-event-home-logo="assets/logos/partner-dallas-open.webp"
+                data-event-away="Kuopion Palloseura"
+                data-event-away-logo="assets/logos/partner-billie-jean.webp"
+                data-event-note="2nd Qualification Round"
+                data-event-scope="sports">
+                <div class="mh-sp-match__top">
+                  <img class="mh-sp-match__sport" src="assets/icons/sport-football.svg" alt="" width="14" height="14" />
+                  <span class="mh-sp-match__time">22/07 20:30</span>
+                  <button type="button" class="mh-sp-match__more" aria-label="Event info" data-mh-event-info>
+                    <img src="assets/icons/icon-more.svg" alt="" width="14" height="14" />
+                  </button>
+                </div>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-dallas-open.webp" alt="" width="20" height="20" />Sabah Baku</p>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-billie-jean.webp" alt="" width="20" height="20" />Kuopion Palloseura</p>
+                <div class="mh-sp-match__odds mh-odds">
+                  <button type="button" class="mh-odds__btn" data-odd="1.85"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">1.85</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.55"><span class="mh-odds__lab">X</span><span class="mh-odds__val">3.55</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="4.10"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">4.10</span></button>
+                </div>
+              </article>
+            </div>
+          </section>
+          <section class="mh-sp-league">
+            <button type="button" class="mh-sp-league__head" data-mh-acc aria-expanded="true" aria-controls="mh-sp-epl">
+              <img src="assets/icons/icon-trophy.svg" alt="" width="18" height="18" />
+              <span>England. Premier League (2)</span>
+              <img class="mh-sp-league__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="14" height="14" />
+            </button>
+            <div class="mh-sp-league__panel" id="mh-sp-epl">
+              <article class="mh-sp-match" data-mh-event
+                data-event-id="epl-arsenal-chelsea"
+                data-event-sport="football"
+                data-event-sport-icon="assets/icons/sport-football.svg"
+                data-event-time="22/07 18:30"
+                data-event-league="England. Premier League"
+                data-event-home="Arsenal"
+                data-event-home-logo="assets/logos/partner-pgl.webp"
+                data-event-away="Chelsea"
+                data-event-away-logo="assets/logos/partner-mibr.webp"
+                data-event-note="Matchday 1"
+                data-event-scope="sports">
+                <div class="mh-sp-match__top">
+                  <img class="mh-sp-match__sport" src="assets/icons/sport-football.svg" alt="" width="14" height="14" />
+                  <span class="mh-sp-match__time">22/07 18:30</span>
+                  <button type="button" class="mh-sp-match__more" aria-label="Event info" data-mh-event-info>
+                    <img src="assets/icons/icon-more.svg" alt="" width="14" height="14" />
+                  </button>
+                </div>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-pgl.webp" alt="" width="20" height="20" />Arsenal</p>
+                <p class="mh-sp-match__team"><img src="assets/logos/partner-mibr.webp" alt="" width="20" height="20" />Chelsea</p>
+                <div class="mh-sp-match__odds mh-odds">
+                  <button type="button" class="mh-odds__btn" data-odd="2.05"><span class="mh-odds__lab">W1</span><span class="mh-odds__val">2.05</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.45"><span class="mh-odds__lab">X</span><span class="mh-odds__val">3.45</span></button>
+                  <button type="button" class="mh-odds__btn" data-odd="3.50"><span class="mh-odds__lab">W2</span><span class="mh-odds__val">3.50</span></button>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+    </div>
+<footer class="mh-footer">
+      <div class="mh-footer__inner">
+        <section class="mh-footer__slider" aria-label="Sports partners">
+          <h2 class="mh-footer__slider-title">Sports partners</h2>
+          <div class="mh-footer__slider-box">
+            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="FC Barcelona"><img src="assets/logos/partner-barcelona.webp" alt="FC Barcelona" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Serie A"><img src="assets/logos/partner-serie-a.webp" alt="Serie A" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="PSG"><img src="assets/logos/partner-psg.webp" alt="PSG" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="CAF"><img src="assets/logos/partner-caf.webp" alt="CAF" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Volleyball World"><img src="assets/logos/partner-volleyball.webp" alt="Volleyball World" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="FIBA"><img src="assets/logos/partner-fiba.webp" alt="FIBA" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Billie Jean King Cup"><img src="assets/logos/partner-billie-jean.webp" alt="Billie Jean King Cup" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Dallas Open"><img src="assets/logos/partner-dallas-open.webp" alt="Dallas Open" width="55" height="55" loading="lazy" /></a>
+            </div>
+          </div>
+        </section>
+
+        <section class="mh-footer__slider" aria-label="Esports partners">
+          <h2 class="mh-footer__slider-title">Esports partners</h2>
+          <div class="mh-footer__slider-box">
+            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="PGL"><img src="assets/logos/partner-pgl.webp" alt="PGL" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="MIBR"><img src="assets/logos/partner-mibr.webp" alt="MIBR" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="MongolZ"><img src="assets/logos/partner-mongolz.webp" alt="MongolZ" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Aurora"><img src="assets/logos/partner-aurora.webp" alt="Aurora" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Sangal"><img src="assets/logos/partner-sangal.webp" alt="Sangal" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Tundra"><img src="assets/logos/partner-tundra.webp" alt="Tundra" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Riot Games"><img src="assets/logos/partner-riot.webp" alt="Riot Games" width="55" height="55" loading="lazy" /></a>
+            </div>
+          </div>
+        </section>
+
+        <a href="#" class="mh-footer__app-banner">
+          <div class="mh-footer__app-phone" aria-hidden="true">
+            <span class="mh-footer__app-store mh-footer__app-store--apple" title="iOS"></span>
+            <span class="mh-footer__app-store mh-footer__app-store--android" title="Android"></span>
+          </div>
+          <div class="mh-footer__app-copy">
+            <img src="assets/logos/logo-1xbet-footer.svg" alt="1xBet" width="101" height="22" />
+            <span>Mobile application</span>
+          </div>
+        </a>
+
+        <div class="mh-footer__social">
+          <a href="https://www.facebook.com/1xMalay" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" />
+          </a>
+          <a href="https://www.instagram.com/1xmalaysia" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" />
+          </a>
+        </div>
+
+        <a href="../live-chat.html" class="mh-footer__support">
+          <img src="assets/icons/icon-support.svg" alt="" width="42" height="42" class="mh-footer__support-icon" />
+          <span class="mh-footer__support-copy">
+            <strong>Customer Support</strong>
+            <span>Ask any questions</span>
+          </span>
+        </a>
+
+        <div class="mh-footer__legal-block">
+          <p class="mh-footer__legal">Copyright Â© 2026 Â«1xBetÂ».</p>
+          <p class="mh-footer__cookie">1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="../terms.html">Find out more</a></p>
+        </div>
+
+        <a href="../index.html" class="mh-footer__full">Go to the full version of the website</a>
+
+        <div class="mh-footer__meta">
+          <span class="mh-footer__age">18+</span>
+          <button type="button" class="mh-footer__lang" aria-label="Language">
+            <img src="assets/logos/flag-my.svg" alt="" width="16" height="16" />
+            <span>EN</span>
+            <span class="mh-footer__lang-chevron" aria-hidden="true">â–¾</span>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="mh-tab-flyout-backdrop" id="mh-tab-flyout-backdrop" hidden></div>
+
+  <nav class="mh-tabbar" aria-label="Mobile primary">
+    <div class="mh-tab-slot" data-mh-flyout-slot="sports">
+      <button
+        type="button"
+        class="mh-tab is-active"
+        data-mh-flyout-open="sports"
+        aria-expanded="false"
+        aria-controls="mh-flyout-sports"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span>Sports</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team-line.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--flag" src="assets/logos/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="national-team-live.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--live" src="assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="sports.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-tab-slot" data-mh-flyout-slot="casino">
+      <button
+        type="button"
+        class="mh-tab"
+        data-mh-flyout-open="casino"
+        aria-expanded="false"
+        aria-controls="mh-flyout-casino"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span>Casino</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="../live-casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mh-tab mh-tab--coupon" id="mh-betslip-btn" aria-label="Bet slip">
+      <span class="mh-tab__coupon-wrap">
+        <span class="mh-tab__coupon-icon">
+          <img src="assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mh-tab__badge" id="mh-bet-count" hidden>0</span>
+      </span>
+      <span>Bet slip</span>
+    </button>
+    <button type="button" class="mh-tab" data-auth-open="login">
+      <img src="assets/icons/tab-user.svg" alt="" width="20" height="20" />
+      <span>Log in</span>
+    </button>
+    <button type="button" class="mh-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
+      <img src="assets/icons/tab-menu.svg" alt="" width="20" height="20" />
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <div class="mh-sheet" id="mh-menu-sheet" hidden>
+    <div class="mh-sheet__backdrop" data-mh-close-menu></div>
+    <div class="mh-sheet__panel" role="dialog" aria-label="Menu">
+      <div class="mh-sheet__head">
+        <strong>Menu</strong>
+        <button type="button" class="mh-icon-btn" data-mh-close-menu aria-label="Close">âœ•</button>
+      </div>
+      <nav class="mh-sheet__nav">
+        <a href="../index.html">Desktop homepage</a>
+        <a href="../promo.html">Promo</a>
+        <a href="../esports.html">Esports</a>
+        <a href="../results.html">Results</a>
+        <a href="../live-chat.html">Live Chat</a>
+        <a href="../terms.html">Terms</a>
+      </nav>
+    </div>
+  </div>
+
+  <aside class="mh-qbs" id="mh-qbs" hidden aria-hidden="true" aria-label="Quick bet slip">
+    <div class="mh-qbs__head">
+      <button type="button" class="mh-qbs__collapse" data-mh-qbs-collapse aria-label="Collapse quick bet slip">
+        <img src="assets/icons/icon-chevron-double-down.svg" alt="" width="18" height="18" />
+      </button>
+      <strong class="mh-qbs__title">Quick bet slip<span class="mh-qbs__count-wrap" data-mh-qbs-count-wrap hidden> (<span data-mh-qbs-count>0</span>)</span></strong>
+      <a href="#" class="mh-qbs__link" data-mh-toast="Full bet slip coming soon">Go to bet slip</a>
+      <button type="button" class="mh-qbs__settings" data-mh-toast="Bet slip settings" aria-label="Settings">
+        <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
+      </button>
+    </div>
+    <div class="mh-qbs__body">
+      <div class="mh-qbs__empty" data-mh-qbs-empty>
+        <p>Your bet slip is empty. Add an event to place a bet, or <a href="#" data-mh-toast="Bet slip generator coming soon">generate a bet slip</a>.</p>
+      </div>
+      <div class="mh-qbs__filled" data-mh-qbs-filled hidden>
+        <div class="mh-qbs__rail is-single" data-mh-qbs-rail data-mh-scroll data-mh-drag-scroll></div>
+        <div class="mh-qbs__overall" data-mh-qbs-overall hidden>
+          <span>Overall odds</span>
+          <strong data-mh-qbs-overall-val>0</strong>
+        </div>
+      </div>
+    </div>
+    <div class="mh-qbs__actions">
+      <button type="button" class="mh-qbs__btn mh-qbs__btn--login" data-auth-open="login">Log in</button>
+      <button type="button" class="mh-qbs__btn mh-qbs__btn--reg" data-auth-open="register">Registration</button>
+    </div>
+  </aside>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+
+  <div class="mh-sf" id="mh-sf" role="dialog" aria-modal="true" aria-labelledby="mh-sf-title" hidden>
+    <div class="mh-sf__head">
+      <button type="button" class="mh-sf__back" data-mh-sf-close aria-label="Close sports filter">
+        <img src="assets/icons/sp-back.svg" alt="" width="12" height="18" />
+      </button>
+      <h2 class="mh-sf__title" id="mh-sf-title">Sports</h2>
+    </div>
+
+    <label class="mh-sf__search">
+      <img src="assets/icons/sp-search.svg" alt="" width="18" height="18" />
+      <input id="mh-sf-input" type="search" placeholder="Search by sport" autocomplete="off" enterkeyhint="search" />
+    </label>
+
+    <div class="mh-sf__body">
+      <section class="mh-sf__popular" aria-label="Popular sports">
+        <h3 class="mh-sf__popular-title">Popular</h3>
+        <div class="mh-sf__popular-rail" data-mh-scroll data-mh-drag-scroll>
+          <button type="button" class="mh-sf__pop mh-sf__pop--football" data-mh-sf-pick="football" data-mh-sf-label="Football">
+            <img src="assets/icons/sport-football.svg" alt="" width="48" height="48" />
+            <span>Football</span>
+          </button>
+          <button type="button" class="mh-sf__pop mh-sf__pop--cricket" data-mh-sf-pick="cricket" data-mh-sf-label="Cricket">
+            <img src="assets/icons/sport-cricket.svg" alt="" width="48" height="48" />
+            <span>Cricket</span>
+          </button>
+          <button type="button" class="mh-sf__pop mh-sf__pop--esports" data-mh-sf-pick="esports" data-mh-sf-label="Esports">
+            <img src="assets/icons/sport-esports.svg" alt="" width="48" height="48" />
+            <span>Esports</span>
+          </button>
+          <button type="button" class="mh-sf__pop mh-sf__pop--basketball" data-mh-sf-pick="basketball" data-mh-sf-label="Basketball">
+            <img src="assets/icons/sport-basketball.svg" alt="" width="48" height="48" />
+            <span>Basketball</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="mh-sf__section" data-mh-sf-block="top">
+        <button type="button" class="mh-sf__section-head" data-mh-acc aria-expanded="true" aria-controls="mh-sf-top">
+          <span>Top</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+        </button>
+        <div class="mh-sf__section-body" id="mh-sf-top">
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="football" data-mh-sf-label="Football"><img src="assets/icons/sport-football.svg" alt="" /><span class="mh-sf__row-name">Football <span class="mh-sf__row-count">(2168)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="cricket" data-mh-sf-label="Cricket"><img src="assets/icons/sport-cricket.svg" alt="" /><span class="mh-sf__row-name">Cricket <span class="mh-sf__row-count">(21)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="esports" data-mh-sf-label="Esports"><img src="assets/icons/sport-esports.svg" alt="" /><span class="mh-sf__row-name">Esports <span class="mh-sf__row-count">(211)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="basketball" data-mh-sf-label="Basketball"><img src="assets/icons/sport-basketball.svg" alt="" /><span class="mh-sf__row-name">Basketball <span class="mh-sf__row-count">(31)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="tennis" data-mh-sf-label="Tennis"><img src="assets/icons/sport-tennis.svg" alt="" /><span class="mh-sf__row-name">Tennis <span class="mh-sf__row-count">(57)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="hockey" data-mh-sf-label="Ice Hockey"><img src="assets/icons/sport-hockey.svg" alt="" /><span class="mh-sf__row-name">Ice Hockey <span class="mh-sf__row-count">(34)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="volleyball" data-mh-sf-label="Volleyball"><img src="assets/icons/sport-volleyball.svg" alt="" /><span class="mh-sf__row-name">Volleyball <span class="mh-sf__row-count">(9)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="tabletennis" data-mh-sf-label="Table Tennis"><img src="assets/icons/sport-tabletennis.svg" alt="" /><span class="mh-sf__row-name">Table Tennis <span class="mh-sf__row-count">(24)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="baseball" data-mh-sf-label="Baseball"><img src="assets/icons/sport-baseball.svg" alt="" /><span class="mh-sf__row-name">Baseball <span class="mh-sf__row-count">(14)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="handball" data-mh-sf-label="Handball"><img src="assets/icons/sport-handball.svg" alt="" /><span class="mh-sf__row-name">Handball <span class="mh-sf__row-count">(6)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="badminton" data-mh-sf-label="Badminton"><img src="assets/icons/sport-badminton.svg" alt="" /><span class="mh-sf__row-name">Badminton <span class="mh-sf__row-count">(17)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+        </div>
+      </section>
+
+      <section class="mh-sf__section" data-mh-sf-block="az">
+        <button type="button" class="mh-sf__section-head" data-mh-acc aria-expanded="true" aria-controls="mh-sf-az">
+          <span>Categories from A-Z</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+        </button>
+        <div class="mh-sf__section-body" id="mh-sf-az">
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="americanfootball" data-mh-sf-label="American Football"><img src="assets/icons/sport-americanfootball.svg" alt="" /><span class="mh-sf__row-name">American Football <span class="mh-sf__row-count">(12)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="athletics" data-mh-sf-label="Athletics"><img src="assets/icons/sport-athletics.svg" alt="" /><span class="mh-sf__row-name">Athletics <span class="mh-sf__row-count">(3)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="badminton" data-mh-sf-label="Badminton"><img src="assets/icons/sport-badminton.svg" alt="" /><span class="mh-sf__row-name">Badminton <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="baseball" data-mh-sf-label="Baseball"><img src="assets/icons/sport-baseball.svg" alt="" /><span class="mh-sf__row-name">Baseball <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="boxing" data-mh-sf-label="Boxing"><img src="assets/icons/sport-boxing.svg" alt="" /><span class="mh-sf__row-name">Boxing <span class="mh-sf__row-count">(9)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="cricket" data-mh-sf-label="Cricket"><img src="assets/icons/sport-cricket.svg" alt="" /><span class="mh-sf__row-name">Cricket <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="cycling" data-mh-sf-label="Cycling"><img src="assets/icons/sport-cycling.svg" alt="" /><span class="mh-sf__row-name">Cycling <span class="mh-sf__row-count">(5)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="fifa" data-mh-sf-label="FIFA"><img src="assets/icons/sport-fifa.svg" alt="" /><span class="mh-sf__row-name">FIFA <span class="mh-sf__row-count">(8)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="futsal" data-mh-sf-label="Futsal"><img src="assets/icons/sport-futsal.svg" alt="" /><span class="mh-sf__row-name">Futsal <span class="mh-sf__row-count">(3)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="greyhound" data-mh-sf-label="Greyhound Racing"><img src="assets/icons/sport-greyhound.svg" alt="" /><span class="mh-sf__row-name">Greyhound Racing <span class="mh-sf__row-count">(4)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="handball" data-mh-sf-label="Handball"><img src="assets/icons/sport-handball.svg" alt="" /><span class="mh-sf__row-name">Handball <span class="mh-sf__row-count">(2)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="horseracing" data-mh-sf-label="Horse Racing"><img src="assets/icons/sport-horseracing.svg" alt="" /><span class="mh-sf__row-name">Horse Racing <span class="mh-sf__row-count">(64)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="lottery" data-mh-sf-label="Lottery"><img src="assets/icons/sport-lottery.svg" alt="" /><span class="mh-sf__row-name">Lottery <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="mortalkombat" data-mh-sf-label="Mortal Kombat"><img src="assets/icons/sport-mortalkombat.svg" alt="" /><span class="mh-sf__row-name">Mortal Kombat <span class="mh-sf__row-count">(2)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="boatracing" data-mh-sf-label="Motorbikes"><img src="assets/icons/sport-boatracing.svg" alt="" /><span class="mh-sf__row-name">Motorbikes <span class="mh-sf__row-count">(5)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="beachvolleyball" data-mh-sf-label="Beach Volleyball"><img src="assets/icons/sport-beachvolleyball.svg" alt="" /><span class="mh-sf__row-name">Beach Volleyball <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="ufc" data-mh-sf-label="UFC"><img src="assets/icons/sport-boxing.svg" alt="" /><span class="mh-sf__row-name">UFC <span class="mh-sf__row-count">(18)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="volleyball" data-mh-sf-label="Volleyball"><img src="assets/icons/sport-volleyball.svg" alt="" /><span class="mh-sf__row-name">Volleyball <span class="mh-sf__row-count">(2)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+        </div>
+      </section>
+
+      <section class="mh-sf__section" data-mh-sf-block="long">
+        <button type="button" class="mh-sf__section-head" data-mh-acc aria-expanded="true" aria-controls="mh-sf-long">
+          <span>Long term bets</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+        </button>
+        <div class="mh-sf__section-body" id="mh-sf-long">
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="football" data-mh-sf-label="Football"><img src="assets/icons/sport-football.svg" alt="" /><span class="mh-sf__row-name">Football <span class="mh-sf__row-count">(356)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="cricket" data-mh-sf-label="Cricket"><img src="assets/icons/sport-cricket.svg" alt="" /><span class="mh-sf__row-name">Cricket <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="basketball" data-mh-sf-label="Basketball"><img src="assets/icons/sport-basketball.svg" alt="" /><span class="mh-sf__row-name">Basketball <span class="mh-sf__row-count">(4)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="tennis" data-mh-sf-label="Tennis"><img src="assets/icons/sport-tennis.svg" alt="" /><span class="mh-sf__row-name">Tennis <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="hockey" data-mh-sf-label="Ice Hockey"><img src="assets/icons/sport-hockey.svg" alt="" /><span class="mh-sf__row-name">Ice Hockey <span class="mh-sf__row-count">(2)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="volleyball" data-mh-sf-label="Volleyball"><img src="assets/icons/sport-volleyball.svg" alt="" /><span class="mh-sf__row-name">Volleyball <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="baseball" data-mh-sf-label="Baseball"><img src="assets/icons/sport-baseball.svg" alt="" /><span class="mh-sf__row-name">Baseball <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+          <button type="button" class="mh-sf__row" data-mh-sf-pick="horseracing" data-mh-sf-label="Horse Racing"><img src="assets/icons/sport-horseracing.svg" alt="" /><span class="mh-sf__row-name">Horse Racing <span class="mh-sf__row-count">(1)</span></span><img class="mh-sf__row-chev" src="assets/icons/icon-chevron-right.svg" alt="" /></button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-favourites.js"></script>
+  <script src="js/mobile-sports-filter.js"></script>
+</body>
+</html>

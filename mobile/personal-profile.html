@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Personal Profile - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-personal-profile.css" />
+</head>
+<body class="mh-page mh-page--personal-profile is-logged-in" data-page="personal-profile">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-pp-subbar">
+    <a href="profile.html" class="mh-pp-subbar__back" aria-label="Back to profile">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-pp-subbar__title">Personal profile</h1>
+  </div>
+
+  <main class="mh-main">
+    <div class="mh-pp-progress" role="status">
+      <span class="mh-pp-progress__label">Fill in profile</span>
+      <div class="mh-pp-progress__track" role="progressbar" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100" aria-label="34% complete">
+        <div class="mh-pp-progress__bar" style="width:34%"></div>
+      </div>
+      <span class="mh-pp-progress__pct">34%</span>
+    </div>
+
+    <section class="mh-pp-card mh-pp-summary" aria-labelledby="mh-pp-summary-title">
+      <h2 class="visually-hidden" id="mh-pp-summary-title">Account summary</h2>
+      <div class="mh-pp-summary__top">
+        <div class="mh-pp-summary__identity">
+          <div class="mh-pp-avatar" aria-hidden="true">
+            <img src="assets/icons/profile/pf-avatar-glyph.svg" alt="" width="22" height="22" />
+          </div>
+          <div class="mh-pp-identity">
+            <span class="mh-pp-verified">Verified account</span>
+            <p class="mh-pp-username">test123</p>
+            <p class="mh-pp-email">demo@gmail.com</p>
+          </div>
+        </div>
+        <div class="mh-pp-medal">
+          <img src="assets/account/platinum-medal.png" alt="" class="mh-pp-medal__img" width="72" height="72" loading="lazy" />
+          <span class="mh-pp-medal__pill">Platinum</span>
+        </div>
+      </div>
+      <div class="mh-pp-tier">
+        <div class="mh-pp-tier__head">
+          <span class="mh-pp-tier__target">Target: Diamond</span>
+          <span class="mh-pp-tier__pct">75%</span>
+        </div>
+        <div class="mh-pp-progress__track mh-pp-tier__bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% to next tier">
+          <div class="mh-pp-progress__bar mh-pp-progress__bar--tier" style="width:75%"></div>
+        </div>
+        <p class="mh-pp-tier__caption">Progress to next tier: 75%</p>
+      </div>
+    </section>
+
+    <section class="mh-pp-card mh-pp-promo" aria-labelledby="mh-pp-promo-title">
+      <div class="mh-pp-promo__head">
+        <div class="mh-pp-promo__copy">
+          <p class="mh-pp-promo__eyebrow">Current promo</p>
+          <h2 class="mh-pp-promo__title" id="mh-pp-promo-title">All Time Deposit Promotion</h2>
+        </div>
+        <button type="button" class="mh-pp-promo__end" data-mh-pp-end-promo>End promo</button>
+      </div>
+      <div class="mh-pp-promo__meta">
+        <span>Promo rollover</span>
+        <strong>MYR 3.00 / 6.00</strong>
+      </div>
+      <div class="mh-pp-promo__row">
+        <div class="mh-pp-progress__track mh-pp-promo__bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="50% promo rollover">
+          <div class="mh-pp-progress__bar mh-pp-progress__bar--promo" style="width:50%"></div>
+        </div>
+        <span class="mh-pp-promo__pct">50%</span>
+      </div>
+    </section>
+
+    <section class="mh-pp-card mh-pp-info" aria-labelledby="mh-pp-info-title">
+      <header class="mh-pp-info__head">
+        <h2 class="mh-pp-info__title" id="mh-pp-info-title">Personal info</h2>
+        <p class="mh-pp-info__sub">Core account identity and contact details.</p>
+      </header>
+
+      <form class="mh-pp-form" id="mh-pp-form" method="post" action="#" novalidate>
+        <label class="mh-pp-field">
+          <span>Username</span>
+          <input type="text" name="username" value="test123" readonly autocomplete="username" />
+        </label>
+        <label class="mh-pp-field">
+          <span>Full name</span>
+          <input type="text" name="fullName" value="test" autocomplete="name" />
+        </label>
+        <label class="mh-pp-field">
+          <span>Phone number</span>
+          <input type="tel" name="phone" value="+60 12144234" autocomplete="tel" />
+        </label>
+        <label class="mh-pp-field">
+          <span>Date of birth</span>
+          <input type="date" name="dob" value="2008-11-06" autocomplete="bday" />
+        </label>
+        <p class="mh-pp-hint" role="note">
+          <span class="mh-pp-hint__ico" aria-hidden="true">!</span>
+          Please enter your date of birth to receive additional bonus
+        </p>
+        <button type="submit" class="mh-pp-save">Save changes</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-personal-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,520 @@
+/* =========================================================
+   Mobile — Bet on Your National Team (Live + Line)
+   Scoped to body.mh-page.mh-page--national-team
+   ========================================================= */
+
+body.mh-page.mh-page--national-team {
+  --mh-subbar-h: 44px;
+  --mh-mode-h: 44px;
+  background: #eef2f6;
+  color: var(--text-primary);
+  padding-bottom: calc(var(--mh-tabbar-h) + var(--mh-mode-h) + env(safe-area-inset-bottom, 0px));
+}
+
+body.mh-page.mh-page--national-team .mh-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #eef2f6;
+  padding-bottom: calc(var(--mh-mode-h) + 8px);
+}
+
+/* ---------- Sub-bar ---------- */
+.mh-nt-subbar {
+  position: sticky;
+  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--mh-subbar-h);
+  padding: 6px 8px;
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+}
+
+.mh-nt-subbar__back {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  color: var(--text-inverse);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.mh-nt-subbar__back img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+.mh-nt-subbar__title {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-inverse);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-nt-subbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.mh-nt-subbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-inverse);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mh-nt-subbar__btn img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+
+/* ---------- Empty state (Live) — full bleed ---------- */
+.mh-nt-empty {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 48px 16px;
+  border-radius: 0;
+  background: var(--surface-primary);
+  box-shadow: none;
+  text-align: center;
+}
+
+.mh-nt-empty__title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mh-nt-empty__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* ---------- Sport chips (full-width rail) ---------- */
+.mh-nt-chips {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px var(--mh-gutter) 8px;
+  margin: 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+.mh-nt-chips.is-dragging {
+  cursor: grabbing;
+}
+
+.mh-nt-chips::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.mh-nt-chip {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 64px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--surface-primary);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  -webkit-user-drag: none;
+}
+
+.mh-nt-chip img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-nt-chip.is-active {
+  color: var(--accent-blue);
+  border-color: var(--accent-blue-soft);
+  box-shadow: 0 0 0 1px rgba(62, 180, 240, 0.25);
+}
+
+.mh-nt-chip--more {
+  min-width: 44px;
+  padding: 8px;
+}
+
+/* ---------- Sport blocks / events (full bleed) ---------- */
+.mh-nt-wrap {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 12px;
+  box-sizing: border-box;
+}
+
+.mh-nt-block {
+  width: 100%;
+  max-width: none;
+  margin: 0 0 8px;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--surface-primary);
+  box-shadow: none;
+}
+
+.mh-nt-block__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: none;
+  background: var(--league-header);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mh-nt-block__head img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-nt-block__head span {
+  flex: 1 1 auto;
+}
+
+.mh-nt-block__chev {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform var(--mh-ease);
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+.mh-nt-block__head[aria-expanded="false"] .mh-nt-block__chev {
+  transform: rotate(-90deg);
+}
+
+.mh-nt-block__panel[hidden] {
+  display: none !important;
+}
+
+.mh-nt-league {
+  border-top: 1px solid var(--border-light);
+}
+
+.mh-nt-league__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--surface-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mh-nt-league__head img {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.mh-nt-event {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid var(--border-light);
+  background: var(--surface-primary);
+}
+
+.mh-nt-event__info {
+  min-width: 0;
+}
+
+.mh-nt-event__time {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.mh-nt-event__teams {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.mh-nt-event__note {
+  margin: 4px 0 0;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.mh-nt-event__odds {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.mh-nt-event__odds--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mh-nt-odd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 40px;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 6px;
+  background: var(--odds-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background var(--mh-ease), color var(--mh-ease);
+}
+
+.mh-nt-odd:hover {
+  background: var(--odds-hover);
+}
+
+.mh-nt-odd.is-selected {
+  background: var(--odds-selected);
+  color: var(--text-inverse);
+}
+
+.mh-nt-odd__lab {
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0.75;
+  line-height: 1;
+}
+
+.mh-nt-odd__val {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.mh-nt-event--scroll .mh-nt-event__odds {
+  display: flex;
+  overflow-x: auto;
+  grid-template-columns: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mh-nt-event--scroll .mh-nt-event__odds::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-nt-event--scroll .mh-nt-odd {
+  flex: 0 0 56px;
+}
+
+.mh-nt-event--scroll {
+  grid-template-columns: 1fr;
+}
+
+.mh-nt-event--scroll .mh-nt-event__odds {
+  margin-top: 2px;
+}
+
+/* Generate CTA — full bleed */
+.mh-nt-gen {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 0 0 8px;
+  padding: 12px var(--mh-gutter);
+  border-radius: 0;
+  background: var(--surface-primary);
+  box-shadow: none;
+}
+
+.mh-nt-gen__copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mh-nt-gen__copy strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.mh-nt-gen__copy span {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mh-nt-gen__btn {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--action-green);
+  color: var(--text-inverse);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mh-nt-gen__btn:hover {
+  background: var(--action-green-hover);
+}
+
+/* ---------- Live / Sports mode bar ---------- */
+.mh-nt-mode {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--mh-tabbar-h) + env(safe-area-inset-bottom, 0px));
+  z-index: 110;
+  display: flex;
+  align-items: stretch;
+  height: var(--mh-mode-h);
+  background: var(--surface-primary);
+  border-top: 1px solid var(--border-light);
+  box-shadow: 0 -2px 8px rgba(11, 29, 51, 0.06);
+}
+
+.mh-nt-mode__tabs {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-width: 0;
+}
+
+.mh-nt-mode__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mh-nt-mode__tab.is-active {
+  color: var(--text-primary);
+}
+
+.mh-nt-mode__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: var(--action-green);
+}
+
+.mh-nt-mode__flag {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 48px;
+  border: none;
+  border-left: 1px solid var(--border-light);
+  background: transparent;
+  cursor: pointer;
+}
+
+.mh-nt-mode__flag img.mh-nt-mode__flag-img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mh-nt-mode__flag img.mh-nt-mode__flag-chev {
+  width: 12px;
+  height: 12px;
+  opacity: 0.55;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+/* Footer sits above mode? No — mode is above tabbar; footer is in main scroll.
+   Extra padding already on .mh-main.
+   Content stays full bleed at all breakpoints (no centered max-width column). */
+

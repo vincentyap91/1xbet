@@ -437,6 +437,22 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 
 Wired in `js/account.js` when `.account-main` is present.
 
+### Mobile sportsbook profile (`mobile/profile.html`)
+
+Figma structure: [1XBET `235:18`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/1XBET?node-id=235-18). **Colors remapped** to modified-color tokens — do not ship Figma chrome hex (`#205583`, `#276aa5`, `#7eac2f`) as the palette.
+
+| Piece | Classes / notes | Token map |
+|-------|-----------------|-----------|
+| Page bg | `body.mh-page--profile` | `#e9eef2` (Figma page wash; near `--odds-bg`) |
+| Header | Shared `.mh-header` logged-in: Deposit + account chip | Deposit `--action-green`; chip `--header-action`; badge `--danger` |
+| Account card | `.mh-pf-card` — 32px avatar, Account No. + copy, balance, messages (green count badge), close, My bets / Deposit | Avatar wash `#f3f8fc`; acct `--header-action`; balance `--section-blue`; My bets `--header-action`; Deposit `--action-green` |
+| Tabs | `.mh-pf-tabs` horizontal icon+label (Profile · Promo · Settings); active 4px underline | Text/icons `--header-action`; underline `--action-green` |
+| Lists | `.mh-pf-group` / `.mh-pf-list` — My wallet and bets · Profile · Other · Log out | Titles `--text-muted`; rows `--section-blue`; alerts `--danger` |
+| Icons | Figma exports in `mobile/assets/icons/profile/pf-*.svg` (fills remapped) | — |
+| Bottom nav | Shared sports `.mh-tabbar` logged-in (Sports · Casino · Bet slip · Deposit · Menu) | Bet slip circle `--cyan-accent` |
+
+CSS: `mobile/css/mobile-profile.css`. JS: `mobile/js/mobile-profile.js` + session chrome in `mobile/js/mobile-home.js`. Patterns also in `mobile/Mobile_Design.md`.
+
 ---
 
 ## 6. Component patterns
@@ -497,8 +513,9 @@ Reuse Figma-exported assets under `assets/icons/` with prefixes:
 | `te-*` | TOP-EVENTS / LIVE toolbar |
 | `rb-*` | Right block |
 | `ft-*` | Footer |
+| `pf-*` (under `mobile/assets/icons/profile/`) | Mobile sportsbook profile (`profile.html`) |
 
-Prefer SVG from Figma over inventing new icons. Keep white/`currentColor` fills; don’t recolor to Figma blues.
+Prefer SVG from Figma over inventing new icons. Keep white/`currentColor` fills; don’t recolor to Figma blues. Profile icons: remapped fills to `--header-action` / `--text-muted` / `--action-green` (see § Mobile sportsbook profile).
 
 ---
 

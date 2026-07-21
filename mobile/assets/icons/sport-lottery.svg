@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="xMidYMid meet" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Img" clip-path="url(#clip0_0_28)">
+<path id="Vector" d="M14.75 6.2L14.45 5.9L10.2 10.15L9.85 11.15L8.7 12.3L9.35 13L10.55 11.8L11.55 11.45L15.75 7.2L15.45 6.9L16 6.25L15.35 5.6L14.75 6.2ZM5.7 5.65H7.5V7.55H5.65L5.7 5.65ZM8.5 10.35H9.15L9.4 9.65L10.4 8.65V8.45H8.5V10.35ZM2.9 5.65H4.75V7.55H2.85L2.9 5.65ZM8.5 5.65H10.4V7.55H8.5V5.65ZM5.7 8.5H7.5V10.35H5.65L5.7 8.5ZM2.9 8.5H4.75V10.35H2.85L2.9 8.5Z" fill="var(--fill-0, #1D4268)"/>
+<path id="Vector_2" d="M13.2 11.1L12 12.3L11.25 12.5V14.1H2V4.7H11.35V7.7L13.25 5.8V0H0V16H13.2V11.1ZM2.9 1.9H10.4V2.8H2.9V1.9Z" fill="var(--fill-0, #1D4268)"/>
+<path id="Vector_3" d="M2.9 11.3H4.75V13.15H2.85L2.9 11.3ZM5.7 11.3H7.5V13.15H5.65L5.7 11.3Z" fill="var(--fill-0, #1D4268)"/>
+</g>
+<defs>
+<clipPath id="clip0_0_28">
+<rect width="16" height="16" fill="white"/>
+</clipPath>
+</defs>
+</svg>

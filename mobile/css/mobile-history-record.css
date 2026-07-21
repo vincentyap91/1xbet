@@ -1,0 +1,310 @@
+/* =========================================================
+   Mobile — History Record (desktop tx-record design)
+   Shared by transaction-history / bet-history / promotion-record
+   Scoped: .mh-page--history-record
+   ========================================================= */
+
+body.mh-page.mh-page--history-record {
+  --mh-subbar-h: 44px;
+  --mh-hr-page-bg: #e9eef2;
+  --mh-hr-panel-pad: 14px;
+  --radius-md: 8px;
+  background: var(--mh-hr-page-bg);
+  color: var(--text-primary);
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+body.mh-page.mh-page--history-record .mh-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 12px 10px 24px;
+  background: var(--mh-hr-page-bg);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body.mh-page.mh-page--history-record .mh-tabbar,
+body.mh-page.mh-page--history-record .mh-sheet,
+body.mh-page.mh-page--history-record .mh-qbs {
+  display: none !important;
+}
+
+/* Subbar */
+.mh-hr-subbar {
+  position: sticky;
+  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--mh-subbar-h);
+  padding: 6px 10px;
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+}
+
+.mh-hr-subbar__back {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mh-hr-subbar__back img {
+  width: 10px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.mh-hr-subbar__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Panels (desktop .pq-panel / .tx-record-panel) */
+.mh-hr-panel {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-primary);
+  box-shadow: 0 1px 4px rgba(11, 29, 51, 0.06);
+}
+
+.mh-hr-panel--filters {
+  padding: var(--mh-hr-panel-pad);
+}
+
+.mh-hr-panel--results {
+  padding: 0;
+}
+
+.mh-hr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mh-hr-filter-stack,
+.mh-hr-date-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 480px) {
+  .mh-hr-filter-stack,
+  .mh-hr-date-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mh-hr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mh-hr-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.mh-hr-select,
+.mh-hr-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid rgba(201, 215, 228, 0.8);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  box-sizing: border-box;
+  box-shadow: inset 0 1px 2px rgba(11, 29, 51, 0.03);
+}
+
+.mh-hr-select {
+  padding-right: 40px;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%232f69b1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.mh-hr-select:focus,
+.mh-hr-input:focus {
+  border-color: var(--cyan-accent);
+  box-shadow: 0 0 0 3px rgba(62, 180, 240, 0.2);
+}
+
+.mh-hr-period {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mh-hr-period__btn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(201, 215, 228, 0.8);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-hr-period__btn.is-active {
+  color: var(--text-inverse);
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+
+.mh-hr-submit {
+  align-self: stretch;
+  min-height: 42px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--action-green);
+  color: var(--text-inverse);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-hr-submit:active {
+  filter: brightness(0.96);
+}
+
+/* Results — mobile stacked cells (desktop ≤900 pattern) */
+.mh-hr-table-head {
+  display: none;
+}
+
+.mh-hr-table-body {
+  min-height: 160px;
+}
+
+.mh-hr-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 28px 16px;
+  text-align: center;
+}
+
+.mh-hr-empty__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.mh-hr-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px var(--mh-hr-panel-pad);
+  border-top: 1px solid var(--border-light);
+}
+
+.mh-hr-row:first-child {
+  border-top: none;
+}
+
+.mh-hr-row:nth-child(even) {
+  background: var(--odds-bg);
+}
+
+.mh-hr-cell {
+  font-size: 13px;
+  color: var(--text-primary);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.mh-hr-cell::before {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mh-hr-cell--date::before { content: "Date"; }
+.mh-hr-cell--amount::before { content: "Amount"; }
+.mh-hr-cell--stake::before { content: "Stake"; }
+.mh-hr-cell--bonus::before { content: "Bonus"; }
+.mh-hr-cell--status::before { content: "Status"; }
+.mh-hr-cell--description::before,
+.mh-hr-cell--desc::before { content: "Description"; }
+.mh-hr-cell--event::before { content: "Event"; }
+.mh-hr-cell--promotion::before { content: "Promotion"; }
+
+.mh-hr-cell--amount,
+.mh-hr-cell--stake,
+.mh-hr-cell--bonus {
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.mh-hr-status {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--odds-bg);
+  color: var(--section-blue);
+}
+
+.mh-hr-status--completed,
+.mh-hr-status--won,
+.mh-hr-status--active {
+  background: color-mix(in srgb, var(--action-green) 22%, #fff);
+  color: #5f7c1e;
+}
+
+.mh-hr-status--pending,
+.mh-hr-status--open {
+  background: color-mix(in srgb, var(--header-action) 16%, #fff);
+  color: var(--header-action);
+}
+
+.mh-hr-status--rejected,
+.mh-hr-status--lost,
+.mh-hr-status--cancelled,
+.mh-hr-status--cancelledelled {
+  background: var(--odds-bg);
+  color: var(--text-muted);
+}

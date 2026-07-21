@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1d33" />
+  <title>Providers - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-casino.css" />
+</head>
+<body class="mh-page mh-page--casino mh-page--casino-providers" data-page="casino">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions">
+      <button type="button" class="btn-login mh-btn-login" data-auth-open="login">Log in</button>
+      <a href="#reg-form" class="btn-register mh-btn-register" data-auth-open="register">Registration</a>
+    </div>
+  </header>
+
+  <div class="mh-cs-subbar">
+    <a href="casino.html" class="mh-cs-subbar__back" aria-label="Back">
+      <img src="assets/icons/sp-back.svg" alt="" width="12" height="18" />
+    </a>
+    <h1 class="mh-cs-subbar__title">Providers</h1>
+    <a href="search.html" class="mh-cs-subbar__search" aria-label="Search">
+      <img src="assets/icons/sp-search.svg" alt="" width="18" height="18" />
+    </a>
+  </div>
+
+  <main class="mh-main">
+    <div class="mh-cs-sort" data-cs-sort>
+      <button
+        type="button"
+        class="mh-cs-sort__trigger"
+        id="mh-cs-sort-btn"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        aria-controls="mh-cs-sort-menu"
+      >
+        <img class="mh-cs-sort__ico" src="assets/icons/cs-sort-down.svg" alt="" width="18" height="18" />
+        <span class="mh-cs-sort__copy">
+          <span class="mh-cs-sort__label">Sort</span>
+          <span class="mh-cs-sort__value" data-cs-sort-value>By popularity</span>
+        </span>
+        <img class="mh-cs-sort__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+      </button>
+      <div class="mh-cs-sort__menu" id="mh-cs-sort-menu" role="listbox" hidden>
+        <button type="button" class="mh-cs-sort__option is-selected" role="option" aria-selected="true" data-cs-sort-opt="popularity" data-cs-sort-label="By popularity">
+          <span class="mh-cs-sort__radio" aria-hidden="true"></span>
+          <span>By popularity</span>
+        </button>
+        <button type="button" class="mh-cs-sort__option" role="option" aria-selected="false" data-cs-sort-opt="az" data-cs-sort-label="A-Z">
+          <img src="assets/icons/cs-sort-down.svg" alt="" width="16" height="16" />
+          <span>A-Z</span>
+        </button>
+        <button type="button" class="mh-cs-sort__option" role="option" aria-selected="false" data-cs-sort-opt="za" data-cs-sort-label="Z-A">
+          <img src="assets/icons/cs-sort-up.svg" alt="" width="16" height="16" />
+          <span>Z-A</span>
+        </button>
+      </div>
+    </div>
+    <div class="mh-cs-prov-grid" id="mh-cs-prov-grid">
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Winfinity" title="Winfinity">
+        <img src="assets/casino/providers/winfinity.svg" alt="Winfinity" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Mancala" title="Mancala">
+        <img src="assets/casino/providers/mancala.svg" alt="Mancala" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Amigo" title="Amigo">
+        <img src="assets/casino/providers/amigo.svg" alt="Amigo" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Astriona" title="Astriona">
+        <img src="assets/casino/providers/astriona.svg" alt="Astriona" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Barbara Bang" title="Barbara Bang">
+        <img src="assets/casino/providers/barbara-bang.svg" alt="Barbara Bang" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="iMoon" title="iMoon">
+        <img src="assets/casino/providers/imoon.svg" alt="iMoon" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="GameBeat" title="GameBeat">
+        <img src="assets/casino/providers/gamebeat.svg" alt="GameBeat" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Funky" title="Funky">
+        <img src="assets/casino/providers/funky.svg" alt="Funky" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Turbo Games" title="Turbo Games">
+        <img src="assets/casino/providers/turbo-games.svg" alt="Turbo Games" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="1XLIVE" title="1XLIVE">
+        <img src="assets/casino/providers/1xlive.svg" alt="1XLIVE" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Famous Games" title="Famous Games">
+        <img src="assets/casino/providers/famous-games.svg" alt="Famous Games" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Tom Horn" title="Tom Horn">
+        <img src="assets/casino/providers/tom-horn.svg" alt="Tom Horn" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Capecod" title="Capecod">
+        <img src="assets/casino/providers/capecod.svg" alt="Capecod" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="The Hood" title="The Hood">
+        <img src="assets/casino/providers/the-hood.svg" alt="The Hood" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Pixmove" title="Pixmove">
+        <img src="assets/casino/providers/pixmove.svg" alt="Pixmove" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Live Games" title="Live Games">
+        <img src="assets/casino/providers/live-games.svg" alt="Live Games" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="UU Slots" title="UU Slots">
+        <img src="assets/casino/providers/uu-slots.svg" alt="UU Slots" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Holi" title="Holi">
+        <img src="assets/casino/providers/holi.svg" alt="Holi" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="GMW" title="GMW">
+        <img src="assets/casino/providers/gmw.svg" alt="GMW" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Qora Games" title="Qora Games">
+        <img src="assets/casino/providers/qora-games.svg" alt="Qora Games" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="ReadyPlay Gaming" title="ReadyPlay Gaming">
+        <img src="assets/casino/providers/readyplay-gaming.svg" alt="ReadyPlay Gaming" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Winspinity" title="Winspinity">
+        <img src="assets/casino/providers/winspinity.svg" alt="Winspinity" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="BF Games" title="BF Games">
+        <img src="assets/casino/providers/bf-games.svg" alt="BF Games" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="100HP Gaming" title="100HP Gaming">
+        <img src="assets/casino/providers/100hp-gaming.svg" alt="100HP Gaming" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Platipus" title="Platipus">
+        <img src="assets/casino/providers/platipus.svg" alt="Platipus" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="FBastards" title="FBastards">
+        <img src="assets/casino/providers/fbastards.svg" alt="FBastards" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Nextspin" title="Nextspin">
+        <img src="assets/casino/providers/nextspin.svg" alt="Nextspin" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="AGT Software" title="AGT Software">
+        <img src="assets/casino/providers/agt-software.svg" alt="AGT Software" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Thunderspin" title="Thunderspin">
+        <img src="assets/casino/providers/thunderspin.svg" alt="Thunderspin" loading="lazy" />
+      </a>
+      <a href="casino.html" class="mh-cs-prov" data-mh-toast="Playzia" title="Playzia">
+        <img src="assets/casino/providers/playzia.svg" alt="Playzia" loading="lazy" />
+      </a>
+    </div>
+
+    <footer class="mh-footer">
+      <div class="mh-footer__inner">
+        <section class="mh-footer__slider" aria-label="Sports partners">
+          <h2 class="mh-footer__slider-title">Sports partners</h2>
+          <div class="mh-footer__slider-box">
+            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="FC Barcelona"><img src="assets/logos/partner-barcelona.webp" alt="FC Barcelona" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Serie A"><img src="assets/logos/partner-serie-a.webp" alt="Serie A" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="PSG"><img src="assets/logos/partner-psg.webp" alt="PSG" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="CAF"><img src="assets/logos/partner-caf.webp" alt="CAF" width="55" height="55" loading="lazy" /></a>
+            </div>
+          </div>
+        </section>
+        <section class="mh-footer__slider" aria-label="Esports partners">
+          <h2 class="mh-footer__slider-title">Esports partners</h2>
+          <div class="mh-footer__slider-box">
+            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="PGL"><img src="assets/logos/partner-pgl.webp" alt="PGL" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="MIBR"><img src="assets/logos/partner-mibr.webp" alt="MIBR" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Tundra"><img src="assets/logos/partner-tundra.webp" alt="Tundra" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Aurora"><img src="assets/logos/partner-aurora.webp" alt="Aurora" width="55" height="55" loading="lazy" /></a>
+            </div>
+          </div>
+        </section>
+        <a href="#" class="mh-footer__app-banner">
+          <div class="mh-footer__app-phone" aria-hidden="true">
+            <span class="mh-footer__app-store mh-footer__app-store--apple" title="iOS"></span>
+            <span class="mh-footer__app-store mh-footer__app-store--android" title="Android"></span>
+          </div>
+          <div class="mh-footer__app-copy">
+            <img src="assets/logos/logo-1xbet-footer.svg" alt="1xBet" width="101" height="22" />
+            <span>Mobile application</span>
+          </div>
+        </a>
+        <div class="mh-footer__social">
+          <a href="#" class="mh-footer__social-btn" aria-label="X"><img src="assets/icons/icon-twitter.svg" alt="" width="16" height="16" /></a>
+          <a href="#" class="mh-footer__social-btn" aria-label="Telegram"><img src="assets/icons/icon-telegram.svg" alt="" width="16" height="16" /></a>
+          <a href="https://www.instagram.com/1xmalaysia" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" /></a>
+          <a href="https://www.facebook.com/1xMalay" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" /></a>
+        </div>
+        <a href="../live-chat.html" class="mh-footer__support">
+          <img src="assets/icons/icon-support.svg" alt="" width="42" height="42" class="mh-footer__support-icon" />
+          <span class="mh-footer__support-copy">
+            <strong>Customer Support</strong>
+            <span>Ask any questions</span>
+          </span>
+        </a>
+        <div class="mh-footer__legal-block">
+          <p class="mh-footer__legal">Copyright © 2026 «1xBet».</p>
+          <p class="mh-footer__cookie">1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="../terms.html">Find out more</a></p>
+        </div>
+        <a href="../casino.html" class="mh-footer__full">Go to the full version of the website</a>
+        <div class="mh-footer__meta">
+          <span class="mh-footer__age">18+</span>
+          <button type="button" class="mh-footer__lang" aria-label="Language">
+            <img src="assets/logos/flag-my.svg" alt="" width="16" height="16" />
+            <span>EN</span>
+            <span class="mh-footer__lang-chevron" aria-hidden="true">▾</span>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  
+
+
+  <nav class="mh-cs-tabbar" aria-label="Casino primary">
+    <a href="casino-categories.html" class="mh-cs-tab">
+      <img src="assets/icons/cs-categories.svg" alt="" width="22" height="22" />
+      <span>Categories</span>
+    </a>
+    <a href="casino-providers.html" class="mh-cs-tab is-active" aria-current="page">
+      <img src="assets/icons/cs-providers.svg" alt="" width="22" height="22" />
+      <span>Providers</span>
+    </a>
+    <a href="my-casino.html" class="mh-cs-tab mh-cs-tab--mycasino">
+      <span class="mh-cs-tab__bubble" aria-hidden="true">
+        <img src="assets/icons/cs-mycasino.svg" alt="" width="18" height="18" />
+      </span>
+      <span>My Casino</span>
+    </a>
+    <a href="casino-promo.html" class="mh-cs-tab">
+      <img src="assets/icons/cs-promo.svg" alt="" width="22" height="22" />
+      <span>Promo</span>
+    </a>
+    <button type="button" class="mh-cs-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
+      <img src="assets/icons/cs-menu.svg" alt="" width="22" height="22" />
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <div class="mh-sheet" id="mh-menu-sheet" hidden>
+    <div class="mh-sheet__backdrop" data-mh-close-menu></div>
+    <div class="mh-sheet__panel mh-cs-menu" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="mh-cs-menu__top">
+        <button type="button" class="mh-cs-menu__clock" data-mh-toast="Timezone">
+          <img src="assets/icons/icon-clock.svg" alt="" width="14" height="14" />
+          <span>11:08</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+        </button>
+        <button type="button" class="mh-cs-menu__lang" data-mh-toast="Language">
+          <img src="assets/logos/flag-my.svg" alt="" width="16" height="12" />
+          <span>EN</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+        </button>
+        <span class="mh-cs-menu__spacer"></span>
+        <button type="button" class="mh-cs-menu__settings" data-mh-toast="Settings" aria-label="Settings">
+          <img src="assets/icons/icon-settings.svg" alt="" width="18" height="18" />
+        </button>
+        <button type="button" class="mh-cs-menu__close" data-mh-close-menu aria-label="Close">×</button>
+      </div>
+      <label class="mh-cs-menu__search">
+        <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+        <input type="search" placeholder="Search menu" autocomplete="off" />
+      </label>
+      <ul class="mh-cs-menu__list">
+        <li><a href="index.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span><span class="mh-cs-menu__label">Main page</span></a></li>
+        <li><a href="sports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/tab-menu.svg" alt="" /></span><span class="mh-cs-menu__label">Sports</span></a></li>
+        <li><a href="national-team-live.html"><span class="mh-cs-menu__ico"><img src="assets/icons/tab-live.svg" alt="" /></span><span class="mh-cs-menu__label">Live</span></a></li>
+        <li><a href="sports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">T20 Blast</span><span class="mh-cs-menu__badge">TOP</span></a></li>
+        <li><a href="../esports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span><span class="mh-cs-menu__label">Esports</span></a></li>
+        <li><a href="favourites.html"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-mycasino.svg" alt="" /></span><span class="mh-cs-menu__label">Favorites</span></a></li>
+        <li><a href="../results.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span><span class="mh-cs-menu__label">Results</span></a></li>
+        <li><a href="../big-tournaments.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">Bet on Big Tournaments</span></a></li>
+      </ul>
+      <h2 class="mh-cs-menu__section-title">Casino</h2>
+      <ul class="mh-cs-menu__list">
+        <li><a href="casino-promo.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">Stand for Victory</span></a></li>
+        <li><a href="casino.html"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-categories.svg" alt="" /></span><span class="mh-cs-menu__label">Casino</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+      </ul>
+      <h2 class="mh-cs-menu__section-title">Games</h2>
+      <ul class="mh-cs-menu__list">
+        <li><a href="../world-flight-26.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span><span class="mh-cs-menu__label">1xGames</span></a></li>
+      </ul>
+      <h2 class="mh-cs-menu__section-title">Promo</h2>
+      <ul class="mh-cs-menu__list">
+        <li><a href="casino-promo.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-gift.svg" alt="" /></span><span class="mh-cs-menu__label">Promotions and offers</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+      </ul>
+      <h2 class="mh-cs-menu__section-title">Extra</h2>
+      <ul class="mh-cs-menu__list">
+        <li><a href="../terms.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span><span class="mh-cs-menu__label">Other</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+        <li><a href="../terms.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-person.svg" alt="" /></span><span class="mh-cs-menu__label">Information</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+        <li><a href="../live-chat.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-support.svg" alt="" /></span><span class="mh-cs-menu__label">Customer Support</span></a></li>
+        <li><a href="#"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span><span class="mh-cs-menu__label">Mobile application</span></a></li>
+        <li><a href="#"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-categories.svg" alt="" /></span><span class="mh-cs-menu__label">Other apps</span></a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-casino.js"></script>
+</body>
+</html>

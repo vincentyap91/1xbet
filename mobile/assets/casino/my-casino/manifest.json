@@ -1,0 +1,596 @@
+[
+  {
+    "file": "asset-01.svg",
+    "alt": "1xBet",
+    "src": "https://v3.traincdn.com/genfiles/cms/1-455/desktop/media_asset/15cb3adfd2e1c3a64a8c8a581810ed21.svg",
+    "w": 74,
+    "h": 16,
+    "top": 77,
+    "size": 1232
+  },
+  {
+    "file": "asset-02.svg",
+    "alt": "MY",
+    "src": "https://1xlite-46272.pro/genfiles/cms/desktop/event-logo/935c13bb83bcf977a03490c485638465.svg",
+    "w": 24,
+    "h": 24,
+    "top": 73,
+    "size": 2312
+  },
+  {
+    "file": "asset-03.webp",
+    "alt": "1x Chicken Road",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/d407dc9d-3267-4644-bab6-f487960196fe_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 35006
+  },
+  {
+    "file": "asset-04.webp",
+    "alt": "Plinko X",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/a0be3706-e576-46e4-9d28-3e578919bc17_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 13628
+  },
+  {
+    "file": "asset-05.webp",
+    "alt": "1xGolden Dragon Inferno™",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/dad0a7e7-9547-47a1-9343-9ca554e5cc54_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 38446
+  },
+  {
+    "file": "asset-06.webp",
+    "alt": "Crazy Time",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/62ad2c60-725d-4a57-a693-404b0cfe4cfd_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 31564
+  },
+  {
+    "file": "asset-07.webp",
+    "alt": "1X Tao Yuan Baccarat 1",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/37a0ba3b-f685-4ba1-9d51-ca4e2a47dd05_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 22880
+  },
+  {
+    "file": "asset-08.webp",
+    "alt": "1X Roulette Asia",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/fb0b3530-9dad-4331-8f01-23d0161e5b8b_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 24954
+  },
+  {
+    "file": "asset-09.webp",
+    "alt": "Aviator",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/7ee8c642-ed4f-4f57-b2e4-57be4c533656_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 10962
+  },
+  {
+    "file": "asset-10.webp",
+    "alt": "JetX",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/4bfdb5d4-2a99-4621-9dcf-06dfc1d8b302_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 19718
+  },
+  {
+    "file": "asset-11.webp",
+    "alt": "Aviator",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/871cd20e-1946-44aa-89f7-d34d6de3ed1e_auto.webp",
+    "w": 118,
+    "h": 156,
+    "top": 230,
+    "size": 15808
+  },
+  {
+    "file": "asset-12.jpg",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/media_asset/9c8bad923f6db56c601616be191c943d.jpg",
+    "w": 371,
+    "h": 171,
+    "top": 406,
+    "size": 38520
+  },
+  {
+    "file": "asset-13.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/tournament-builder-files/tournaments/bbdd4e14519fc6761b2975dd997dcf99/1000_535jpg.webp",
+    "w": 181,
+    "h": 234,
+    "top": 646,
+    "size": 81472
+  },
+  {
+    "file": "asset-14.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/tournament-builder-files/tournaments/33d53c1077694dbd730beffbf9dbd74d/1000x535png.webp",
+    "w": 181,
+    "h": 234,
+    "top": 646,
+    "size": 87722
+  },
+  {
+    "file": "asset-15.webp",
+    "alt": "Tao Yuan Baccarat 3",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/88c500bd-991f-4d70-be13-a4ebe79a3e39_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 1047,
+    "size": 38236
+  },
+  {
+    "file": "asset-16.webp",
+    "alt": "1X Lightning Blackjack",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/2ee6e276-cd9b-4737-be20-ab4b74be876b_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 1047,
+    "size": 31562
+  },
+  {
+    "file": "asset-17.webp",
+    "alt": "Sugar Rush 1000",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/b7af664f-d416-41ba-bdc1-8f0be068485a_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 1047,
+    "size": 42616
+  },
+  {
+    "file": "asset-18.webp",
+    "alt": "Chicken Crash 1xBet",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/2bccb1b7-e463-4382-9326-baab29bd166a_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 882,
+    "size": 46692
+  },
+  {
+    "file": "asset-19.webp",
+    "alt": "Chicken Zap!",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/17b49cff-65b1-4f67-9630-547026549889_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 718,
+    "size": 35172
+  },
+  {
+    "file": "asset-20.webp",
+    "alt": "Crazy Time A",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/c1d26ce4-9c7f-4e23-b75b-c1cf64f21a3c_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 389,
+    "size": 30644
+  },
+  {
+    "file": "asset-21.webp",
+    "alt": "Mega Wheel",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/5299005e-18e9-44b8-ab02-c719187019c6_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 225,
+    "size": 24354
+  },
+  {
+    "file": "asset-22.webp",
+    "alt": "Tower Rush",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/964aa360-6de8-47e0-8ad0-8d7bbc695ed7_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": 61,
+    "size": 36534
+  },
+  {
+    "file": "asset-23.webp",
+    "alt": "Bang! Bang!",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/5b75ef55-449f-4cf4-a14c-05a9bd086d0d_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -104,
+    "size": 58818
+  },
+  {
+    "file": "asset-24.webp",
+    "alt": "Super Ace",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/da11b4c8-35d1-40c0-ab12-3eac740f9246_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -268,
+    "size": 25324
+  },
+  {
+    "file": "asset-25.webp",
+    "alt": "Buffalo Wild Ways",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/9030af70-8433-4c77-aa92-23949846f50a_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -432,
+    "size": 46052
+  },
+  {
+    "file": "asset-26.webp",
+    "alt": "Fortune Gems 2",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/fe69ca5e-44e5-4daa-ad85-6694718fd9fa_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -597,
+    "size": 49864
+  },
+  {
+    "file": "asset-27.webp",
+    "alt": "1X Tao Yuan Baccarat 7",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/a84b8273-6383-4af5-b2bf-49e8c0b02614_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -761,
+    "size": 24108
+  },
+  {
+    "file": "asset-28.webp",
+    "alt": "Cabaret Roulette",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/80194a22-6321-4f6c-86e6-8b956a5c654a_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -926,
+    "size": 27086
+  },
+  {
+    "file": "asset-29.webp",
+    "alt": "1X Lightning Roulette",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/12c3cfea-27dd-41c0-9d9b-08693ab88406_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -1090,
+    "size": 25956
+  },
+  {
+    "file": "asset-30.webp",
+    "alt": "Gates of Olympus Super Scatter",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/1d222eba-5e36-42f3-a0dc-d806f171f56d_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -1254,
+    "size": 37704
+  },
+  {
+    "file": "asset-31.webp",
+    "alt": "Mega Roulette",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/0331dcf4-d16a-4d91-814f-f5570b9d5ac0_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -1419,
+    "size": 19542
+  },
+  {
+    "file": "asset-32.webp",
+    "alt": "1X Baccarat 8",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/cb6e82e7-e5dc-4f22-ac60-d0e77c206e73_auto.webp",
+    "w": 117,
+    "h": 155,
+    "top": -1583,
+    "size": 22212
+  },
+  {
+    "file": "asset-33.svg",
+    "alt": "Winfinity",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/321a8f2a1c07a058b071b8e474c3b587/Winfinity_mono.svg",
+    "w": 79,
+    "h": 39,
+    "top": 1503,
+    "size": 5349
+  },
+  {
+    "file": "asset-34.svg",
+    "alt": "Mancala",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/d6471dfa5fe92fcb1492a192371f5a04/Mancala_mono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 24566
+  },
+  {
+    "file": "asset-35.svg",
+    "alt": "Amigo",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/f49909227fbf86410f18ea965d0a69ca/Amigo_mono.svg",
+    "w": 77,
+    "h": 39,
+    "top": 1503,
+    "size": 13662
+  },
+  {
+    "file": "asset-36.svg",
+    "alt": "Astriona",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/001f4db8797ac6e0efec4a884ecea4cc/Astriona_mono1.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 42836
+  },
+  {
+    "file": "asset-37.svg",
+    "alt": "Barbara Bang",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/4d5a20645c629ee1f528c0ed89a50229/BarbaraBangmono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 9661
+  },
+  {
+    "file": "asset-38.svg",
+    "alt": "iMoon",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/499828eed4c223544fc0604cf8e593be/iMoonmono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 25313
+  },
+  {
+    "file": "asset-39.svg",
+    "alt": "GameBeat",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/d6ac3b193228323619427a794bafbca3/GameBeatmono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 2653
+  },
+  {
+    "file": "asset-40.svg",
+    "alt": "Funky",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/bade3a6e58d99108a31fca6754d05d72/Funky_mono.svg",
+    "w": 75,
+    "h": 39,
+    "top": 1503,
+    "size": 5757
+  },
+  {
+    "file": "asset-41.svg",
+    "alt": "Turbo Games",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/40923b72a1de2d799e44615b6fff0fb3/Turbogames-mono-01.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 5934
+  },
+  {
+    "file": "asset-42.svg",
+    "alt": "1XLIVE",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/3558676be9c696c175f1310fd76fd969/1xLive_mono.svg",
+    "w": 70,
+    "h": 39,
+    "top": 1546,
+    "size": 5446
+  },
+  {
+    "file": "asset-43.svg",
+    "alt": "Famous Games",
+    "src": "https://v3.traincdn.com/genfiles/cmsc-files/9c48935be5760e4d8252a834155c53c4/FamousGames_mono-011.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 9003
+  },
+  {
+    "file": "asset-44.svg",
+    "alt": "Tom Horn",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/94eacc9479679a0c92e69a9ee9a529bd/TomHorn_mono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 19310
+  },
+  {
+    "file": "asset-45.svg",
+    "alt": "Capecod",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/83f25f0c607ca15920a8f7bbae37aa58/Capecod_mono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 6894
+  },
+  {
+    "file": "asset-46.svg",
+    "alt": "The Hood",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/cdc53366b5a08971a8d7520dd61eaf82/Hood_mono-01.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 3276
+  },
+  {
+    "file": "asset-47.svg",
+    "alt": "Pixmove",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/2cd2d32eef419083fc44e1b2a347d700/Pixmove_mono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1503,
+    "size": 7425
+  },
+  {
+    "file": "asset-48.svg",
+    "alt": "Live Games",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/b5cec054b2e2748bc52e8d09fd45d32b/Live-Games_mono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 12560
+  },
+  {
+    "file": "asset-49.svg",
+    "alt": "UU Slots",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/63aa41da9e381805214fc6f083dda624/UUSlotsmono.svg",
+    "w": 83,
+    "h": 39,
+    "top": 1546,
+    "size": 12285
+  },
+  {
+    "file": "asset-50.svg",
+    "alt": "Holi",
+    "src": "https://v3.traincdn.com/genfiles/third-party-files/0bcc943da676b1a9b1efa205a0f14dc8/Holi_mono.svg",
+    "w": 77,
+    "h": 39,
+    "top": 1546,
+    "size": 2640
+  },
+  {
+    "file": "asset-51.webp",
+    "alt": "Global partner of FC Barcelona",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/db4c52e926e7b03338147d33b82d230e_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 4236
+  },
+  {
+    "file": "asset-52.webp",
+    "alt": "Official Presenting Sponsor of Serie A TIM",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/ef06ce460e77dd13700869ac149bef8a_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 1474
+  },
+  {
+    "file": "asset-53.webp",
+    "alt": "Official Partner of PSG",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/7282649bfc3a6bc2bef41cc6be98aa22_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 4048
+  },
+  {
+    "file": "asset-54.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/cdcf791c308de6f623ed4671bea31e69_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 4506
+  },
+  {
+    "file": "asset-55.webp",
+    "alt": "Official betting partner of Volleyball World",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/6d53ab6b815e31ee8e8e5ab943f2c2f9_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 1882
+  },
+  {
+    "file": "asset-56.webp",
+    "alt": "Global betting partner",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/652c29dbcdafdcb75141c33e278e43ac_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 2058
+  },
+  {
+    "file": "asset-57.webp",
+    "alt": "Official Betting Partner",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/a2062f80fb11acecf111ad365b0db258_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 3294
+  },
+  {
+    "file": "asset-58.webp",
+    "alt": "Official Betting Partner of Nexo Dallas Open",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/d3a7f93be4759317efb861b0c565b4db_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1670,
+    "size": 1734
+  },
+  {
+    "file": "asset-59.webp",
+    "alt": "Official partner",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/cb34e364535e5a3968784fa8c2677857_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 526
+  },
+  {
+    "file": "asset-60.webp",
+    "alt": "Official Global Partner of MIBR",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/bca5eb6bc28fb1d3f5c8a490312b329b_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 1038
+  },
+  {
+    "file": "asset-61.webp",
+    "alt": "Title partner of MongolZ",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/a3b84efd7a7dd100c17bea86acf84bc1_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 2838
+  },
+  {
+    "file": "asset-62.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/e701214e8a5cdc8c577f5a42f328db2e_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 1306
+  },
+  {
+    "file": "asset-63.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/ab9ad24df3f32a209e7fc87341f3a6cf_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 3490
+  },
+  {
+    "file": "asset-64.webp",
+    "alt": "MAIN SPONSOR",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/0144a599017f9204b530e9b88f173c6c_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 2554
+  },
+  {
+    "file": "asset-65.webp",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/desktop/contact/843af0137a02860209f8cdbdc54b9ad2_110.webp",
+    "w": 55,
+    "h": 55,
+    "top": 1821,
+    "size": 1332
+  },
+  {
+    "file": "asset-66.png",
+    "alt": "",
+    "src": "https://v3.traincdn.com/genfiles/cms/1-455/desktop/media_asset/97f036b5ec596d6342ab2c84e76c2661.png",
+    "w": 390,
+    "h": 54,
+    "top": 0,
+    "size": 4151
+  }
+]

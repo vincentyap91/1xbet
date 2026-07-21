@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Profile - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-profile.css" />
+</head>
+<body class="mh-page mh-page--profile is-logged-in" data-page="profile">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account" aria-current="page">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="mh-main">
+    <section class="mh-pf-card" aria-label="Account overview">
+      <div class="mh-pf-card__top">
+        <div class="mh-pf-card__identity">
+          <div class="mh-pf-card__avatar" aria-hidden="true">
+            <img src="assets/icons/profile/pf-avatar-glyph.svg" alt="" width="16" height="16" />
+          </div>
+          <div class="mh-pf-card__meta">
+            <p class="mh-pf-card__acct">
+              <span data-pf-account>Account No.1737116847</span>
+              <button type="button" class="mh-pf-card__copy" data-pf-copy aria-label="Copy account number">
+                <img src="assets/icons/profile/pf-copy.svg" alt="" width="11" height="12" />
+              </button>
+            </p>
+            <p class="mh-pf-card__balance">0 MYR</p>
+          </div>
+        </div>
+        <div class="mh-pf-card__tools">
+          <button type="button" class="mh-pf-card__tool mh-pf-card__tool--mail" data-mh-toast="Messages (demo)" aria-label="Messages">
+            <img src="assets/icons/profile/pf-mail.svg" alt="" width="20" height="20" />
+            <span class="mh-pf-card__msg-badge" aria-hidden="true">7</span>
+          </button>
+          <a href="index.html" class="mh-pf-card__tool mh-pf-card__tool--close" aria-label="Close profile">
+            <img src="assets/icons/profile/pf-close.svg" alt="" width="16" height="16" />
+          </a>
+        </div>
+      </div>
+      <div class="mh-pf-card__actions">
+        <button type="button" class="mh-pf-btn mh-pf-btn--bets" data-mh-bets>My bets</button>
+        <button type="button" class="mh-pf-btn mh-pf-btn--deposit" data-mh-deposit>Deposit</button>
+      </div>
+    </section>
+
+    <div class="mh-pf-tabs-wrap">
+      <div class="mh-pf-tabs" role="tablist" aria-label="Profile sections">
+        <button type="button" class="mh-pf-tab is-active" role="tab" aria-selected="true" data-pf-tab="profile">
+          <img src="assets/icons/profile/pf-tab-user.svg" alt="" width="16" height="16" />
+          <span>Profile</span>
+        </button>
+        <button type="button" class="mh-pf-tab" role="tab" aria-selected="false" data-pf-tab="promo">
+          <img src="assets/icons/profile/pf-tab-gift.svg" alt="" width="16" height="16" />
+          <span>Promo</span>
+        </button>
+        <button type="button" class="mh-pf-tab" role="tab" aria-selected="false" data-pf-tab="settings">
+          <img src="assets/icons/profile/pf-tab-settings.svg" alt="" width="16" height="16" />
+          <span>Settings</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-pf-panel" data-pf-panel="profile">
+      <!-- Groups mirror desktop account sidebar (js/account.js ACCOUNT_NAV_GROUPS) -->
+      <section class="mh-pf-group" aria-labelledby="mh-pf-wallet">
+        <h2 class="mh-pf-group__title" id="mh-pf-wallet">My wallet and bets</h2>
+        <ul class="mh-pf-list">
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-deposit>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-deposit.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Deposit</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-withdraw>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-withdraw.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Withdraw funds</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-toast="Payment queries (demo)">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-payment.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Payment queries</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="mh-pf-group" aria-labelledby="mh-pf-profile">
+        <h2 class="mh-pf-group__title" id="mh-pf-profile">Profile</h2>
+        <ul class="mh-pf-list">
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-personal-profile>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-user.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Personal profile</span>
+              <span class="mh-pf-list__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="16" height="16" /></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-security>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-lock.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Security</span>
+              <span class="mh-pf-list__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="16" height="16" /></span>
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="mh-pf-group" aria-labelledby="mh-pf-history">
+        <h2 class="mh-pf-group__title" id="mh-pf-history">History record</h2>
+        <ul class="mh-pf-list">
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-tx-history>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-transfer.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Transaction history</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-bets>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-bet-history.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Bet history</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="mh-pf-list__item" data-mh-promo-record>
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-promo.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Promotion record</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="mh-pf-group" aria-labelledby="mh-pf-extra">
+        <h2 class="mh-pf-group__title" id="mh-pf-extra">Extra</h2>
+        <ul class="mh-pf-list">
+          <li>
+            <a href="../referral-invite.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-referral.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Referral</span>
+            </a>
+          </li>
+          <li>
+            <a href="../membership-invite.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-membership.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Membership</span>
+            </a>
+          </li>
+          <li>
+            <a href="../rebate-invite.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-rebate.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Rebate</span>
+            </a>
+          </li>
+          <li>
+            <a href="../daily-checkin.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-checkin.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Daily check in</span>
+            </a>
+          </li>
+          <li>
+            <a href="casino-promo.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-promotions.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Promotions</span>
+            </a>
+          </li>
+          <li>
+            <a href="../live-chat.html" class="mh-pf-list__item">
+              <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-chat.svg" alt="" width="16" height="16" /></span>
+              <span class="mh-pf-list__label">Live chat</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <ul class="mh-pf-list mh-pf-list--logout">
+        <li>
+          <button type="button" class="mh-pf-list__item" data-mh-logout>
+            <span class="mh-pf-list__ico"><img src="assets/icons/profile/pf-logout.svg" alt="" width="16" height="16" /></span>
+            <span class="mh-pf-list__label">Log out</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mh-pf-panel" data-pf-panel="promo" hidden>
+      <p class="mh-pf-empty">No active promotions yet. Check Casino Promo for current offers.</p>
+    </div>
+
+    <div class="mh-pf-panel" data-pf-panel="settings" hidden>
+      <p class="mh-pf-empty">Settings coming soon (demo).</p>
+    </div>
+  </main>
+
+  <div class="mh-tab-flyout-backdrop" id="mh-tab-flyout-backdrop" hidden></div>
+
+  <nav class="mh-tabbar" aria-label="Mobile primary">
+    <div class="mh-tab-slot" data-mh-flyout-slot="sports">
+      <button type="button" class="mh-tab" data-mh-flyout-open="sports" aria-expanded="false" aria-controls="mh-flyout-sports" aria-haspopup="menu">
+        <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span>Sports</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team-line.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--flag" src="assets/logos/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="national-team-live.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--live" src="assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="sports.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-tab-slot" data-mh-flyout-slot="casino">
+      <button type="button" class="mh-tab" data-mh-flyout-open="casino" aria-expanded="false" aria-controls="mh-flyout-casino" aria-haspopup="menu">
+        <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span>Casino</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="../live-casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mh-tab mh-tab--coupon" id="mh-betslip-btn" aria-label="Bet slip">
+      <span class="mh-tab__coupon-wrap">
+        <span class="mh-tab__coupon-icon">
+          <img src="assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mh-tab__badge" id="mh-bet-count" hidden>0</span>
+      </span>
+      <span>Bet slip</span>
+    </button>
+    <button type="button" class="mh-tab" data-mh-deposit-tab aria-label="Deposit">
+      <img src="assets/icons/tab-deposit.svg" alt="" width="20" height="20" />
+      <span>Deposit</span>
+    </button>
+    <button type="button" class="mh-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
+      <img src="assets/icons/tab-menu.svg" alt="" width="20" height="20" />
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <div class="mh-sheet" id="mh-menu-sheet" hidden>
+    <div class="mh-sheet__backdrop" data-mh-close-menu></div>
+    <div class="mh-sheet__panel" role="dialog" aria-label="Menu">
+      <div class="mh-sheet__head">
+        <strong>Menu</strong>
+        <button type="button" class="mh-icon-btn" data-mh-close-menu aria-label="Close">✕</button>
+      </div>
+      <nav class="mh-sheet__nav">
+        <a href="index.html">Home</a>
+        <a href="sports.html">Sports</a>
+        <a href="casino.html">Casino</a>
+        <a href="profile.html">Profile</a>
+        <button type="button" class="mh-sheet__logout" data-mh-logout>Log out</button>
+      </nav>
+    </div>
+  </div>
+
+  <aside class="mh-qbs" id="mh-qbs" hidden aria-hidden="true" aria-label="Quick bet slip">
+    <div class="mh-qbs__head">
+      <button type="button" class="mh-qbs__collapse" data-mh-qbs-collapse aria-label="Collapse quick bet slip">
+        <img src="assets/icons/icon-chevron-double-down.svg" alt="" width="18" height="18" />
+      </button>
+      <strong class="mh-qbs__title">Quick bet slip<span class="mh-qbs__count-wrap" data-mh-qbs-count-wrap hidden> (<span data-mh-qbs-count>0</span>)</span></strong>
+      <a href="#" class="mh-qbs__link" data-mh-toast="Full bet slip coming soon">Go to bet slip</a>
+      <button type="button" class="mh-qbs__settings" data-mh-toast="Bet slip settings" aria-label="Settings">
+        <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
+      </button>
+    </div>
+    <div class="mh-qbs__body">
+      <div class="mh-qbs__empty" data-mh-qbs-empty>
+        <p>Your bet slip is empty. Add an event to place a bet, or <a href="#" data-mh-toast="Bet slip generator coming soon">generate a bet slip</a>.</p>
+      </div>
+      <div class="mh-qbs__filled" data-mh-qbs-filled hidden>
+        <div class="mh-qbs__rail is-single" data-mh-qbs-rail data-mh-scroll data-mh-drag-scroll></div>
+        <div class="mh-qbs__overall" data-mh-qbs-overall hidden>
+          <span>Overall odds</span>
+          <strong data-mh-qbs-overall-val>0</strong>
+        </div>
+      </div>
+    </div>
+    <div class="mh-qbs__actions">
+      <button type="button" class="mh-qbs__btn mh-qbs__btn--reg" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-qbs__btn mh-qbs__btn--login" data-mh-logout>Log out</button>
+    </div>
+  </aside>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-profile.js"></script>
+</body>
+</html>

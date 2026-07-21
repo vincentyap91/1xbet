@@ -1,0 +1,123 @@
+/* Withdraw-only chrome on top of shared mobile-deposit.css */
+
+.mh-wd-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mh-wd-toolbar .mh-dep-chip {
+  flex: 0 0 auto;
+}
+
+.mh-wd-btn-requests {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--action-green);
+  color: var(--text-inverse);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.mh-wd-btn-requests__chev {
+  font-size: 10px;
+  line-height: 1;
+  opacity: 0.95;
+}
+
+.mh-wd-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--section-blue);
+}
+
+.mh-wd-confirm__app {
+  min-height: 26px;
+  padding: 3px 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--header-action);
+  color: var(--text-inverse);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-wd-account-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--section-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.mh-wd-account-label strong {
+  font-weight: 800;
+}
+
+.mh-wd-field input.mh-wd-input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+.mh-wd-field input.mh-wd-input:focus {
+  border-color: var(--header-action);
+}
+
+.mh-wd-notes {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--odds-bg);
+  border: 1px solid var(--border-light);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.mh-wd-notes strong {
+  color: var(--section-blue);
+}
+
+.mh-wd-balance {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  font-size: 13px;
+}
+
+.mh-wd-balance span {
+  color: var(--text-muted);
+}
+
+.mh-wd-balance strong {
+  color: var(--section-blue);
+}

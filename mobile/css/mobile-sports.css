@@ -1,0 +1,603 @@
+/* =========================================================
+   Mobile — Sports (Line) — screenshot layout
+   Colors/tokens only from design system (not live-site hex)
+   Scoped to body.mh-page.mh-page--sports
+   ========================================================= */
+
+body.mh-page.mh-page--sports {
+  --mh-subbar-h: 44px;
+  background: #eef2f6;
+  color: var(--text-primary);
+}
+
+body.mh-page.mh-page--sports .mh-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #eef2f6;
+}
+
+/* ---------- Sub-bar (back · Sports · actions) ---------- */
+.mh-sp-subbar {
+  position: sticky;
+  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--mh-subbar-h);
+  padding: 6px 8px;
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+}
+
+.mh-sp-subbar__back {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  text-decoration: none;
+  color: var(--text-inverse);
+}
+
+.mh-sp-subbar__back img {
+  width: 10px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.mh-sp-subbar__title {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-inverse);
+}
+
+.mh-sp-subbar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mh-sp-subbar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-inverse);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mh-sp-subbar__btn img {
+  width: 16px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+  opacity: 1;
+}
+
+/* ---------- Sport category pills ---------- */
+.mh-sp-chips {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  overflow-x: auto;
+  padding: 10px var(--mh-gutter);
+  margin: 0;
+  background: #eef2f6;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+.mh-sp-chips.is-dragging {
+  cursor: grabbing;
+}
+
+.mh-sp-chips::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.mh-sp-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.mh-sp-chip img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+  pointer-events: none;
+}
+
+.mh-sp-chip.is-active {
+  border-color: var(--accent-blue);
+  box-shadow: inset 0 0 0 1px var(--accent-blue);
+}
+
+.mh-sp-chip--more {
+  width: 36px;
+  min-width: 36px;
+  padding: 6px;
+  justify-content: center;
+}
+
+/* ---------- Top Sports ---------- */
+.mh-sp-section {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 8px;
+}
+
+.mh-sp-section__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--mh-gutter) 8px;
+}
+
+.mh-sp-section__head img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) saturate(100%) invert(48%) sepia(70%) saturate(600%) hue-rotate(360deg) brightness(100%) contrast(95%);
+}
+
+.mh-sp-section__head h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mh-sp-rail {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 var(--mh-gutter) 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+.mh-sp-rail.is-dragging {
+  cursor: grabbing;
+}
+
+.mh-sp-rail::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.mh-sp-card {
+  flex: 0 0 min(300px, calc(100vw - 48px));
+  width: min(300px, calc(100vw - 48px));
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--surface-primary);
+  box-shadow: var(--mh-shadow-card);
+}
+
+.mh-sp-card__top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.mh-sp-card__sport {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-sp-card__time {
+  flex: 1 1 auto;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mh-sp-card__more {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mh-sp-card__more img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.55;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+.mh-sp-card__league {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.mh-sp-card__team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.mh-sp-card__team img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--odds-bg);
+  flex-shrink: 0;
+}
+
+.mh-sp-card__note {
+  margin: 4px 0 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mh-sp-match .mh-sp-card__note {
+  margin: 0 0 8px;
+}
+
+.mh-sp-card__odds {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.mh-sp-card__odds .mh-odds__btn {
+  min-height: 38px;
+  padding: 4px 2px;
+  border-radius: 4px;
+}
+
+.mh-sp-card__odds .mh-odds__lab {
+  font-size: 9px;
+}
+
+.mh-sp-card__odds .mh-odds__val {
+  font-size: 12px;
+}
+
+/* ---------- Quick links ---------- */
+.mh-sp-links {
+  display: grid;
+  gap: 8px;
+  padding: 8px var(--mh-gutter) 12px;
+}
+
+.mh-sp-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--odds-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mh-sp-link img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+/* ---------- Tournament tiles (live line mobile: badge + sport ico + name) ---------- */
+.mh-sp-tourney {
+  flex: 0 0 112px;
+  width: 112px;
+  min-height: 112px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(126, 208, 245, 0.18);
+  background:
+    linear-gradient(160deg, rgba(62, 180, 240, 0.22) 0%, transparent 42%),
+    linear-gradient(180deg, var(--section-blue) 0%, var(--header-bg) 52%, #0d223a 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 4px 12px rgba(11, 29, 51, 0.22);
+  color: var(--text-inverse);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.mh-sp-tourney::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 80% at 50% -10%, rgba(158, 220, 248, 0.2), transparent 55%);
+  pointer-events: none;
+}
+
+.mh-sp-tourney:active {
+  transform: scale(0.97);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.1) inset,
+    0 2px 6px rgba(11, 29, 51, 0.28);
+}
+
+.mh-sp-tourney__sport {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.mh-sp-tourney__badge {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-top: 4px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface-primary);
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.55),
+    0 4px 10px rgba(11, 29, 51, 0.35);
+}
+
+.mh-sp-tourney__badge img {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  display: block;
+}
+
+.mh-sp-tourney__badge--flag {
+  border: none;
+  background: var(--surface-primary);
+}
+
+.mh-sp-tourney__badge--flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mh-sp-tourney__name {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(11, 29, 51, 0.35);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Sport / league accordion list ---------- */
+.mh-sp-list {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 0 12px;
+}
+
+.mh-sp-sport {
+  width: 100%;
+  margin: 0 0 8px;
+  background: var(--surface-primary);
+}
+
+.mh-sp-sport__head,
+.mh-sp-league__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 10px;
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mh-sp-sport__head {
+  background: var(--league-header);
+  color: var(--text-primary);
+}
+
+.mh-sp-league__head {
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  border-top: 1px solid var(--border-light);
+}
+
+.mh-sp-sport__head img:first-child,
+.mh-sp-league__head img:first-child {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-sp-sport__head span,
+.mh-sp-league__head span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mh-sp-sport__chev,
+.mh-sp-league__chev {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: transform var(--mh-ease);
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+.mh-sp-sport__head[aria-expanded="false"] .mh-sp-sport__chev,
+.mh-sp-league__head[aria-expanded="false"] .mh-sp-league__chev {
+  transform: rotate(-90deg);
+}
+
+.mh-sp-sport__panel[hidden],
+.mh-sp-league__panel[hidden] {
+  display: none !important;
+}
+
+.mh-sp-match {
+  padding: 10px;
+  border-top: 1px solid var(--border-light);
+  background: var(--surface-primary);
+}
+
+.mh-sp-match__top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.mh-sp-match__sport {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-sp-match__time {
+  flex: 1 1 auto;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mh-sp-match__more {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mh-sp-match__more img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+.mh-sp-match__team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mh-sp-match__team img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--odds-bg);
+  flex-shrink: 0;
+}
+
+.mh-sp-match__odds {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.mh-sp-match__odds .mh-odds__btn {
+  min-height: 36px;
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .mh-sp-card {
+    flex-basis: 320px;
+    width: 320px;
+  }
+
+  .mh-sp-tourney {
+    flex-basis: 124px;
+    width: 124px;
+    min-height: 120px;
+  }
+}

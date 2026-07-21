@@ -1,0 +1,181 @@
+{
+  "By email": [
+    {
+      "type": "text",
+      "ph": "",
+      "name": "",
+      "visible": true
+    },
+    {
+      "type": "password",
+      "ph": "",
+      "name": "",
+      "visible": true
+    },
+    {
+      "type": "checkbox",
+      "ph": "",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "By email_ui": {
+    "buttons": [
+      "Log in",
+      "Registration",
+      "Log in",
+      "Forgot your password?",
+      "Register",
+      "Find out more",
+      "Customer SupportAsk any questions",
+      "en",
+      "Mobile application",
+      "0Bet slip",
+      "Log in",
+      "Get your 588 MYR in app"
+    ],
+    "notes": [
+      "By email",
+      "By email",
+      "By phone",
+      "By phone",
+      "By code",
+      "By code",
+      "Social networks",
+      "Social networks",
+      "Remember me",
+      "Remember me",
+      "Forgot your password?",
+      "Forgot your password?",
+      "Don't have an account? Register",
+      "Register"
+    ]
+  },
+  "By phone": [
+    {
+      "type": "tel",
+      "ph": "12 345 67891",
+      "name": "phone",
+      "visible": true
+    },
+    {
+      "type": "password",
+      "ph": "",
+      "name": "",
+      "visible": true
+    },
+    {
+      "type": "checkbox",
+      "ph": "",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "By phone_ui": {
+    "buttons": [
+      "Log in",
+      "Registration",
+      "Log in",
+      "Forgot your password?",
+      "Register",
+      "Find out more",
+      "Customer SupportAsk any questions",
+      "en",
+      "Mobile application",
+      "0Bet slip",
+      "Log in",
+      "Get your 588 MYR in app"
+    ],
+    "notes": [
+      "By email",
+      "By email",
+      "By phone",
+      "By phone",
+      "By code",
+      "By code",
+      "Social networks",
+      "Social networks",
+      "Code",
+      "Code",
+      "Phone number",
+      "Phone number",
+      "Remember me",
+      "Remember me",
+      "Forgot your password?",
+      "Forgot your password?",
+      "Don't have an account? Register",
+      "Register"
+    ]
+  },
+  "By code": [
+    {
+      "type": "tel",
+      "ph": "12 345 67891",
+      "name": "phone",
+      "visible": true
+    }
+  ],
+  "By code_ui": {
+    "buttons": [
+      "Log in",
+      "Registration",
+      "Send via SMS",
+      "Register",
+      "Find out more",
+      "Customer SupportAsk any questions",
+      "en",
+      "Mobile application",
+      "0Bet slip",
+      "Log in",
+      "Get your 588 MYR in app"
+    ],
+    "notes": [
+      "By email",
+      "By email",
+      "By phone",
+      "By phone",
+      "By code",
+      "By code",
+      "Social networks",
+      "Social networks",
+      "Log in with the code",
+      "Code",
+      "Code",
+      "Phone number",
+      "Phone number",
+      "Don't have an account? Register",
+      "Register"
+    ]
+  },
+  "Social networks": [],
+  "Social networks_ui": {
+    "buttons": [
+      "Log in",
+      "Registration",
+      "Register",
+      "Find out more",
+      "Customer SupportAsk any questions",
+      "en",
+      "Mobile application",
+      "0Bet slip",
+      "Log in",
+      "Get your 588 MYR in app"
+    ],
+    "notes": [
+      "By email",
+      "By email",
+      "By phone",
+      "By phone",
+      "By code",
+      "By code",
+      "Social networks",
+      "Social networks",
+      "Telegram",
+      "Telegram",
+      "Google",
+      "Google",
+      "Don't have an account? Register",
+      "Register"
+    ]
+  }
+}

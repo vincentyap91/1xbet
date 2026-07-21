@@ -1,0 +1,430 @@
+/* Mobile auth — login / registration pages
+   Scoped to body.mh-page--auth
+   Tokens: docs/DESIGN_SYSTEM.md
+*/
+
+body.mh-page.mh-page--auth {
+  background: var(--page-bg);
+}
+
+body.mh-page--auth .mh-auth-main {
+  padding: 0 0 calc(var(--mh-tabbar-h) + 16px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-secondary);
+}
+
+.mh-auth-subbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  background: var(--header-nav-bg);
+}
+
+.mh-auth-subbar__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  text-decoration: none;
+}
+
+.mh-auth-subbar__back img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) invert(1);
+}
+
+.mh-auth-subbar__title {
+  margin: 0;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.mh-auth-panel {
+  padding: 12px 10px 20px;
+  background: var(--surface-secondary);
+}
+
+.mh-auth-methods {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.mh-auth-method {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 72px;
+  padding: 8px 4px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.mh-auth-method__ico {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+}
+
+.mh-auth-method__ico img {
+  width: 22px;
+  height: 22px;
+  display: block;
+  filter: brightness(0) saturate(100%) invert(24%) sepia(55%) saturate(900%) hue-rotate(185deg);
+}
+
+.mh-auth-method.is-active {
+  background: var(--header-bg);
+  border-color: var(--header-bg);
+  color: var(--cyan-accent);
+}
+
+.mh-auth-method.is-active .mh-auth-method__ico img {
+  filter: brightness(0) invert(1);
+}
+
+.mh-auth-form[hidden] {
+  display: none !important;
+}
+
+.mh-auth-form {
+  display: grid;
+  gap: 10px;
+}
+
+.mh-auth-field {
+  display: block;
+  margin: 0;
+}
+
+.mh-auth-field--grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mh-auth-field--password {
+  position: relative;
+}
+
+.mh-auth-field-label {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.mh-auth-input,
+.mh-auth-select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.mh-auth-field--password .mh-auth-input {
+  padding-right: 44px;
+}
+
+.mh-auth-input:focus,
+.mh-auth-select:focus {
+  outline: 2px solid var(--cyan-accent);
+  outline-offset: 0;
+  border-color: var(--cyan-accent);
+}
+
+.mh-auth-input::placeholder {
+  color: var(--text-muted);
+}
+
+.mh-auth-eye {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  color: var(--text-muted);
+}
+
+.mh-auth-eye img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.7;
+}
+
+.mh-auth-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--section-blue);
+  cursor: pointer;
+  user-select: none;
+}
+
+.mh-auth-check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mh-auth-check__box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid var(--brand-blue);
+  background: var(--brand-blue);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background-image: url("../assets/icons/auth-check.svg");
+  background-size: 14px 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.mh-auth-check input:not(:checked) + .mh-auth-check__box {
+  background-color: transparent;
+  background-image: none;
+}
+
+.mh-auth-submit {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--action-green);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mh-auth-submit:hover {
+  background: var(--action-green-hover);
+}
+
+.mh-auth-submit--secondary {
+  background: var(--header-action);
+}
+
+.mh-auth-submit--secondary:hover {
+  background: var(--header-action-hover);
+}
+
+.mh-auth-link {
+  display: block;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+
+.mh-auth-switch {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.mh-auth-switch a {
+  color: var(--brand-blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.mh-auth-phone-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.mh-auth-cc {
+  flex: 0 0 auto;
+  min-width: 72px;
+  height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-auth-note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.mh-auth-socials {
+  display: grid;
+  gap: 8px;
+}
+
+.mh-auth-social {
+  height: 44px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-auth-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 4px 0 2px;
+}
+
+.mh-auth-steps__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-light);
+  box-sizing: border-box;
+}
+
+.mh-auth-steps__dot.is-active {
+  background: transparent;
+  border: 2px solid var(--action-green);
+  box-shadow: inset 0 0 0 2px #fff;
+  background: var(--action-green);
+}
+
+.mh-auth-steps__line {
+  width: 48px;
+  height: 2px;
+  background: var(--border-light);
+}
+
+.mh-auth-steps__label {
+  margin: 0 0 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.mh-auth-tip {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background: var(--odds-hover);
+  color: var(--section-blue);
+}
+
+.mh-auth-tip img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  filter: brightness(0) saturate(100%) invert(24%) sepia(55%) saturate(900%) hue-rotate(185deg);
+}
+
+.mh-auth-tip p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.mh-auth-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mh-auth-nav__btn {
+  height: 44px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mh-auth-nav__btn--back {
+  background: var(--league-header);
+  color: #fff;
+}
+
+.mh-auth-nav__btn--back:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.mh-auth-nav__btn--next {
+  background: var(--action-green);
+  color: #fff;
+}
+
+.mh-auth-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+body.mh-page--auth .mh-footer {
+  background: var(--page-bg);
+}
+
+body.mh-page--auth .mh-tab.is-active {
+  color: var(--action-green);
+}

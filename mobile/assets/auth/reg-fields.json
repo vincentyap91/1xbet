@@ -1,0 +1,126 @@
+{
+  "By e-mail": [
+    {
+      "type": "text",
+      "ph": "Email",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "By e-mail_ui": {
+    "buttons": [
+      "Back",
+      "Next",
+      "en"
+    ],
+    "notes": [
+      "By e-mailBy phoneOne-clickSocial networks and messengersStep 1 of 3EmailWe recommend using Gmail to avoid any issues with receiving notifications.BackNext",
+      "By e-mailBy phoneOne-clickSocial networks and messengersStep 1 of 3EmailWe recommend using Gmail to avoid any issues with receiving notifications.BackNext",
+      "By e-mailBy phoneOne-clickSocial networks and messengersStep 1 of 3EmailWe recommend using Gmail to avoid any issues with receiving notifications.BackNext",
+      "EmailWe recommend using Gmail to avoid any issues with receiving notifications.BackNext",
+      "EmailWe recommend using Gmail to avoid any issues with receiving notifications.BackNext",
+      "EmailWe recommend using Gmail to avoid any issues with receiving notifications.",
+      "EmailWe recommend using Gmail to avoid any issues with receiving notifications.",
+      "EmailWe recommend using Gmail to avoid any issues with receiving notifications.",
+      "We recommend using Gmail to avoid any issues with receiving notifications.",
+      "We recommend using Gmail to avoid any issues with receiving notifications."
+    ]
+  },
+  "By phone": [
+    {
+      "type": "tel",
+      "ph": "12 345 67891",
+      "name": "phone",
+      "visible": true
+    },
+    {
+      "type": "text",
+      "ph": "Promo code (if you have one)",
+      "name": "",
+      "visible": true
+    },
+    {
+      "type": "checkbox",
+      "ph": "",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "By phone_ui": {
+    "buttons": [
+      "Send via SMS",
+      "Register",
+      "en"
+    ],
+    "notes": [
+      "By phoneTo register on the website, enter your phone number and choose how you want to receive the codeCode +60Phone numberSending methodSMSSend via SMS",
+      "By phoneTo register on the website, enter your phone number and choose how you want to receive the codeCode +60Phone numberSending methodSMSSend via SMS",
+      "By phoneTo register on the website, enter your phone number and choose how you want to receive the code",
+      "Code +60Phone number",
+      "Code +60",
+      "Code +60",
+      "Code +60",
+      "Code",
+      "Phone number",
+      "Phone number",
+      "Phone number",
+      "Phone number"
+    ]
+  },
+  "One-click": [
+    {
+      "type": "text",
+      "ph": "Promo code (if you have one)",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "One-click_ui": {
+    "buttons": [
+      "Register",
+      "en"
+    ],
+    "notes": [
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select country",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)"
+    ]
+  },
+  "Social networks and messengers": [
+    {
+      "type": "text",
+      "ph": "Promo code (if you have one)",
+      "name": "",
+      "visible": true
+    }
+  ],
+  "Social networks and messengers_ui": {
+    "buttons": [
+      "Register",
+      "en"
+    ],
+    "notes": [
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select countryMalaysia",
+      "Select country",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)",
+      "Select currencyMYR (Malaysian ringgit)"
+    ]
+  }
+}
