@@ -13,3 +13,7 @@ desktop.ini
 node_modules/
 dist/
 .cache/
+
+# Local scrape / icon-tool scratch (not used by the app)
+mobile/assets/casino/from-live/
+mobile/assets/icons/profile/_tmp/
