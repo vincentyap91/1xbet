@@ -3,13 +3,25 @@
     return String(n).padStart(2, "0");
   }
 
-  function initHeroDots() {
-    const track = document.getElementById("mh-cs-hero-track");
-    const dots = Array.from(document.querySelectorAll(".mh-cs-hero__dot"));
-    if (!track || !dots.length) return;
+  function toast(msg) {
+    const el = document.getElementById("mh-toast");
+    if (!el) return;
+    el.hidden = false;
+    el.textContent = msg;
+    window.clearTimeout(toast._t);
+    toast._t = window.setTimeout(() => {
+      el.hidden = true;
+    }, 1800);
+  }
+
+  function bindCarouselDots(track, dotsRoot) {
+    if (!track || !dotsRoot) return;
+    const dots = Array.from(dotsRoot.querySelectorAll(".mh-cs-hero__dot"));
+    if (!dots.length) return;
 
     const update = () => {
-      const i = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      const slideW = track.querySelector(".mh-cs-hero__slide, .mh-cs-promo-slide")?.clientWidth || track.clientWidth;
+      const i = Math.round(track.scrollLeft / Math.max(slideW, 1));
       dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
     };
 
@@ -17,9 +29,18 @@
     update();
   }
 
+  function initHeroDots() {
+    document.querySelectorAll(".mh-cs-hero").forEach((hero) => {
+      bindCarouselDots(hero.querySelector(".mh-cs-hero__track"), hero.querySelector(".mh-cs-hero__dots"));
+    });
+    document.querySelectorAll(".mh-cs-promo-rail").forEach((rail) => {
+      bindCarouselDots(rail.querySelector(".mh-cs-promo-rail__track"), rail.querySelector(".mh-cs-hero__dots"));
+    });
+  }
+
   function initCountdown() {
-    const root = document.getElementById("mh-cs-timer");
-    if (!root) return;
+    const roots = Array.from(document.querySelectorAll(".mh-cs-timer"));
+    if (!roots.length) return;
     const end = Date.now() + (2 * 24 * 60 * 60 + 14 * 60 * 60 + 36 * 60 + 8) * 1000;
 
     const tick = () => {
@@ -31,14 +52,16 @@
       const m = Math.floor(left / 60000);
       left -= m * 60000;
       const s = Math.floor(left / 1000);
-      const set = (sel, val) => {
-        const el = root.querySelector(sel);
-        if (el) el.textContent = pad(val);
-      };
-      set("[data-cs-d]", d);
-      set("[data-cs-h]", h);
-      set("[data-cs-m]", m);
-      set("[data-cs-s]", s);
+      roots.forEach((root) => {
+        const set = (sel, val) => {
+          const el = root.querySelector(sel);
+          if (el) el.textContent = pad(val);
+        };
+        set("[data-cs-d]", d);
+        set("[data-cs-h]", h);
+        set("[data-cs-m]", m);
+        set("[data-cs-s]", s);
+      });
     };
 
     tick();
@@ -166,11 +189,55 @@
     });
   }
 
+  function initPromoForms() {
+    document.querySelectorAll("#mh-cs-promo-form, [data-cs-promo-form]").forEach((form) => {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const input = form.querySelector("input");
+        const val = (input?.value || "").trim();
+        if (!val) {
+          toast("Enter a promo code");
+          input?.focus();
+          return;
+        }
+        toast("Promo code applied (demo)");
+        if (input) input.value = "";
+      });
+    });
+  }
+
+  function initTournamentFilters() {
+    document.querySelectorAll(".mh-cs-tfilters").forEach((group) => {
+      const panel = group.closest(".mh-cs-pblock, .mh-cs-ppanel") || document;
+      const filters = Array.from(group.querySelectorAll("[data-cs-tfilter]"));
+      const cards = Array.from(panel.querySelectorAll("[data-cs-tstatus]"));
+      if (!filters.length || !cards.length) return;
+
+      const apply = (key) => {
+        filters.forEach((btn) => {
+          const on = btn.getAttribute("data-cs-tfilter") === key;
+          btn.classList.toggle("is-active", on);
+          btn.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        cards.forEach((card) => {
+          const status = card.getAttribute("data-cs-tstatus");
+          card.hidden = key !== "all" && status !== key;
+        });
+      };
+
+      filters.forEach((btn) => {
+        btn.addEventListener("click", () => apply(btn.getAttribute("data-cs-tfilter")));
+      });
+    });
+  }
+
   function init() {
     if (!document.body.classList.contains("mh-page--casino")) return;
     initHeroDots();
     initCountdown();
     initPromoTabs();
+    initPromoForms();
+    initTournamentFilters();
     initSpinReel();
     initProviderSort();
   }

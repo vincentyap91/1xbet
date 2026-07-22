@@ -24,83 +24,450 @@
 
   <div class="mh-cs-subbar">
     <a href="casino.html" class="mh-cs-subbar__back" aria-label="Back">
-      <img src="assets/icons/sp-back.svg" alt="" width="12" height="18" />
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
     </a>
     <h1 class="mh-cs-subbar__title">Promo</h1>
-    <span class="mh-cs-subbar__search" aria-hidden="true"></span>
   </div>
 
   <main class="mh-main">
-    <div class="mh-cs-ptabs" role="tablist" aria-label="Promo sections">
+    <div class="mh-cs-ptabs" role="tablist" aria-label="Promo sections" data-mh-scroll data-mh-drag-scroll>
       <button type="button" class="mh-cs-ptab is-active" role="tab" aria-selected="true" data-cs-ptab="promo">Promo</button>
+      <button type="button" class="mh-cs-ptab mh-cs-ptab--codes" role="tab" aria-selected="false" data-cs-ptab="codes">Promo codes</button>
       <button type="button" class="mh-cs-ptab" role="tab" aria-selected="false" data-cs-ptab="promotions">Promotions</button>
       <button type="button" class="mh-cs-ptab" role="tab" aria-selected="false" data-cs-ptab="tournaments">Tournaments</button>
     </div>
 
-    <div class="mh-cs-ppanel" data-cs-ppanel="promo">
-      <section class="mh-cs-hero" aria-label="Promo carousel">
+    <!-- PROMO overview -->
+    <div class="mh-cs-ppanel mh-cs-ppanel--overview" data-cs-ppanel="promo">
+      <section class="mh-cs-hero mh-cs-hero--promo" aria-label="Promo carousel">
         <div class="mh-cs-hero__track" data-mh-scroll data-mh-drag-scroll id="mh-cs-hero-track">
-          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/promo-2.webp" alt="Big Play Day" width="824" height="408" /></div>
-          <div class="mh-cs-hero__slide"><img src="assets/casino/banners/weekend-booster.png" alt="Weekend Booster" width="824" height="408" /></div>
-          <div class="mh-cs-hero__slide"><img src="assets/casino/banners/hero-vip-cashback.png" alt="VIP Cashback" width="824" height="408" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-born-to-win.webp" alt="Born to Win" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-welcome.webp" alt="Welcome package" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-vip-cashback.webp" alt="VIP Cashback" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-weekend-booster.webp" alt="Weekend Booster" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-deal-of-day.webp" alt="Deal of the Day" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-big-play-day.webp" alt="Big Play Day" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-jackys-bet.webp" alt="Jacky's Bet" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-loyalty.webp" alt="Loyalty Pays Off" width="412" height="204" /></div>
+          <div class="mh-cs-hero__slide"><img src="assets/casino/promo/live/hero-wild-spin.webp" alt="Wild Spin Chase" width="412" height="204" /></div>
         </div>
-        <div class="mh-cs-hero__dots" aria-hidden="true">
+        <div class="mh-cs-hero__dots mh-cs-hero__dots--below" aria-hidden="true">
           <span class="mh-cs-hero__dot is-active"></span>
+          <span class="mh-cs-hero__dot"></span>
+          <span class="mh-cs-hero__dot"></span>
+          <span class="mh-cs-hero__dot"></span>
+          <span class="mh-cs-hero__dot"></span>
+          <span class="mh-cs-hero__dot"></span>
+          <span class="mh-cs-hero__dot"></span>
           <span class="mh-cs-hero__dot"></span>
           <span class="mh-cs-hero__dot"></span>
         </div>
       </section>
-      <aside class="mh-cs-auth-card">
-        <p class="mh-cs-auth-card__title">Log in and take advantage of all the 1xBet bonuses.</p>
+
+      <!-- Guest: login CTA (live casino-promo-auth) -->
+      <aside class="mh-cs-auth-card mh-cs-promo-guest" aria-label="Bonuses require login">
+        <div class="mh-cs-auth-card__top">
+          <img class="mh-cs-auth-card__icon" src="assets/casino/promo/live/gift-icon.webp" alt="" width="51" height="51" />
+          <p class="mh-cs-auth-card__title">Log in and take advantage of all the 1xBet bonuses</p>
+        </div>
         <ul class="mh-cs-auth-card__list">
           <li>Use promo codes</li>
+          <li>Get bonuses for your deposits</li>
+          <li>Open gifts</li>
           <li>Get cashback</li>
-          <li>Join tournaments</li>
         </ul>
         <div class="mh-cs-auth-card__actions">
-          <button type="button" class="btn-login" data-auth-open="login">Log in</button>
-          <button type="button" class="btn-register" data-auth-open="register">Registration</button>
+          <button type="button" class="mh-cs-auth-card__btn mh-cs-auth-card__btn--login" data-auth-open="login">Log in</button>
+          <button type="button" class="mh-cs-auth-card__btn mh-cs-auth-card__btn--reg" data-auth-open="register">Registration</button>
         </div>
       </aside>
+
+      <!-- Logged-in: promo codes + subscribe -->
+      <div class="mh-cs-promo-logged">
+        <section class="mh-cs-pblock" aria-labelledby="mh-cs-codes-title">
+          <h2 class="mh-cs-pblock__title" id="mh-cs-codes-title">Available promo codes</h2>
+          <div class="mh-cs-code-card">
+            <div class="mh-cs-code-card__intro">
+              <span class="mh-cs-code-card__gift" aria-hidden="true">
+                <img src="assets/icons/icon-gift.svg" alt="" width="28" height="28" />
+                <span class="mh-cs-code-card__plus">+</span>
+              </span>
+              <p class="mh-cs-code-card__hint">Enter a promo code for a gift</p>
+            </div>
+            <form class="mh-cs-code-card__form" id="mh-cs-promo-form" action="#" novalidate>
+              <label class="visually-hidden" for="mh-cs-promo-input">Promo code</label>
+              <input type="text" id="mh-cs-promo-input" class="mh-cs-code-card__input" name="promo" placeholder="Enter promo code*" autocomplete="off" />
+              <button type="submit" class="mh-cs-code-card__submit" aria-label="Apply promo code">
+                <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <section class="mh-cs-pblock" aria-label="Subscribe">
+          <article class="mh-cs-subscribe" style="--mh-cs-sub-art: url('assets/casino/promo/live/subscribe-art.jpg')">
+            <div class="mh-cs-subscribe__copy">
+              <h2 class="mh-cs-subscribe__title">Subscribe and get access to</h2>
+              <ul class="mh-cs-subscribe__list">
+                <li>Latest promo codes</li>
+                <li>Promotions and offers</li>
+                <li>Amazing bonuses</li>
+              </ul>
+            </div>
+            <div class="mh-cs-subscribe__social">
+              <a href="#" class="mh-cs-subscribe__btn" aria-label="X" data-mh-toast="X (demo)"><img src="assets/icons/icon-twitter.svg" alt="" width="16" height="16" /></a>
+              <a href="#" class="mh-cs-subscribe__btn" aria-label="Telegram" data-mh-toast="Telegram (demo)"><img src="assets/icons/icon-telegram.svg" alt="" width="16" height="16" /></a>
+              <a href="https://www.instagram.com/1xmalaysia" class="mh-cs-subscribe__btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" /></a>
+              <a href="https://www.facebook.com/1xMalay" class="mh-cs-subscribe__btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" /></a>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <section class="mh-cs-pblock" aria-labelledby="mh-cs-promos-title">
+        <h2 class="mh-cs-pblock__title" id="mh-cs-promos-title">Promotions</h2>
+        <div class="mh-cs-promo-rail" aria-label="Promotions carousel">
+          <div class="mh-cs-promo-rail__track" data-mh-scroll data-mh-drag-scroll>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-welcome.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Welcome package of up to 7700 MYR + 150 FS</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-loyalty.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Loyalty pays off</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-vip-cashback.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Casino VIP Cashback</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-weekend.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Weekend Booster</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-wild-spin.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Wild Spin Hunt</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-big-game.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Big Game</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-born-to-win.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Born to Win</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-2.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Welcome package of up to 7700 MYR + 150 FS</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-3.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Loyalty pays off</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-4.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Casino VIP Cashback</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="mh-cs-hero__dots mh-cs-hero__dots--below" aria-hidden="true">
+            <span class="mh-cs-hero__dot is-active"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="mh-cs-pblock" aria-labelledby="mh-cs-tourney-title">
+        <h2 class="mh-cs-pblock__title" id="mh-cs-tourney-title">Tournaments</h2>
+        <div class="mh-cs-tfilters" role="tablist" aria-label="Tournament status">
+          <button type="button" class="mh-cs-tfilter" role="tab" aria-selected="false" data-cs-tfilter="all">All</button>
+          <button type="button" class="mh-cs-tfilter" role="tab" aria-selected="false" data-cs-tfilter="live">Live</button>
+          <button type="button" class="mh-cs-tfilter is-active" role="tab" aria-selected="true" data-cs-tfilter="finished">Finished</button>
+        </div>
+        <article class="mh-cs-tourney" data-cs-tstatus="finished">
+          <div class="mh-cs-tourney__top">
+            <img class="mh-cs-tourney__art" src="assets/casino/promo/live/tourney-stand.webp" alt="" width="56" height="56" />
+            <div>
+              <span class="mh-cs-tourney__badge mh-cs-tourney__badge--done">Finished</span>
+              <h3 class="mh-cs-tourney__title">Stand for Victory</h3>
+              <p class="mh-cs-tourney__meta">Prize fund: € 250,000</p>
+            </div>
+          </div>
+          <p class="mh-cs-tourney__note">The tournament is over</p>
+          <button type="button" class="mh-cs-tourney__btn" data-mh-toast="More details">More details</button>
+        </article>
+        <article class="mh-cs-tourney" data-cs-tstatus="live" hidden>
+          <div class="mh-cs-tourney__top">
+            <img class="mh-cs-tourney__art" src="assets/casino/promo/live/tourney-summer.webp" alt="" width="56" height="56" />
+            <div>
+              <span class="mh-cs-tourney__badge mh-cs-tourney__badge--live">Live</span>
+              <h3 class="mh-cs-tourney__title">Summer Wins</h3>
+              <p class="mh-cs-tourney__meta">Prize fund: € 40,000</p>
+            </div>
+          </div>
+          <div class="mh-cs-timer" aria-label="Tournament countdown">
+            <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-d>00</span><span class="mh-cs-timer__lab">Days</span></div>
+            <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-h>18</span><span class="mh-cs-timer__lab">Hrs</span></div>
+            <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-m>50</span><span class="mh-cs-timer__lab">Min</span></div>
+            <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-s>12</span><span class="mh-cs-timer__lab">Sec</span></div>
+          </div>
+          <button type="button" class="mh-cs-tourney__btn" data-mh-toast="How to take part">How to take part</button>
+        </article>
+        <article class="mh-cs-tourney" data-cs-tstatus="live" hidden>
+          <div class="mh-cs-tourney__top">
+            <img class="mh-cs-tourney__art" src="assets/casino/promo/live/tourney-hotspin.webp" alt="" width="56" height="56" />
+            <div>
+              <span class="mh-cs-tourney__badge mh-cs-tourney__badge--live">Live</span>
+              <h3 class="mh-cs-tourney__title">Hot Spin Fiesta</h3>
+              <p class="mh-cs-tourney__meta">Prize fund: € 25,000</p>
+            </div>
+          </div>
+          <button type="button" class="mh-cs-tourney__btn" data-mh-toast="How to take part">How to take part</button>
+        </article>
+      </section>
+    </div>
+
+    <div class="mh-cs-ppanel" data-cs-ppanel="codes" hidden>
+      <section class="mh-cs-pblock" aria-labelledby="mh-cs-codes-title-2">
+        <h2 class="mh-cs-pblock__title" id="mh-cs-codes-title-2">Available promo codes</h2>
+        <div class="mh-cs-code-card">
+          <div class="mh-cs-code-card__intro">
+            <span class="mh-cs-code-card__gift" aria-hidden="true">
+              <img src="assets/icons/icon-gift.svg" alt="" width="28" height="28" />
+              <span class="mh-cs-code-card__plus">+</span>
+            </span>
+            <p class="mh-cs-code-card__hint">Enter a promo code for a gift</p>
+          </div>
+          <form class="mh-cs-code-card__form" data-cs-promo-form action="#" novalidate>
+            <label class="visually-hidden" for="mh-cs-promo-input-2">Promo code</label>
+            <input type="text" id="mh-cs-promo-input-2" class="mh-cs-code-card__input" name="promo" placeholder="Enter promo code*" autocomplete="off" />
+            <button type="submit" class="mh-cs-code-card__submit" aria-label="Apply promo code">
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
+        </div>
+      </section>
+      <section class="mh-cs-pblock">
+        <article class="mh-cs-subscribe" style="--mh-cs-sub-art: url('assets/casino/promo/live/subscribe-art.jpg')">
+          <div class="mh-cs-subscribe__copy">
+            <h2 class="mh-cs-subscribe__title">Subscribe and get access to</h2>
+            <ul class="mh-cs-subscribe__list">
+              <li>Latest promo codes</li>
+              <li>Promotions and offers</li>
+              <li>Amazing bonuses</li>
+            </ul>
+          </div>
+          <div class="mh-cs-subscribe__social">
+            <a href="#" class="mh-cs-subscribe__btn" aria-label="X" data-mh-toast="X (demo)"><img src="assets/icons/icon-twitter.svg" alt="" width="16" height="16" /></a>
+            <a href="#" class="mh-cs-subscribe__btn" aria-label="Telegram" data-mh-toast="Telegram (demo)"><img src="assets/icons/icon-telegram.svg" alt="" width="16" height="16" /></a>
+            <a href="https://www.instagram.com/1xmalaysia" class="mh-cs-subscribe__btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" /></a>
+            <a href="https://www.facebook.com/1xMalay" class="mh-cs-subscribe__btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" /></a>
+          </div>
+        </article>
+      </section>
     </div>
 
     <div class="mh-cs-ppanel" data-cs-ppanel="promotions" hidden>
-      <div class="mh-cs-promo-banners">
-        <a href="#"><img src="assets/casino/banners/keep-playing.png" alt="Keep playing, get rewards" loading="lazy" /></a>
-        <a href="#"><img src="assets/casino/banners/welcome-package.png" alt="Welcome package" loading="lazy" /></a>
-        <a href="#"><img src="assets/casino/banners/cash-kickoff.png" alt="Cash kickoff" loading="lazy" /></a>
-      </div>
+      <section class="mh-cs-pblock" aria-labelledby="mh-cs-promos-title-2">
+        <h2 class="mh-cs-pblock__title" id="mh-cs-promos-title-2">Promotions</h2>
+        <div class="mh-cs-promo-rail" aria-label="Promotions carousel">
+          <div class="mh-cs-promo-rail__track" data-mh-scroll data-mh-drag-scroll>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-welcome.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Welcome package of up to 7700 MYR + 150 FS</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-loyalty.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Loyalty pays off</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-vip-cashback.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Casino VIP Cashback</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-weekend.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Weekend Booster</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-wild-spin.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Wild Spin Hunt</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-big-game.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Big Game</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/live/promo-born-to-win.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Born to Win</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-2.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Welcome package of up to 7700 MYR + 150 FS</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-3.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Loyalty pays off</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+            <article class="mh-cs-promo-slide">
+              <div class="mh-cs-promo-slide__media">
+                <img src="assets/casino/promo/promo-4.webp" alt="" width="945" height="370" loading="lazy" />
+                <div class="mh-cs-promo-slide__body">
+                  <p class="mh-cs-promo-slide__title">Casino VIP Cashback</p>
+                  <a href="esports-cashback-boom.html" class="mh-cs-promo-slide__cta">Find out more</a>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="mh-cs-hero__dots mh-cs-hero__dots--below" aria-hidden="true">
+            <span class="mh-cs-hero__dot is-active"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+            <span class="mh-cs-hero__dot"></span>
+          </div>
+        </div>
+      </section>
     </div>
 
     <div class="mh-cs-ppanel" data-cs-ppanel="tournaments" hidden>
-      <article class="mh-cs-tourney">
-        <div class="mh-cs-tourney__top">
-          <img class="mh-cs-tourney__art" src="assets/casino/promo/promo-3.webp" alt="" width="56" height="56" />
-          <div>
-            <span class="mh-cs-tourney__badge mh-cs-tourney__badge--done">Finished</span>
-            <h2 class="mh-cs-tourney__title">Stand for Victory</h2>
-            <p class="mh-cs-tourney__meta">Prize fund: € 250,000</p>
+      <section class="mh-cs-pblock" aria-labelledby="mh-cs-tourney-title-2">
+        <h2 class="mh-cs-pblock__title" id="mh-cs-tourney-title-2">Tournaments</h2>
+        <div class="mh-cs-tfilters" role="tablist" aria-label="Tournament status">
+          <button type="button" class="mh-cs-tfilter" role="tab" aria-selected="false" data-cs-tfilter="all">All</button>
+          <button type="button" class="mh-cs-tfilter" role="tab" aria-selected="false" data-cs-tfilter="live">Live</button>
+          <button type="button" class="mh-cs-tfilter is-active" role="tab" aria-selected="true" data-cs-tfilter="finished">Finished</button>
+        </div>
+        <article class="mh-cs-tourney" data-cs-tstatus="finished">
+          <div class="mh-cs-tourney__top">
+            <img class="mh-cs-tourney__art" src="assets/casino/promo/live/tourney-stand.webp" alt="" width="56" height="56" />
+            <div>
+              <span class="mh-cs-tourney__badge mh-cs-tourney__badge--done">Finished</span>
+              <h3 class="mh-cs-tourney__title">Stand for Victory</h3>
+              <p class="mh-cs-tourney__meta">Prize fund: € 250,000</p>
+            </div>
           </div>
-        </div>
-        <button type="button" class="mh-cs-tourney__btn" data-mh-toast="More details">More details</button>
-      </article>
-      <article class="mh-cs-tourney">
-        <div class="mh-cs-tourney__top">
-          <img class="mh-cs-tourney__art" src="assets/casino/promo/promo-4.webp" alt="" width="56" height="56" />
-          <div>
-            <span class="mh-cs-tourney__badge mh-cs-tourney__badge--live">Live</span>
-            <h2 class="mh-cs-tourney__title">Crash Royale Weekly</h2>
-            <p class="mh-cs-tourney__meta">Prize fund: € 10,000</p>
+          <p class="mh-cs-tourney__note">The tournament is over</p>
+          <button type="button" class="mh-cs-tourney__btn" data-mh-toast="More details">More details</button>
+        </article>
+        <article class="mh-cs-tourney" data-cs-tstatus="live" hidden>
+          <div class="mh-cs-tourney__top">
+            <img class="mh-cs-tourney__art" src="assets/casino/promo/live/tourney-summer.webp" alt="" width="56" height="56" />
+            <div>
+              <span class="mh-cs-tourney__badge mh-cs-tourney__badge--live">Live</span>
+              <h3 class="mh-cs-tourney__title">Summer Wins</h3>
+              <p class="mh-cs-tourney__meta">Prize fund: € 40,000</p>
+            </div>
           </div>
-        </div>
-        <div class="mh-cs-timer" id="mh-cs-timer" aria-label="Tournament countdown">
-          <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-d>02</span><span class="mh-cs-timer__lab">Days</span></div>
-          <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-h>14</span><span class="mh-cs-timer__lab">Hrs</span></div>
-          <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-m>36</span><span class="mh-cs-timer__lab">Min</span></div>
-          <div class="mh-cs-timer__cell"><span class="mh-cs-timer__val" data-cs-s>08</span><span class="mh-cs-timer__lab">Sec</span></div>
-        </div>
-        <button type="button" class="mh-cs-tourney__btn" data-mh-toast="How to take part">How to take part</button>
-      </article>
+          <button type="button" class="mh-cs-tourney__btn" data-mh-toast="How to take part">How to take part</button>
+        </article>
+      </section>
     </div>
 
     <footer class="mh-footer">
@@ -116,21 +483,10 @@
             </div>
           </div>
         </section>
-        <section class="mh-footer__slider" aria-label="Esports partners">
-          <h2 class="mh-footer__slider-title">Esports partners</h2>
-          <div class="mh-footer__slider-box">
-            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
-              <a href="../partnership.html" class="mh-footer__partner-tile" title="PGL"><img src="assets/logos/partner-pgl.webp" alt="PGL" width="55" height="55" loading="lazy" /></a>
-              <a href="../partnership.html" class="mh-footer__partner-tile" title="MIBR"><img src="assets/logos/partner-mibr.webp" alt="MIBR" width="55" height="55" loading="lazy" /></a>
-              <a href="../partnership.html" class="mh-footer__partner-tile" title="Tundra"><img src="assets/logos/partner-tundra.webp" alt="Tundra" width="55" height="55" loading="lazy" /></a>
-              <a href="../partnership.html" class="mh-footer__partner-tile" title="Aurora"><img src="assets/logos/partner-aurora.webp" alt="Aurora" width="55" height="55" loading="lazy" /></a>
-            </div>
-          </div>
-        </section>
         <a href="#" class="mh-footer__app-banner">
           <div class="mh-footer__app-phone" aria-hidden="true">
-            <span class="mh-footer__app-store mh-footer__app-store--apple" title="iOS"></span>
-            <span class="mh-footer__app-store mh-footer__app-store--android" title="Android"></span>
+            <span class="mh-footer__app-store mh-footer__app-store--apple"></span>
+            <span class="mh-footer__app-store mh-footer__app-store--android"></span>
           </div>
           <div class="mh-footer__app-copy">
             <img src="assets/logos/logo-1xbet-footer.svg" alt="1xBet" width="101" height="22" />
@@ -143,16 +499,13 @@
           <a href="https://www.instagram.com/1xmalaysia" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" /></a>
           <a href="https://www.facebook.com/1xMalay" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" /></a>
         </div>
-        <a href="../live-chat.html" class="mh-footer__support">
+        <a href="live-chat.html" class="mh-footer__support">
           <img src="assets/icons/icon-support.svg" alt="" width="42" height="42" class="mh-footer__support-icon" />
-          <span class="mh-footer__support-copy">
-            <strong>Customer Support</strong>
-            <span>Ask any questions</span>
-          </span>
+          <span class="mh-footer__support-copy"><strong>Customer Support</strong><span>Ask any questions</span></span>
         </a>
         <div class="mh-footer__legal-block">
           <p class="mh-footer__legal">Copyright © 2026 «1xBet».</p>
-          <p class="mh-footer__cookie">1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="../terms.html">Find out more</a></p>
+          <p class="mh-footer__cookie">1xBet uses cookies to ensure the best user experience. <a href="../terms.html">Find out more</a></p>
         </div>
         <a href="../casino.html" class="mh-footer__full">Go to the full version of the website</a>
         <div class="mh-footer__meta">
@@ -167,31 +520,22 @@
     </footer>
   </main>
 
-  
-
-
   <nav class="mh-cs-tabbar" aria-label="Casino primary">
     <a href="casino-categories.html" class="mh-cs-tab">
-      <img src="assets/icons/cs-categories.svg" alt="" width="22" height="22" />
-      <span>Categories</span>
+      <img src="assets/icons/cs-categories.svg" alt="" width="22" height="22" /><span>Categories</span>
     </a>
     <a href="casino-providers.html" class="mh-cs-tab">
-      <img src="assets/icons/cs-providers.svg" alt="" width="22" height="22" />
-      <span>Providers</span>
+      <img src="assets/icons/cs-providers.svg" alt="" width="22" height="22" /><span>Providers</span>
     </a>
     <a href="my-casino.html" class="mh-cs-tab mh-cs-tab--mycasino">
-      <span class="mh-cs-tab__bubble" aria-hidden="true">
-        <img src="assets/icons/cs-mycasino.svg" alt="" width="18" height="18" />
-      </span>
+      <span class="mh-cs-tab__bubble" aria-hidden="true"><img src="assets/icons/cs-mycasino.svg" alt="" width="18" height="18" /></span>
       <span>My Casino</span>
     </a>
     <a href="casino-promo.html" class="mh-cs-tab is-active" aria-current="page">
-      <img src="assets/icons/cs-promo.svg" alt="" width="22" height="22" />
-      <span>Promo</span>
+      <img src="assets/icons/cs-promo.svg" alt="" width="22" height="22" /><span>Promo</span>
     </a>
     <button type="button" class="mh-cs-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
-      <img src="assets/icons/cs-menu.svg" alt="" width="22" height="22" />
-      <span>Menu</span>
+      <img src="assets/icons/cs-menu.svg" alt="" width="22" height="22" /><span>Menu</span>
     </button>
   </nav>
 
@@ -199,9 +543,8 @@
     <div class="mh-sheet__backdrop" data-mh-close-menu></div>
     <div class="mh-sheet__panel mh-cs-menu" role="dialog" aria-modal="true" aria-label="Menu">
       <div class="mh-cs-menu__top">
-        <button type="button" class="mh-cs-menu__clock" data-mh-toast="Timezone">
-          <img src="assets/icons/icon-clock.svg" alt="" width="14" height="14" />
-          <span>11:08</span>
+        <button type="button" class="mh-cs-menu__clock" data-mh-toast="Timezone" aria-label="Time">
+          <span data-mh-menu-clock>14:51</span>
           <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
         </button>
         <button type="button" class="mh-cs-menu__lang" data-mh-toast="Language">
@@ -213,42 +556,278 @@
         <button type="button" class="mh-cs-menu__settings" data-mh-toast="Settings" aria-label="Settings">
           <img src="assets/icons/icon-settings.svg" alt="" width="18" height="18" />
         </button>
-        <button type="button" class="mh-cs-menu__close" data-mh-close-menu aria-label="Close">×</button>
+        <button type="button" class="mh-cs-menu__close" data-mh-close-menu aria-label="Close">
+          <img src="assets/icons/icon-close.svg" alt="" width="14" height="14" />
+        </button>
       </div>
+
+      <div class="mh-cs-menu__wallet" data-mh-menu-wallet>
+        <button type="button" class="mh-cs-menu__balance" data-mh-toast="Accounts" aria-label="Balance">
+          <img src="assets/icons/menu/wallet.svg" alt="" width="16" height="16" />
+          <span>0 MYR</span>
+          <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+        </button>
+        <button type="button" class="mh-cs-menu__deposit" data-mh-deposit>Deposit</button>
+      </div>
+
       <label class="mh-cs-menu__search">
         <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
         <input type="search" placeholder="Search menu" autocomplete="off" />
       </label>
+
       <ul class="mh-cs-menu__list">
-        <li><a href="index.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span><span class="mh-cs-menu__label">Main page</span></a></li>
-        <li><a href="sports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/tab-menu.svg" alt="" /></span><span class="mh-cs-menu__label">Sports</span></a></li>
-        <li><a href="national-team-live.html"><span class="mh-cs-menu__ico"><img src="assets/icons/tab-live.svg" alt="" /></span><span class="mh-cs-menu__label">Live</span></a></li>
-        <li><a href="sports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">T20 Blast</span><span class="mh-cs-menu__badge">TOP</span></a></li>
-        <li><a href="../esports.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span><span class="mh-cs-menu__label">Esports</span></a></li>
-        <li><a href="favourites.html"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-mycasino.svg" alt="" /></span><span class="mh-cs-menu__label">Favorites</span></a></li>
-        <li><a href="../results.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span><span class="mh-cs-menu__label">Results</span></a></li>
-        <li><a href="../big-tournaments.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">Bet on Big Tournaments</span></a></li>
+        <li>
+          <a href="index.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Main page</span>
+          </a>
+        </li>
+        <li>
+          <a href="sports.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/tab-menu.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Sports</span>
+          </a>
+        </li>
+        <li>
+          <a href="national-team-live.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/tab-live.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Live</span>
+          </a>
+        </li>
+        <li>
+          <a href="sports.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">T20 Blast</span>
+            <span class="mh-cs-menu__badge">TOP</span>
+          </a>
+        </li>
+        <li>
+          <a href="../esports.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/gamepad.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Esports</span>
+          </a>
+        </li>
+        <li>
+          <a href="favourites.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/star.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Favorites</span>
+          </a>
+        </li>
+        <li>
+          <a href="../results.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-clock.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Results</span>
+          </a>
+        </li>
+        <li>
+          <a href="../big-tournaments.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/ei-stats.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Statistics</span>
+          </a>
+        </li>
+        <li>
+          <a href="../big-tournaments.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Bet on Big Tournaments</span>
+          </a>
+        </li>
       </ul>
+
       <h2 class="mh-cs-menu__section-title">Casino</h2>
       <ul class="mh-cs-menu__list">
-        <li><a href="casino-promo.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span><span class="mh-cs-menu__label">Stand for Victory</span></a></li>
-        <li><a href="casino.html"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-categories.svg" alt="" /></span><span class="mh-cs-menu__label">Casino</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+        <li>
+          <a href="casino-promo.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Stand for Victory</span>
+          </a>
+        </li>
+        <li>
+          <a href="casino.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/cs-casino.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Casino</span>
+            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+          </a>
+        </li>
       </ul>
+
       <h2 class="mh-cs-menu__section-title">Games</h2>
       <ul class="mh-cs-menu__list">
-        <li><a href="../world-flight-26.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span><span class="mh-cs-menu__label">1xGames</span></a></li>
+        <li>
+          <a href="../world-flight-26.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">1xGames</span>
+          </a>
+        </li>
       </ul>
+
       <h2 class="mh-cs-menu__section-title">Promo</h2>
       <ul class="mh-cs-menu__list">
-        <li><a href="casino-promo.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-gift.svg" alt="" /></span><span class="mh-cs-menu__label">Promotions and offers</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
+        <li>
+          <a href="casino-promo.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-gift.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Promotions and offers</span>
+            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+          </a>
+        </li>
       </ul>
+
+      <!-- My Account — same destinations/hooks/icons as mobile/profile.html -->
+      <div class="mh-cs-menu__account" data-mh-menu-account>
+        <h2 class="mh-cs-menu__section-title">My Account</h2>
+        <ul class="mh-cs-menu__list">
+          <li>
+            <button type="button" data-mh-bets>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-bet-history.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Bet history</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-toast="Messages (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-mail.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Messages</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-deposit>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-deposit.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Make a deposit</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-withdraw>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-withdraw.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Withdraw funds</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-tx-history>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-transfer.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Transaction history</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-toast="Payment queries (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-payment.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Payment queries</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-personal-profile>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-user.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Personal profile</span>
+              <span class="mh-cs-menu__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="14" height="14" /></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-security>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-lock.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Security</span>
+              <span class="mh-cs-menu__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="14" height="14" /></span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-toast="Your accounts (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/menu/wallet.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Your accounts</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-mh-toast="Other (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Other</span>
+              <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Extra — profile Extra links + site Extra + logout -->
       <h2 class="mh-cs-menu__section-title">Extra</h2>
       <ul class="mh-cs-menu__list">
-        <li><a href="../terms.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span><span class="mh-cs-menu__label">Other</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
-        <li><a href="../terms.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-person.svg" alt="" /></span><span class="mh-cs-menu__label">Information</span><img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" /></a></li>
-        <li><a href="../live-chat.html"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-support.svg" alt="" /></span><span class="mh-cs-menu__label">Customer Support</span></a></li>
-        <li><a href="#"><span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span><span class="mh-cs-menu__label">Mobile application</span></a></li>
-        <li><a href="#"><span class="mh-cs-menu__ico"><img src="assets/icons/cs-categories.svg" alt="" /></span><span class="mh-cs-menu__label">Other apps</span></a></li>
+        <li>
+          <a href="referral.html" data-mh-referral>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-referral.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Referral</span>
+          </a>
+        </li>
+        <li>
+          <a href="membership.html" data-mh-membership>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-membership.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Membership</span>
+          </a>
+        </li>
+        <li>
+          <a href="rebate.html" data-mh-rebate>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-rebate.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Rebate</span>
+          </a>
+        </li>
+        <li>
+          <a href="daily-checkin.html" data-mh-checkin>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-checkin.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Daily check in</span>
+          </a>
+        </li>
+        <li>
+          <a href="casino-promo.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-promotions.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Promotions</span>
+          </a>
+        </li>
+        <li>
+          <a href="live-chat.html" data-mh-live-chat>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-chat.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Live chat</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" data-mh-toast="Other (demo)">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/other.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Other</span>
+            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+          </a>
+        </li>
+        <li class="mh-cs-menu__acc-item" data-mh-menu-acc-item>
+          <button type="button" class="mh-cs-menu__acc-btn" data-mh-menu-acc aria-expanded="false">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/info.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Information</span>
+            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+          </button>
+          <ul class="mh-cs-menu__sub" hidden>
+            <li><a href="#" data-mh-toast="About us (demo)">About us</a></li>
+            <li><a href="terms.html">Terms and Conditions</a></li>
+            <li><a href="#" data-mh-toast="Affiliate Program (demo)">Affiliate Program</a></li>
+            <li><a href="#" data-mh-toast="Become an agent (demo)">Become an agent</a></li>
+            <li><a href="#" data-mh-toast="Privacy Policy (demo)">Privacy Policy</a></li>
+            <li><a href="#" data-mh-toast="Cookie Policy (demo)">Cookie Policy</a></li>
+            <li><a href="#" data-mh-toast="Contacts (demo)">Contacts</a></li>
+            <li><a href="payment-methods.html">Payment methods</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="live-chat.html">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/support.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Customer Support</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" data-mh-toast="Mobile application (demo)">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/phone.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Mobile application</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" data-mh-toast="Other apps (demo)">
+            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/other-apps.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Other apps</span>
+          </a>
+        </li>
+        <li class="mh-cs-menu__logout-row" data-mh-menu-logout>
+          <button type="button" data-mh-logout>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-logout.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Log out</span>
+          </button>
+        </li>
       </ul>
     </div>
   </div>

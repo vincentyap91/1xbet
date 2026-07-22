@@ -12,42 +12,7 @@ body.mh-page--auth .mh-auth-main {
   background: var(--surface-secondary);
 }
 
-.mh-auth-subbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 6px 10px;
-  background: var(--header-nav-bg);
-}
-
-.mh-auth-subbar__back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  text-decoration: none;
-}
-
-.mh-auth-subbar__back img {
-  width: 14px;
-  height: 14px;
-  filter: brightness(0) invert(1);
-}
-
-.mh-auth-subbar__title {
-  margin: 0;
-  flex: 1;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #fff;
-}
+/* Subbar: shared canonical styles in mobile-home.css (referral) */
 
 .mh-auth-panel {
   padding: 12px 10px 20px;

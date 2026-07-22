@@ -18,45 +18,7 @@ body.mh-page.mh-page--favourites .mh-main {
   box-sizing: border-box;
 }
 
-.mh-fv-subbar {
-  position: sticky;
-  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: var(--mh-subbar-h);
-  padding: 6px 8px;
-  background: var(--header-nav-bg);
-  color: var(--text-inverse);
-}
-
-.mh-fv-subbar__back {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  text-decoration: none;
-}
-
-.mh-fv-subbar__back img {
-  width: 10px;
-  height: 16px;
-  display: block;
-  filter: brightness(0) invert(1);
-}
-
-.mh-fv-subbar__title {
-  margin: 0;
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-inverse);
-}
+/* Subbar: shared canonical styles in mobile-home.css (referral) */
 
 .mh-fv-panel {
   border-radius: 8px;

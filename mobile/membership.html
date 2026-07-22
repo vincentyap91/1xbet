@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Membership - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-extra.css" />
+</head>
+<body class="mh-page mh-page--extra mh-page--membership is-logged-in" data-page="membership">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-ex-subbar">
+    <a href="profile.html" class="mh-ex-subbar__back" aria-label="Back to profile">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-ex-subbar__title">Membership</h1>
+  </div>
+
+  <main class="mh-main">
+    <div class="mem-body">
+      <section class="mh-ex-card">
+        <span class="mh-ex-badge">VIP Club</span>
+        <h2 class="mh-ex-intro__title">Premium rewards for our most active members</h2>
+        <p class="mh-ex-hero-text">Join the VIP programme to unlock monthly reload rewards, exclusive promotions, higher service priority, and a tailored premium experience across the platform.</p>
+        <div class="mh-ex-mem-stats" role="list">
+          <div class="mh-ex-card" role="listitem">
+            <div>
+              <span class="mh-ex-mem-stats__label">Starting Tier</span>
+              <strong class="mh-ex-mem-stats__value">Normal</strong>
+            </div>
+            <img src="../assets/images/membership/tier-normal.webp" alt="" width="40" height="40" />
+          </div>
+          <div class="mh-ex-card" role="listitem">
+            <div>
+              <span class="mh-ex-mem-stats__label">Top Reward Tier</span>
+              <strong class="mh-ex-mem-stats__value">Diamond</strong>
+            </div>
+            <img src="../assets/images/membership/tier-diamond.webp" alt="" width="40" height="40" />
+          </div>
+          <div class="mh-ex-card" role="listitem">
+            <div>
+              <span class="mh-ex-mem-stats__label">Member Support</span>
+              <strong class="mh-ex-mem-stats__value">24 / 7</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mh-ex-card">
+        <h2 class="mh-ex-section-title">VIP Privileges</h2>
+        <div class="mh-ex-tiers mem-tier-row" role="tablist" aria-label="VIP tiers" data-mh-scroll data-mh-drag-scroll>
+          <button type="button" class="mh-ex-tier mem-tier is-active" role="tab" aria-selected="true" data-mem-tier="normal">
+            <img src="../assets/images/membership/tier-normal.webp" alt="" width="36" height="36" />
+            <span>Normal</span>
+          </button>
+          <button type="button" class="mh-ex-tier mem-tier" role="tab" aria-selected="false" data-mem-tier="bronze">
+            <img src="../assets/images/membership/tier-bronze.webp" alt="" width="36" height="36" />
+            <span>Bronze</span>
+          </button>
+          <button type="button" class="mh-ex-tier mem-tier" role="tab" aria-selected="false" data-mem-tier="silver">
+            <img src="../assets/images/membership/tier-silver.webp" alt="" width="36" height="36" />
+            <span>Silver</span>
+          </button>
+          <button type="button" class="mh-ex-tier mem-tier" role="tab" aria-selected="false" data-mem-tier="gold">
+            <img src="../assets/images/membership/tier-gold.webp" alt="" width="36" height="36" />
+            <span>Gold</span>
+          </button>
+          <button type="button" class="mh-ex-tier mem-tier" role="tab" aria-selected="false" data-mem-tier="platinum">
+            <img src="../assets/images/membership/tier-platinum.webp" alt="" width="36" height="36" />
+            <span>Platinum</span>
+          </button>
+          <button type="button" class="mh-ex-tier mem-tier" role="tab" aria-selected="false" data-mem-tier="diamond">
+            <img src="../assets/images/membership/tier-diamond.webp" alt="" width="36" height="36" />
+            <span>Diamond</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="mh-ex-card">
+        <div class="mh-ex-tabs mh-ex-tabs--inset mem-subtabs" role="tablist" aria-label="Membership details">
+          <button type="button" class="mh-ex-tab mem-subtab is-active" role="tab" aria-selected="true" data-mem-view="benefits" id="mem-tab-benefits" aria-controls="mem-panel-benefits">Benefits</button>
+          <button type="button" class="mh-ex-tab mem-subtab" role="tab" aria-selected="false" data-mem-view="requirements" id="mem-tab-requirements" aria-controls="mem-panel-requirements">Requirements</button>
+        </div>
+
+        <div class="mem-view" id="mem-panel-benefits" role="tabpanel" aria-labelledby="mem-tab-benefits" data-mem-panel="benefits">
+          <div class="mh-ex-card mh-ex-card--nested">
+            <div class="mh-ex-mem-table-head">Membership Benefits</div>
+            <div class="mh-ex-table-wrap">
+              <table class="mh-ex-table mem-table">
+                <tbody id="mem-benefits-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="mh-ex-card mh-ex-card--nested mh-ex-card--last">
+            <div class="mh-ex-mem-table-head">Member Rebates</div>
+            <div class="mh-ex-table-wrap">
+              <table class="mh-ex-table mem-table">
+                <tbody id="mem-rebates-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="mem-view" id="mem-panel-requirements" role="tabpanel" aria-labelledby="mem-tab-requirements" data-mem-panel="requirements" hidden>
+          <div class="mem-req-grid mh-ex-req-grid" id="mem-req-grid"></div>
+        </div>
+      </section>
+
+      <section class="mh-ex-card">
+        <h2 class="mh-ex-section-title">VIP Highlights</h2>
+        <p class="mh-ex-hero-text mh-ex-hero-text--flush">Monthly reloads, special campaigns, birthday treats, and tailored support designed for loyal members.</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="../js/membership.js"></script>
+  <script src="js/mobile-extra.js"></script>
+</body>
+</html>

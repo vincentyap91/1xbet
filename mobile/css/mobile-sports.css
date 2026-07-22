@@ -18,77 +18,7 @@ body.mh-page.mh-page--sports .mh-main {
 }
 
 /* ---------- Sub-bar (back · Sports · actions) ---------- */
-.mh-sp-subbar {
-  position: sticky;
-  top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
-  z-index: 90;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: var(--mh-subbar-h);
-  padding: 6px 8px;
-  background: var(--header-nav-bg);
-  color: var(--text-inverse);
-}
-
-.mh-sp-subbar__back {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  text-decoration: none;
-  color: var(--text-inverse);
-}
-
-.mh-sp-subbar__back img {
-  width: 10px;
-  height: 16px;
-  display: block;
-  filter: brightness(0) invert(1);
-}
-
-.mh-sp-subbar__title {
-  flex: 1 1 auto;
-  margin: 0;
-  min-width: 0;
-  font-family: var(--font);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-inverse);
-}
-
-.mh-sp-subbar__actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.mh-sp-subbar__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-inverse);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.mh-sp-subbar__btn img {
-  width: 16px;
-  height: 16px;
-  display: block;
-  filter: brightness(0) invert(1);
-  opacity: 1;
-}
+/* Shell / back / title / actions: shared in mobile-home.css (canonical) */
 
 /* ---------- Sport category pills ---------- */
 .mh-sp-chips {

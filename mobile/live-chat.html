@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Live Chat - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-extra.css" />
+</head>
+<body class="mh-page mh-page--extra mh-page--live-chat is-logged-in" data-page="live-chat">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions" data-mh-auth-ready="1">
+      <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
+      <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
+        <img src="assets/icons/mh-account.svg" alt="" width="14" height="14" />
+        <span class="mh-header__account-badge" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mh-ex-subbar">
+    <a href="profile.html" class="mh-ex-subbar__back" aria-label="Back to profile">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-ex-subbar__title">Live chat</h1>
+  </div>
+
+  <main class="mh-main">
+    <div class="mh-ex-chat">
+      <div class="mh-ex-chat__messages" id="lc-messages" role="log" aria-live="polite" aria-relevant="additions">
+        <div class="mh-ex-date-pill">29/05/2026</div>
+
+        <article class="mh-ex-msg">
+          <img class="mh-ex-msg__avatar" src="../assets/images/account/chat-default-avatar.jpg" alt="" width="36" height="36" />
+          <div class="mh-ex-bubble">
+            <div class="mh-ex-bubble__head">
+              <span class="mh-ex-sender">System</span>
+              <time class="mh-ex-time" datetime="2026-05-29T09:15">29 May, 09:15</time>
+            </div>
+            <p class="mh-ex-bubble__text">Welcome to 1xBet, test123! We are here to help with sports, casino, live betting and account questions.</p>
+          </div>
+        </article>
+
+        <div class="mh-ex-date-pill">12/06/2026</div>
+
+        <article class="mh-ex-msg">
+          <img class="mh-ex-msg__avatar" src="../assets/images/account/chat-default-avatar.jpg" alt="" width="36" height="36" />
+          <div class="mh-ex-bubble">
+            <div class="mh-ex-bubble__head">
+              <span class="mh-ex-sender">System</span>
+              <time class="mh-ex-time" datetime="2026-06-12T14:22">12 Jun, 14:22</time>
+            </div>
+            <p class="mh-ex-bubble__text">Your deposit request could not be completed. Please check your payment details or contact support if the issue persists.</p>
+          </div>
+        </article>
+      </div>
+
+      <form class="mh-ex-composer" id="lc-form" action="#" novalidate>
+        <button type="button" class="mh-ex-composer__icon" aria-label="Attach file">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><path d="M8.5 12.5l6.2-6.2a3.5 3.5 0 014.9 4.9l-7.4 7.4a5 5 0 01-7.1-7.1l8.2-8.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+        <label class="mh-ex-composer__field">
+          <span class="visually-hidden">Type a message</span>
+          <input type="text" id="lc-input" name="message" placeholder="Type a message" autocomplete="off" />
+        </label>
+        <button type="submit" class="mh-ex-composer__send">Send</button>
+      </form>
+    </div>
+  </main>
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-extra.js"></script>
+</body>
+</html>

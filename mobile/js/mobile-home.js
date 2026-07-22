@@ -457,6 +457,11 @@
     if (open) {
       closeTabFlyout();
       setQbsOpen(false);
+      const clock = menuSheet.querySelector("[data-mh-menu-clock]");
+      if (clock) {
+        const now = new Date();
+        clock.textContent = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      }
     }
   }
 
@@ -471,6 +476,27 @@
         closeTabFlyout();
         setQbsOpen(false);
       }
+    });
+
+    /* Extra > Information (and other) accordion rows */
+    $$("[data-mh-menu-acc]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest("[data-mh-menu-acc-item]");
+        if (!item) return;
+        const panel = item.querySelector(".mh-cs-menu__sub");
+        const open = !item.classList.contains("is-open");
+        $$("[data-mh-menu-acc-item].is-open").forEach((other) => {
+          if (other === item) return;
+          other.classList.remove("is-open");
+          const ob = other.querySelector("[data-mh-menu-acc]");
+          const op = other.querySelector(".mh-cs-menu__sub");
+          if (ob) ob.setAttribute("aria-expanded", "false");
+          if (op) op.hidden = true;
+        });
+        item.classList.toggle("is-open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        if (panel) panel.hidden = !open;
+      });
     });
   }
 
@@ -787,6 +813,61 @@
           return;
         }
         window.location.href = "security.html";
+        return;
+      }
+      const referral = e.target.closest("[data-mh-referral]");
+      if (referral) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--referral")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "referral.html";
+        return;
+      }
+      const membership = e.target.closest("[data-mh-membership]");
+      if (membership) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--membership")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "membership.html";
+        return;
+      }
+      const rebate = e.target.closest("[data-mh-rebate]");
+      if (rebate) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--rebate")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "rebate.html";
+        return;
+      }
+      const checkin = e.target.closest("[data-mh-checkin]");
+      if (checkin) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--daily-checkin")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "daily-checkin.html";
+        return;
+      }
+      const liveChat = e.target.closest("[data-mh-live-chat]");
+      if (liveChat) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--live-chat")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "live-chat.html";
         return;
       }
       const account = e.target.closest("[data-mh-account]");

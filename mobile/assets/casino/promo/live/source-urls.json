@@ -1,0 +1,37 @@
+﻿{
+  "source": "https://1xlite-46272.pro/en/bonus/casino?platform_type=mobile",
+  "cdn": "https://v3.traincdn.com",
+  "hero_412x204": {
+    "born-to-win": "banners-admin-api/all/cd2cd5832adcb8efbd3530332c81b036412x204dnr.webp",
+    "wild-spin": "banners-admin-api/all/6ee91380d057c018ed906be60e9cc38e412x204dnr.webp",
+    "welcome": "banners-admin-api/all/77dedca5304695b38db395d482d857ed412x204dnr.webp",
+    "deal-of-day": "banners-admin-api/all/dff366eaa1d555225062e5a758c272db412x204dnr.webp",
+    "weekend-booster": "banners-admin-api/all/ec0fa91a9383572c3dbd5770ed0a29a9412x204dnr.webp",
+    "vip-cashback": "banners-admin-api/all/53dabeb17820bdf500b610c905d69111412x204dnr.webp",
+    "big-play-day": "banners-admin-api/all/634bfae50a77b824661e17bf6ba082ac412x204dnr.webp",
+    "jackys-bet": "banners-admin-api/all/f2e6ef5e582613d59230d62e4e539d97412x204dnr.webp",
+    "subscribe-fs": "banners-admin-api/all/07c03b5987739cb3bb096fdc9ebb4af4412x204dnr.webp",
+    "loyalty": "banners-admin-api/all/6db4135414a987dc9739880af3632072412x204dnr.webp"
+  },
+  "promotions_945x370": {
+    "welcome": "promotion-builder-files/promotions/02715c578a83f82b31a650dac0c2a8d9/945x370-22jpg.webp",
+    "loyalty": "promotion-builder-files/promotions/01db3b07f266adb52f712a5f260e88f5/945x370-2jpg.webp",
+    "vip-cashback": "promotion-builder-files/promotions/33a56a20131efe3cfe5b3179f9c53c4b/945x370-2jpg.webp",
+    "weekend": "promotion-builder-files/promotions/f9fc2998255825fd438373109f161b29/945x370_11jpg.webp",
+    "big-game": "promotion-builder-files/promotions/aef086cabc5b01760f998bad652c8e08/945x370-2jpg.webp",
+    "wild-spin": "promotion-builder-files/promotions/59d089fe29284eee166e4276b82dffa3/945x370-rightjpg.webp",
+    "born-to-win": "promotion-builder-files/promotions/f455a9d9fe5440e05d2933d9d69d637e/945x37015jpg.webp"
+  },
+  "icons": {
+    "auth-user": "cms/desktop/media_asset/becf5b35a0b18a565c08120951abdce2.webp",
+    "local_gift_icon": "gift-icon.webp"
+  },
+  "subscribe": {
+    "note": "Flame background used on subscribe card; saved as subscribe-art.jpg"
+  },
+  "tournaments_144": {
+    "stand-for-victory": "tournament-builder-files/tournaments/bafe205758e1fd2df27ce68845c2cae5/144_144png.webp",
+    "summer-wins": "tournament-builder-files/tournaments/1c9990a1be6d85d03284d0d920388cb8/144x1443png.webp",
+    "hot-spin": "tournament-builder-files/tournaments/947e9309b6fa2f9916a3a62a912a968a/144x144png.webp"
+  }
+}
