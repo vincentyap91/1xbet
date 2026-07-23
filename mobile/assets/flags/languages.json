@@ -1,0 +1,357 @@
+[
+  {
+    "code": "ms",
+    "label": "Bahasa Melayu",
+    "file": "lang-ms.svg"
+  },
+  {
+    "code": "en",
+    "label": "English",
+    "file": "lang-en.svg"
+  },
+  {
+    "code": "cn",
+    "label": "汉语",
+    "file": "lang-cn.svg"
+  },
+  {
+    "code": "aa",
+    "label": "Badînî",
+    "file": "lang-aa.svg"
+  },
+  {
+    "code": "al",
+    "label": "Shqip",
+    "file": "lang-al.svg"
+  },
+  {
+    "code": "am",
+    "label": "አማርኛ",
+    "file": "lang-am.svg"
+  },
+  {
+    "code": "ar",
+    "label": "العربية",
+    "file": "lang-ar.svg"
+  },
+  {
+    "code": "az",
+    "label": "Azərbaycan dili",
+    "file": "lang-az.svg"
+  },
+  {
+    "code": "bd",
+    "label": "বাংলা",
+    "file": "lang-bd.svg"
+  },
+  {
+    "code": "bg",
+    "label": "Български",
+    "file": "lang-bg.svg"
+  },
+  {
+    "code": "br",
+    "label": "Português (Brasil)",
+    "file": "lang-br.svg"
+  },
+  {
+    "code": "bs",
+    "label": "Bosanski",
+    "file": "lang-bs.svg"
+  },
+  {
+    "code": "cz",
+    "label": "Český",
+    "file": "lang-cz.svg"
+  },
+  {
+    "code": "de",
+    "label": "Deutsch",
+    "file": "lang-de.svg"
+  },
+  {
+    "code": "dk",
+    "label": "Dansk",
+    "file": "lang-dk.svg"
+  },
+  {
+    "code": "es",
+    "label": "Español",
+    "file": "lang-es.svg"
+  },
+  {
+    "code": "et",
+    "label": "Eesti keel",
+    "file": "lang-et.svg"
+  },
+  {
+    "code": "fi",
+    "label": "Suomi",
+    "file": "lang-fi.svg"
+  },
+  {
+    "code": "fr",
+    "label": "Français",
+    "file": "lang-fr.svg"
+  },
+  {
+    "code": "ge",
+    "label": "ქართული ენა",
+    "file": "lang-ge.svg"
+  },
+  {
+    "code": "gr",
+    "label": "Ελληνικά",
+    "file": "lang-gr.svg"
+  },
+  {
+    "code": "he",
+    "label": "עברית",
+    "file": "lang-he.svg"
+  },
+  {
+    "code": "hi",
+    "label": "हिन्दी",
+    "file": "lang-hi.svg"
+  },
+  {
+    "code": "hk",
+    "label": "廣東話",
+    "file": "lang-hk.svg"
+  },
+  {
+    "code": "hr",
+    "label": "Hrvatski jezik",
+    "file": "lang-hr.svg"
+  },
+  {
+    "code": "ht",
+    "label": "Kreyòl ayisyen",
+    "file": "lang-ht.svg"
+  },
+  {
+    "code": "hu",
+    "label": "Magyar nyelv",
+    "file": "lang-hu.svg"
+  },
+  {
+    "code": "hy",
+    "label": "հայերեն",
+    "file": "lang-hy.svg"
+  },
+  {
+    "code": "id",
+    "label": "Bahasa Indonesia",
+    "file": "lang-id.svg"
+  },
+  {
+    "code": "ir",
+    "label": "زبان فارسی",
+    "file": "lang-ir.svg"
+  },
+  {
+    "code": "is",
+    "label": "íslenska",
+    "file": "lang-is.svg"
+  },
+  {
+    "code": "it",
+    "label": "Italiano",
+    "file": "lang-it.svg"
+  },
+  {
+    "code": "jp",
+    "label": "日本語",
+    "file": "lang-jp.svg"
+  },
+  {
+    "code": "kg",
+    "label": "Кыргыз",
+    "file": "lang-kg.svg"
+  },
+  {
+    "code": "km",
+    "label": "ភាសាខ្មែរ",
+    "file": "lang-km.svg"
+  },
+  {
+    "code": "kr",
+    "label": "한국어",
+    "file": "lang-kr.svg"
+  },
+  {
+    "code": "ku",
+    "label": "Kurmancî",
+    "file": "lang-ku.svg"
+  },
+  {
+    "code": "ku2",
+    "label": "سۆرانی",
+    "file": "lang-ku2.svg"
+  },
+  {
+    "code": "kz",
+    "label": "Қазақ тілі",
+    "file": "lang-kz.svg"
+  },
+  {
+    "code": "ln",
+    "label": "Lingála",
+    "file": "lang-ln.svg"
+  },
+  {
+    "code": "lo",
+    "label": "ພາສາລາວ",
+    "file": "lang-lo.svg"
+  },
+  {
+    "code": "lt",
+    "label": "Lietuvių kalba",
+    "file": "lang-lt.svg"
+  },
+  {
+    "code": "lv",
+    "label": "Latviešu valoda",
+    "file": "lang-lv.svg"
+  },
+  {
+    "code": "mk",
+    "label": "Македонски јазик",
+    "file": "lang-mk.svg"
+  },
+  {
+    "code": "mn",
+    "label": "Монгол хэл",
+    "file": "lang-mn.svg"
+  },
+  {
+    "code": "mx",
+    "label": "Español mexicano",
+    "file": "lang-mx.svg"
+  },
+  {
+    "code": "my",
+    "label": "မြန်မာ",
+    "file": "lang-my.svg"
+  },
+  {
+    "code": "nb",
+    "label": "Norsk",
+    "file": "lang-nb.svg"
+  },
+  {
+    "code": "ne",
+    "label": "नेपाली",
+    "file": "lang-ne.svg"
+  },
+  {
+    "code": "nl",
+    "label": "Nederlands",
+    "file": "lang-nl.svg"
+  },
+  {
+    "code": "pl",
+    "label": "Polski",
+    "file": "lang-pl.svg"
+  },
+  {
+    "code": "pt",
+    "label": "Português",
+    "file": "lang-pt.svg"
+  },
+  {
+    "code": "ro",
+    "label": "Română",
+    "file": "lang-ro.svg"
+  },
+  {
+    "code": "rs",
+    "label": "Српски",
+    "file": "lang-rs.svg"
+  },
+  {
+    "code": "ru",
+    "label": "Русский",
+    "file": "lang-ru.svg"
+  },
+  {
+    "code": "se",
+    "label": "Svenska",
+    "file": "lang-se.svg"
+  },
+  {
+    "code": "si",
+    "label": "සිංහල",
+    "file": "lang-si.svg"
+  },
+  {
+    "code": "sk",
+    "label": "Slovenčin",
+    "file": "lang-sk.svg"
+  },
+  {
+    "code": "sl",
+    "label": "Slovenščina",
+    "file": "lang-sl.svg"
+  },
+  {
+    "code": "so",
+    "label": "Af Soomaali",
+    "file": "lang-so.svg"
+  },
+  {
+    "code": "sw",
+    "label": "Kiswahili",
+    "file": "lang-sw.svg"
+  },
+  {
+    "code": "ta",
+    "label": "தமிழ்",
+    "file": "lang-ta.svg"
+  },
+  {
+    "code": "th",
+    "label": "ภาษาไทย",
+    "file": "lang-th.svg"
+  },
+  {
+    "code": "tj",
+    "label": "Tоҷикӣ",
+    "file": "lang-tj.svg"
+  },
+  {
+    "code": "tr",
+    "label": "Türkçe",
+    "file": "lang-tr.svg"
+  },
+  {
+    "code": "tw",
+    "label": "繁體中文",
+    "file": "lang-tw.svg"
+  },
+  {
+    "code": "ua",
+    "label": "Українська мова",
+    "file": "lang-ua.svg"
+  },
+  {
+    "code": "ur",
+    "label": "اُردُو‎",
+    "file": "lang-ur.svg"
+  },
+  {
+    "code": "uz",
+    "label": "Oʻzbek tili",
+    "file": "lang-uz.svg"
+  },
+  {
+    "code": "vi",
+    "label": "Tiếng Việt",
+    "file": "lang-vi.svg"
+  },
+  {
+    "code": "zu",
+    "label": "Zazaki",
+    "file": "lang-zu.svg"
+  }
+]

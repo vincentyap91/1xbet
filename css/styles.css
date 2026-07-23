@@ -534,8 +534,9 @@ a:focus-visible {
   list-style: none;
   margin: 0;
   padding: 6px 0;
-  min-width: 210px;
-  max-height: 320px;
+  min-width: 280px;
+  max-width: min(360px, calc(100vw - 24px));
+  max-height: 360px;
   overflow-y: auto;
   background: var(--surface-primary);
   border: 1px solid var(--border-light);
@@ -550,15 +551,15 @@ a:focus-visible {
 .header-lang-option {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   padding: 10px 14px;
   border: none;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--section-blue);
   font: inherit;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   text-align: left;
 }
@@ -576,6 +577,33 @@ a:focus-visible {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+.header-lang-option__code {
+  flex: 0 0 auto;
+  min-width: 1.6em;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--section-blue);
+}
+
+.header-lang-option__sep {
+  flex: 0 0 auto;
+  width: 1px;
+  height: 14px;
+  background: var(--border-light);
+}
+
+.header-lang-option__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .header-meta:hover {

@@ -9,6 +9,8 @@ body.mh-page.mh-page--casino {
   --mh-cs-tab-h: 56px;
   background: var(--page-bg);
   color: var(--text-inverse);
+  /* Main already clears the casino tabbar — avoid double safe-area gap */
+  padding-bottom: 0;
 }
 
 body.mh-page.mh-page--casino .mh-main {
@@ -308,6 +310,7 @@ body.mh-page.mh-page--casino .mh-header {
   justify-content: center;
   gap: 3px;
   min-width: 0;
+  min-height: 44px;
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.92);
@@ -393,7 +396,7 @@ body.mh-page--casino .mh-tabbar {
 }
 
 body.mh-page--casino .mh-footer__social {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 /* ---------- Categories lobby ---------- */
@@ -540,6 +543,19 @@ body.mh-page--casino .mh-footer__social {
   background: var(--header-bg);
   box-shadow: 0 10px 28px rgba(11, 29, 51, 0.45);
   overflow: hidden;
+  opacity: 0;
+  transform: translate3d(0, -6px, 0);
+  transition:
+    transform var(--mh-motion-open-ms, 220ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--mh-motion-open-ms, 220ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1));
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.mh-cs-sort.is-open .mh-cs-sort__menu {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
 }
 
 .mh-cs-sort__menu[hidden] {
@@ -657,6 +673,7 @@ body.mh-page--casino .mh-footer__social {
   z-index: 80;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
 }
 
@@ -1030,6 +1047,8 @@ body.mh-page--casino-promo:not(.is-logged-in) .mh-cs-ptab--codes {
   padding: 0;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  contain: content;
   scrollbar-width: none;
   cursor: grab;
 }
@@ -1541,4 +1560,142 @@ body.mh-page--casino-promo .visually-hidden {
   object-fit: contain;
   filter: brightness(0) invert(1);
   opacity: 0.9;
+}
+
+/* ---------- Live Casino lobby ---------- */
+body.mh-page--live-casino .mh-cs-hero--lc {
+  overflow: visible;
+  background: transparent;
+  aspect-ratio: auto;
+  height: auto;
+}
+
+body.mh-page--live-casino .mh-cs-hero--lc .mh-cs-hero__track {
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 1024 / 240;
+  background: var(--header-bg);
+}
+
+body.mh-page--live-casino .mh-cs-hero__slide--copy {
+  position: relative;
+}
+
+body.mh-page--live-casino .mh-cs-hero__copy {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  align-items: center;
+  width: 58%;
+  padding: 10px 12px;
+  z-index: 2;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+body.mh-page--live-casino .mh-cs-hero__copy strong {
+  display: block;
+  font-family: var(--font);
+  font-size: clamp(15px, 4.6vw, 20px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(11, 29, 51, 0.65);
+}
+
+body.mh-page--live-casino .mh-cs-section--lc {
+  margin-top: 12px;
+}
+
+body.mh-page--live-casino .mh-cs-section__more {
+  letter-spacing: 0.02em;
+}
+
+.mh-cs-pages {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.mh-cs-pages::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-cs-page {
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
+.mh-cs-pages__dots {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0 0;
+  pointer-events: none;
+}
+
+.mh-cs-pages__dots .mh-cs-hero__dot {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.mh-cs-pages__dots .mh-cs-hero__dot.is-active {
+  background: #fff;
+}
+
+.mh-cs-game--overlay {
+  gap: 0;
+}
+
+.mh-cs-game--overlay .mh-cs-game__thumb {
+  aspect-ratio: 16 / 11;
+}
+
+.mh-cs-game__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 18px 8px 6px;
+  background: linear-gradient(180deg, transparent 0%, rgba(11, 29, 51, 0.92) 55%);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-cs-badge--promo {
+  top: auto;
+  left: auto;
+  right: 6px;
+  bottom: 26px;
+  background: var(--action-green);
+  border-radius: 2px;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+}
+
+body.mh-page--live-casino .mh-cs-badge--new {
+  top: 6px;
+  left: 6px;
+  right: auto;
+  bottom: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-cs-sort__menu,
+  .mh-cs-sort__chev,
+  .mh-mc-spin__track,
+  .mh-mc-spin__item {
+    transition: none !important;
+  }
 }

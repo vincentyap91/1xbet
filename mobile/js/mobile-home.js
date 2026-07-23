@@ -29,9 +29,33 @@
   /** @type {{ id: string, event: string, market: string, odd: number, oddLabel: string }[]} */
   let bets = [];
 
-  const QBS_OPEN_MS = 320;
-  const QBS_CLOSE_MS = 260;
+  const QBS_OPEN_MS = 280;
+  const QBS_CLOSE_MS = 220;
   const QBS_PHASES = ["closed", "opening", "open", "closing", "is-open"];
+  const MENU_PHASES = ["closed", "opening", "open", "closing"];
+  const LANG_PHASES = ["closed", "opening", "open", "is-open", "closing"];
+  const MENU_CLOSE_MS = 220;
+  const FLYOUT_CLOSE_MS = 220;
+
+  let menuPhase = "closed";
+  let menuCloseTimer = 0;
+  let menuOpenRaf = 0;
+  let langPhase = "closed";
+  let langCloseTimer = 0;
+  let langOpenRaf = 0;
+  let flyoutCloseTimer = 0;
+
+  function prefersReducedMotion() {
+    try {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function motionMs(ms) {
+    return prefersReducedMotion() ? 1 : ms;
+  }
 
   function isLoggedIn() {
     try {
@@ -281,7 +305,7 @@
         qbsFocusRestore.focus({ preventScroll: true });
       }
       qbsFocusRestore = null;
-    }, QBS_CLOSE_MS);
+    }, motionMs(QBS_CLOSE_MS));
   }
 
   function renderQbs(options = {}) {
@@ -449,20 +473,292 @@
       setQbsOpen(true);
     });
   }
+  function setMenuPhase(phase) {
+    if (!menuSheet) return;
+    menuSheet.classList.remove(...MENU_PHASES);
+    menuSheet.classList.add(phase);
+    menuPhase = phase;
+  }
+
   function setMenuOpen(open) {
     if (!menuSheet) return;
-    menuSheet.hidden = !open;
-    document.body.classList.toggle("mh-sheet-open", open);
-    $("#mh-menu-btn")?.setAttribute("aria-expanded", open ? "true" : "false");
+    clearTimeout(menuCloseTimer);
+    if (menuOpenRaf) {
+      cancelAnimationFrame(menuOpenRaf);
+      menuOpenRaf = 0;
+    }
+
     if (open) {
+      if (menuPhase === "open" || menuPhase === "opening") return;
+      if (menuPhase === "closing") return;
+
       closeTabFlyout();
       setQbsOpen(false);
+      menuSheet.hidden = false;
+      setMenuPhase("closed");
+      void menuSheet.offsetWidth;
+      document.body.classList.add("mh-sheet-open");
+      setMenuPhase("opening");
+      $("#mh-menu-btn")?.setAttribute("aria-expanded", "true");
+
       const clock = menuSheet.querySelector("[data-mh-menu-clock]");
       if (clock) {
         const now = new Date();
         clock.textContent = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
       }
+
+      menuOpenRaf = requestAnimationFrame(() => {
+        menuOpenRaf = requestAnimationFrame(() => {
+          if (menuPhase !== "opening") return;
+          setMenuPhase("open");
+          menuOpenRaf = 0;
+        });
+      });
+      return;
     }
+
+    if (menuPhase === "closed" || menuPhase === "closing") {
+      if (menuSheet.hidden && menuPhase === "closed") return;
+      if (menuPhase === "closing") return;
+    }
+
+    setLangOpen(false);
+    setMenuPhase("closing");
+    $("#mh-menu-btn")?.setAttribute("aria-expanded", "false");
+
+    menuCloseTimer = window.setTimeout(() => {
+      setMenuPhase("closed");
+      menuSheet.hidden = true;
+      document.body.classList.remove("mh-sheet-open");
+    }, motionMs(MENU_CLOSE_MS));
+  }
+
+  const LANG_KEY = "mh-lang-v1";
+  let langFocusRestore = null;
+
+  function getLangPanel() {
+    return menuSheet?.querySelector("#mh-lang-panel") || $("#mh-lang-panel");
+  }
+
+  function getStoredLang() {
+    try {
+      return localStorage.getItem(LANG_KEY) || "en";
+    } catch (_) {
+      return "en";
+    }
+  }
+
+  function storeLang(id) {
+    try {
+      localStorage.setItem(LANG_KEY, id);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function applyLangToHeader(row) {
+    if (!menuSheet || !row) return;
+    const code = row.getAttribute("data-code") || "EN";
+    const flag = row.getAttribute("data-flag") || "";
+    const codeEl = menuSheet.querySelector("[data-mh-lang-code]");
+    const flagEl = menuSheet.querySelector("[data-mh-lang-flag]");
+    if (codeEl) codeEl.textContent = code;
+    if (flagEl && flag) flagEl.src = flag;
+  }
+
+  function syncLangSelection(langId) {
+    if (!menuSheet) return;
+    const rows = $$(".mh-cs-lang__row", menuSheet);
+    let active = null;
+    rows.forEach((row) => {
+      const on = row.getAttribute("data-lang") === langId;
+      row.classList.toggle("is-selected", on);
+      row.setAttribute("aria-selected", on ? "true" : "false");
+      if (on) active = row;
+    });
+    if (!active && rows.length) {
+      active = rows.find((r) => r.getAttribute("data-lang") === "en") || rows[0];
+      active.classList.add("is-selected");
+      active.setAttribute("aria-selected", "true");
+    }
+    if (active) applyLangToHeader(active);
+  }
+
+  function escLang(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderLangList(rows) {
+    const list = menuSheet?.querySelector("[data-mh-lang-list]");
+    if (!list || !Array.isArray(rows)) return;
+    list.innerHTML = rows
+      .map((row) => {
+        const code = String(row.code || "").toLowerCase();
+        const label = row.label || row.name || code;
+        const flag = `assets/flags/${row.file || `lang-${code}.svg`}`;
+        const upper = code.toUpperCase();
+        return `<li>
+          <button type="button" class="mh-cs-lang__row" role="option" data-lang="${escLang(code)}" data-code="${escLang(upper)}" data-name="${escLang(label)}" data-flag="${escLang(flag)}" aria-selected="false">
+            <span class="mh-cs-lang__flag"><img src="${escLang(flag)}" alt="" /></span>
+            <span class="mh-cs-lang__code">${escLang(upper)}</span>
+            <span class="mh-cs-lang__sep" aria-hidden="true"></span>
+            <span class="mh-cs-lang__name">${escLang(label)}</span>
+          </button>
+        </li>`;
+      })
+      .join("");
+  }
+
+  function loadLangList() {
+    const embedded = typeof window.MH_LANGUAGES !== "undefined" ? window.MH_LANGUAGES : null;
+    if (Array.isArray(embedded) && embedded.length) {
+      renderLangList(embedded);
+      return Promise.resolve(embedded);
+    }
+
+    return fetch("assets/flags/languages.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((list) => {
+        if (Array.isArray(list) && list.length) renderLangList(list);
+        return list;
+      })
+      .catch(() => {
+        /* keep any static fallback rows */
+      });
+  }
+
+  function setLangPhase(panel, phase) {
+    if (!panel) return;
+    panel.classList.remove(...LANG_PHASES);
+    panel.classList.add(phase);
+    if (phase === "open") panel.classList.add("is-open");
+    langPhase = phase;
+  }
+
+  function setLangOpen(open) {
+    const panel = getLangPanel();
+    const menuPanel = menuSheet?.querySelector(".mh-cs-menu");
+    const langBtn = menuSheet?.querySelector("[data-mh-open-lang]");
+    if (!panel) return;
+
+    clearTimeout(langCloseTimer);
+    if (langOpenRaf) {
+      cancelAnimationFrame(langOpenRaf);
+      langOpenRaf = 0;
+    }
+
+    if (open) {
+      if (langPhase === "open" || langPhase === "opening") return;
+      if (langPhase === "closing") return;
+
+      langFocusRestore = document.activeElement;
+      panel.hidden = false;
+      setLangPhase(panel, "closed");
+      void panel.offsetWidth;
+      menuPanel?.classList.add("is-lang-open");
+      langBtn?.setAttribute("aria-expanded", "true");
+      setLangPhase(panel, "opening");
+
+      if (!panel.querySelector(".mh-cs-lang__row")) {
+        loadLangList().finally(() => syncLangSelection(getStoredLang()));
+      }
+
+      langOpenRaf = requestAnimationFrame(() => {
+        langOpenRaf = requestAnimationFrame(() => {
+          if (langPhase !== "opening") return;
+          setLangPhase(panel, "open");
+          const search = panel.querySelector("[data-mh-lang-search]");
+          if (search) {
+            search.value = "";
+            filterLangList("");
+            search.focus();
+          }
+          langOpenRaf = 0;
+        });
+      });
+      return;
+    }
+
+    if (langPhase === "closed" || langPhase === "closing") {
+      if (panel.hidden && langPhase === "closed") return;
+      if (langPhase === "closing") return;
+    }
+
+    setLangPhase(panel, "closing");
+    langBtn?.setAttribute("aria-expanded", "false");
+
+    langCloseTimer = window.setTimeout(() => {
+      setLangPhase(panel, "closed");
+      panel.hidden = true;
+      menuPanel?.classList.remove("is-lang-open");
+      const search = panel.querySelector("[data-mh-lang-search]");
+      if (search) {
+        search.value = "";
+        filterLangList("");
+      }
+      if (langFocusRestore && typeof langFocusRestore.focus === "function") {
+        langFocusRestore.focus();
+      }
+      langFocusRestore = null;
+    }, motionMs(MENU_CLOSE_MS));
+  }
+
+  function filterLangList(query) {
+    const panel = getLangPanel();
+    if (!panel) return;
+    const q = String(query || "").trim().toLowerCase();
+    $$(".mh-cs-lang__row", panel).forEach((row) => {
+      const hay = [
+        row.getAttribute("data-code") || "",
+        row.getAttribute("data-name") || "",
+        row.getAttribute("data-lang") || "",
+        row.textContent || "",
+      ]
+        .join(" ")
+        .toLowerCase();
+      const show = !q || hay.includes(q);
+      row.classList.toggle("is-hidden", !show);
+      const li = row.closest("li");
+      if (li) li.hidden = !show;
+    });
+  }
+
+  function selectLang(row) {
+    if (!row) return;
+    const id = row.getAttribute("data-lang") || "en";
+    const name = row.getAttribute("data-name") || row.getAttribute("data-code") || "Language";
+    storeLang(id);
+    syncLangSelection(id);
+    setLangOpen(false);
+    showToast(`${name} selected`);
+  }
+
+  function initLangPanel() {
+    if (!menuSheet) return;
+
+    menuSheet.querySelector("[data-mh-open-lang]")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setLangOpen(true);
+    });
+
+    $$("[data-mh-close-lang]", menuSheet).forEach((el) => {
+      el.addEventListener("click", () => setLangOpen(false));
+    });
+
+    const search = menuSheet.querySelector("[data-mh-lang-search]");
+    search?.addEventListener("input", () => filterLangList(search.value));
+
+    menuSheet.querySelector("[data-mh-lang-list]")?.addEventListener("click", (e) => {
+      const row = e.target.closest(".mh-cs-lang__row");
+      if (!row || row.classList.contains("is-hidden")) return;
+      selectLang(row);
+    });
+
+    loadLangList().finally(() => syncLangSelection(getStoredLang()));
   }
 
   function initMenu() {
@@ -471,11 +767,17 @@
       el.addEventListener("click", () => setMenuOpen(false));
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        setMenuOpen(false);
-        closeTabFlyout();
-        setQbsOpen(false);
+      if (e.key !== "Escape") return;
+      if (langPhase === "open" || langPhase === "opening") {
+        setLangOpen(false);
+        return;
       }
+      if (menuPhase === "open" || menuPhase === "opening") {
+        setMenuOpen(false);
+        return;
+      }
+      closeTabFlyout();
+      setQbsOpen(false);
     });
 
     /* Extra > Information (and other) accordion rows */
@@ -498,21 +800,43 @@
         if (panel) panel.hidden = !open;
       });
     });
+
+    initLangPanel();
   }
 
   function closeTabFlyout() {
+    clearTimeout(flyoutCloseTimer);
     const backdrop = $("#mh-tab-flyout-backdrop");
-    if (backdrop) backdrop.hidden = true;
-    $$("[data-mh-flyout-slot]").forEach((slot) => {
-      slot.classList.remove("is-open");
+    const openSlots = $$("[data-mh-flyout-slot].is-open");
+
+    if (!openSlots.length) {
+      if (backdrop) backdrop.hidden = true;
+      return;
+    }
+
+    openSlots.forEach((slot) => {
       const panel = slot.querySelector(".mh-tab-flyout");
-      const btn = slot.querySelector("[data-mh-flyout-open]");
-      if (panel) panel.hidden = true;
-      if (btn) btn.setAttribute("aria-expanded", "false");
+      if (panel) panel.classList.add("is-closing");
     });
+
+    flyoutCloseTimer = window.setTimeout(() => {
+      if (backdrop) backdrop.hidden = true;
+      $$("[data-mh-flyout-slot]").forEach((slot) => {
+        slot.classList.remove("is-open");
+        const panel = slot.querySelector(".mh-tab-flyout");
+        const btn = slot.querySelector("[data-mh-flyout-open]");
+        if (panel) {
+          panel.classList.remove("is-closing");
+          panel.hidden = true;
+        }
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      });
+      flyoutCloseTimer = 0;
+    }, motionMs(FLYOUT_CLOSE_MS));
   }
 
   function openTabFlyout(key) {
+    clearTimeout(flyoutCloseTimer);
     setMenuOpen(false);
     setQbsOpen(false);
     const backdrop = $("#mh-tab-flyout-backdrop");
@@ -521,9 +845,25 @@
       const on = slot.getAttribute("data-mh-flyout-slot") === key;
       const panel = slot.querySelector(".mh-tab-flyout");
       const btn = slot.querySelector("[data-mh-flyout-open]");
-      slot.classList.toggle("is-open", on);
-      if (panel) panel.hidden = !on;
-      if (btn) btn.setAttribute("aria-expanded", on ? "true" : "false");
+
+      if (!on) {
+        slot.classList.remove("is-open");
+        if (panel) {
+          panel.classList.remove("is-closing");
+          panel.hidden = true;
+        }
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        return;
+      }
+
+      if (panel) {
+        panel.classList.remove("is-closing");
+        panel.hidden = false;
+        slot.classList.remove("is-open");
+        void panel.offsetWidth;
+      }
+      slot.classList.add("is-open");
+      if (btn) btn.setAttribute("aria-expanded", "true");
     });
   }
 
@@ -700,7 +1040,7 @@
       actions.innerHTML = `
         <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
         <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
-          <img src="${iconPath("mh-account.svg")}" alt="" width="14" height="14" />
+          <img src="${iconPath("mh-account.svg")}" alt="" width="14" height="16" />
           <span class="mh-header__account-badge" aria-hidden="true"></span>
         </button>`;
     }

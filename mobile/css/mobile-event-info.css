@@ -51,48 +51,53 @@ body.mh-page.mh-page--event-info .mh-main {
   text-decoration: none;
   cursor: pointer;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .mh-ei-menu__item:last-child {
   border-bottom: none;
 }
 
+.mh-ei-menu__item:active {
+  background: var(--odds-bg, #e8eef5);
+}
+
 .mh-ei-menu__item img {
   width: 20px;
   height: 20px;
   flex: 0 0 auto;
-  color: var(--text-primary);
-}
-
-.mh-ei-menu__item--fav img {
-  /* star already green stroke */
+  display: block;
 }
 
 .mh-ei-menu__item.is-fav {
   color: var(--text-primary);
 }
 
+/* Meta note — light blue-grey panel (not white card) */
 .mh-ei-meta {
-  display: flex;
-  flex-direction: column;
+  margin: 0 0 10px;
+  border-radius: 8px;
+  background: var(--surface-tertiary, #e8eef5);
+  overflow: hidden;
 }
 
 .mh-ei-meta__note {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  padding: 10px 12px;
-  background: var(--odds-bg, #e8eef5);
-  font-size: 13px;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 14px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--header-action);
+  box-sizing: border-box;
 }
 
 .mh-ei-meta__note img {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   flex: 0 0 auto;
+  display: block;
 }
 
 .mh-ei-meta__note span {
@@ -102,24 +107,37 @@ body.mh-page.mh-page--event-info .mh-main {
   text-overflow: ellipsis;
 }
 
+/* Weather / conditions — evenly spaced row */
 .mh-ei-weather {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
-  padding: 12px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 12px;
+  box-sizing: border-box;
 }
 
 .mh-ei-weather__item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  font-size: 12px;
-  font-weight: 600;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
   color: var(--header-action);
 }
 
 .mh-ei-weather__item img {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  display: block;
+}
+
+.mh-ei-weather__item span {
+  min-width: 0;
+  white-space: nowrap;
 }

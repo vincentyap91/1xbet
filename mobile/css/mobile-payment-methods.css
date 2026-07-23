@@ -290,10 +290,28 @@ body.mh-page.mh-page--payment-methods .mh-main {
   position: fixed;
   inset: 0;
   z-index: 200;
+  visibility: hidden;
+  pointer-events: none;
+  --mh-pm-sheet-open-ms: var(--mh-motion-open-ms, 280ms);
+  --mh-pm-sheet-close-ms: var(--mh-motion-close-ms, 220ms);
+  --mh-pm-sheet-ease-open: var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1));
+  --mh-pm-sheet-ease-close: var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1));
 }
 
-.mh-pm-sheet[hidden] {
+.mh-pm-sheet[hidden]:not(.opening):not(.open):not(.closing) {
   display: none !important;
+}
+
+.mh-pm-sheet.opening,
+.mh-pm-sheet.open,
+.mh-pm-sheet.closing {
+  display: block !important;
+  visibility: visible;
+}
+
+.mh-pm-sheet.opening,
+.mh-pm-sheet.open {
+  pointer-events: auto;
 }
 
 .mh-pm-sheet__backdrop {
@@ -303,6 +321,18 @@ body.mh-page.mh-page--payment-methods .mh-main {
   padding: 0;
   background: rgba(11, 29, 51, 0.45);
   cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--mh-pm-sheet-close-ms) var(--mh-pm-sheet-ease-close);
+}
+
+.mh-pm-sheet.opening .mh-pm-sheet__backdrop,
+.mh-pm-sheet.open .mh-pm-sheet__backdrop {
+  opacity: 1;
+  transition: opacity var(--mh-pm-sheet-open-ms) var(--mh-pm-sheet-ease-open);
+}
+
+.mh-pm-sheet.closing .mh-pm-sheet__backdrop {
+  opacity: 0;
 }
 
 .mh-pm-sheet__panel {
@@ -317,6 +347,27 @@ body.mh-page.mh-page--payment-methods .mh-main {
   background: #fff;
   box-shadow: 0 -8px 28px rgba(11, 29, 51, 0.18);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
+  transition:
+    transform var(--mh-pm-sheet-close-ms) var(--mh-pm-sheet-ease-close),
+    opacity var(--mh-pm-sheet-close-ms) var(--mh-pm-sheet-ease-close);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.mh-pm-sheet.opening .mh-pm-sheet__panel,
+.mh-pm-sheet.open .mh-pm-sheet__panel {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--mh-pm-sheet-open-ms) var(--mh-pm-sheet-ease-open),
+    opacity var(--mh-pm-sheet-open-ms) var(--mh-pm-sheet-ease-open);
+}
+
+.mh-pm-sheet.closing .mh-pm-sheet__panel {
+  opacity: 0;
+  transform: translate3d(0, 100%, 0);
 }
 
 .mh-pm-sheet__head {
@@ -350,6 +401,9 @@ body.mh-page.mh-page--payment-methods .mh-main {
   margin: 0;
   padding: 8px 0 16px;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  contain: content;
 }
 
 .mh-pm-sheet__item {
@@ -378,4 +432,17 @@ body.mh-page.mh-page--payment-methods .mh-main {
   color: var(--text-muted);
   font-weight: 600;
   font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-pm-sheet {
+    --mh-pm-sheet-open-ms: 1ms;
+    --mh-pm-sheet-close-ms: 1ms;
+  }
+
+  .mh-pm-sheet__backdrop,
+  .mh-pm-sheet__panel {
+    transition: none !important;
+    will-change: auto;
+  }
 }

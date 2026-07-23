@@ -2280,19 +2280,19 @@
     if (!root || !btn || !menu || !flagEl || !labelEl) return;
 
     const LANG_KEY = "header-lang";
-    const languages = [
-      { code: "en", label: "English", flag: "assets/images/account/flags/flag-gb.svg" },
-      { code: "zh-cn", label: "简体中文", flag: "assets/images/account/flags/flag-cn.svg" },
-      { code: "zh-tw", label: "繁體中文", flag: "assets/images/account/flags/flag-tw.svg" },
-      { code: "th", label: "ไทย", flag: "assets/images/account/flags/flag-th.svg" },
-      { code: "ko", label: "한국어", flag: "assets/images/account/flags/flag-kr.svg" },
-      { code: "vi", label: "Tiếng Việt", flag: "assets/images/account/flags/flag-vn.svg" },
-      { code: "id", label: "Indonesia", flag: "assets/images/account/flags/flag-id.svg" },
-      { code: "hi", label: "हिन्दी", flag: "assets/images/account/flags/flag-in.svg" },
-      { code: "km", label: "Khmer", flag: "assets/images/account/flags/flag-kh.svg" },
-      { code: "my", label: "မြန်မာ", flag: "assets/images/account/flags/flag-mm.svg" },
-      { code: "ja", label: "日本語", flag: "assets/images/account/flags/flag-jp.svg" }
+    const FLAG_BASE = "assets/images/account/flags/";
+    let languages = [
+      { code: "en", label: "English", flag: FLAG_BASE + "lang-en.svg" },
+      { code: "ms", label: "Bahasa Melayu", flag: FLAG_BASE + "lang-ms.svg" },
+      { code: "cn", label: "汉语", flag: FLAG_BASE + "lang-cn.svg" },
     ];
+
+    function esc(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;");
+    }
 
     function setLang(item) {
       flagEl.src = item.flag;
@@ -2320,47 +2320,70 @@
       menu.hidden = false;
     }
 
-    if (!menu.children.length) {
+    function renderMenu() {
       menu.innerHTML = languages
         .map(
           (item) =>
-            `<li><button type="button" class="header-lang-option" role="option" data-lang="${item.code}" data-flag="${item.flag}" data-label="${item.label}" aria-selected="false">` +
-            `<img src="${item.flag}" alt="" class="lang-flag" width="20" height="20" />` +
-            `<span>${item.label}</span></button></li>`
+            `<li><button type="button" class="header-lang-option" role="option" data-lang="${esc(item.code)}" data-flag="${esc(item.flag)}" data-label="${esc(item.label)}" aria-selected="false">` +
+            `<img src="${esc(item.flag)}" alt="" class="lang-flag" width="20" height="20" />` +
+            `<span class="header-lang-option__code">${esc(String(item.code).toUpperCase())}</span>` +
+            `<span class="header-lang-option__sep" aria-hidden="true"></span>` +
+            `<span class="header-lang-option__name">${esc(item.label)}</span></button></li>`
         )
         .join("");
     }
 
-    let saved = "en";
-    try {
-      saved = sessionStorage.getItem(LANG_KEY) || "en";
-    } catch (e) { /* ignore */ }
-    const initial = languages.find((l) => l.code === saved) || languages[0];
-    setLang(initial);
+    function applySaved() {
+      let saved = "en";
+      try {
+        saved = sessionStorage.getItem(LANG_KEY) || "en";
+      } catch (e) { /* ignore */ }
+      const initial = languages.find((l) => l.code === saved) || languages.find((l) => l.code === "en") || languages[0];
+      setLang(initial);
+    }
 
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (root.classList.contains("is-open")) closeMenu();
-      else openMenu();
-    });
+    function wire() {
+      renderMenu();
+      applySaved();
 
-    menu.addEventListener("click", (e) => {
-      const opt = e.target.closest(".header-lang-option");
-      if (!opt) return;
-      const item = languages.find((l) => l.code === opt.getAttribute("data-lang"));
-      if (!item) return;
-      setLang(item);
-      closeMenu();
-      showToast("Language set to " + item.label + " (demo)");
-    });
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (root.classList.contains("is-open")) closeMenu();
+        else openMenu();
+      });
 
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest("#header-lang")) closeMenu();
-    });
+      menu.addEventListener("click", (e) => {
+        const opt = e.target.closest(".header-lang-option");
+        if (!opt) return;
+        const item = languages.find((l) => l.code === opt.getAttribute("data-lang"));
+        if (!item) return;
+        setLang(item);
+        closeMenu();
+        showToast("Language set to " + item.label + " (demo)");
+      });
 
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
-    });
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest("#header-lang")) closeMenu();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMenu();
+      });
+    }
+
+    fetch(FLAG_BASE + "languages.json")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((list) => {
+        if (Array.isArray(list) && list.length) {
+          languages = list.map((row) => ({
+            code: row.code,
+            label: row.label || row.name || row.code,
+            flag: FLAG_BASE + (row.file || `lang-${row.code}.svg`),
+          }));
+        }
+      })
+      .catch(() => { /* keep fallback */ })
+      .finally(wire);
   }
 
   function initHeaderClock() {

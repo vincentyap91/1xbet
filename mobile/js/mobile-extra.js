@@ -128,17 +128,52 @@
     const claimText = $("#dci-claim-text");
     const claimOk = $("#dci-claim-ok");
     const modal = backdrop?.querySelector(".mh-ex-modal");
+    const MODAL_CLOSE_MS = 220;
+    let modalCloseTimer = 0;
+    let modalOpenRaf = 0;
+
+    function motionMs(ms) {
+      try {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return 1;
+      } catch (_) {
+        /* ignore */
+      }
+      return ms;
+    }
 
     function openClaimPopup(reward) {
       if (!backdrop) return;
+      clearTimeout(modalCloseTimer);
+      if (modalOpenRaf) {
+        cancelAnimationFrame(modalOpenRaf);
+        modalOpenRaf = 0;
+      }
       if (claimText) claimText.textContent = `You have earned ${reward} in your wallet.`;
       backdrop.hidden = false;
-      modal?.focus();
+      backdrop.classList.remove("is-open", "is-closing");
+      void backdrop.offsetWidth;
+      backdrop.classList.add("is-open");
+      modalOpenRaf = requestAnimationFrame(() => {
+        modal?.focus();
+        modalOpenRaf = 0;
+      });
     }
 
     function closeClaimPopup() {
       if (!backdrop) return;
-      backdrop.hidden = true;
+      if (backdrop.hidden && !backdrop.classList.contains("is-open")) return;
+      clearTimeout(modalCloseTimer);
+      if (modalOpenRaf) {
+        cancelAnimationFrame(modalOpenRaf);
+        modalOpenRaf = 0;
+      }
+      backdrop.classList.remove("is-open");
+      backdrop.classList.add("is-closing");
+      modalCloseTimer = window.setTimeout(() => {
+        backdrop.classList.remove("is-closing");
+        backdrop.hidden = true;
+        modalCloseTimer = 0;
+      }, motionMs(MODAL_CLOSE_MS));
     }
 
     claimOk?.addEventListener("click", closeClaimPopup);
@@ -146,7 +181,9 @@
       if (e.target === backdrop) closeClaimPopup();
     });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && backdrop && !backdrop.hidden) closeClaimPopup();
+      if (e.key === "Escape" && backdrop && (backdrop.classList.contains("is-open") || !backdrop.hidden)) {
+        closeClaimPopup();
+      }
     });
 
     $$("[data-dci-claim]").forEach((btn) => {

@@ -329,21 +329,81 @@
       .join("");
   }
 
+  const SHEET_PHASES = ["closed", "opening", "open", "closing"];
+  const SHEET_CLOSE_MS = 220;
+  let sheetPhase = "closed";
+  let sheetCloseTimer = 0;
+  let sheetOpenRaf = 0;
+
+  function motionMs(ms) {
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return 1;
+    } catch (_) {
+      /* ignore */
+    }
+    return ms;
+  }
+
+  function setSheetPhase(sheet, phase) {
+    sheet.classList.remove(...SHEET_PHASES);
+    sheet.classList.add(phase);
+    sheetPhase = phase;
+  }
+
   function openSheet() {
     const sheet = document.getElementById("mh-pm-type-sheet");
     const btn = document.getElementById("mh-pm-method-btn");
+    if (!sheet) return;
+    if (sheetPhase === "open" || sheetPhase === "opening") return;
+    if (sheetPhase === "closing") return;
+
+    clearTimeout(sheetCloseTimer);
+    if (sheetOpenRaf) {
+      cancelAnimationFrame(sheetOpenRaf);
+      sheetOpenRaf = 0;
+    }
+
     renderTypeList();
-    if (sheet) sheet.hidden = false;
+    sheet.hidden = false;
+    setSheetPhase(sheet, "closed");
+    void sheet.offsetWidth;
+    setSheetPhase(sheet, "opening");
     if (btn) btn.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
+
+    sheetOpenRaf = requestAnimationFrame(() => {
+      sheetOpenRaf = requestAnimationFrame(() => {
+        if (sheetPhase !== "opening") return;
+        setSheetPhase(sheet, "open");
+        sheetOpenRaf = 0;
+      });
+    });
   }
 
   function closeSheet() {
     const sheet = document.getElementById("mh-pm-type-sheet");
     const btn = document.getElementById("mh-pm-method-btn");
-    if (sheet) sheet.hidden = true;
+    if (!sheet) return;
+    if (sheetPhase === "closed" || sheetPhase === "closing") {
+      if (sheet.hidden && sheetPhase === "closed") return;
+      if (sheetPhase === "closing") return;
+    }
+
+    clearTimeout(sheetCloseTimer);
+    if (sheetOpenRaf) {
+      cancelAnimationFrame(sheetOpenRaf);
+      sheetOpenRaf = 0;
+    }
+
+    setSheetPhase(sheet, "closing");
     if (btn) btn.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+
+    sheetCloseTimer = window.setTimeout(() => {
+      setSheetPhase(sheet, "closed");
+      sheet.hidden = true;
+      document.body.style.overflow = "";
+      sheetCloseTimer = 0;
+    }, motionMs(SHEET_CLOSE_MS));
   }
 
   function setMode(mode) {

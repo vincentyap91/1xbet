@@ -10,6 +10,14 @@
     }, 1800);
   }
 
+  function goBack() {
+    if (history.length > 1) {
+      history.back();
+      return;
+    }
+    window.location.href = "index.html";
+  }
+
   function resolveEvent() {
     const api = window.MhFavourites;
     if (!api) return null;
@@ -23,23 +31,17 @@
       if (saved) return saved;
       return {
         id,
-        note: "2nd Qualification Round. Champions path. 1st Leg",
-        weather: { temp: "+27°C", wind: "3.6", pressure: "758", humidity: "55" },
-        league: "UEFA Champions League",
-        home: "Iberia 1999",
-        away: "Slovan Bratislava",
-        time: "22/07 00:00",
+        note: "Australia. Hard. Round of 16",
+        league: "Event",
+        home: "",
+        away: "",
+        time: "",
         sportIcon: "assets/icons/sport-football.svg",
         homeLogo: "assets/logos/partner-barcelona.webp",
         awayLogo: "assets/logos/partner-serie-a.webp",
-        scope: "sports",
-        odds: [
-          { lab: "W1", val: "3.555" },
-          { lab: "DRAW", val: "3.62" },
-          { lab: "W2", val: "1.96" },
-          { lab: "1X", val: "1.8" },
-          { lab: "12", val: "1.26" },
-        ],
+        scope: "live",
+        odds: [],
+        weather: { temp: "+22°C", wind: "1.7", pressure: "764", humidity: "45" },
       };
     }
 
@@ -56,6 +58,20 @@
     label.textContent = on ? "Remove from favorites" : "Add to favorites";
   }
 
+  function syncWeather(event) {
+    const w = event?.weather || {};
+    const map = {
+      "[data-mh-ei-temp]": w.temp || "+22°C",
+      "[data-mh-ei-wind]": w.wind || "1.7",
+      "[data-mh-ei-pressure]": w.pressure || "764",
+      "[data-mh-ei-humidity]": w.humidity || "45",
+    };
+    Object.entries(map).forEach(([sel, val]) => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = val;
+    });
+  }
+
   function init() {
     if (!document.body.classList.contains("mh-page--event-info")) return;
     const api = window.MhFavourites;
@@ -64,24 +80,18 @@
 
     const note = document.getElementById("mh-ei-note");
     if (note) note.textContent = event.note || "Event details";
-    const w = event.weather || {};
-    const set = (id, val) => {
-      const el = document.getElementById(id);
-      if (el && val != null) el.textContent = val;
-    };
-    set("mh-ei-temp", w.temp);
-    set("mh-ei-wind", w.wind);
-    set("mh-ei-pressure", w.pressure);
-    set("mh-ei-humidity", w.humidity);
 
     syncFavUi(event);
+    syncWeather(event);
 
     const back = document.getElementById("mh-ei-back");
     back?.addEventListener("click", (e) => {
-      if (history.length <= 1) {
-        e.preventDefault();
-        window.location.href = "sports.html";
-      }
+      e.preventDefault();
+      goBack();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") goBack();
     });
 
     document.getElementById("mh-ei-fav")?.addEventListener("click", () => {

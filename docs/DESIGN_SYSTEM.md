@@ -451,7 +451,7 @@ Figma structure: [1XBET `235:18`](https://www.figma.com/design/EdLwHua7n5o3CGSLK
 | Icons | Figma exports in `mobile/assets/icons/profile/pf-*.svg` (fills remapped) | — |
 | Bottom nav | Shared sports `.mh-tabbar` logged-in (Sports · Casino · Bet slip · Deposit · Menu) | Bet slip circle `--cyan-accent` |
 
-CSS: `mobile/css/mobile-profile.css`. JS: `mobile/js/mobile-profile.js` + session chrome in `mobile/js/mobile-home.js`. Patterns also in `mobile/Mobile_Design.md`.
+CSS: `mobile/css/mobile-profile.css`. JS: `mobile/js/mobile-profile.js` + session chrome in `mobile/js/mobile-home.js`. Patterns also in `docs/Mobile_Design.md`.
 
 ---
 
@@ -619,8 +619,10 @@ When designing a **new page**:
 | `js/wc2026.js` / `js/msi.js` / `js/big-tournaments.js` / `js/long-term-bets.js` / `js/multi-live.js` | Page-specific scripts |
 | `assets/icons/` | UI icons (prefixed); Promo filter tabs in `assets/icons/promo/tab-*.svg` |
 | `assets/images/` | Heroes, partners, art |
+| `assets/images/account/flags/lang-*.svg` + `languages.json` | Header language dropdown flags (71 locales from 1xlite) |
 | `assets/fonts/` / `assets/videos/` | Reserved static asset folders |
 | `assets/images/references/sports-home-reference-modified-color.png` | Color source of truth |
-| `docs/DESIGN_SYSTEM.md` | Design system reference |
+| `docs/DESIGN_SYSTEM.md` | Desktop design system reference |
+| `docs/Mobile_Design.md` | Mobile design patterns (`mobile/`) |
 | `.cursor/rules/modified-color-palette.mdc` | Always-on color lock |
 | `.cursor/rules/design-system.mdc` | Always-on design system pointer |

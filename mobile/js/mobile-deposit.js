@@ -256,13 +256,22 @@
     }).join("");
   }
 
-  const TYPE_SHEET_OPEN_MS = 320;
-  const TYPE_SHEET_CLOSE_MS = 260;
+  const TYPE_SHEET_OPEN_MS = 280;
+  const TYPE_SHEET_CLOSE_MS = 220;
   const TYPE_SHEET_PHASES = ["closed", "opening", "open", "closing", "is-open"];
   /** @type {"closed"|"opening"|"open"|"closing"} */
   let typeSheetPhase = "closed";
   let typeSheetFocus = null;
   let typeSheetScrollY = 0;
+
+  function motionMs(ms) {
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return 1;
+    } catch (_) {
+      /* ignore */
+    }
+    return ms;
+  }
 
   function lockTypeSheetScroll(lock) {
     if (lock) {
@@ -330,7 +339,7 @@
       lockTypeSheetScroll(false);
       typeSheetFocus?.focus?.({ preventScroll: true });
       typeSheetFocus = null;
-    }, TYPE_SHEET_CLOSE_MS);
+    }, motionMs(TYPE_SHEET_CLOSE_MS));
   }
 
   function renderMethods() {

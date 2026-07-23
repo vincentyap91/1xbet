@@ -6,9 +6,9 @@
           <span data-mh-menu-clock>14:51</span>
           <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
         </button>
-        <button type="button" class="mh-cs-menu__lang" data-mh-toast="Language">
-          <img src="assets/logos/flag-my.svg" alt="" width="16" height="12" />
-          <span>EN</span>
+        <button type="button" class="mh-cs-menu__lang" data-mh-open-lang aria-haspopup="dialog" aria-controls="mh-lang-panel" aria-expanded="false" aria-label="Select language">
+          <img class="mh-cs-menu__lang-flag" src="assets/logos/flag-my.svg" alt="" width="16" height="12" data-mh-lang-flag />
+          <span data-mh-lang-code>EN</span>
           <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
         </button>
         <span class="mh-cs-menu__spacer"></span>
@@ -55,7 +55,7 @@
         </li>
         <li>
           <a href="sports.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/t20.svg" alt="" /></span>
             <span class="mh-cs-menu__label">T20 Blast</span>
             <span class="mh-cs-menu__badge">TOP</span>
           </a>
@@ -73,20 +73,20 @@
           </a>
         </li>
         <li>
-          <a href="../results.html">
+          <a href="results.html">
             <span class="mh-cs-menu__ico"><img src="assets/icons/icon-clock.svg" alt="" /></span>
             <span class="mh-cs-menu__label">Results</span>
           </a>
         </li>
         <li>
-          <a href="../big-tournaments.html">
+          <a href="statistics.html">
             <span class="mh-cs-menu__ico"><img src="assets/icons/ei-stats.svg" alt="" /></span>
             <span class="mh-cs-menu__label">Statistics</span>
           </a>
         </li>
         <li>
           <a href="../big-tournaments.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/bobt.svg" alt="" /></span>
             <span class="mh-cs-menu__label">Bet on Big Tournaments</span>
           </a>
         </li>
@@ -96,15 +96,21 @@
       <ul class="mh-cs-menu__list">
         <li>
           <a href="casino-promo.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-trophy.svg" alt="" /></span>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/sfv.svg" alt="" /></span>
             <span class="mh-cs-menu__label">Stand for Victory</span>
           </a>
         </li>
         <li>
           <a href="casino.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/cs-casino.svg" alt="" /></span>
+            <span class="mh-cs-menu__ico"><img src="assets/icons/casino.svg" alt="" /></span>
             <span class="mh-cs-menu__label">Casino</span>
             <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+          </a>
+        </li>
+        <li>
+          <a href="live-casino.html">
+            <span class="mh-cs-menu__ico"><img src="assets/casino/categories/live-casino.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Live Casino</span>
           </a>
         </li>
       </ul>
@@ -115,17 +121,6 @@
           <a href="../world-flight-26.html">
             <span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span>
             <span class="mh-cs-menu__label">1xGames</span>
-          </a>
-        </li>
-      </ul>
-
-      <h2 class="mh-cs-menu__section-title">Promo</h2>
-      <ul class="mh-cs-menu__list">
-        <li>
-          <a href="casino-promo.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/icon-gift.svg" alt="" /></span>
-            <span class="mh-cs-menu__label">Promotions and offers</span>
-            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
           </a>
         </li>
       </ul>
@@ -164,12 +159,15 @@
               <span class="mh-cs-menu__label">Transaction history</span>
             </button>
           </li>
+          <!-- Payment queries - hidden on mobile; keep markup for restore -->
+          <!--
           <li>
             <button type="button" data-mh-toast="Payment queries (demo)">
               <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-payment.svg" alt="" /></span>
               <span class="mh-cs-menu__label">Payment queries</span>
             </button>
           </li>
+          -->
           <li>
             <button type="button" data-mh-personal-profile>
               <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-user.svg" alt="" /></span>
@@ -188,13 +186,6 @@
             <button type="button" data-mh-toast="Your accounts (demo)">
               <span class="mh-cs-menu__ico"><img src="assets/icons/menu/wallet.svg" alt="" /></span>
               <span class="mh-cs-menu__label">Your accounts</span>
-            </button>
-          </li>
-          <li>
-            <button type="button" data-mh-toast="Other (demo)">
-              <span class="mh-cs-menu__ico"><img src="assets/icons/icon-more.svg" alt="" /></span>
-              <span class="mh-cs-menu__label">Other</span>
-              <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
             </button>
           </li>
         </ul>
@@ -239,13 +230,6 @@
             <span class="mh-cs-menu__label">Live chat</span>
           </a>
         </li>
-        <li>
-          <a href="#" data-mh-toast="Other (demo)">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/other.svg" alt="" /></span>
-            <span class="mh-cs-menu__label">Other</span>
-            <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
-          </a>
-        </li>
         <li class="mh-cs-menu__acc-item" data-mh-menu-acc-item>
           <button type="button" class="mh-cs-menu__acc-btn" data-mh-menu-acc aria-expanded="false">
             <span class="mh-cs-menu__ico"><img src="assets/icons/menu/info.svg" alt="" /></span>
@@ -262,12 +246,6 @@
             <li><a href="#" data-mh-toast="Contacts (demo)">Contacts</a></li>
             <li><a href="payment-methods.html">Payment methods</a></li>
           </ul>
-        </li>
-        <li>
-          <a href="live-chat.html">
-            <span class="mh-cs-menu__ico"><img src="assets/icons/menu/support.svg" alt="" /></span>
-            <span class="mh-cs-menu__label">Customer Support</span>
-          </a>
         </li>
         <li>
           <a href="#" data-mh-toast="Mobile application (demo)">
@@ -288,5 +266,22 @@
           </button>
         </li>
       </ul>
+
+      <!-- Select Language overlay (opened from menu language control) -->
+      <div class="mh-cs-lang" id="mh-lang-panel" hidden role="dialog" aria-modal="true" aria-labelledby="mh-lang-title">
+        <div class="mh-cs-lang__subbar">
+          <button type="button" class="mh-cs-lang__back" data-mh-close-lang aria-label="Back to menu">
+            <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+          </button>
+          <h2 class="mh-cs-lang__title" id="mh-lang-title">SELECT LANGUAGE</h2>
+        </div>
+        <label class="mh-cs-lang__search">
+          <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+          <input type="search" placeholder="Search" autocomplete="off" data-mh-lang-search />
+        </label>
+                <ul class="mh-cs-lang__list" role="listbox" aria-label="Languages" data-mh-lang-list>
+          <!-- populated by mobile-home.js from assets/flags/languages.json -->
+        </ul>
+      </div>
     </div>
   </div>

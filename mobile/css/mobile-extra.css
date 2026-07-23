@@ -891,10 +891,36 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
   justify-content: center;
   padding: 24px;
   background: rgba(15, 39, 68, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--mh-motion-close-ms, 220ms) var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1)),
+    visibility 0s linear var(--mh-motion-close-ms, 220ms);
 }
 
-.mh-ex-modal-backdrop[hidden] {
+.mh-ex-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity var(--mh-motion-open-ms, 280ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 0s;
+}
+
+.mh-ex-modal-backdrop[hidden]:not(.is-open):not(.is-closing) {
   display: none !important;
+}
+
+.mh-ex-modal-backdrop.is-open,
+.mh-ex-modal-backdrop.is-closing {
+  display: flex !important;
+}
+
+.mh-ex-modal-backdrop.is-closing {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
 }
 
 .mh-ex-modal {
@@ -905,6 +931,26 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
   background: var(--surface-primary);
   text-align: center;
   outline: none;
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.98);
+  transition:
+    transform var(--mh-motion-close-ms, 220ms) var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1)),
+    opacity var(--mh-motion-close-ms, 220ms) var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1));
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.mh-ex-modal-backdrop.is-open .mh-ex-modal {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    transform var(--mh-motion-open-ms, 280ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--mh-motion-open-ms, 280ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.mh-ex-modal-backdrop.is-closing .mh-ex-modal {
+  opacity: 0;
+  transform: translate3d(0, 8px, 0) scale(0.98);
 }
 
 .mh-ex-modal img {
@@ -1090,4 +1136,12 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mh-ex-modal-backdrop,
+  .mh-ex-modal {
+    transition: none !important;
+    will-change: auto;
+  }
 }

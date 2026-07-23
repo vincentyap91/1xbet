@@ -38,6 +38,27 @@
     });
   }
 
+  function bindPageDots(track, dotsRoot) {
+    if (!track || !dotsRoot) return;
+    const dots = Array.from(dotsRoot.querySelectorAll(".mh-cs-hero__dot"));
+    if (!dots.length) return;
+
+    const update = () => {
+      const pageW = track.querySelector(".mh-cs-page")?.clientWidth || track.clientWidth;
+      const i = Math.round(track.scrollLeft / Math.max(pageW, 1));
+      dots.forEach((d, idx) => d.classList.toggle("is-active", idx === i));
+    };
+
+    track.addEventListener("scroll", update, { passive: true });
+    update();
+  }
+
+  function initSectionPages() {
+    document.querySelectorAll(".mh-cs-section--lc").forEach((section) => {
+      bindPageDots(section.querySelector("[data-cs-pages]"), section.querySelector("[data-cs-page-dots]"));
+    });
+  }
+
   function initCountdown() {
     const roots = Array.from(document.querySelectorAll(".mh-cs-timer"));
     if (!roots.length) return;
@@ -128,9 +149,30 @@
     const options = Array.from(menu.querySelectorAll("[data-cs-sort-opt]"));
 
     const setOpen = (open) => {
-      root.classList.toggle("is-open", open);
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      menu.hidden = !open;
+      const closeMs = (() => {
+        try {
+          return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 1 : 200;
+        } catch (_) {
+          return 200;
+        }
+      })();
+
+      if (open) {
+        clearTimeout(setOpen._t);
+        menu.hidden = false;
+        root.classList.remove("is-open");
+        void menu.offsetWidth;
+        root.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+        return;
+      }
+
+      root.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+      clearTimeout(setOpen._t);
+      setOpen._t = window.setTimeout(() => {
+        menu.hidden = true;
+      }, closeMs);
     };
 
     const sortGrid = (mode) => {
@@ -234,6 +276,7 @@
   function init() {
     if (!document.body.classList.contains("mh-page--casino")) return;
     initHeroDots();
+    initSectionPages();
     initCountdown();
     initPromoTabs();
     initPromoForms();

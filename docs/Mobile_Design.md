@@ -2,13 +2,18 @@
 
 Reusable layout, spacing, and class conventions for the mobile site (`mobile/`).
 
+**Doc location:** `docs/Mobile_Design.md` (pair with desktop `docs/DESIGN_SYSTEM.md`)
+
 **Reference:** [1xlite mobile](https://1xlite-46272.pro/en?platform_type=mobile)  
 **Canonical home:** `mobile/index.html` + `mobile/css/mobile-home.css` (scoped under `body.mh-page`)  
 **Sports (Line):** `mobile/sports.html` + `mobile/css/mobile-sports.css` — [1xlite line](https://1xlite-46272.pro/en/line?platform_type=mobile)  
 **Search / Events:** `mobile/search.html` + `mobile/css/mobile-search.css` + `mobile/js/mobile-search.js`  
 **Event info:** `mobile/event-info.html` + `mobile/css/mobile-event-info.css`  
 **Favorites:** `mobile/favourites.html` + `mobile/css/mobile-favourites.css` + `mobile/js/mobile-favourites.js`  
+**Results:** `mobile/results.html` + `mobile/css/mobile-results.css` + `mobile/js/mobile-results.js`  
+**Statistics:** `mobile/statistics.html` + `mobile/css/mobile-statistics.css` + `mobile/js/mobile-statistics.js` (left competitions drawer)  
 **Casino / Slots:** `mobile/casino.html` + `mobile/css/mobile-casino.css` — [1xlite slots](https://1xlite-46272.pro/en/slots?platform_type=mobile) (`.mh-cs-tabbar`: Categories · Providers · MyCasino · Promo · Menu)  
+**Live Casino:** `mobile/live-casino.html` + same `mobile-casino.css` / `mobile-casino.js` — [1xlite live casino](https://1xlite-46272.pro/en/casino?platform_type=mobile)  
 **Auth:** `mobile/login.html` + `mobile/register.html` + `mobile/css/mobile-auth.css` — [login](https://1xlite-46272.pro/en/user/login?platform_type=mobile) · [registration](https://1xlite-46272.pro/en/registration?type=email&bonus=CASINO)  
 **Profile (logged-in):** `mobile/profile.html` + `mobile/css/mobile-profile.css` + `mobile/js/mobile-profile.js` — Figma [`235:18`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/1XBET?node-id=235-18)  
 **Deposit (logged-in):** `mobile/deposit.html` + `mobile/css/mobile-deposit.css` + `mobile/js/mobile-deposit.js` — methods → amount → confirm → success  
@@ -79,6 +84,7 @@ Wide viewports (≥768px) still stay full width — only typography/padding may 
 | `.mh-odds__btn` / `.mh-nt-odd` | Toggle selection → Quick bet slip (`#mh-qbs`) |
 | `#mh-betslip-btn` | Re-open Quick bet slip (or toast if empty) |
 | `#mh-menu-btn` | Opens full-screen `#mh-menu-sheet` (`.mh-cs-menu`) on all sticky tabbars |
+| `[data-mh-open-lang]` / `[data-mh-close-lang]` | Opens/closes Select Language overlay (`.mh-cs-lang`) inside the menu; persists `localStorage mh-lang-v1` |
 | `localStorage mh-logged-in-v1` | Demo session; `body.is-logged-in` swaps header + sports tabbar |
 | `[data-mh-deposit]` / `[data-mh-deposit-tab]` | Opens `deposit.html` (logged-in) or `login.html` (guest) |
 | `[data-mh-withdraw]` | Opens `withdraw.html` (logged-in) or `login.html` (guest) |
@@ -106,7 +112,7 @@ Apply **`data-mh-scroll` + `data-mh-drag-scroll`** together on any rail that sho
 **Header** (replaces Log in + Registration):
 
 - Green **Deposit** (`.mh-btn-deposit` → `--action-green`)
-- Blue account chip (`.mh-header__account` → `--header-action`) with white person icon (`mh-account.svg`) + red notification dot (`.mh-header__account-badge` → `--danger`)
+- Blue account chip (`.mh-header__account` → `--header-action`) with white person icon matching Profile tab glyph (`mh-account.svg` = same silhouette as `profile/pf-tab-user.svg`, white fill) + red notification dot (`.mh-header__account-badge` → `--danger`)
 
 **Sports tab bar** (`.mh-tabbar` only — casino keeps `.mh-cs-tabbar`):
 
@@ -132,7 +138,7 @@ Logged-in account hub. Opened from header account chip (`data-mh-account`). Gues
 |-------|--------|
 | `.mh-pf-card` | 32px avatar + Account No. + copy, balance, messages (**green** count badge), close → home, **My bets** (`data-mh-bets` → bet history) / Deposit (32px tall) |
 | `.mh-pf-tabs` | Horizontal icon+label: Profile · Promo · Settings; active 4px `--action-green` underline |
-| `.mh-pf-group` / `.mh-pf-list` | **My wallet and bets** → Deposit / Withdraw funds / Payment queries · **Profile** → Personal profile / Security (`data-mh-security`) · **History record** → Transaction history / Bet history / Promotion record · **Extra** → Referral / Membership / Rebate / Daily check in / Promotions / Live chat · Log out |
+| `.mh-pf-group` / `.mh-pf-list` | **My wallet and bets** → Deposit / Withdraw funds (Payment queries commented out / hidden) · **Profile** → Personal profile / Security (`data-mh-security`) · **History record** → Transaction history / Bet history / Promotion record · **Extra** → Referral / Membership / Rebate / Daily check in / Promotions / Live chat · Log out |
 | History hooks | `data-mh-tx-history` → `transaction-history.html` · `data-mh-bets` → `bet-history.html` · `data-mh-promo-record` → `promotion-record.html` |
 | Extra links | `referral.html` · `membership.html` · `rebate.html` · `daily-checkin.html` · `live-chat.html` (hooks `data-mh-referral` / `membership` / `rebate` / `checkin` / `live-chat`); Promotions → `casino-promo.html` |
 | Icons | `mobile/assets/icons/profile/pf-*.svg` |
@@ -511,20 +517,36 @@ No custom scrollbar UI (no arrows / thumb bar). Horizontal movement = native ove
 | Full-version + cookie link | `--cyan-accent` |
 | Body text on dark | `--text-inverse` / muted white |
 
-### Bottom navigation
+### Header (guest auth)
+
+Live ref ([statistic](https://1xlite-46272.pro/en/statistic/23.07.2026), ~390×844): **rem root `html { font-size: 19px }`**. Captions = `.ui-caption--size-xs` (`font-size: 0.75rem`; `line-height: 0.875rem`; weight **400**). Auth = `.ui-button--size-s` (`min-height: 2rem`; padding `0.25rem 0.5rem`; radius live `--border-radius: 8px`).
 
 | Property | Value |
 |----------|-------|
-| Height | `56px` + `env(safe-area-inset-bottom)` |
+| Rem root | `html:has(body.mh-page) { font-size: 19px }` |
+| Height | `--mh-header-h: 2.94737rem` (56px @ 19) + safe-area |
+| Logo | `height: 0.85rem` |
+| Log in / Registration / Deposit | `0.75rem` / `400` / `line-height: 0.875rem`; `height: 2rem`; `padding: 0.25rem 0.5rem`; `border-radius: 8px` |
+| Account chip | `2rem × 2rem`, radius `8px` |
+
+### Bottom navigation
+
+Live: same `.ui-caption--size-xs` on tab labels (`0.75rem` / `0.875rem` lh / **400**; Bet slip **700**). Icons ≈ `0.84211rem × 1rem` (16×19). Bar height `2.94737rem` (56px).
+
+| Property | Value |
+|----------|-------|
+| Height | `--mh-tabbar-h: 2.94737rem` + safe-area |
 | Columns | `5` equal `1fr` on ≤480px; ≥481px tabs equal and **centered** as a group |
 | Background | `--surface-primary` |
-| Icon | `20×20` |
-| Label | ~`11px` / `700` |
+| Icon | `0.84211rem × 1rem` |
+| Label | `0.75rem` / `400` / `line-height: 0.875rem` (Bet slip / `.mh-tab--coupon`: `700`) |
 | Bet slip circle | `32×32`, bg `--cyan-accent`, raised |
 | Sports / Casino | `.mh-tab-flyout` slide-up with sub-links + ✕ |
 
 ```css
---mh-tabbar-h: 56px;
+html:has(body.mh-page) { font-size: 19px; }
+--mh-header-h: 2.94737rem;
+--mh-tabbar-h: 2.94737rem;
 ```
 
 ---
@@ -807,7 +829,7 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 ### Event info / Favorites
 
 - [ ] Match **⋯** (`data-mh-event-info`) → `event-info.html`
-- [ ] Event info: Notifications / Add to favorites / Statistics / Team information + weather row
+- [ ] Event info: Notifications / Favorites / 1xZone / Statistics + meta note + weather row
 - [ ] Add to favorites persists in `localStorage` and appears on Favorites
 - [ ] Favorites: Games accordion, Live | Sports tabs, match cards with ⋯
 - [ ] Sub-bar stars / home fav quicknav → `favourites.html`
@@ -822,8 +844,9 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 - [ ] Menu Extra → Information accordion → Terms and Conditions → `terms.html` (General Rules: search + 33 accordions + download)
 - [ ] Menu Extra → Information accordion → Payment methods → `payment-methods.html` (Deposit/Withdrawal tabs · country + method filters · All methods 2-col cards with min/max/fee foot · Deposit CTAs)
 - [ ] Casino Promo (`casino-promo.html`): live assets in `assets/casino/promo/live/`; guest auth card vs logged-in codes+subscribe; tabs Promo / Promo codes (logged-in only) / Promotions / Tournaments; hero 412×204 dots below · promo rail title overlay + Find out more · tourney All/Live/Finished
-- [ ] Casino tab flyout → `casino.html`
-- [ ] Assets under `mobile/assets/casino/` (+ existing `mobile/assets/games/`)
+- [ ] Casino tab flyout → `casino.html` · Live Casino → `live-casino.html`
+- [ ] Live Casino (`live-casino.html`): sub-bar **LIVE CASINO** · hero dots below · 1XLIVE / POPULAR paged 2×2 overlay tiles + PROMO badge · filter FAB · same `.mh-cs-tabbar`
+- [ ] Assets under `mobile/assets/casino/` (+ existing `mobile/assets/games/`); Live Casino thumbs in `mobile/assets/casino/live-casino/`
 
 ### Deposit
 - [ ] Logged-in: header / tab / profile Deposit → `deposit.html`; guest → `login.html`
@@ -1025,14 +1048,17 @@ Sports / National Team sub-bar search → `search.html`. Home quicknav search �
 
 ## Event info (`mobile/event-info.html`)
 
-Opened from match **⋯** via `data-mh-event-info` + `data-mh-event` attributes (handled by `mobile-favourites.js`).
+Opened from match **⋯** via `data-mh-event-info` + `data-mh-event` attributes (handled by `mobile-favourites.js`). Used on home LIVE/SPORTS cards, Sports line, and Favorites. Live modal parity: [event about](https://1xlite-46272.pro/en?modal-id=dashboard-event-about&game-id=738469896&betting-type=live).
 
-1. `.mh-ei-subbar` — back + **Event info**  
-2. Menu card — Notifications, Add/Remove favorites, Statistics, Team information  
-3. Meta card — round note + weather (temp / wind / pressure / humidity)  
-4. Favorites toggle writes `localStorage` key `mh-favourites-v1`
+1. `.mh-ei-subbar` — back + **Event info** (Escape also goes back)  
+2. White menu card — Notifications (filled `ei-bell.svg`), Add/Remove favorites (olive `ei-star.svg`), **1xZone** (`ei-zone.svg`), **Statistics** (`ei-stats.svg` → `statistics.html`)  
+3. Meta panel (`.mh-ei-meta`, `--surface-tertiary`) — circular info icon (`ei-info.svg`) + stage note (e.g. Round Robin / Australia. Hard. Round of 16)  
+4. Weather card (`.mh-ei-weather`) — cloud/temp · wind · pressure · humidity (`ei-cloud` / `ei-wind` / `ei-pressure` / `ei-drop`); values from event `weather` via `mobile-favourites.js`  
+5. Favorites toggle writes `localStorage` key `mh-favourites-v1`; rows toast or navigate like live
 
-Icons: `ei-bell.svg`, `ei-star.svg`, `ei-stats.svg`, `ei-info.svg`, `ei-cloud.svg`, `ei-wind.svg`, `ei-pressure.svg`, `ei-drop.svg`
+Icons: `ei-bell.svg`, `ei-star.svg`, `ei-zone.svg`, `ei-stats.svg`, `ei-info.svg`, `ei-cloud.svg`, `ei-wind.svg`, `ei-pressure.svg`, `ei-drop.svg` under `mobile/assets/icons/`
+
+Home match cards use `.mh-match-card` + `icon-more.svg` for **⋯**; live cards also show a 1xZone action beside the menu.
 
 ---
 
@@ -1070,6 +1096,25 @@ Assets: hero + mid-page promo from live capture in `mobile/assets/casino/banners
 
 ---
 
+## Live Casino (`mobile/live-casino.html`)
+
+**Live ref:** [casino mobile](https://1xlite-46272.pro/en/casino?platform_type=mobile) (URL path `/en/casino`; UI title **LIVE CASINO**)
+
+Reuses Casino / Slots shell: `mh-page--casino mh-page--live-casino`, same header auth, `.mh-cs-subbar` (back · **LIVE CASINO** · search), `.mh-cs-tabbar`, filter FAB `.mh-cs-fab`, shared footer + menu sheet. Styles in `mobile/css/mobile-casino.css`; dots / paging in `mobile/js/mobile-casino.js`.
+
+| Block | Pattern |
+|-------|---------|
+| Hero | `.mh-cs-hero--lc` carousel + `.mh-cs-hero__dots--below` |
+| Sections | **1XLIVE** · **POPULAR** (title + `MORE >>`) |
+| Game pages | `.mh-cs-pages` horizontal pages of 2×2 `.mh-cs-grid--overlay` tiles; `.mh-cs-pages__dots` |
+| Tiles | Title caption overlay (`.mh-cs-game__caption`); green **PROMO** badge bottom-right (`.mh-cs-badge--promo`) |
+| Tab bar | Categories · Providers · MyCasino (cyan bubble) · Promo · Menu — same as slots lobby |
+| Entry points | Casino flyout **Live Casino**, home 1XLIVE / LIVE CASINO rails, `casino-categories` Live Casino tile, menu Casino → Live Casino |
+
+Assets: heroes + game thumbs from live capture in `mobile/assets/casino/live-casino/heroes/` and `.../games/`.
+
+---
+
 ## Menu modal (`#mh-menu-sheet` · `.mh-cs-menu`)
 
 Opened from **any** mobile sticky tabbar **Menu** (`#mh-menu-btn`) — sports `.mh-tabbar` (Sports · Casino · Bet slip · Deposit · Menu) and casino `.mh-cs-tabbar`. Shared markup on home, sports, NT, search, favourites, event-info, profile, auth, promo detail, and all casino pages. Canonical: `mobile/partials/menu-sheet.html`. Styles in `mobile/css/mobile-home.css`. Open/close via `mobile-home.js` (`data-mh-close-menu`, Escape).
@@ -1078,21 +1123,66 @@ Full-viewport light modal (white / grey), not the old sports bottom sheet.
 
 | Block | Content |
 |-------|---------|
-| Top | Time (`[data-mh-menu-clock]`) · EN + flag · Settings · Close |
+| Top | Time (`[data-mh-menu-clock]`) · language control (flag + code + chevron → **Select Language**) · Settings · Close |
 | Wallet (logged-in) | Balance `0 MYR` + green **Deposit** (`data-mh-deposit`) |
 | Search | “Search menu” |
 | Nav | Main page · Sports · Live · T20 Blast (TOP) · Esports · Favorites · Results · Statistics · Bet on Big Tournaments |
-| Casino | Stand for Victory · Casino (chevron) |
+| Casino | Stand for Victory · Casino (chevron) · Live Casino |
 | Games | 1xGames |
-| Promo | Promotions and offers (chevron) |
-| My Account | Logged-in only — same hooks/icons as `profile.html` (Bet history, Messages, Make a deposit, Withdraw, Transaction history, Payment queries, Personal profile, Security, Your accounts, Other) |
-| Extra | Profile Extra (Referral · Membership · Rebate · Daily check in · Promotions · Live chat) + Other · **Information** (accordion) · Customer Support · Mobile application · Other apps · **Log out** (logged-in) |
+| My Account | Logged-in only — Bet history, Messages, Make a deposit, Withdraw, Transaction history, Personal profile, Security, Your accounts (**Payment queries** commented out / hidden; no Other) |
+| Extra | Profile Extra (Referral · Membership · Rebate · Daily check in · Promotions · Live chat) · **Information** (accordion) · Mobile application · Other apps · **Log out** (logged-in) — no Other / Customer Support |
+
+**Select Language** (`.mh-cs-lang` / `#mh-lang-panel`): overlay inside the menu modal. Open from top language control (`[data-mh-open-lang]`). Subbar back (`[data-mh-close-lang]`) returns to menu; title **SELECT LANGUAGE**; search filters the list; rows are flag circle · code · divider · native name; selected row uses pale `--odds-bg`. Language list + circular flag SVGs load from `mobile/assets/flags/languages.json` + `lang-*.svg` (sourced from [1xlite](https://1xlite-46272.pro/en)). Choosing a language updates the menu header code + flag, persists `localStorage mh-lang-v1`, toasts, and closes the language panel. Escape closes language first, then the menu.
+
+**Removed from menu:** Promo section / **Promotions and offers** (promos stay under Extra → Promotions → `casino-promo.html`).
 
 **Information accordion** (`[data-mh-menu-acc]`): About us · **Terms and Conditions** → `terms.html` · Affiliate Program · Become an agent · Privacy Policy · Cookie Policy · Contacts · **Payment methods** → `payment-methods.html`.
 
-**Icons:** row circles use mobile icons + desktop mirrors under `mobile/assets/icons/menu/` (`wallet`, `gamepad`, `support`, `phone`, `other-apps`, `info`, `other` from `assets/icons/ft-*` / `account-subnav`). My Account / Extra / Log out use `assets/icons/profile/pf-*.svg`.
+**Icons:** Campaign rows use `assets/icons/t20.svg`, `bobt.svg`, `sfv.svg`, `casino.svg`. Other row circles use mobile icons + desktop mirrors under `mobile/assets/icons/menu/` (`wallet`, `gamepad`, `phone`, `other-apps`, `info`). My Account / Extra / Log out use `assets/icons/profile/pf-*.svg`. Language flags: `assets/flags/` + `assets/account/flags/`.
 
 **Guest:** hide `.mh-cs-menu__wallet`, `.mh-cs-menu__account`, `.mh-cs-menu__logout-row`.
+
+---
+
+## Results (`mobile/results.html`)
+
+Entry: Menu → **Results**. Light sportsbook board under shared header + `.mh-rs-subbar` (back · **RESULTS** · filter chip).
+
+| Block | Notes |
+|-------|--------|
+| `.mh-rs-sports` | Horizontal icon ribbon (All · Football · Ice Hockey · …); `data-mh-scroll` + `data-mh-drag-scroll`; active = green tint |
+| `.mh-rs-tabs` / `.mh-rs-tab` | Sports (active green underline) · LIVE · 1xZone |
+| `.mh-rs-filters` | Date chip + **24 HOURS** · search toggle · settings |
+| `.mh-rs-block` | Sport accordion (icon · name · chevron); expand shows `.mh-rs-league` + `.mh-rs-match` cards |
+| Match card | Datetime · teams/avatars (+ WIN) · score · venue meta |
+| Shell | Shared footer + sports `.mh-tabbar` + `#mh-menu-sheet` |
+
+CSS/JS: `css/mobile-results.css` · `js/mobile-results.js`. Subbar selectors registered in `mobile-home.css`.
+
+---
+
+## Statistics (`mobile/statistics.html`)
+
+Entry: Menu → **Statistics**. Live ref: [1xlite statistic](https://1xlite-46272.pro/en/statistic/23.07.2026).
+
+One responsive page: **phone** (per-league horizontal match scroll + left drawer) and **wider shell ≥900px** (persistent left nav).
+
+| Block | Notes |
+|-------|--------|
+| `.mh-st-sports-label` | **SPORTS** bar |
+| `.mh-st-sports-rail` | Prev/next arrows + dark carousel; active sport green underline |
+| `.mh-st-titlebar` | Light bar: list btn (phone) · **STATISTICS - TOP MATCHES** · search |
+| `.mh-st-breadcrumb` | Wide only: `STATISTICS / FOOTBALL - TOP MATCHES - date` |
+| `.mh-st-toolbar` | Date prev/label/next · pages 1–5 with arrows |
+| `.mh-st-board-scroll` | Vertical scroll viewport (`max-height` + `overflow-y: auto`; `overflow-x: hidden`). Vertical scrollbar thin on phone; thicker grey thumb `#5a6a7a` / track `#c5ced6` on ≥900px |
+| `.mh-st-league__head` | Full-width league bar (not in H-scroller). Sticky (`top: 0`) inside `.mh-st-board-scroll` while matches scroll vertically |
+| `.mh-st-league__scroll` | Phone: wraps match rows; `overflow-x: auto` + thin H-scrollbar (track `#e4edf4`, thumb `#7a8a9a`, ~4px). Match rows `min-width: 640px`. ≥900px: `min-width: 0` so grid fills; H-scroll only if needed |
+| `.mh-st-match__score` | Blue box (`--section-blue`) + white tabular score |
+| `.mh-st-side` | Wide: sticky left nav (Top Competitions · Rankings · Choose Tournament); `gap: 12px` from content on `#e8eef4` |
+| `.mh-st-drawer` | Phone left slide-out (same nav); edge chevron close; blur backdrop; ~300ms |
+| Shell | Shared footer + sports `.mh-tabbar` + `#mh-menu-sheet` |
+
+CSS/JS: `css/mobile-statistics.css` · `js/mobile-statistics.js`. Subbar prefix `.mh-st-` registered in `mobile-home.css`.
 
 ---
 
@@ -1194,6 +1284,8 @@ Successful submit (or social) sets `mh-logged-in-v1` and redirects to `index.htm
 
 Icons: `assets/icons/auth-*.svg` (from live). `data-auth-open="login|register"` on mobile pages navigates here via `mobile-home.js`.
 
+**Login CTA / Remember me:** `.mh-auth-submit` uses `--action-green` (48px hit target); `.mh-auth-check` uses `--brand-blue` square + white tick (`auth-check.svg`) and `--header-action` label; password eye uses `auth-eye.svg` / `auth-eye-off.svg` (`currentColor`).
+
 ---
 
 ## Inner-page subbar (canonical)
@@ -1206,6 +1298,8 @@ Shared in `mobile/css/mobile-home.css` (match screenshot 2 · `referral.html` / 
 | Back | `32×32`; `border-radius: 6px`; bg `rgba(255,255,255,0.14)`; icon `sp-back.svg` `10×16` white |
 | Title | Flex grow; left-aligned; `15px` / `700` / `letter-spacing: 0.06em` / uppercase; **ellipsis** if long (`min-width: 0`) |
 | Actions | Optional right chips (`__actions` / `__btn` / `.mh-cs-subbar__search`): search · favourite · filter — same 32×32 chip as back |
+
+Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-rs-` (Results) · `.mh-st-` (Statistics).
 
 Do not redefine shell/back/title in page CSS. Long titles (e.g. National Team) must truncate — never wrap or push icons off-screen.
 

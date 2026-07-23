@@ -77,7 +77,7 @@
     const id = root.getAttribute("data-event-id");
     if (!id) return null;
 
-    const teamEls = root.querySelectorAll("[data-event-team], .mh-sp-card__team, .mh-sp-match__team, .mh-ev-card__team");
+    const teamEls = root.querySelectorAll("[data-event-team], .mh-sp-card__team, .mh-sp-match__team, .mh-ev-card__team, .mh-match-card__team");
     const homeEl = teamEls[0];
     const awayEl = teamEls[1];
     const homeImg = homeEl?.querySelector("img");
@@ -92,13 +92,13 @@
       id,
       sport: root.getAttribute("data-event-sport") || "football",
       sportIcon: root.getAttribute("data-event-sport-icon") || "assets/icons/sport-football.svg",
-      time: root.getAttribute("data-event-time") || root.querySelector(".mh-sp-card__time, .mh-sp-match__time, .mh-ev-card__time")?.textContent?.trim() || "",
-      league: root.getAttribute("data-event-league") || root.querySelector(".mh-sp-card__league, .mh-ev-card__league")?.textContent?.trim() || "",
+      time: root.getAttribute("data-event-time") || root.querySelector(".mh-sp-card__time, .mh-sp-match__time, .mh-ev-card__time, .mh-match-card__clock")?.textContent?.trim() || "",
+      league: root.getAttribute("data-event-league") || root.querySelector(".mh-sp-card__league, .mh-ev-card__league, .mh-match-card__league")?.textContent?.trim() || "",
       home: root.getAttribute("data-event-home") || homeEl?.textContent?.trim() || "",
       homeLogo: root.getAttribute("data-event-home-logo") || homeImg?.getAttribute("src") || "assets/logos/partner-barcelona.webp",
       away: root.getAttribute("data-event-away") || awayEl?.textContent?.trim() || "",
       awayLogo: root.getAttribute("data-event-away-logo") || awayImg?.getAttribute("src") || "assets/logos/partner-psg.webp",
-      note: root.getAttribute("data-event-note") || root.querySelector(".mh-sp-card__note, .mh-ev-card__note")?.textContent?.trim() || "",
+      note: root.getAttribute("data-event-note") || root.querySelector(".mh-sp-card__note, .mh-ev-card__note, .mh-match-card__note")?.textContent?.trim() || "",
       scope: root.getAttribute("data-event-scope") || "sports",
       odds,
       weather: {

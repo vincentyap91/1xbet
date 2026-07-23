@@ -639,10 +639,10 @@ body.mh-page.mh-page--withdraw .mh-qbs {
 
 /* Types of payment systems — bottom sheet (state machine: closed→opening→open→closing) */
 .mh-dep-type-sheet {
-  --mh-dep-sheet-open-ms: 320ms;
-  --mh-dep-sheet-close-ms: 260ms;
-  --mh-dep-sheet-ease-open: cubic-bezier(0.22, 1, 0.36, 1);
-  --mh-dep-sheet-ease-close: cubic-bezier(0.4, 0, 1, 1);
+  --mh-dep-sheet-open-ms: var(--mh-motion-open-ms, 280ms);
+  --mh-dep-sheet-close-ms: var(--mh-motion-close-ms, 220ms);
+  --mh-dep-sheet-ease-open: var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1));
+  --mh-dep-sheet-ease-close: var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1));
   --mh-dep-sheet-dur: var(--mh-dep-sheet-open-ms);
   --mh-dep-sheet-ease: var(--mh-dep-sheet-ease-open);
   position: fixed;
@@ -697,6 +697,8 @@ body.mh-page.mh-page--withdraw .mh-qbs {
   max-height: min(82dvh, 560px);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  contain: content;
   background: var(--surface-primary);
   border-radius: 12px 12px 0 0;
   padding: 8px 0 calc(12px + env(safe-area-inset-bottom, 0px));
