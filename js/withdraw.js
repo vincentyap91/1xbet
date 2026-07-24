@@ -6,7 +6,9 @@
   if (document.body.dataset.page !== 'withdraw') return;
 
   var SUBMIT_MS = 1400;
+  var REFRESH_COOLDOWN_S = 15;
   var PRESET_AMOUNTS = [5, 10, 50, 100, 500, 1000];
+  var requestsRefreshTimer = null;
 
   var METHODS = {
     touchngo: {
@@ -605,8 +607,72 @@
     goBack();
   }
 
+  function formatRefreshTimer(seconds) {
+    var m = Math.floor(seconds / 60);
+    var s = seconds % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function clearRequestsRefresh() {
+    if (requestsRefreshTimer) {
+      clearInterval(requestsRefreshTimer);
+      requestsRefreshTimer = null;
+    }
+  }
+
+  function setRequestsOpen(open) {
+    var btn = document.getElementById('btn-wd-requests');
+    var panel = document.getElementById('wd-requests');
+    if (!btn || !panel) return;
+    panel.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function startRequestsRefresh() {
+    var refreshBtn = document.querySelector('#wd-requests [data-wd-requests-refresh]');
+    var timerEl = document.querySelector('#wd-requests [data-wd-requests-timer]');
+    if (!refreshBtn || !timerEl || refreshBtn.disabled) return;
+
+    var remaining = REFRESH_COOLDOWN_S;
+    clearRequestsRefresh();
+    refreshBtn.disabled = true;
+    timerEl.hidden = false;
+    timerEl.textContent = formatRefreshTimer(remaining);
+
+    requestsRefreshTimer = setInterval(function () {
+      remaining -= 1;
+      if (remaining <= 0) {
+        clearRequestsRefresh();
+        refreshBtn.disabled = false;
+        timerEl.hidden = true;
+        timerEl.textContent = '';
+        return;
+      }
+      timerEl.textContent = formatRefreshTimer(remaining);
+    }, 1000);
+  }
+
+  function bindRequestsPanel() {
+    var btn = document.getElementById('btn-wd-requests');
+    var panel = document.getElementById('wd-requests');
+    var refreshBtn = document.querySelector('#wd-requests [data-wd-requests-refresh]');
+    if (!btn || !panel) return;
+
+    btn.addEventListener('click', function () {
+      setRequestsOpen(panel.hidden);
+    });
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function () {
+        startRequestsRefresh();
+      });
+    }
+  }
+
   function init() {
     if (!stepMethods || !stepDetails) return;
+
+    bindRequestsPanel();
 
     stepMethods.addEventListener('click', function (e) {
       var card = e.target.closest('.pay-method-card[data-method-id]');

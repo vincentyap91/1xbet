@@ -165,13 +165,19 @@
       if (teams.length === 1) return teams[0];
     }
 
+    const btRow = btn.closest(".mh-bt-row");
+    if (btRow) {
+      const name = $(".mh-bt-row__name", btRow)?.textContent?.replace(/\s+/g, " ").trim();
+      if (name) return name;
+    }
+
     return "Event";
   }
 
   function ensureOddId(btn) {
     let id = btn.getAttribute("data-mh-odd-id");
     if (id) return id;
-    const lab = ($(".mh-odds__lab, .mh-nt-odd__lab", btn)?.textContent || "").trim();
+    const lab = ($(".mh-odds__lab, .mh-nt-odd__lab, .mh-bt-odd__lab", btn)?.textContent || "").trim();
     const odd = btn.getAttribute("data-odd") || "";
     const event = eventNameFromOddBtn(btn);
     id = `${event}|${lab}|${odd}`.toLowerCase().replace(/\s+/g, " ");
@@ -181,7 +187,7 @@
 
   function syncOddButtons() {
     const ids = new Set(bets.map((b) => b.id));
-    $$(".mh-odds__btn, .mh-nt-odd").forEach((btn) => {
+    $$(".mh-odds__btn, .mh-nt-odd, .mh-bt-odd").forEach((btn) => {
       const id = ensureOddId(btn);
       btn.classList.toggle("is-selected", ids.has(id));
     });
@@ -351,8 +357,8 @@
   function addBetFromBtn(btn) {
     const id = ensureOddId(btn);
     if (bets.some((b) => b.id === id)) return;
-    const lab = ($(".mh-odds__lab, .mh-nt-odd__lab", btn)?.textContent || "").trim();
-    const valEl = $(".mh-odds__val, .mh-nt-odd__val", btn);
+    const lab = ($(".mh-odds__lab, .mh-nt-odd__lab, .mh-bt-odd__lab", btn)?.textContent || "").trim();
+    const valEl = $(".mh-odds__val, .mh-nt-odd__val, .mh-bt-odd__val", btn);
     const oddRaw = btn.getAttribute("data-odd") || valEl?.textContent || "0";
     const odd = Number(oddRaw);
     bets.push({
@@ -433,7 +439,7 @@
 
   function initOdds() {
     document.addEventListener("click", (e) => {
-      const btn = e.target.closest(".mh-odds__btn, .mh-nt-odd");
+      const btn = e.target.closest(".mh-odds__btn, .mh-nt-odd, .mh-bt-odd");
       if (!btn) return;
       e.preventDefault();
       toggleBetFromBtn(btn);
@@ -444,7 +450,7 @@
     if (!qbs) return;
 
     bets = loadBets();
-    $$(".mh-odds__btn, .mh-nt-odd").forEach((btn) => ensureOddId(btn));
+    $$(".mh-odds__btn, .mh-nt-odd, .mh-bt-odd").forEach((btn) => ensureOddId(btn));
     syncOddButtons();
     renderQbs({ open: false });
     setQbsPhase("closed");

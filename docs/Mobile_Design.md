@@ -202,7 +202,7 @@ Logged-in fund withdrawal. Opened from Deposit/Withdrawal tabs, profile **Withdr
 |-------|--------|
 | `.mh-dep-mode` | Deposit → `deposit.html` / Withdrawal active; green underline |
 | Account row | **WITHDRAWING FROM ACCOUNT** + copy |
-| `.mh-wd-toolbar` | Blue Types chip (`.mh-dep-type-sheet`) + green **Withdrawal requests** |
+| `.mh-wd-toolbar` | Blue Types chip (`.mh-dep-type-sheet`) + green **Withdrawal requests** (toggles `#mh-wd-requests` panel; refresh countdown ~15s) |
 | `.mh-wd-confirm` | Confirm via **App** |
 | Cards | Recommended (blue footers); Payment cards use `.mh-dep-card--muted` grey footers |
 | Logos | `mobile/assets/payments/` (TnG, DuitNow, FPX, online-banking, Visa/MC SVGs, etc.) |
@@ -1161,6 +1161,25 @@ CSS/JS: `css/mobile-results.css` · `js/mobile-results.js`. Subbar selectors reg
 
 ---
 
+## Bet on Big Tournaments (`mobile/big-tournaments.html`)
+
+Entry: Menu → **Bet on Big Tournaments**. Screenshot accordion layout; desktop `big-tournaments.html` outright data + country/league flags from `../assets/icons/bt-*`.
+
+| Block | Notes |
+|-------|--------|
+| `.mh-bt-subbar` | Back + **BET ON BIG TOURNAMENTS** (no action chips) |
+| `.mh-bt-hero` | WC promo banner (`../assets/images/promo/one-hit-world-cup-2026-banner.jpg`) |
+| `.mh-bt-sport` | Football section header (sport icon · title · home) |
+| `.mh-bt-league` | Accordion bars; WC open by default; other leagues collapsed |
+| `.mh-bt-market__select` | Market dropdown (1-3RD PLACE / semis / final / places / Winner) |
+| `.mh-bt-row` / `.mh-bt-odd` | Team + country/league flag + YES/NO odds → Quick bet slip |
+| Flags | Reuse desktop `bt-flag-*.png`, `bt-league-*.png`, `bt-wc-winner.png` |
+| Shell | Full `.mh-footer` + sports `.mh-tabbar` + `#mh-menu-sheet` + `#mh-qbs` |
+
+CSS/JS: `css/mobile-big-tournaments.css` · `js/mobile-big-tournaments.js`. Subbar `.mh-bt-` registered in `mobile-home.css`.
+
+---
+
 ## Statistics (`mobile/statistics.html`)
 
 Entry: Menu → **Statistics**. Live ref: [1xlite statistic](https://1xlite-46272.pro/en/statistic/23.07.2026).
@@ -1308,7 +1327,7 @@ Shared in `mobile/css/mobile-home.css` (match screenshot 2 · `referral.html` / 
 
 **Sub-bar Filter chip** opens markets Filters overlay (`#mh-mf` · `css/mobile-markets-filter.css` · `js/mobile-markets-filter.js`): Markets checkboxes + period radios + Cancel/Save. Search → `search.html` (Events). Favourite → `favourites.html`.
 
-Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-rs-` (Results) · `.mh-st-` (Statistics).
+Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-rs-` (Results) · `.mh-st-` (Statistics) · `.mh-bt-` (Big Tournaments).
 
 Do not redefine shell/back/title in page CSS. Long titles (e.g. National Team) must truncate — never wrap or push icons off-screen.
 

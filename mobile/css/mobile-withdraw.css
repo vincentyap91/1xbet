@@ -2,36 +2,140 @@
 
 .mh-wd-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 12px;
 }
 
 .mh-wd-toolbar .mh-dep-chip {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 4px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mh-wd-btn-requests {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   min-height: 28px;
-  padding: 4px 10px;
+  padding: 4px 8px;
   border: none;
   border-radius: 4px;
   background: var(--action-green);
   color: var(--text-inverse);
-  font-size: 12px;
+  font-family: var(--font);
+  font-size: 11px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
   cursor: pointer;
   margin-left: auto;
 }
 
 .mh-wd-btn-requests__chev {
-  font-size: 10px;
-  line-height: 1;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transform: rotate(180deg);
+  transition: transform 0.15s ease;
   opacity: 0.95;
+}
+
+.mh-wd-btn-requests[aria-expanded="true"] .mh-wd-btn-requests__chev {
+  transform: rotate(0deg);
+}
+
+/* Withdrawal requests panel */
+.mh-wd-requests {
+  margin: 0 0 12px;
+}
+
+.mh-wd-requests[hidden] {
+  display: none !important;
+}
+
+.mh-wd-requests__bar {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--action-green);
+}
+
+.mh-wd-requests__refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 2px;
+  background: var(--action-green-active);
+  color: var(--text-inverse);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mh-wd-requests__refresh:disabled {
+  cursor: default;
+  opacity: 0.95;
+}
+
+.mh-wd-requests__refresh-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.mh-wd-requests__timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-wd-requests__table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--surface-primary);
+  border: 1px solid var(--action-green);
+  border-top: none;
+}
+
+.mh-wd-requests__table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-family: var(--font);
+  font-size: 12px;
+}
+
+.mh-wd-requests__table th,
+.mh-wd-requests__table td {
+  padding: 10px 10px;
+  text-align: left;
+  vertical-align: middle;
+  border: none;
+}
+
+.mh-wd-requests__table th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.mh-wd-requests__table td {
+  color: var(--text-primary);
 }
 
 .mh-wd-confirm {

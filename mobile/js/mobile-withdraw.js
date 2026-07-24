@@ -5,6 +5,8 @@
 
   const PAY = "assets/payments/";
   const PRESETS = [10, 50, 100, 200, 500, 1000];
+  const REFRESH_COOLDOWN_S = 15;
+  let requestsRefreshTimer = null;
 
   const METHODS = {
     touchngo: {
@@ -464,6 +466,51 @@
     });
   }
 
+  function formatRefreshTimer(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+
+  function clearRequestsRefresh() {
+    if (requestsRefreshTimer) {
+      window.clearInterval(requestsRefreshTimer);
+      requestsRefreshTimer = null;
+    }
+  }
+
+  function setRequestsOpen(open) {
+    const btn = $("#mh-wd-btn-requests");
+    const panel = $("#mh-wd-requests");
+    if (!btn || !panel) return;
+    panel.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  function startRequestsRefresh() {
+    const refreshBtn = document.querySelector("#mh-wd-requests [data-wd-requests-refresh]");
+    const timerEl = document.querySelector("#mh-wd-requests [data-wd-requests-timer]");
+    if (!refreshBtn || !timerEl || refreshBtn.disabled) return;
+
+    let remaining = REFRESH_COOLDOWN_S;
+    clearRequestsRefresh();
+    refreshBtn.disabled = true;
+    timerEl.hidden = false;
+    timerEl.textContent = formatRefreshTimer(remaining);
+
+    requestsRefreshTimer = window.setInterval(() => {
+      remaining -= 1;
+      if (remaining <= 0) {
+        clearRequestsRefresh();
+        refreshBtn.disabled = false;
+        timerEl.hidden = true;
+        timerEl.textContent = "";
+        return;
+      }
+      timerEl.textContent = formatRefreshTimer(remaining);
+    }, 1000);
+  }
+
   function init() {
     try {
       if (localStorage.getItem("mh-logged-in-v1") !== "1") {
@@ -483,6 +530,17 @@
     });
 
     document.addEventListener("click", (e) => {
+      if (e.target.closest("#mh-wd-btn-requests")) {
+        const panel = $("#mh-wd-requests");
+        setRequestsOpen(!!panel?.hidden);
+        return;
+      }
+
+      if (e.target.closest("#mh-wd-requests [data-wd-requests-refresh]")) {
+        startRequestsRefresh();
+        return;
+      }
+
       if (e.target.closest("[data-mh-wd-types]")) {
         setTypeSheetOpen(true);
         return;

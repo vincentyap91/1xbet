@@ -4052,18 +4052,125 @@ body[data-page="live-chat"] .site-footer {
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
+  font-family: var(--font);
   font-size: 11px;
   font-weight: 700;
   color: #fff;
   background: var(--action-green);
+  border: none;
   border-radius: var(--radius-sm);
   white-space: nowrap;
   text-decoration: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .02em;
   transition: background .15s;
 }
 
 .btn-withdrawal-requests:hover {
   background: var(--action-green-hover);
+}
+
+.btn-withdrawal-requests__chev {
+  flex-shrink: 0;
+  transform: rotate(180deg);
+  transition: transform .15s ease;
+}
+
+.btn-withdrawal-requests[aria-expanded="true"] .btn-withdrawal-requests__chev {
+  transform: rotate(0deg);
+}
+
+.btn-withdrawal-requests[aria-expanded="true"] .btn-withdrawal-requests__list {
+  display: none;
+}
+
+/* Withdrawal requests panel */
+.wd-requests {
+  margin: 0 0 var(--acc-card-gap);
+}
+
+.wd-requests[hidden] {
+  display: none !important;
+}
+
+.wd-requests__bar {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  background: var(--action-green);
+}
+
+.wd-requests__refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 2px;
+  background: var(--action-green-active);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wd-requests__refresh:hover:not(:disabled) {
+  background: var(--action-green-hover);
+  color: #fff;
+}
+
+.wd-requests__refresh:disabled {
+  cursor: default;
+  opacity: .95;
+}
+
+.wd-requests__refresh-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.wd-requests__timer {
+  font-variant-numeric: tabular-nums;
+}
+
+.wd-requests__table-wrap {
+  overflow-x: auto;
+  background: var(--surface-primary);
+  border: 1px solid var(--action-green);
+  border-top: none;
+}
+
+.wd-requests__table {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-family: var(--font);
+  font-size: 12px;
+}
+
+.wd-requests__table th,
+.wd-requests__table td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: middle;
+  border: none;
+}
+
+.wd-requests__table th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.wd-requests__table td {
+  color: var(--text-primary);
 }
 
 /* ── Deposit multi-step flow ─────────────────────────────── */

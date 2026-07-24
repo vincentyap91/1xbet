@@ -53,10 +53,45 @@
           <button type="button" class="mh-dep-chip" data-mh-wd-types aria-haspopup="dialog" aria-expanded="false" aria-controls="mh-wd-type-sheet">
             Types of payment systems
           </button>
-          <button type="button" class="mh-wd-btn-requests" data-mh-toast="Withdrawal requests (demo)">
+          <button type="button" class="mh-wd-btn-requests" id="mh-wd-btn-requests" aria-expanded="false" aria-controls="mh-wd-requests">
             Withdrawal requests
-            <span class="mh-wd-btn-requests__chev" aria-hidden="true">▾</span>
+            <svg class="mh-wd-btn-requests__chev" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2.5 4.75L6 1.25L9.5 4.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2.5 8.25L6 4.75L9.5 8.25" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
+        </div>
+
+        <div class="mh-wd-requests" id="mh-wd-requests" hidden>
+          <div class="mh-wd-requests__bar">
+            <button type="button" class="mh-wd-requests__refresh" data-wd-requests-refresh>
+              <img class="mh-wd-requests__refresh-icon" src="../assets/images/account/icon-refresh.svg" alt="" width="12" height="12" />
+              <span class="mh-wd-requests__refresh-label">Refresh status</span>
+              <span class="mh-wd-requests__timer" data-wd-requests-timer hidden></span>
+            </button>
+          </div>
+          <div class="mh-wd-requests__table-wrap">
+            <table class="mh-wd-requests__table">
+              <thead>
+                <tr>
+                  <th>Date of request</th>
+                  <th>Payout available from</th>
+                  <th>Payment method</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody data-wd-requests-body>
+                <tr>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <div class="mh-wd-confirm">

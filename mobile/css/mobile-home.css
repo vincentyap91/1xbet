@@ -78,7 +78,8 @@ body.mh-page.mh-sheet-open {
 .mh-tc-subbar,
 .mh-pm-subbar,
 .mh-rs-subbar,
-.mh-st-subbar {
+.mh-st-subbar,
+.mh-bt-subbar {
   position: sticky;
   top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
   z-index: 90;
@@ -111,7 +112,8 @@ body.mh-page.mh-sheet-open {
 .mh-tc-subbar__back,
 .mh-pm-subbar__back,
 .mh-rs-subbar__back,
-.mh-st-subbar__back {
+.mh-st-subbar__back,
+.mh-bt-subbar__back {
   flex: 0 0 32px;
   display: inline-flex;
   align-items: center;
@@ -151,7 +153,8 @@ body.mh-page.mh-sheet-open {
 .mh-tc-subbar__back img,
 .mh-pm-subbar__back img,
 .mh-rs-subbar__back img,
-.mh-st-subbar__back img {
+.mh-st-subbar__back img,
+.mh-bt-subbar__back img {
   width: 10px;
   height: 16px;
   display: block;
@@ -175,7 +178,8 @@ body.mh-page.mh-sheet-open {
 .mh-tc-subbar__title,
 .mh-pm-subbar__title,
 .mh-rs-subbar__title,
-.mh-st-subbar__title {
+.mh-st-subbar__title,
+.mh-bt-subbar__title {
   flex: 1 1 auto;
   margin: 0;
   min-width: 0;
