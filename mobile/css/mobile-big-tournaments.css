@@ -77,14 +77,15 @@ body.mh-page.mh-page--big-tournaments .mh-main {
   filter: none;
 }
 
-.mh-bt-sport__head > span {
+.mh-bt-sport__head > span:not(.mh-bt-sport__chev) {
   flex: 1 1 auto;
   min-width: 0;
   color: var(--section-blue, #1a4f8a);
 }
 
-.mh-bt-sport__chev {
+.mh-bt-sport__head .mh-bt-sport__chev {
   flex: 0 0 auto;
+  margin-left: auto;
   width: 18px;
   height: 18px;
   background-color: var(--section-blue, #1a4f8a);
