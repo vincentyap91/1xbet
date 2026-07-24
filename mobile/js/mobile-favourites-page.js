@@ -54,7 +54,7 @@
 
     const listEl = document.getElementById("mh-fv-list");
     const emptyEl = document.getElementById("mh-fv-empty");
-    let tab = "sports";
+    let tab = "live";
 
     const back = document.getElementById("mh-fv-back");
     back?.addEventListener("click", (e) => {

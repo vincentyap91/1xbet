@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="../css/auth-modals.css" />
   <link rel="stylesheet" href="css/mobile-home.css" />
   <link rel="stylesheet" href="css/mobile-results.css" />
+  <link rel="stylesheet" href="css/mobile-markets-filter.css" />
 </head>
 <body class="mh-page mh-page--results" data-page="results">
   <header class="mh-header" id="mh-header">
@@ -28,7 +29,7 @@
     </a>
     <h1 class="mh-rs-subbar__title">Results</h1>
     <div class="mh-rs-subbar__actions">
-      <button type="button" class="mh-rs-subbar__btn" data-mh-toast="Filters coming soon" aria-label="Filter">
+      <button type="button" class="mh-rs-subbar__btn" data-mh-mf-open aria-haspopup="dialog" aria-controls="mh-mf" aria-label="Filter">
         <img src="assets/icons/sp-filter.svg" alt="" width="16" height="16" />
       </button>
     </div>
@@ -698,5 +699,6 @@
   <script src="js/mobile-languages-data.js"></script>
   <script src="js/mobile-home.js"></script>
   <script src="js/mobile-results.js"></script>
+  <script src="js/mobile-markets-filter.js"></script>
 </body>
 </html>

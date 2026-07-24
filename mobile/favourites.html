@@ -37,13 +37,16 @@
       </button>
       <div class="mh-fv-panel__body" id="mh-fv-games">
         <div class="mh-fv-tabs" role="tablist" aria-label="Favourites filter">
-          <button type="button" class="mh-fv-tab" role="tab" aria-selected="false" data-mh-fv-tab="live">Live</button>
-          <button type="button" class="mh-fv-tab is-active" role="tab" aria-selected="true" data-mh-fv-tab="sports">Sports</button>
+          <button type="button" class="mh-fv-tab is-active" role="tab" aria-selected="true" data-mh-fv-tab="live">Live</button>
+          <button type="button" class="mh-fv-tab" role="tab" aria-selected="false" data-mh-fv-tab="sports">Sports</button>
           <button type="button" class="mh-fv-tabs__clock" data-mh-toast="Schedule view coming soon" aria-label="Schedule">
             <img src="assets/icons/icon-clock.svg" alt="" width="16" height="16" />
           </button>
         </div>
-        <div class="mh-fv-empty" id="mh-fv-empty" hidden>No favourite games yet. Open a match menu and tap Add to favorites.</div>
+        <div class="mh-fv-empty" id="mh-fv-empty" hidden>
+          <p class="mh-fv-empty__title">You have no favorite games</p>
+          <p class="mh-fv-empty__hint">You haven't added any games to your favourites yet</p>
+        </div>
         <div class="mh-fv-list" id="mh-fv-list"></div>
       </div>
     </section>
@@ -57,6 +60,18 @@
               <a href="../partnership.html" class="mh-footer__partner-tile" title="FC Barcelona"><img src="assets/logos/partner-barcelona.webp" alt="FC Barcelona" width="55" height="55" loading="lazy" /></a>
               <a href="../partnership.html" class="mh-footer__partner-tile" title="Serie A"><img src="assets/logos/partner-serie-a.webp" alt="Serie A" width="55" height="55" loading="lazy" /></a>
               <a href="../partnership.html" class="mh-footer__partner-tile" title="PSG"><img src="assets/logos/partner-psg.webp" alt="PSG" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="CAF"><img src="assets/logos/partner-caf.webp" alt="CAF" width="55" height="55" loading="lazy" /></a>
+            </div>
+          </div>
+        </section>
+
+        <section class="mh-footer__slider" aria-label="Esports partners">
+          <h2 class="mh-footer__slider-title">Esports partners</h2>
+          <div class="mh-footer__slider-box">
+            <div class="mh-footer__slider-track" data-mh-scroll data-mh-drag-scroll>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="PGL"><img src="assets/logos/partner-pgl.webp" alt="PGL" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="MIBR"><img src="assets/logos/partner-mibr.webp" alt="MIBR" width="55" height="55" loading="lazy" /></a>
+              <a href="../partnership.html" class="mh-footer__partner-tile" title="Riot Games"><img src="assets/logos/partner-riot.webp" alt="Riot Games" width="55" height="55" loading="lazy" /></a>
             </div>
           </div>
         </section>
@@ -69,11 +84,38 @@
           </div>
         </a>
 
+        <div class="mh-footer__social">
+          <a href="https://www.facebook.com/1xMalay" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <img src="assets/icons/icon-facebook.svg" alt="" width="16" height="16" />
+          </a>
+          <a href="https://www.instagram.com/1xmalaysia" class="mh-footer__social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="assets/icons/icon-instagram.svg" alt="" width="16" height="16" />
+          </a>
+        </div>
+
+        <a href="live-chat.html" class="mh-footer__support">
+          <img src="assets/icons/CS.svg" alt="" width="42" height="42" class="mh-footer__support-icon" />
+          <span class="mh-footer__support-copy">
+            <strong>Customer Support</strong>
+            <span>Ask any questions</span>
+          </span>
+        </a>
+
         <div class="mh-footer__legal-block">
           <p class="mh-footer__legal">Copyright © 2026 «1xBet».</p>
+          <p class="mh-footer__cookie">1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet. <a href="../terms.html">Find out more</a></p>
         </div>
 
         <a href="../index.html" class="mh-footer__full">Go to the full version of the website</a>
+
+        <div class="mh-footer__meta">
+          <span class="mh-footer__age">18+</span>
+          <button type="button" class="mh-footer__lang" aria-label="Language">
+            <img src="assets/logos/flag-my.svg" alt="" width="16" height="16" />
+            <span>EN</span>
+            <span class="mh-footer__lang-chevron" aria-hidden="true">▾</span>
+          </button>
+        </div>
       </div>
     </footer>
   </main>

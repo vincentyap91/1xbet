@@ -1280,9 +1280,16 @@ Successful submit (or social) sets `mh-logged-in-v1` and redirects to `index.htm
 | Page | Method tabs | Forms |
 |------|-------------|-------|
 | Login | By email · By phone · By code · Social networks | Email/ID + password; phone + password; phone + Send via SMS; Telegram/Google |
-| Register | By e-mail · By phone · One-click · Social networks and messengers | Email step 1/3 + Gmail tip; phone + SMS + promo; country/currency/promo; social + country/currency |
+| Register | By e-mail · By phone · One-click · Social networks and messengers | Email 3-step flow (below); phone + SMS + promo; country/currency/promo; social + country/currency |
 
-Icons: `assets/icons/auth-*.svg` (from live). `data-auth-open="login|register"` on mobile pages navigates here via `mobile-home.js`.
+**Register by e-mail (multi-step):**
+1. Email + Gmail tip → Back (disabled) / Next  
+2. Select country (flag + picker overlay) → Back / Next  
+3. Currency picker · password · confirm · promo · bonus selector → Register / Back + terms line  
+Overlays: `#mh-auth-country`, `#mh-auth-currency` (searchable lists), `#mh-auth-bonuses` (Casino + 1xGames / Sport Single / Bonus for sports / Reject · Cancel/Save).  
+On Register: set `mh-logged-in-v1`, swap header to Deposit + account, show **Your account details** + countdown → `deposit.html`, plus dismissible **100% bonus** promo (`GET BONUS` → `deposit.html`).
+
+Icons: `assets/icons/auth-*.svg` (from live) + `auth-key.svg`. `data-auth-open="login|register"` on mobile pages navigates here via `mobile-home.js`.
 
 **Login CTA / Remember me:** `.mh-auth-submit` uses `--action-green` (48px hit target); `.mh-auth-check` uses `--brand-blue` square + white tick (`auth-check.svg`) and `--header-action` label; password eye uses `auth-eye.svg` / `auth-eye-off.svg` (`currentColor`).
 
@@ -1297,7 +1304,9 @@ Shared in `mobile/css/mobile-home.css` (match screenshot 2 · `referral.html` / 
 | Bar | Sticky under header; one horizontal row; `min-height: 44px`; `padding: 6px 10px`; bg `--header-nav-bg`; gap `8px`; `overflow: hidden` |
 | Back | `32×32`; `border-radius: 6px`; bg `rgba(255,255,255,0.14)`; icon `sp-back.svg` `10×16` white |
 | Title | Flex grow; left-aligned; `15px` / `700` / `letter-spacing: 0.06em` / uppercase; **ellipsis** if long (`min-width: 0`) |
-| Actions | Optional right chips (`__actions` / `__btn` / `.mh-cs-subbar__search`): search · favourite · filter — same 32×32 chip as back |
+| Actions | Optional right chips (`__actions` / `__btn` / `.mh-cs-subbar__search`): search · favourite · filter — **same locked 32×32 chip** as back (`min/max` 32, icon `16×16`, gap `8px`) |
+
+**Sub-bar Filter chip** opens markets Filters overlay (`#mh-mf` · `css/mobile-markets-filter.css` · `js/mobile-markets-filter.js`): Markets checkboxes + period radios + Cancel/Save. Search → `search.html` (Events). Favourite → `favourites.html`.
 
 Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-rs-` (Results) · `.mh-st-` (Statistics).
 

@@ -112,13 +112,17 @@ body.mh-page.mh-sheet-open {
 .mh-pm-subbar__back,
 .mh-rs-subbar__back,
 .mh-st-subbar__back {
-  flex: 0 0 auto;
+  flex: 0 0 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  margin: -6px 0 -6px -6px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  margin: 0;
   padding: 0;
   border: none;
   border-radius: 6px;
@@ -127,6 +131,8 @@ body.mh-page.mh-sheet-open {
   text-decoration: none;
   cursor: pointer;
   box-sizing: border-box;
+  align-self: center;
+  line-height: 0;
 }
 
 .mh-ex-subbar__back img,
@@ -186,16 +192,18 @@ body.mh-page.mh-sheet-open {
   line-height: 1.2;
 }
 
-/* Right-side action chips (search / favourite / filter / casino search) */
+/* Right-side action chips (search / favourite / filter / casino search)
+   Same 32×32 chip as __back — Mobile_Design.md Inner-page subbar */
 .mh-nt-subbar__actions,
 .mh-sp-subbar__actions,
 .mh-rs-subbar__actions,
 .mh-st-subbar__actions {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex: 0 0 auto;
   margin-left: auto;
+  align-self: center;
 }
 
 .mh-nt-subbar__btn,
@@ -204,12 +212,17 @@ body.mh-page.mh-sheet-open {
 .mh-st-subbar__btn,
 .mh-cs-subbar__search,
 .mh-tc-subbar__download {
-  flex: 0 0 auto;
+  flex: 0 0 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  margin: 0;
   padding: 0;
   border: none;
   border-radius: 6px;
@@ -218,6 +231,8 @@ body.mh-page.mh-sheet-open {
   text-decoration: none;
   cursor: pointer;
   box-sizing: border-box;
+  align-self: center;
+  line-height: 0;
 }
 
 .mh-nt-subbar__btn img,
@@ -228,9 +243,12 @@ body.mh-page.mh-sheet-open {
 .mh-tc-subbar__download img {
   width: 16px;
   height: 16px;
+  max-width: 16px;
+  max-height: 16px;
   display: block;
   filter: brightness(0) invert(1);
   opacity: 1;
+  flex-shrink: 0;
 }
 
 .mh-cs-subbar__search[aria-hidden="true"] {
@@ -1490,18 +1508,37 @@ body.mh-page.mh-sheet-open {
 }
 
 .mh-tab.is-active {
-  color: var(--accent-blue);
+  color: var(--section-blue);
+  font-weight: 400;
 }
 
 .mh-tab.is-active img {
   filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
 }
 
+.mh-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 1;
+  width: 2.25rem;
+  height: 0.1875rem;
+  border-radius: 0.125rem 0.125rem 0 0;
+  background: var(--action-green);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.mh-tab--coupon.is-active::after {
+  display: none;
+}
+
 /* Circular floating bet slip — 32px circle like reference */
 .mh-tab--coupon {
   justify-content: center;
   padding-top: 4px;
-  color: var(--cyan-accent);
+  color: var(--section-blue);
   /* Live coupon caption uses ui-caption--weight-700 */
   font-weight: 700;
 }

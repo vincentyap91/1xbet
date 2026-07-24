@@ -13,17 +13,26 @@ body.mh-page.mh-page--favourites .mh-main {
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 10px 10px 16px;
+  padding: 0 0 12px;
   background: #eef2f6;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--mh-header-h) - var(--mh-subbar-h) - var(--mh-tabbar-h, 64px) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
 }
 
 /* Subbar: shared canonical styles in mobile-home.css (referral) */
 
 .mh-fv-panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin: 8px 8px 0;
   border-radius: 8px;
   background: var(--surface-primary);
+  box-shadow: 0 1px 0 rgba(26, 48, 72, 0.06);
   overflow: hidden;
+  min-height: 280px;
 }
 
 .mh-fv-panel__head {
@@ -42,6 +51,7 @@ body.mh-page.mh-page--favourites .mh-main {
   color: var(--text-primary);
   cursor: pointer;
   box-sizing: border-box;
+  flex: 0 0 auto;
 }
 
 .mh-fv-panel__chev {
@@ -56,7 +66,11 @@ body.mh-page.mh-page--favourites .mh-main {
 }
 
 .mh-fv-panel__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   padding: 0 10px 12px;
+  min-height: 0;
 }
 
 .mh-fv-panel__body[hidden] {
@@ -69,6 +83,7 @@ body.mh-page.mh-page--favourites .mh-main {
   gap: 4px;
   margin: 0 0 10px;
   border-bottom: 1px solid var(--odds-bg, #e8eef5);
+  flex: 0 0 auto;
 }
 
 .mh-fv-tab {
@@ -109,15 +124,47 @@ body.mh-page.mh-page--favourites .mh-main {
 }
 
 .mh-fv-empty {
-  padding: 28px 12px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  padding: 48px 16px 56px;
+  gap: 8px;
+}
+
+.mh-fv-empty__title {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.mh-fv-empty__hint {
+  margin: 0;
+  max-width: 280px;
+  font-family: var(--font);
   font-size: 13px;
-  color: #8a9bb0;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--header-action);
 }
 
 .mh-fv-empty[hidden],
 .mh-fv-list[hidden] {
   display: none !important;
+}
+
+.mh-fv-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+body.mh-page.mh-page--favourites .mh-footer {
+  margin-top: 12px;
 }
 
 /* Match card (favourites + shared event card) */

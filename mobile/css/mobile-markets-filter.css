@@ -1,0 +1,249 @@
+/* Mobile — Markets filters overlay (sub-bar Filter chip)
+   Matches screenshot: Markets + Show markets for period + Cancel/Save
+*/
+
+.mh-mf {
+  position: fixed;
+  inset: 0;
+  z-index: 230;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-secondary, #e8eef5);
+  color: var(--text-primary);
+  transform: translate3d(100%, 0, 0);
+  transition:
+    transform var(--mh-motion-close-ms, 220ms) var(--mh-motion-ease-close, cubic-bezier(0.4, 0, 1, 1)),
+    visibility 0s linear var(--mh-motion-close-ms, 220ms);
+  visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.mh-mf.is-open {
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+  transition:
+    transform var(--mh-motion-open-ms, 280ms) var(--mh-motion-ease-open, cubic-bezier(0.22, 1, 0.36, 1)),
+    visibility 0s linear 0s;
+}
+
+.mh-mf[hidden] {
+  display: none !important;
+}
+
+.mh-mf.is-open[hidden] {
+  display: flex !important;
+}
+
+.mh-mf__head {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  padding-top: calc(6px + env(safe-area-inset-top, 0px));
+  background: var(--header-nav-bg);
+  color: var(--text-inverse);
+  box-sizing: border-box;
+}
+
+.mh-mf__back {
+  flex: 0 0 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  line-height: 0;
+}
+
+.mh-mf__back img {
+  width: 10px;
+  height: 16px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.mh-mf__title {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+}
+
+.mh-mf__body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 10px;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mh-mf__card {
+  background: var(--surface-primary);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
+}
+
+.mh-mf__acc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--section-blue);
+  cursor: pointer;
+  text-align: left;
+}
+
+.mh-mf__acc img {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transform: rotate(180deg);
+  filter: brightness(0) saturate(100%) invert(34%) sepia(42%) saturate(900%) hue-rotate(185deg);
+  transition: transform 160ms ease;
+}
+
+.mh-mf__acc[aria-expanded="false"] img {
+  transform: rotate(0deg);
+}
+
+.mh-mf__panel {
+  padding: 0 8px 8px;
+}
+
+.mh-mf__panel[hidden] {
+  display: none !important;
+}
+
+.mh-mf__check,
+.mh-mf__radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--section-blue);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mh-mf__check input,
+.mh-mf__radio input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.mh-mf__box {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--header-action);
+  background: var(--surface-primary);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.mh-mf__check input:checked + .mh-mf__box {
+  background: var(--header-action);
+  background-image: url("../assets/icons/auth-check.svg");
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-color: var(--header-action);
+  filter: none;
+}
+
+.mh-mf__check input:checked + .mh-mf__box {
+  /* white tick on blue */
+  background-color: var(--header-action);
+}
+
+.mh-mf__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--header-action);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.mh-mf__radio input:checked + .mh-mf__dot {
+  box-shadow: inset 0 0 0 5px var(--header-action);
+  background: #fff;
+}
+
+.mh-mf__radio:has(input:checked) {
+  background: var(--odds-hover, #e8eef5);
+}
+
+.mh-mf__foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-secondary, #e8eef5);
+  box-sizing: border-box;
+}
+
+.mh-mf__btn {
+  height: 48px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mh-mf__btn--cancel {
+  background: var(--league-header, #d8e3ee);
+  color: var(--section-blue);
+}
+
+.mh-mf__btn--save {
+  background: var(--action-green);
+  color: #fff;
+}
+
+body.mh-mf-open {
+  overflow: hidden;
+}

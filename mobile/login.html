@@ -191,24 +191,81 @@
   </main>
 
   <nav class="mh-tabbar" aria-label="Mobile primary">
-    <a href="sports.html" class="mh-tab">
-      <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
-      <span>Sports</span>
-    </a>
-    <a href="casino.html" class="mh-tab">
-      <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
-      <span>Casino</span>
-    </a>
-    <button type="button" class="mh-tab mh-tab--bet" id="mh-betslip-btn" aria-label="Bet slip">
-      <span class="mh-tab__bet-wrap">
-        <img src="assets/icons/tab-betslip.svg" alt="" width="22" height="22" />
+    <div class="mh-tab-slot" data-mh-flyout-slot="sports">
+      <button
+        type="button"
+        class="mh-tab"
+        data-mh-flyout-open="sports"
+        aria-expanded="false"
+        aria-controls="mh-flyout-sports"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span>Sports</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team-line.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--flag" src="assets/logos/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="national-team-live.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--live" src="assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="sports.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-tab-slot" data-mh-flyout-slot="casino">
+      <button
+        type="button"
+        class="mh-tab"
+        data-mh-flyout-open="casino"
+        aria-expanded="false"
+        aria-controls="mh-flyout-casino"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span>Casino</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="live-casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mh-tab mh-tab--coupon" id="mh-betslip-btn" aria-label="Bet slip">
+      <span class="mh-tab__coupon-wrap">
+        <span class="mh-tab__coupon-icon">
+          <img src="assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mh-tab__badge" id="mh-bet-count" hidden>0</span>
       </span>
       <span>Bet slip</span>
     </button>
-    <a href="login.html" class="mh-tab is-active" aria-current="page">
+    <button type="button" class="mh-tab is-active" data-auth-open="login" aria-current="page">
       <img src="assets/icons/tab-user.svg" alt="" width="20" height="20" />
       <span>Log in</span>
-    </a>
+    </button>
     <button type="button" class="mh-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
       <img src="assets/icons/tab-menu.svg" alt="" width="20" height="20" />
       <span>Menu</span>

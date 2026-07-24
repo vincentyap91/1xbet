@@ -49,27 +49,120 @@
         </button>
       </div>
 
-      <form class="mh-auth-form" data-auth-panel="email" action="#" method="post">
-        <div class="mh-auth-steps" aria-label="Step 1 of 3">
-          <span class="mh-auth-steps__dot is-active"></span>
-          <span class="mh-auth-steps__line"></span>
-          <span class="mh-auth-steps__dot"></span>
-          <span class="mh-auth-steps__line"></span>
-          <span class="mh-auth-steps__dot"></span>
+      <form class="mh-auth-form" data-auth-panel="email" action="#" method="post" data-auth-email-form>
+        <div class="mh-auth-steps" data-auth-email-steps aria-label="Step 1 of 3">
+          <span class="mh-auth-steps__dot is-current" data-auth-step-dot="1"></span>
+          <span class="mh-auth-steps__line" data-auth-step-line="1"></span>
+          <span class="mh-auth-steps__dot" data-auth-step-dot="2"></span>
+          <span class="mh-auth-steps__line" data-auth-step-line="2"></span>
+          <span class="mh-auth-steps__dot" data-auth-step-dot="3"></span>
         </div>
-        <p class="mh-auth-steps__label">Step 1 of 3</p>
-        <label class="mh-auth-field">
-          <input class="mh-auth-input" type="email" name="email" autocomplete="email" placeholder="Email*" required />
-        </label>
-        <div class="mh-auth-tip">
-          <img src="assets/icons/auth-info.svg" alt="" width="16" height="16" />
-          <p>We recommend using Gmail to avoid any issues with receiving notifications.</p>
+        <p class="mh-auth-steps__label" data-auth-email-label>Step 1 of 3</p>
+
+        <div class="mh-auth-email-step" data-auth-email-step="1">
+          <label class="mh-auth-field">
+            <input class="mh-auth-input" type="email" name="email" autocomplete="email" placeholder="Email*" required data-auth-email-input />
+          </label>
+          <div class="mh-auth-tip">
+            <img src="assets/icons/auth-info.svg" alt="" width="16" height="16" />
+            <p>We recommend using Gmail to avoid any issues with receiving notifications.</p>
+          </div>
+          <div class="mh-auth-nav">
+            <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--back" data-auth-email-back disabled>Back</button>
+            <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--next" data-auth-email-next>Next</button>
+          </div>
         </div>
-        <div class="mh-auth-nav">
-          <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--back" disabled>Back</button>
-          <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--next" data-auth-email-next>Next</button>
+
+        <div class="mh-auth-email-step" data-auth-email-step="2" hidden>
+          <button type="button" class="mh-auth-select-btn" data-auth-open-country aria-haspopup="dialog" aria-controls="mh-auth-country">
+            <img class="mh-auth-select-btn__flag" src="assets/logos/flag-my.svg" alt="" width="22" height="16" data-auth-country-flag />
+            <span class="mh-auth-select-btn__copy">
+              <span class="mh-auth-select-btn__hint">Select country</span>
+              <span class="mh-auth-select-btn__value" data-auth-country-label>Malaysia</span>
+            </span>
+            <img class="mh-auth-select-btn__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+          </button>
+          <input type="hidden" name="country" value="MY" data-auth-country-value />
+          <div class="mh-auth-nav">
+            <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--back" data-auth-email-back>Back</button>
+            <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--next" data-auth-email-next>Next</button>
+          </div>
+        </div>
+
+        <div class="mh-auth-email-step" data-auth-email-step="3" hidden>
+          <button type="button" class="mh-auth-select-btn mh-auth-select-btn--currency" data-auth-open-currency aria-haspopup="dialog" aria-controls="mh-auth-currency">
+            <span class="mh-auth-select-btn__copy">
+              <span class="mh-auth-select-btn__hint">Select currency</span>
+              <span class="mh-auth-select-btn__value" data-auth-currency-label>MYR (Malaysian ringgit)</span>
+            </span>
+            <img class="mh-auth-select-btn__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+          </button>
+          <input type="hidden" name="currency" value="MYR" data-auth-currency-value />
+
+          <label class="mh-auth-field mh-auth-field--password mh-auth-field--with-key">
+            <input class="mh-auth-input" type="password" name="password" autocomplete="new-password" placeholder="Password*" required data-auth-password />
+            <span class="mh-auth-field__suffix" aria-hidden="true">
+              <span class="mh-auth-field__key">
+                <img src="assets/icons/auth-key.svg" alt="" width="16" height="16" />
+              </span>
+              <span class="mh-auth-field__sep"></span>
+            </span>
+            <button type="button" class="mh-auth-eye" data-auth-eye aria-label="Show password">
+              <img src="assets/icons/auth-eye-off.svg" alt="" width="18" height="18" />
+            </button>
+          </label>
+
+          <label class="mh-auth-field mh-auth-field--password">
+            <span class="mh-auth-field-label">Re-enter your password*</span>
+            <input class="mh-auth-input" type="password" name="password_confirm" autocomplete="new-password" required data-auth-password-confirm />
+            <button type="button" class="mh-auth-eye" data-auth-eye aria-label="Show password">
+              <img src="assets/icons/auth-eye-off.svg" alt="" width="18" height="18" />
+            </button>
+          </label>
+
+          <label class="mh-auth-field">
+            <input class="mh-auth-input" type="text" name="promo" placeholder="Promo code (if you have one)" />
+          </label>
+
+          <button type="button" class="mh-auth-bonus-btn" data-auth-open-bonus aria-haspopup="dialog" aria-controls="mh-auth-bonuses">
+            <img class="mh-auth-bonus-btn__ico" src="assets/icons/icon-dice.svg" alt="" width="28" height="28" data-auth-bonus-icon />
+            <span class="mh-auth-bonus-btn__copy">
+              <strong data-auth-bonus-title>Casino + 1xGames</strong>
+              <span data-auth-bonus-desc>The maximum bonus amount is 7959.96 MYR + FS</span>
+            </span>
+            <img class="mh-auth-bonus-btn__chev" src="assets/icons/icon-chevron-down.svg" alt="" width="12" height="12" />
+          </button>
+          <input type="hidden" name="bonus" value="casino" data-auth-bonus-value />
+
+          <button type="submit" class="mh-auth-submit" data-auth-email-register>Register</button>
+          <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--back mh-auth-nav__btn--block" data-auth-email-back>Back</button>
+          <p class="mh-auth-legal">By clicking this button you confirm that you have read and agree to the <a href="terms.html">Terms and Conditions</a> and are of legal age.</p>
         </div>
       </form>
+
+      <section class="mh-auth-done" data-auth-email-done hidden aria-live="polite">
+        <div class="mh-auth-done__card">
+          <h2 class="mh-auth-done__title">Your account details</h2>
+          <p class="mh-auth-done__text">A message with a link to the activation page has been sent to your e-mail. Please confirm registration within 72 hours.</p>
+          <p class="mh-auth-done__text">If you did not receive the email, please check your <strong>Spam folder</strong></p>
+          <hr class="mh-auth-done__rule" />
+          <p class="mh-auth-done__redirect">You will be automatically redirected to your account to make a deposit</p>
+          <p class="mh-auth-done__timer" data-auth-done-timer>00:10</p>
+          <div class="mh-auth-done__bar" aria-hidden="true"><span data-auth-done-bar></span></div>
+          <a href="profile.html" class="mh-auth-submit mh-auth-done__cta">My account</a>
+        </div>
+        <aside class="mh-auth-promo" data-auth-done-promo>
+          <button type="button" class="mh-auth-promo__close" data-auth-promo-close aria-label="Close">
+            <img src="assets/icons/icon-close.svg" alt="" width="12" height="12" />
+          </button>
+          <img class="mh-auth-promo__art" src="assets/banners/first-deposit-bonus.webp" alt="" width="72" height="72" />
+          <div class="mh-auth-promo__copy">
+            <strong>100% bonus on your 1st deposit</strong>
+            <span>Deposit up to 588 MYR (or equivalent in another currency) and receive the same amount as a gift.</span>
+          </div>
+          <a href="deposit.html" class="mh-auth-submit mh-auth-promo__cta">Get bonus</a>
+        </aside>
+      </section>
 
       <form class="mh-auth-form" data-auth-panel="phone" action="#" method="post" hidden>
         <p class="mh-auth-note">To register on the website, enter your phone number and choose how you want to receive the code</p>
@@ -225,24 +318,81 @@
   </main>
 
   <nav class="mh-tabbar" aria-label="Mobile primary">
-    <a href="sports.html" class="mh-tab">
-      <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
-      <span>Sports</span>
-    </a>
-    <a href="casino.html" class="mh-tab">
-      <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
-      <span>Casino</span>
-    </a>
-    <button type="button" class="mh-tab mh-tab--bet" id="mh-betslip-btn" aria-label="Bet slip">
-      <span class="mh-tab__bet-wrap">
-        <img src="assets/icons/tab-betslip.svg" alt="" width="22" height="22" />
+    <div class="mh-tab-slot" data-mh-flyout-slot="sports">
+      <button
+        type="button"
+        class="mh-tab"
+        data-mh-flyout-open="sports"
+        aria-expanded="false"
+        aria-controls="mh-flyout-sports"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span>Sports</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team-line.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--flag" src="assets/logos/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="national-team-live.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--live" src="assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="sports.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-tab-slot" data-mh-flyout-slot="casino">
+      <button
+        type="button"
+        class="mh-tab"
+        data-mh-flyout-open="casino"
+        aria-expanded="false"
+        aria-controls="mh-flyout-casino"
+        aria-haspopup="menu"
+      >
+        <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span>Casino</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="live-casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mh-tab mh-tab--coupon" id="mh-betslip-btn" aria-label="Bet slip">
+      <span class="mh-tab__coupon-wrap">
+        <span class="mh-tab__coupon-icon">
+          <img src="assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mh-tab__badge" id="mh-bet-count" hidden>0</span>
       </span>
       <span>Bet slip</span>
     </button>
-    <a href="login.html" class="mh-tab is-active" aria-current="page">
+    <button type="button" class="mh-tab is-active" data-auth-open="login" aria-current="page">
       <img src="assets/icons/tab-user.svg" alt="" width="20" height="20" />
       <span>Log in</span>
-    </a>
+    </button>
     <button type="button" class="mh-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
       <img src="assets/icons/tab-menu.svg" alt="" width="20" height="20" />
       <span>Menu</span>
@@ -537,6 +687,98 @@
       </div>
     </div>
 
+
+  <!-- Select country overlay -->
+  <div class="mh-auth-overlay" id="mh-auth-country" hidden role="dialog" aria-modal="true" aria-labelledby="mh-auth-country-title">
+    <div class="mh-auth-overlay__subbar">
+      <button type="button" class="mh-auth-overlay__back" data-auth-close-country aria-label="Back">
+        <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="mh-auth-overlay__title" id="mh-auth-country-title">Select country</h2>
+    </div>
+    <label class="mh-auth-overlay__search">
+      <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+      <input type="search" placeholder="Search" autocomplete="off" data-auth-country-search />
+    </label>
+    <ul class="mh-auth-overlay__list" role="listbox" aria-label="Countries" data-auth-country-list></ul>
+  </div>
+
+  <!-- Select currency overlay -->
+  <div class="mh-auth-overlay" id="mh-auth-currency" hidden role="dialog" aria-modal="true" aria-labelledby="mh-auth-currency-title">
+    <div class="mh-auth-overlay__subbar">
+      <button type="button" class="mh-auth-overlay__back" data-auth-close-currency aria-label="Back">
+        <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="mh-auth-overlay__title" id="mh-auth-currency-title">Select currency</h2>
+    </div>
+    <label class="mh-auth-overlay__search">
+      <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+      <input type="search" placeholder="Search" autocomplete="off" data-auth-currency-search />
+    </label>
+    <ul class="mh-auth-overlay__list" role="listbox" aria-label="Currencies" data-auth-currency-list></ul>
+  </div>
+
+  <!-- Bonuses overlay -->
+  <div class="mh-auth-overlay mh-auth-overlay--bonuses" id="mh-auth-bonuses" hidden role="dialog" aria-modal="true" aria-labelledby="mh-auth-bonuses-title">
+    <div class="mh-auth-overlay__subbar">
+      <button type="button" class="mh-auth-overlay__back" data-auth-close-bonus aria-label="Back">
+        <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="mh-auth-overlay__title" id="mh-auth-bonuses-title">Bonuses</h2>
+    </div>
+    <div class="mh-auth-bonus-sheet">
+      <div class="mh-auth-bonus-list" role="radiogroup" aria-label="Bonus options" data-auth-bonus-list>
+        <label class="mh-auth-bonus-opt is-selected">
+          <input type="radio" name="bonus_pick" value="casino" checked data-auth-bonus-opt />
+          <img class="mh-auth-bonus-opt__ico" src="assets/icons/icon-dice.svg" alt="" width="28" height="28" />
+          <span class="mh-auth-bonus-opt__copy">
+            <strong>Casino + 1xGames</strong>
+            <span>The maximum bonus amount is 7959.96 MYR + FS</span>
+          </span>
+          <span class="mh-auth-bonus-opt__radio" aria-hidden="true"></span>
+        </label>
+        <label class="mh-auth-bonus-opt">
+          <input type="radio" name="bonus_pick" value="sport-single" data-auth-bonus-opt />
+          <img class="mh-auth-bonus-opt__ico" src="assets/icons/sport-football.svg" alt="" width="28" height="28" />
+          <span class="mh-auth-bonus-opt__copy">
+            <strong>Sport Single</strong>
+            <span>100% up to 808 MYR — only 3 bets for your bonus!</span>
+          </span>
+          <span class="mh-auth-bonus-opt__radio" aria-hidden="true"></span>
+        </label>
+        <label class="mh-auth-bonus-opt">
+          <input type="radio" name="bonus_pick" value="sport" data-auth-bonus-opt />
+          <img class="mh-auth-bonus-opt__ico" src="assets/icons/sport-football.svg" alt="" width="28" height="28" />
+          <span class="mh-auth-bonus-opt__copy">
+            <strong>Bonus for sports</strong>
+            <span>First deposit bonus up to 588 MYR</span>
+          </span>
+          <span class="mh-auth-bonus-opt__radio" aria-hidden="true"></span>
+        </label>
+        <label class="mh-auth-bonus-opt">
+          <input type="radio" name="bonus_pick" value="reject" data-auth-bonus-opt />
+          <span class="mh-auth-bonus-opt__reject" aria-hidden="true">×</span>
+          <span class="mh-auth-bonus-opt__copy">
+            <strong>Reject bonuses</strong>
+            <span>Make your choice later</span>
+          </span>
+          <span class="mh-auth-bonus-opt__radio" aria-hidden="true"></span>
+        </label>
+      </div>
+      <div class="mh-auth-bonus-info">
+        <img src="assets/icons/auth-info.svg" alt="" width="16" height="16" />
+        <p>The bonus is credited automatically after the first deposit, completing your full personal profile and phone number verification via SMS.</p>
+      </div>
+      <ul class="mh-auth-bonus-notes">
+        <li>Bettors can participate in other offers regardless of the chosen bonus.</li>
+        <li>Rejecting bonuses automatically rejects all other promotions.</li>
+      </ul>
+      <div class="mh-auth-nav mh-auth-bonus-actions">
+        <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--back" data-auth-close-bonus>Cancel</button>
+        <button type="button" class="mh-auth-nav__btn mh-auth-nav__btn--next" data-auth-save-bonus>Save</button>
+      </div>
+    </div>
+  </div>
 
   <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
   <script src="js/mobile-languages-data.js"></script>
