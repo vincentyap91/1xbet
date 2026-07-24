@@ -491,15 +491,61 @@
       "</div>" +
       "</div>" +
       '<a href="deposit.html" class="btn-deposit">Make a Deposit</a>' +
-      '<button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages">' +
+      '<button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages" aria-haspopup="dialog" aria-expanded="false">' +
       '<span class="icon-btn-inner">' +
       '<img src="assets/images/account/icon-messages.svg" alt="" width="16" height="16" />' +
-      '<span class="icon-badge">1</span>' +
+      '<span class="icon-badge">6</span>' +
       "</span>" +
       '<img src="assets/images/account/icon-chevron.svg" alt="" class="meta-chevron" width="10" height="6" />' +
       "</button>" +
       "</div>"
     );
+  }
+
+  function authScriptBase() {
+    const scripts = document.getElementsByTagName("script");
+    for (let i = scripts.length - 1; i >= 0; i--) {
+      const src = scripts[i].getAttribute("src") || "";
+      if (/auth-modals\.js(\?|$)/.test(src)) {
+        return src.replace(/auth-modals\.js.*$/, "");
+      }
+    }
+    return "js/";
+  }
+
+  function loadScriptOnce(id, src, onload) {
+    const existing = document.getElementById(id);
+    if (existing) {
+      if (onload) {
+        if (existing.dataset.loaded === "1") onload();
+        else existing.addEventListener("load", onload);
+      }
+      return;
+    }
+    const s = document.createElement("script");
+    s.id = id;
+    s.src = src;
+    s.onload = function () {
+      s.dataset.loaded = "1";
+      if (onload) onload();
+    };
+    document.head.appendChild(s);
+  }
+
+  function ensureMessagesUI() {
+    const base = authScriptBase();
+    const run = () => {
+      if (window.MessagesUI && typeof window.MessagesUI.init === "function") {
+        window.MessagesUI.init();
+      }
+    };
+    if (window.MessagesUI) {
+      run();
+      return;
+    }
+    loadScriptOnce("messages-data-js", base + "messages-data.js", () => {
+      loadScriptOnce("messages-js", base + "messages.js", run);
+    });
   }
 
   function ensureUserHeader() {
@@ -589,8 +635,15 @@
 
     syncHeaderGiftBtn();
 
-    if (on) initAccountDropdowns();
-    else closeAccountMenus();
+    if (on) {
+      initAccountDropdowns();
+      ensureMessagesUI();
+    } else {
+      closeAccountMenus();
+      if (window.MessagesUI && typeof window.MessagesUI.destroy === "function") {
+        window.MessagesUI.destroy();
+      }
+    }
 
     const tabbar = document.querySelector(".mobile-tabbar");
     if (tabbar) {

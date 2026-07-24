@@ -60,6 +60,77 @@
       </div>
     </section>
 
+    <!-- Figma 296:8739 — Wallet · Membership Rebate · Current promo -->
+    <section class="mh-cs-account" aria-label="Wallet, membership and current promo">
+      <div class="mh-cs-account__stats">
+        <article class="mh-cs-stat-card">
+          <div class="mh-cs-stat-card__body">
+            <p class="mh-cs-stat-card__label">Wallet</p>
+            <p class="mh-cs-stat-card__value" data-cs-wallet-balance>0.00</p>
+          </div>
+          <button type="button" class="mh-cs-stat-card__btn" data-cs-wallet-refresh aria-label="Refresh wallet">
+            <img src="assets/icons/cs-wallet-refresh.svg" alt="" width="18" height="18" />
+          </button>
+        </article>
+        <article class="mh-cs-stat-card">
+          <div class="mh-cs-stat-card__body">
+            <p class="mh-cs-stat-card__label">Membership Rebate</p>
+            <p class="mh-cs-stat-card__value">5.00%</p>
+          </div>
+          <a href="membership.html" class="mh-cs-stat-card__btn" data-mh-membership aria-label="Membership">
+            <img src="assets/icons/cs-membership-lock.svg" alt="" width="20" height="20" />
+          </a>
+        </article>
+      </div>
+
+      <aside class="mh-cs-current-promo" aria-labelledby="mh-cs-current-promo-title">
+        <div class="mh-cs-current-promo__head">
+          <p class="mh-cs-current-promo__title" id="mh-cs-current-promo-title">
+            <span class="mh-cs-current-promo__eyebrow">Current promo</span>
+            <span class="mh-cs-current-promo__sep" aria-hidden="true">-</span>
+            <span class="mh-cs-current-promo__name">All Time Deposit Promotion</span>
+          </p>
+          <button type="button" class="mh-cs-current-promo__end" data-cs-end-promo>End Promo</button>
+        </div>
+
+        <div class="mh-cs-current-promo__metric">
+          <div class="mh-cs-current-promo__meta">
+            <span class="mh-cs-current-promo__meta-label">Promo Rollover</span>
+            <strong class="mh-cs-current-promo__meta-val">3.00/6.00</strong>
+            <span class="mh-cs-current-promo__pct">0%</span>
+          </div>
+          <div
+            class="mh-cs-current-promo__track"
+            role="progressbar"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Promo rollover 0 percent"
+          >
+            <span class="mh-cs-current-promo__fill" style="width:0%"></span>
+          </div>
+        </div>
+
+        <div class="mh-cs-current-promo__metric">
+          <div class="mh-cs-current-promo__meta">
+            <span class="mh-cs-current-promo__meta-label">Target</span>
+            <strong class="mh-cs-current-promo__meta-val">166.11/241.11</strong>
+            <span class="mh-cs-current-promo__pct">69%</span>
+          </div>
+          <div
+            class="mh-cs-current-promo__track"
+            role="progressbar"
+            aria-valuenow="69"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Target 69 percent"
+          >
+            <span class="mh-cs-current-promo__fill" style="width:69%"></span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
     <section class="mh-cs-section" aria-labelledby="mh-cs-stars">
       <div class="mh-cs-section__head">
         <h2 class="mh-cs-section__title" id="mh-cs-stars">
@@ -548,7 +619,7 @@
             </button>
           </li>
           <li>
-            <button type="button" data-mh-toast="Messages (demo)">
+            <button type="button" data-mh-messages>
               <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-mail.svg" alt="" /></span>
               <span class="mh-cs-menu__label">Messages</span>
             </button>
@@ -649,15 +720,16 @@
             <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
           </button>
           <ul class="mh-cs-menu__sub" hidden>
-            <li><a href="#" data-mh-toast="About us (demo)">About us</a></li>
+            <li><a href="about-us.html">About us</a></li>
             <li><a href="terms.html">Terms and Conditions</a></li>
-            <li><a href="#" data-mh-toast="Affiliate Program (demo)">Affiliate Program</a></li>
-            <li><a href="#" data-mh-toast="Become an agent (demo)">Become an agent</a></li>
-            <li><a href="#" data-mh-toast="Privacy Policy (demo)">Privacy Policy</a></li>
-            <li><a href="#" data-mh-toast="Cookie Policy (demo)">Cookie Policy</a></li>
-            <li><a href="#" data-mh-toast="Contacts (demo)">Contacts</a></li>
             <li><a href="payment-methods.html">Payment methods</a></li>
           </ul>
+        </li>
+        <li>
+          <a href="partnership.html">
+            <span class="mh-cs-menu__ico"><img src="../assets/icons/partnership/icon-shield.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Partnership</span>
+          </a>
         </li>
         <li>
           <a href="#" data-mh-toast="Mobile application (demo)">

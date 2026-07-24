@@ -117,8 +117,91 @@
     });
   }
 
+  /* ── Demo RTP for slots tiles ───────────────────────────── */
+  const RTP_DEMO = {
+    "3 Fortune Mummies": { pct: "85.04", trend: "down" },
+    "Sugar Rush Super Scatter": { pct: "94.07", trend: "up" },
+    "Royalty of Olympus E...": { pct: "96.50", trend: "up" },
+    "777 Juicy Wins": { pct: "91.22", trend: "up" },
+    "Bang Bang": { pct: "88.15", trend: "down" },
+    "Serengeti Sunrise": { pct: "95.10", trend: "up" },
+    "Volcano Millions": { pct: "87.60", trend: "down" },
+    "Wild Hot 40": { pct: "93.48", trend: "up" },
+    "Joy Ride: Turbo Rails": { pct: "90.05", trend: "down" },
+    "Juicy Fruits Sunshine": { pct: "96.12", trend: "up" },
+    "Avion": { pct: "89.40", trend: "down" },
+    "JetX": { pct: "97.00", trend: "up" },
+    "Boxing King": { pct: "86.75", trend: "down" },
+    "Captain Sharky": { pct: "94.88", trend: "up" },
+    "Clover Coin Combo": { pct: "92.33", trend: "up" },
+    "Coin Craze: Supercharged": { pct: "88.90", trend: "down" },
+    "Casino Bar": { pct: "91.55", trend: "up" },
+    "Aero": { pct: "85.70", trend: "down" },
+    "Cricket Legacy BB": { pct: "93.01", trend: "up" },
+    "243 Crystal Fruits": { pct: "96.80", trend: "up" },
+    "Barbarossa": { pct: "87.25", trend: "down" },
+    "Elves Kingdom": { pct: "94.40", trend: "up" },
+    "Tales of Camelot": { pct: "90.60", trend: "down" },
+    "Golden Mine": { pct: "95.75", trend: "up" }
+  };
+
+  function hashStr(str) {
+    let h = 2166136261;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function resolveRtp(name, el) {
+    const fromData = el?.dataset?.rtp;
+    const trendData = el?.dataset?.rtpTrend;
+    if (fromData) {
+      return {
+        pct: String(fromData).replace(/%/g, ""),
+        trend: trendData === "up" || trendData === "down" ? trendData : (parseFloat(fromData) >= 92 ? "up" : "down")
+      };
+    }
+    if (RTP_DEMO[name]) return RTP_DEMO[name];
+    const h = hashStr(name || "game");
+    const pct = (85 + (h % 1200) / 100).toFixed(2);
+    const trend = parseFloat(pct) >= 92 ? "up" : (parseFloat(pct) < 90 ? "down" : (h % 2 ? "up" : "down"));
+    return { pct, trend };
+  }
+
+  function injectGameTileRtp() {
+    $$(".game-tile:not(.lc-tile)").forEach((tile) => {
+      if (tile.querySelector(".game-tile-rtp")) return;
+      const footer = tile.querySelector(".game-tile-footer");
+      const nameEl = tile.querySelector(".game-tile-name");
+      if (!footer || !nameEl) return;
+
+      const name = tile.dataset.game || nameEl.textContent.trim() || "game";
+      const { pct, trend } = resolveRtp(name, tile);
+
+      let info = footer.querySelector(".game-tile-info");
+      if (!info) {
+        info = document.createElement("div");
+        info.className = "game-tile-info";
+        nameEl.replaceWith(info);
+        info.appendChild(nameEl);
+      }
+
+      const rtp = document.createElement("span");
+      rtp.className = "game-tile-rtp";
+      rtp.setAttribute("title", "Return to Player");
+      rtp.innerHTML =
+        `RTP: ${pct}%` +
+        `<span class="game-tile-rtp__trend game-tile-rtp__trend--${trend}" aria-hidden="true"></span>`;
+      info.appendChild(rtp);
+    });
+  }
+
   /* ── Game tile interactions ─────────────────────────────── */
   function bindGameTiles() {
+    injectGameTileRtp();
+
     $$(".game-tile").forEach((tile) => {
       const fav = tile.querySelector(".game-tile-fav");
       const playBtn = tile.querySelector(".btn-game-play");
@@ -303,12 +386,27 @@
     }
   }
 
+  /* ── Account strip (wallet / membership / promo) ───────── */
+  function bindAccountStrip() {
+    const root = $(".cs-account");
+    if (!root) return;
+
+    root.querySelector("[data-cs-wallet-refresh]")?.addEventListener("click", () => {
+      toast("Wallet refreshed (demo)");
+    });
+
+    root.querySelector("[data-cs-end-promo]")?.addEventListener("click", () => {
+      toast("Promo ended (demo)");
+    });
+  }
+
   /* ── Init ───────────────────────────────────────────────── */
   tickClock();
   setInterval(tickClock, 30000);
   bindNav();
   bindMobile();
   bindHeroCarousel();
+  bindAccountStrip();
   bindFilters();
   bindGameTiles();
   bindTournaments();

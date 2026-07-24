@@ -25,6 +25,8 @@ Reusable layout, spacing, and class conventions for the mobile site (`mobile/`).
 **Personal profile:** `mobile/personal-profile.html` + `mobile/css/mobile-personal-profile.css` + `mobile/js/mobile-personal-profile.js` — desktop medal / personal info, mobile shell  
 **Security:** `mobile/security.html` (+ `change-language` / `change-password` / `information-center`) + `css/mobile-security.css` + `js/mobile-security.js`  
 **Extra (logged-in):** `mobile/referral.html` · `membership.html` · `rebate.html` · `daily-checkin.html` · `live-chat.html` + `css/mobile-extra.css` + `js/mobile-extra.js` (membership reuses `../js/membership.js`)  
+**Partnership:** `mobile/partnership.html` + `../css/partnership.css` + `css/mobile-partnership.css` (desktop partners content, mobile shell)  
+**404:** `mobile/404.html` + `../css/404.css` (same standalone error design as desktop)  
 **Promo detail example:** `mobile/esports-cashback-boom.html` + `mobile/css/mobile-promo-detail.css`  
 **Design tokens:** `docs/DESIGN_SYSTEM.md` / `css/styles.css`
 
@@ -136,7 +138,7 @@ Logged-in account hub. Opened from header account chip (`data-mh-account`). Gues
 
 | Block | Notes |
 |-------|--------|
-| `.mh-pf-card` | 32px avatar + Account No. + copy, balance, messages (**green** count badge), close → home, **My bets** (`data-mh-bets` → bet history) / Deposit (32px tall) |
+| `.mh-pf-card` | 32px avatar + Account No. + copy, balance, messages (**green** count badge → `messages.html` via `data-mh-messages`), close → home, **My bets** (`data-mh-bets` → bet history) / Deposit (32px tall) |
 | `.mh-pf-tabs` | Horizontal icon+label: Profile · Promo · Settings; active 4px `--action-green` underline |
 | `.mh-pf-group` / `.mh-pf-list` | **My wallet and bets** → Deposit / Withdraw funds (Payment queries commented out / hidden) · **Profile** → Personal profile / Security (`data-mh-security`) · **History record** → Transaction history / Bet history / Promotion record · **Extra** → Referral / Membership / Rebate / Daily check in / Promotions / Live chat · Log out |
 | History hooks | `data-mh-tx-history` → `transaction-history.html` · `data-mh-bets` → `bet-history.html` · `data-mh-promo-record` → `promotion-record.html` |
@@ -281,6 +283,26 @@ Reuses desktop account content (summary + Platinum medal + tier / promo progress
 | Bottom nav | **Hidden** |
 
 Colors: page `#e9eef2`; cards `--surface-primary`; progress / Save / End promo accents via `--action-green` / `--header-action`; text `--text-primary` / `--section-blue`.
+
+---
+
+## Messages (`mobile/messages.html`)
+
+Opened from profile mail icon (`data-mh-messages`) and menu **Messages**. Guests → `login.html`. **No bottom tabbar.**
+
+Inbox list with select / expand / mark-as-read / delete (demo). Shares demo data with desktop header dropdown via `js/messages-data.js` (`sessionStorage` key `1xbet_messages_v1`).
+
+| Block | Notes |
+|-------|--------|
+| `.mh-msg-subbar` | Back → `profile.html` + **Messages (n)** (unread count) |
+| `.mh-msg-select-all` | White card + checkbox |
+| `.mh-msg-card` | Checkbox · datetime + green unread dot · title · optional body · chevron |
+| `.mh-msg-bar` | Fixed trash + **Mark as read** (`--header-action`) |
+| Icons | `pf-mail` entry; trash `assets/images/account/icon-trash.svg` |
+| CSS / JS | `css/mobile-messages.css` · `js/mobile-messages.js` (+ `../js/messages-data.js`) |
+| Bottom nav | **Hidden** |
+
+Colors: page `#e9eef2`; cards `--surface-primary`; unread dots `--action-green`; Mark as read / accents `--header-action`; Deposit `--action-green`.
 
 ---
 
@@ -838,11 +860,14 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 
 - [ ] Dark shell (`--page-bg`); sub-bar **CASINO** + search
 - [ ] Hero carousel + 2-col game grids (NEW / HOT badges)
+- [ ] Below hero: Wallet / Membership Rebate cards + Current promo panel (Figma `296:8739`; tokens not Figma neon)
 - [ ] Promo block with countdown
 - [ ] **Distinct** bottom sticky: Categories · Providers · MyCasino · Promo · Menu (`.mh-cs-tabbar`; live `cs-*.svg` icons)
 - [ ] Categories → `casino-categories.html`; Providers → `casino-providers.html`; My Casino → `my-casino.html`; Promo → `casino-promo.html`; Menu → full-screen `.mh-cs-menu` on **all** sticky tabbars (sports + casino); wallet when logged-in; My Account + Extra match `profile.html`
+- [ ] Menu Extra → Information accordion → About us → `about-us.html` (hero · secure bento · trusted leader; desktop `about-us.css` + `mobile-about.css`)
 - [ ] Menu Extra → Information accordion → Terms and Conditions → `terms.html` (General Rules: search + 33 accordions + download)
 - [ ] Menu Extra → Information accordion → Payment methods → `payment-methods.html` (Deposit/Withdrawal tabs · country + method filters · All methods 2-col cards with min/max/fee foot · Deposit CTAs)
+- [ ] Menu Extra → **Partnership** (below Information) → `partnership.html` (desktop partners UI + mobile shell)
 - [ ] Casino Promo (`casino-promo.html`): live assets in `assets/casino/promo/live/`; guest auth card vs logged-in codes+subscribe; tabs Promo / Promo codes (logged-in only) / Promotions / Tournaments; hero 412×204 dots below · promo rail title overlay + Find out more · tourney All/Live/Finished
 - [ ] Casino tab flyout → `casino.html` · Live Casino → `live-casino.html`
 - [ ] Live Casino (`live-casino.html`): sub-bar **LIVE CASINO** · hero dots below · 1XLIVE / POPULAR paged 2×2 overlay tiles + PROMO badge · filter FAB · same `.mh-cs-tabbar`
@@ -1078,7 +1103,7 @@ Entry: Sports / NT star buttons, home fav quicknav.
 
 **Live ref:** [slots mobile](https://1xlite-46272.pro/en/slots?platform_type=mobile)
 
-Dark lobby: hero carousel → section grids (Stars / HOT / Popular / Quick play / New / Exclusive / Drops & Wins / Bonus buy / Loved) → shared `.mh-footer` (Sports / Esports partners, app banner, social, support, legal).
+Dark lobby: hero carousel → **Wallet / Membership / Current promo** (Figma [`296:8739`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/1XBET?node-id=296-8739)) → section grids (Stars / HOT / Popular / Quick play / New / Exclusive / Drops & Wins / Bonus buy / Loved) → mid-page tournament promo + countdown → shared `.mh-footer` (Sports / Esports partners, app banner, social, support, legal).
 
 **Distinct tab bar** `.mh-cs-tabbar` (not sports `mh-tabbar`): **Categories · Providers · MyCasino · Promo · Menu**. Live SVG icons in `mobile/assets/icons/cs-{categories,providers,mycasino,promo,menu}.svg`. MyCasino uses `.mh-cs-tab__bubble` (cyan circle + heart). Floating filter FAB `.mh-cs-fab`.
 
@@ -1089,6 +1114,20 @@ Dark lobby: hero carousel → section grids (Stars / HOT / Popular / Quick play 
 | MyCasino | `mobile/my-casino.html` — guest My Casino ([authorization](https://1xlite-46272.pro/en/my-casino/authorization)) |
 | Promo | `mobile/casino-promo.html` — see **Casino Promo** below |
 | Menu | Full-screen `.mh-cs-menu` — see **Casino Menu** below |
+
+### Account strip (below hero)
+
+Figma structure + modified-palette tokens (not Figma neon `#00f243` / chrome blues).
+
+| Block | Pattern |
+|-------|---------|
+| `.mh-cs-account` | Gutter `10px`; column gap `10px` under hero |
+| `.mh-cs-account__stats` | 2-col grid: **Wallet** `0.00` + refresh · **Membership Rebate** `5.00%` + lock → `membership.html` (`data-mh-membership`) |
+| `.mh-cs-stat-card` | Frosted dark card (`rgba(255,255,255,0.08)` + light border); label soft `--action-green`; value white; icon btn 36×36 |
+| `.mh-cs-current-promo` | Full-width panel: **CURRENT PROMO** − green name · **End Promo** (`--action-green` → `--warning` gradient, dark text) |
+| Metrics | Promo Rollover `3.00/6.00` @ 0% · Target `166.11/241.11` @ 69%; track uses `--section-blue` mix; fill `--action-green` |
+| Icons | `assets/icons/cs-wallet-refresh.svg` · `assets/icons/cs-membership-lock.svg` (fill `#88af2a` = `--action-green`) |
+| JS | `data-cs-wallet-refresh` / `data-cs-end-promo` → toast demos in `mobile-casino.js` |
 
 Assets: hero + mid-page promo from live capture in `mobile/assets/casino/banners/live/` (`hero-1…5.webp`, `tourney-*.webp`); category icons `assets/casino/categories/`; provider logos `assets/casino/providers/`; My Casino art `assets/casino/my-casino/`; game thumbs in `mobile/assets/casino/games/` + `mobile/assets/games/*`.
 
@@ -1130,13 +1169,15 @@ Full-viewport light modal (white / grey), not the old sports bottom sheet.
 | Casino | Stand for Victory · Casino (chevron) · Live Casino |
 | Games | 1xGames |
 | My Account | Logged-in only — Bet history, Messages, Make a deposit, Withdraw, Transaction history, Personal profile, Security, Your accounts (**Payment queries** commented out / hidden; no Other) |
-| Extra | Profile Extra (Referral · Membership · Rebate · Daily check in · Promotions · Live chat) · **Information** (accordion) · Mobile application · Other apps · **Log out** (logged-in) — no Other / Customer Support |
+| Extra | Profile Extra (Referral · Membership · Rebate · Daily check in · Promotions · Live chat) · **Information** (accordion) · **Partnership** → `partnership.html` · Mobile application · Other apps · **Log out** (logged-in) — no Other / Customer Support |
 
 **Select Language** (`.mh-cs-lang` / `#mh-lang-panel`): overlay inside the menu modal. Open from top language control (`[data-mh-open-lang]`). Subbar back (`[data-mh-close-lang]`) returns to menu; title **SELECT LANGUAGE**; search filters the list; rows are flag circle · code · divider · native name; selected row uses pale `--odds-bg`. Language list + circular flag SVGs load from `mobile/assets/flags/languages.json` + `lang-*.svg` (sourced from [1xlite](https://1xlite-46272.pro/en)). Choosing a language updates the menu header code + flag, persists `localStorage mh-lang-v1`, toasts, and closes the language panel. Escape closes language first, then the menu.
 
 **Removed from menu:** Promo section / **Promotions and offers** (promos stay under Extra → Promotions → `casino-promo.html`).
 
-**Information accordion** (`[data-mh-menu-acc]`): About us · **Terms and Conditions** → `terms.html` · Affiliate Program · Become an agent · Privacy Policy · Cookie Policy · Contacts · **Payment methods** → `payment-methods.html`.
+**Information accordion** (`[data-mh-menu-acc]`): **About us** → `about-us.html` · **Terms and Conditions** → `terms.html` · Affiliate Program · Become an agent · Privacy Policy · Cookie Policy · Contacts · **Payment methods** → `payment-methods.html`.
+
+**Partnership** (Extra row, **below Information**): → `partnership.html` (shield icon `../assets/icons/partnership/icon-shield.svg`).
 
 **Icons:** Campaign rows use `assets/icons/t20.svg`, `bobt.svg`, `sfv.svg`, `casino.svg`. Other row circles use mobile icons + desktop mirrors under `mobile/assets/icons/menu/` (`wallet`, `gamepad`, `phone`, `other-apps`, `info`). My Account / Extra / Log out use `assets/icons/profile/pf-*.svg`. Language flags: `assets/flags/` + `assets/account/flags/`.
 
@@ -1241,6 +1282,35 @@ CSS/JS: `css/mobile-payment-methods.css` · `js/mobile-payment-methods.js` (mode
 
 ---
 
+## About Us (`mobile/about-us.html`)
+
+Entry: Menu → Extra → Information → **About us**.
+
+Ports desktop `about-us.html` marketing content into the mobile shell (header · `.mh-au-subbar` · footer · sports `.mh-tabbar` · shared menu via `[data-mh-menu-include]`).
+
+1. `.mh-au-subbar` — back · **ABOUT US**
+2. Hero — “GET LUCKY WITH 1xBet” + Sportsbook / Live Betting features + sports balls art
+3. Secure gaming platform — protection / transactions / support bento cards
+4. Trusted industry leader — trophy art + awards CTA (demo toast) + innovations blurb
+
+Assets: `../assets/images/hero-sports-balls.webp`, `../assets/images/about/*`.
+
+CSS: `../css/about-us.css` + thin `css/mobile-about.css` (phone density / full-bleed main).
+
+---
+
+## Partnership (`mobile/partnership.html`)
+
+Entry: Menu → Extra → **Partnership** (below Information). Desktop More → Partnership replaces Bingo.
+
+Reuses desktop `css/partnership.css` content (hero · verified banner · partner cards · Visit CTAs). Mobile shell: `.mh-header` · `.mh-ps-subbar` · footer · sports `.mh-tabbar` · Menu. Thin wrapper: `css/mobile-partnership.css`. Scripts: `auth-modals.js` + `mobile-home.js` (logged-in header).
+
+## 404 (`mobile/404.html`)
+
+Standalone error page matching desktop `404.html` / `css/404.css` (stadium hero · 404 graphic · Kick off / Explore matches). Links target mobile `index.html` / `sports.html`. No tabbar (same as desktop).
+
+---
+
 ## Casino Promo (`mobile/casino-promo.html`)
 
 **Live ref:** [casino bonus / promo](https://1xlite-46272.pro/en/bonus/casino?platform_type=mobile)
@@ -1327,7 +1397,7 @@ Shared in `mobile/css/mobile-home.css` (match screenshot 2 · `referral.html` / 
 
 **Sub-bar Filter chip** opens markets Filters overlay (`#mh-mf` · `css/mobile-markets-filter.css` · `js/mobile-markets-filter.js`): Markets checkboxes + period radios + Cancel/Save. Search → `search.html` (Events). Favourite → `favourites.html`.
 
-Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-rs-` (Results) · `.mh-st-` (Statistics) · `.mh-bt-` (Big Tournaments).
+Registered subbar prefixes include: `.mh-ex-` · `.mh-pp-` · `.mh-sec-` · `.mh-hr-` · `.mh-dep-` · `.mh-auth-` · `.mh-sp-` · `.mh-se-` · `.mh-ei-` · `.mh-fv-` · `.mh-nt-` · `.mh-cs-` · `.mh-pd-` · `.mh-tc-` · `.mh-pm-` · `.mh-au-` (About us) · `.mh-rs-` (Results) · `.mh-st-` (Statistics) · `.mh-bt-` (Big Tournaments).
 
 Do not redefine shell/back/title in page CSS. Long titles (e.g. National Team) must truncate — never wrap or push icons off-screen.
 

@@ -961,6 +961,7 @@
     'bet-history': 'dice',
     'transaction-history': 'exchange',
     'payment-queries': 'info-circle',
+    messages: 'messages',
     'commission-record': 'percent',
     'rebate-record': 'gift',
     'checkin-record': 'calendar-check',
@@ -991,6 +992,7 @@
       key: 'key.svg',
       headset: 'headset.svg',
       'info-circle': 'info-circle.svg',
+      messages: 'messages.svg',
       deposit: 'wallet.svg',
       withdraw: 'wallet.svg',
       history: 'dice.svg',
@@ -1020,31 +1022,73 @@
     );
   }
 
+  function messagesUnreadBadge() {
+    try {
+      var data = window.MessagesData;
+      if (!data || typeof data.load !== 'function') return '';
+      var list = data.load();
+      var n = typeof data.unreadCount === 'function'
+        ? data.unreadCount(list)
+        : (list || []).filter(function (m) { return m && m.unread; }).length;
+      return n > 0 ? String(n) : '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  function buildAccSubnavItems() {
+    /* Mobile chips only: hide Payment Queries; insert Messages after Withdraw. */
+    var items = [];
+    accountNavItemsFlat().forEach(function (item) {
+      if (item.key === 'payment-queries') return;
+      items.push({
+        key: item.key,
+        href: item.href,
+        label: item.label,
+        icon: SUBNAV_ICON_KEYS[item.key] || item.icon || 'profile',
+        pages: item.pages,
+        badge: item.badge,
+        demo: item.demo
+      });
+      if (item.key === 'withdraw') {
+        var msgBadge = messagesUnreadBadge();
+        items.push({
+          key: 'messages',
+          href: '#',
+          label: 'Messages',
+          icon: 'messages',
+          action: 'messages',
+          badge: msgBadge || undefined
+        });
+      }
+    });
+    return items;
+  }
+
   function initAccSubnav() {
     if (accountPageKey() === 'live-chat') return;
     var main = document.querySelector('.account-main');
     if (!main || document.querySelector('.acc-subnav')) return;
 
     var page = accountPageKey();
-    var items = accountNavItemsFlat().map(function (item) {
-      return {
-        key: item.key,
-        href: item.href,
-        label: item.label,
-        icon: SUBNAV_ICON_KEYS[item.key] || 'profile',
-        pages: item.pages,
-        badge: item.badge,
-        demo: item.demo
-      };
-    });
+    var items = buildAccSubnavItems();
 
     var cards = items.map(function (item) {
       var active = item.pages && item.pages.indexOf(page) !== -1;
+      var badgeLabel = item.action === 'messages' ? ' unread' : ' action required';
       var badge = item.badge
-        ? '<span class="acc-subnav-badge" aria-label="' + item.badge + ' action required">' + item.badge + '</span>'
+        ? '<span class="acc-subnav-badge" aria-label="' + item.badge + badgeLabel + '">' + item.badge + '</span>'
         : '';
       var cls = 'acc-subnav-card' + (active ? ' is-active' : '');
       var current = active ? ' aria-current="page"' : '';
+
+      if (item.action === 'messages') {
+        return (
+          '<button type="button" class="' + cls + ' acc-subnav-card--messages" data-acc-sub-messages>' +
+            badge + accSubnavIcon(item.icon) + '<span>' + item.label + '</span>' +
+          '</button>'
+        );
+      }
 
       if (item.demo) {
         return (
@@ -1073,6 +1117,19 @@
     Array.prototype.slice.call(nav.querySelectorAll('[data-acc-sub-demo]')).forEach(function (btn) {
       btn.addEventListener('click', function () {
         accountToast(btn.getAttribute('data-acc-sub-demo') || 'Demo');
+      });
+    });
+
+    Array.prototype.slice.call(nav.querySelectorAll('[data-acc-sub-messages]')).forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (window.MessagesUI && typeof window.MessagesUI.toggle === 'function') {
+          window.MessagesUI.toggle();
+          return;
+        }
+        var headerBtn = document.querySelector('.header-msg-btn');
+        if (headerBtn) headerBtn.click();
       });
     });
 

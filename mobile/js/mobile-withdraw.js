@@ -153,6 +153,22 @@
     typeFilter: "all",
   };
 
+  const SUBMIT_MS = 1200;
+  let modalMode = "confirm";
+  let isSubmitting = false;
+  let lastFocusedBeforeModal = null;
+
+  /* Demo: incomplete rollover blocks withdraw by default (Figma 297:701).
+     Bypass with ?rollover=0 or open confirm/success QA params. */
+  let rolloverIncomplete = true;
+  const DEMO_ROLLOVER = {
+    percent: 38.33,
+    latestTopUp: "100.00",
+    date: "24 Mar 2026, 4:14 PM",
+    remaining: "740.00",
+    target: "1200.00",
+  };
+
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -165,6 +181,245 @@
     toast._t = window.setTimeout(() => {
       el.hidden = true;
     }, 1800);
+  }
+
+  function formatAmount(value) {
+    const n = Number(value);
+    return (isFinite(n) ? n : 0).toFixed(2);
+  }
+
+  function renderModalConfirm() {
+    const m = getMethod();
+    modalMode = "confirm";
+    const icon = $("#mh-wd-modal-icon");
+    const title = $("#mh-wd-modal-title");
+    const text = $("#mh-wd-modal-text");
+    const meta = $("#mh-wd-modal-meta");
+    const actions = $("#mh-wd-modal-actions");
+    if (icon) {
+      icon.className = "auth-confirm-icon auth-confirm-icon--warn";
+      icon.textContent = "?";
+    }
+    if (title) title.textContent = "Confirm action";
+    if (text) {
+      text.innerHTML =
+        `Are you sure you want to withdraw` +
+        `<span class="wd-modal__amount" id="mh-wd-modal-amount">${esc(formatAmount(state.amount))} MYR</span>?`;
+    }
+    if (meta) {
+      meta.hidden = !m;
+      meta.textContent = m ? `Via ${m.name} · Demo only — no real funds move.` : "";
+    }
+    if (actions) {
+      actions.className = "auth-confirm-actions";
+      actions.innerHTML =
+        `<button type="button" class="auth-btn auth-btn--login" data-mh-wd-modal-close>Cancel</button>` +
+        `<button type="button" class="auth-btn auth-btn--register" id="mh-wd-modal-confirm">Confirm</button>`;
+      $("#mh-wd-modal-confirm")?.addEventListener("click", confirmWithdrawFromModal);
+    }
+  }
+
+  function renderModalSuccess() {
+    const m = getMethod();
+    modalMode = "success";
+    const icon = $("#mh-wd-modal-icon");
+    const title = $("#mh-wd-modal-title");
+    const text = $("#mh-wd-modal-text");
+    const meta = $("#mh-wd-modal-meta");
+    const actions = $("#mh-wd-modal-actions");
+    if (icon) {
+      icon.className = "auth-confirm-icon auth-confirm-icon--warn wd-modal__icon--success";
+      icon.textContent = "✓";
+    }
+    if (title) title.textContent = "Withdrawal submitted";
+    if (text) {
+      text.textContent = m
+        ? `Your withdrawal of ${formatAmount(state.amount)} MYR via ${m.name} has been submitted successfully.`
+        : `Your withdrawal of ${formatAmount(state.amount)} MYR has been submitted successfully.`;
+    }
+    if (meta) {
+      meta.hidden = false;
+      meta.textContent = "Demo only — no real transaction has been made.";
+    }
+    if (actions) {
+      actions.className = "auth-confirm-actions auth-confirm-actions--single";
+      actions.innerHTML =
+        `<button type="button" class="auth-btn auth-btn--register" data-mh-wd-modal-ok id="mh-wd-modal-ok">OK</button>`;
+    }
+  }
+
+  function syncRolloverDemo() {
+    const pct = DEMO_ROLLOVER.percent;
+    const ring = $("#mh-wd-rollover-ring");
+    const pctEl = $("#mh-wd-rollover-pct");
+    const topup = $("#mh-wd-rollover-topup");
+    const date = $("#mh-wd-rollover-date");
+    const remain = $("#mh-wd-rollover-remain");
+    if (ring) {
+      ring.style.setProperty("--pct", String(pct));
+      ring.setAttribute("aria-valuenow", String(pct));
+      ring.setAttribute("aria-label", `Deposit rollover progress ${pct} percent`);
+    }
+    if (pctEl) pctEl.textContent = String(pct);
+    if (topup) topup.textContent = `Latest Top-Up/Bonus : ${DEMO_ROLLOVER.latestTopUp}`;
+    if (date) date.textContent = DEMO_ROLLOVER.date;
+    if (remain) remain.textContent = `${DEMO_ROLLOVER.remaining} / ${DEMO_ROLLOVER.target}`;
+  }
+
+  function openRolloverModal() {
+    const backdrop = $("#mh-wd-rollover-backdrop");
+    const modal = $("#mh-wd-rollover-modal");
+    if (!backdrop) return;
+    syncRolloverDemo();
+    lastFocusedBeforeModal = document.activeElement;
+    backdrop.hidden = false;
+    requestAnimationFrame(() => backdrop.classList.add("is-open"));
+    document.body.classList.add("wd-modal-open");
+    modal?.focus({ preventScroll: true });
+  }
+
+  function closeRolloverModal() {
+    const backdrop = $("#mh-wd-rollover-backdrop");
+    if (!backdrop) return;
+    backdrop.classList.remove("is-open");
+    document.body.classList.remove("wd-modal-open");
+    window.setTimeout(() => {
+      backdrop.hidden = true;
+      lastFocusedBeforeModal?.focus?.({ preventScroll: true });
+      lastFocusedBeforeModal = null;
+    }, 180);
+  }
+
+  function openWithdrawModal(mode) {
+    const backdrop = $("#mh-wd-modal-backdrop");
+    const modal = $("#mh-wd-modal");
+    if (!backdrop) return;
+    if (mode === "success") renderModalSuccess();
+    else renderModalConfirm();
+    lastFocusedBeforeModal = document.activeElement;
+    backdrop.hidden = false;
+    requestAnimationFrame(() => backdrop.classList.add("is-open"));
+    document.body.classList.add("wd-modal-open");
+    modal?.focus({ preventScroll: true });
+  }
+
+  function closeWithdrawModal() {
+    const backdrop = $("#mh-wd-modal-backdrop");
+    if (!backdrop) return;
+    backdrop.classList.remove("is-open");
+    document.body.classList.remove("wd-modal-open");
+    window.setTimeout(() => {
+      backdrop.hidden = true;
+      lastFocusedBeforeModal?.focus?.({ preventScroll: true });
+      lastFocusedBeforeModal = null;
+    }, 180);
+  }
+
+  function confirmWithdrawFromModal() {
+    if (isSubmitting || modalMode !== "confirm") return;
+    isSubmitting = true;
+    const confirmBtn = $("#mh-wd-modal-confirm");
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = "Processing…";
+    }
+    window.setTimeout(() => {
+      isSubmitting = false;
+      const m = getMethod();
+      const desc = $("#mh-wd-success-desc");
+      if (desc) {
+        desc.textContent = m
+          ? `Your withdrawal of ${formatAmount(state.amount)} MYR via ${m.name} was submitted. Processing usually completes within a few hours.`
+          : "Your withdrawal request was submitted.";
+      }
+      renderModalSuccess();
+      toast("Withdrawal submitted — demo only");
+    }, SUBMIT_MS);
+  }
+
+  function finishSuccessModal() {
+    closeWithdrawModal();
+    showStep("success");
+  }
+
+  function bindWithdrawModal() {
+    const rolloverBackdrop = $("#mh-wd-rollover-backdrop");
+    if (rolloverBackdrop) {
+      rolloverBackdrop.addEventListener("click", (e) => {
+        if (
+          e.target === rolloverBackdrop ||
+          e.target.closest("[data-mh-wd-rollover-close]") ||
+          e.target.closest("[data-mh-wd-rollover-ok]")
+        ) {
+          closeRolloverModal();
+        }
+      });
+    }
+
+    const backdrop = $("#mh-wd-modal-backdrop");
+    if (backdrop) {
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop || e.target.closest("[data-mh-wd-modal-close]")) {
+          if (isSubmitting) return;
+          closeWithdrawModal();
+          return;
+        }
+        if (e.target.closest("[data-mh-wd-modal-ok]")) {
+          finishSuccessModal();
+        }
+      });
+
+      $("#mh-wd-modal-confirm")?.addEventListener("click", confirmWithdrawFromModal);
+    }
+
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const demo = params.get("wd-modal");
+      const rolloverParam = params.get("rollover");
+
+      if (rolloverParam === "0" || rolloverParam === "false") {
+        rolloverIncomplete = false;
+      }
+      if (demo === "confirm" || demo === "1" || demo === "success") {
+        rolloverIncomplete = false;
+      }
+
+      if (demo === "confirm" || demo === "1") {
+        state.amount = state.amount || 50;
+        state.methodId = state.methodId || "touchngo";
+        openWithdrawModal("confirm");
+      } else if (demo === "success") {
+        state.amount = state.amount || 50;
+        state.methodId = state.methodId || "touchngo";
+        openWithdrawModal("success");
+      } else if (rolloverIncomplete) {
+        /* Force rollover popup on every Withdraw entry (mobile). */
+        openRolloverModal();
+      }
+    } catch (_) {
+      /* ignore */
+    }
+
+    /* Re-open when tapping Withdraw / Withdrawal while already on this page. */
+    document.addEventListener("click", (e) => {
+      if (!rolloverIncomplete) return;
+      const navWithdraw = e.target.closest(
+        'a[href*="withdraw.html"], [data-mh-withdraw], .mh-dep-mode__btn[href*="withdraw"]'
+      );
+      if (!navWithdraw) return;
+      if (
+        navWithdraw.getAttribute("aria-selected") === "true" ||
+        navWithdraw.getAttribute("aria-current") === "page" ||
+        navWithdraw.classList.contains("is-active")
+      ) {
+        e.preventDefault();
+        openRolloverModal();
+      }
+    });
+
+    document.addEventListener("mh:open-rollover", () => {
+      if (rolloverIncomplete) openRolloverModal();
+    });
   }
 
   function esc(s) {
@@ -419,6 +674,11 @@
 
   function openMethod(id) {
     if (!METHODS[id]) return;
+    /* Earliest gate: selecting a method starts a withdraw attempt */
+    if (rolloverIncomplete) {
+      openRolloverModal();
+      return;
+    }
     state.methodId = id;
     state.amount = 0;
     state.accountName = "";
@@ -524,9 +784,25 @@
     renderTypeList();
     renderMethods();
     showStep("methods");
+    bindWithdrawModal();
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") setTypeSheetOpen(false);
+      if (e.key !== "Escape") return;
+      const rolloverBackdrop = $("#mh-wd-rollover-backdrop");
+      if (rolloverBackdrop && !rolloverBackdrop.hidden) {
+        e.preventDefault();
+        closeRolloverModal();
+        return;
+      }
+      const backdrop = $("#mh-wd-modal-backdrop");
+      if (backdrop && !backdrop.hidden) {
+        if (isSubmitting) return;
+        e.preventDefault();
+        if (modalMode === "success") finishSuccessModal();
+        else closeWithdrawModal();
+        return;
+      }
+      setTypeSheetOpen(false);
     });
 
     document.addEventListener("click", (e) => {
@@ -592,6 +868,10 @@
       }
 
       if (e.target.closest("[data-mh-wd-to-confirm]")) {
+        if (rolloverIncomplete) {
+          openRolloverModal();
+          return;
+        }
         const input = $("#mh-wd-amount-input");
         if (input) state.amount = Number(input.value);
         if (!validateAmount()) return;
@@ -600,18 +880,11 @@
       }
 
       if (e.target.closest("[data-mh-wd-submit]")) {
-        const btn = e.target.closest("[data-mh-wd-submit]");
-        btn.disabled = true;
-        btn.textContent = "Processing…";
-        window.setTimeout(() => {
-          btn.disabled = false;
-          btn.textContent = "Confirm withdrawal";
-          const m = getMethod();
-          $("#mh-wd-success-desc").textContent = m
-            ? `Your withdrawal of ${Number(state.amount).toFixed(2)} MYR via ${m.name} was submitted. Processing usually completes within a few hours.`
-            : "Your withdrawal request was submitted.";
-          showStep("success");
-        }, 1200);
+        if (rolloverIncomplete) {
+          openRolloverModal();
+          return;
+        }
+        openWithdrawModal("confirm");
         return;
       }
 

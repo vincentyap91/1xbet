@@ -7,6 +7,7 @@
   <title>Withdrawal - 1xBet Mobile</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="../css/withdraw-modal.css" />
   <link rel="stylesheet" href="css/mobile-home.css" />
   <link rel="stylesheet" href="css/mobile-deposit.css" />
   <link rel="stylesheet" href="css/mobile-withdraw.css" />
@@ -167,6 +168,96 @@
   </div>
 
   <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Rollover blocked popup (Figma 297:701) -->
+  <div class="auth-backdrop wd-modal-backdrop" id="mh-wd-rollover-backdrop" hidden>
+    <div
+      class="auth-dialog auth-dialog--confirm wd-modal wd-modal--rollover"
+      id="mh-wd-rollover-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mh-wd-rollover-title"
+      tabindex="-1"
+    >
+      <div class="wd-rollover">
+        <button type="button" class="wd-rollover__close" data-mh-wd-rollover-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="wd-rollover__icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 5.5L32.5 30.5H3.5L18 5.5Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" fill="none"/>
+            <path d="M18 14v8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="18" cy="26" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2 class="wd-rollover__title" id="mh-wd-rollover-title">Rollover requirement is not achieved.</h2>
+        <p class="wd-rollover__lead">Please fulfil all the requirements before proceeding.</p>
+        <section class="wd-rollover__section" aria-labelledby="mh-wd-rollover-progress-label">
+          <h3 class="wd-rollover__section-title" id="mh-wd-rollover-progress-label">Deposit Rollover Progress</h3>
+          <div class="wd-rollover__card">
+            <div
+              class="wd-rollover__ring"
+              id="mh-wd-rollover-ring"
+              style="--pct: 38.33"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="38.33"
+              aria-label="Deposit rollover progress 38.33 percent"
+            >
+              <div class="wd-rollover__ring-inner">
+                <span class="wd-rollover__ring-value" id="mh-wd-rollover-pct">38.33</span><span class="wd-rollover__ring-unit">%</span>
+              </div>
+            </div>
+            <div class="wd-rollover__details">
+              <p class="wd-rollover__topup" id="mh-wd-rollover-topup">Latest Top-Up/Bonus : 100.00</p>
+              <p class="wd-rollover__date" id="mh-wd-rollover-date">24 Mar 2026, 4:14 PM</p>
+              <p class="wd-rollover__remain">
+                You have
+                <span class="wd-rollover__remain-nums" id="mh-wd-rollover-remain">740.00 / 1200.00</span>
+                to go!
+              </p>
+            </div>
+          </div>
+        </section>
+        <div class="wd-rollover__alert" role="alert">
+          <span class="wd-rollover__alert-icon" aria-hidden="true">!</span>
+          <p>Unable to withdraw funds due to incomplete rollover progress.</p>
+        </div>
+        <button type="button" class="wd-rollover__ok" data-mh-wd-rollover-ok id="mh-wd-rollover-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdrawal confirm / success popup (after rollover is met) -->
+  <div class="auth-backdrop wd-modal-backdrop" id="mh-wd-modal-backdrop" hidden>
+    <div
+      class="auth-dialog auth-dialog--confirm wd-modal"
+      id="mh-wd-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mh-wd-modal-title"
+      tabindex="-1"
+    >
+      <div class="auth-confirm">
+        <button type="button" class="auth-confirm-close" data-mh-wd-modal-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="auth-confirm-icon auth-confirm-icon--warn" id="mh-wd-modal-icon" aria-hidden="true">?</div>
+        <h2 class="auth-confirm-title" id="mh-wd-modal-title">Confirm action</h2>
+        <p class="auth-confirm-text" id="mh-wd-modal-text">
+          Are you sure you want to withdraw
+          <span class="wd-modal__amount" id="mh-wd-modal-amount">0.00 MYR</span>?
+        </p>
+        <p class="wd-modal__meta" id="mh-wd-modal-meta" hidden></p>
+        <div class="auth-confirm-actions" id="mh-wd-modal-actions">
+          <button type="button" class="auth-btn auth-btn--login" data-mh-wd-modal-close>Cancel</button>
+          <button type="button" class="auth-btn auth-btn--register" id="mh-wd-modal-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../js/auth-modals.js"></script>
   <script src="js/mobile-home.js"></script>
   <script src="js/mobile-withdraw.js"></script>

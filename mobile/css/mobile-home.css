@@ -77,9 +77,12 @@ body.mh-page.mh-sheet-open {
 .mh-pd-subbar,
 .mh-tc-subbar,
 .mh-pm-subbar,
+.mh-au-subbar,
+.mh-ps-subbar,
 .mh-rs-subbar,
 .mh-st-subbar,
-.mh-bt-subbar {
+.mh-bt-subbar,
+.mh-msg-subbar {
   position: sticky;
   top: calc(var(--mh-header-h) + env(safe-area-inset-top, 0px));
   z-index: 90;
@@ -111,9 +114,12 @@ body.mh-page.mh-sheet-open {
 .mh-pd-subbar__back,
 .mh-tc-subbar__back,
 .mh-pm-subbar__back,
+.mh-au-subbar__back,
+.mh-ps-subbar__back,
 .mh-rs-subbar__back,
 .mh-st-subbar__back,
-.mh-bt-subbar__back {
+.mh-bt-subbar__back,
+.mh-msg-subbar__back {
   flex: 0 0 32px;
   display: inline-flex;
   align-items: center;
@@ -152,9 +158,12 @@ body.mh-page.mh-sheet-open {
 .mh-pd-subbar__back img,
 .mh-tc-subbar__back img,
 .mh-pm-subbar__back img,
+.mh-au-subbar__back img,
+.mh-ps-subbar__back img,
 .mh-rs-subbar__back img,
 .mh-st-subbar__back img,
-.mh-bt-subbar__back img {
+.mh-bt-subbar__back img,
+.mh-msg-subbar__back img {
   width: 10px;
   height: 16px;
   display: block;
@@ -177,9 +186,12 @@ body.mh-page.mh-sheet-open {
 .mh-pd-subbar__title,
 .mh-tc-subbar__title,
 .mh-pm-subbar__title,
+.mh-au-subbar__title,
+.mh-ps-subbar__title,
 .mh-rs-subbar__title,
 .mh-st-subbar__title,
-.mh-bt-subbar__title {
+.mh-bt-subbar__title,
+.mh-msg-subbar__title {
   flex: 1 1 auto;
   margin: 0;
   min-width: 0;
@@ -937,6 +949,623 @@ body.mh-page.mh-sheet-open {
 .mh-recommend:active {
   background: var(--border-light);
   transform: scale(0.99);
+}
+
+/* ---------- Live transactions (Figma 296:8773 layout → page tokens) ---------- */
+.mh-ltx {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+.mh-ltx__title {
+  margin: 0 0 10px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.mh-ltx__table {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-dark);
+  background: var(--header-bg);
+  box-shadow: var(--mh-shadow-card);
+}
+
+.mh-ltx__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--section-blue);
+}
+
+.mh-ltx__col {
+  padding: 10px 8px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-inverse);
+}
+
+.mh-ltx__col + .mh-ltx__col {
+  border-left: 1px solid var(--border-dark);
+}
+
+.mh-ltx__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.mh-ltx__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mh-ltx__row:nth-child(odd) {
+  background: var(--page-bg);
+}
+
+.mh-ltx__row:nth-child(even) {
+  background: var(--sidebar-bg);
+}
+
+.mh-ltx__cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 10px;
+}
+
+.mh-ltx__cell + .mh-ltx__cell {
+  border-left: 1px solid var(--border-dark);
+}
+
+.mh-ltx__avatar {
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--header-action);
+  object-fit: contain;
+  display: block;
+  /* SVG is already white; do not filter — it bleaches the blue circle */
+}
+
+.mh-ltx__user {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-inverse);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-ltx__amount {
+  flex: 0 0 auto;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-ltx__cell:first-child .mh-ltx__amount {
+  color: var(--action-green);
+}
+
+.mh-ltx__cell:last-child .mh-ltx__amount {
+  color: var(--header-action);
+}
+
+/* ---------- Recent Big Wins (Figma 296:8831 → modified palette) ---------- */
+.mh-big-wins {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+.mh-big-wins__panel {
+  position: relative;
+  padding: 12px 10px 14px;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-xl);
+  background: var(--header-bg);
+  box-shadow: var(--mh-shadow-card);
+  overflow: hidden;
+}
+
+.mh-big-wins__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mh-big-wins__trophy {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: block;
+}
+
+.mh-big-wins__title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.mh-big-wins__title-recent {
+  color: var(--text-inverse);
+}
+
+.mh-big-wins__title-wins {
+  color: var(--action-green);
+}
+
+.mh-big-wins__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.mh-big-wins__card {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  min-height: 88px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-dark);
+  background: var(--sidebar-bg);
+  text-decoration: none;
+  color: var(--text-inverse);
+  overflow: hidden;
+  transition: transform var(--mh-ease);
+}
+
+.mh-big-wins__card:active {
+  transform: scale(0.995);
+}
+
+.mh-big-wins__thumb {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  align-self: center;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--page-bg);
+  display: block;
+}
+
+.mh-big-wins__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+.mh-big-wins__provider,
+.mh-big-wins__line,
+.mh-big-wins__amount {
+  margin: 0;
+  font-family: var(--font);
+}
+
+.mh-big-wins__provider {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--sidebar-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-big-wins__line {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text-inverse);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mh-big-wins__line strong {
+  font-weight: 700;
+}
+
+.mh-big-wins__game {
+  color: var(--action-green);
+}
+
+.mh-big-wins__amount {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--warning);
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-big-wins__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 14px;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--page-bg) 78%, transparent);
+  border: 1px solid var(--border-dark);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--mh-ease);
+}
+
+.mh-big-wins__play img {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.mh-big-wins__card:hover .mh-big-wins__play,
+.mh-big-wins__card:focus-visible .mh-big-wins__play,
+.mh-big-wins__card:active .mh-big-wins__play {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .mh-big-wins__card:hover .mh-big-wins__play {
+    opacity: 0;
+  }
+
+  .mh-big-wins__card:active .mh-big-wins__play,
+  .mh-big-wins__card:focus-visible .mh-big-wins__play {
+    opacity: 1;
+  }
+}
+
+.mh-big-wins__card:focus-visible {
+  outline: 2px solid var(--cyan-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Recent Payout (Figma 296:8977 → modified palette) ---------- */
+.mh-payout {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+.mh-payout__panel {
+  position: relative;
+  padding: 12px 0 14px;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-xl);
+  background: var(--header-bg);
+  box-shadow: var(--mh-shadow-card);
+  overflow: hidden;
+}
+
+.mh-payout__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  margin-bottom: 12px;
+}
+
+.mh-payout__trophy {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: block;
+}
+
+.mh-payout__title {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.mh-payout__title-recent {
+  color: var(--text-inverse);
+}
+
+.mh-payout__title-payout {
+  color: var(--action-green);
+}
+
+.mh-hscroll--payout {
+  gap: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  scroll-padding-inline-start: 12px;
+  scroll-snap-type: x proximity;
+}
+
+.mh-payout-card {
+  flex: 0 0 124px;
+  width: 124px;
+  min-height: 148px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  padding: 10px 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-dark);
+  background: var(--sidebar-bg);
+  text-align: center;
+  scroll-snap-align: start;
+}
+
+.mh-payout-card__thumb {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 6px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--page-bg);
+}
+
+.mh-payout-card__game,
+.mh-payout-card__user,
+.mh-payout-card__amount {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font);
+}
+
+.mh-payout-card__game {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-inverse);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mh-payout-card__user {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--sidebar-muted);
+}
+
+.mh-payout-card__amount {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--warning);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Unique Referral Hub (banner image top + card below) ---------- */
+.mh-referral {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+.mh-referral__banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  background: var(--header-bg);
+  box-shadow: var(--mh-shadow-card);
+  overflow: hidden;
+}
+
+.mh-referral__art {
+  position: relative;
+  width: 100%;
+  height: 168px;
+  flex-shrink: 0;
+  pointer-events: none;
+  background: var(--header-bg);
+}
+
+.mh-referral__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+}
+
+.mh-referral__card {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 14px 14px;
+  background: var(--league-header);
+}
+
+.mh-referral__title {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-primary);
+}
+
+.mh-referral__subtitle {
+  margin: -2px 0 2px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--action-green);
+}
+
+.mh-referral__label {
+  margin: 2px 0 0;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mh-referral__link-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 8px 0 12px;
+  border-radius: var(--radius-md);
+  background: var(--surface-primary);
+  border: 1px solid color-mix(in srgb, var(--header-action) 18%, transparent);
+}
+
+.mh-referral__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.mh-referral__copy {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--header-action);
+  cursor: pointer;
+}
+
+.mh-referral__copy:hover,
+.mh-referral__copy:active {
+  color: var(--section-blue);
+  background: var(--odds-bg);
+}
+
+.mh-referral__copy:focus-visible {
+  outline: 2px solid var(--cyan-accent);
+  outline-offset: 1px;
+}
+
+.mh-referral__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.mh-referral__btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: var(--section-blue);
+  color: var(--text-inverse);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+}
+
+.mh-referral__btn svg {
+  flex-shrink: 0;
+}
+
+.mh-referral__btn--share {
+  background: var(--action-green);
+}
+
+.mh-referral__btn--share:hover,
+.mh-referral__btn--share:active {
+  background: var(--action-green-hover);
+  color: var(--text-inverse);
+}
+
+.mh-referral__btn--navy {
+  background: var(--header-bg);
+}
+
+.mh-referral__btn--navy:hover,
+.mh-referral__btn--navy:active {
+  background: var(--page-bg);
+  color: var(--text-inverse);
+}
+
+.mh-referral__btn:focus-visible {
+  outline: 2px solid var(--cyan-accent);
+  outline-offset: 2px;
+}
+
+.mh-referral__btn--full {
+  grid-column: 1 / -1;
 }
 
 /* ---------- Rail cards ---------- */
@@ -2247,6 +2876,86 @@ body.mh-qbs-open .mh-toast {
     --mh-match-w: min(340px, calc(100vw - 48px));
     --mh-rail-w: 160px;
   }
+
+  .mh-ltx__title {
+    font-size: 17px;
+  }
+
+  .mh-ltx__col {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+
+  .mh-ltx__cell {
+    padding: 9px 12px;
+  }
+
+  .mh-ltx__user,
+  .mh-ltx__amount {
+    font-size: 13px;
+  }
+
+  .mh-payout__trophy {
+    width: 42px;
+    height: 42px;
+  }
+
+  .mh-payout__title {
+    font-size: 17px;
+  }
+
+  .mh-referral__art {
+    height: 188px;
+  }
+
+  .mh-referral__card {
+    padding: 18px 16px 16px;
+  }
+
+  .mh-referral__title {
+    font-size: 18px;
+  }
+
+  .mh-payout-card {
+    flex-basis: 140px;
+    width: 140px;
+    min-height: 168px;
+  }
+
+  .mh-payout-card__thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  .mh-payout-card__amount {
+    font-size: 18px;
+  }
+
+  .mh-big-wins__trophy {
+    width: 44px;
+    height: 44px;
+  }
+
+  .mh-big-wins__title {
+    font-size: 17px;
+  }
+
+  .mh-big-wins__list {
+    max-height: 340px;
+  }
+
+  .mh-big-wins__card {
+    min-height: 96px;
+  }
+
+  .mh-big-wins__thumb {
+    width: 72px;
+    height: 72px;
+  }
+
+  .mh-big-wins__amount {
+    font-size: 18px;
+  }
 }
 
 /* Desktop / wide: keep 5 tabs centered as a group (still equal columns) */
@@ -2275,6 +2984,31 @@ body.mh-qbs-open .mh-toast {
 
   .mh-section-head__title {
     font-size: 15px;
+  }
+
+  .mh-big-wins__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-height: 380px;
+  }
+
+  .mh-big-wins__card {
+    min-height: 110px;
+  }
+
+  .mh-big-wins__thumb {
+    width: 80px;
+    height: 80px;
+  }
+
+  .mh-big-wins__provider,
+  .mh-big-wins__line {
+    font-size: 13px;
+  }
+
+  .mh-big-wins__amount {
+    font-size: 20px;
   }
 }
 

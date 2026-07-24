@@ -451,6 +451,11 @@ body[data-page="about-us"] {
   .about-hero-balls { max-height: 280px; }
   .about-hero-phone { max-height: 300px; }
   .about-secure { padding: 40px 16px; }
+  /* Hide decorative card art only; keep titles + text */
+  .about-secure-card-art { display: none; }
+  .about-secure-bento { grid-template-columns: 1fr; }
+  .about-secure-card { min-height: 0; }
+  .about-secure-card-body { max-width: none; padding: 24px 20px; }
   .about-trusted { padding: 40px 16px; }
   .about-trusted-inner { flex-direction: column; gap: 32px; text-align: center; }
   .about-trusted-stats { justify-content: center; }
@@ -458,13 +463,6 @@ body[data-page="about-us"] {
 }
 
 @media (max-width: 600px) {
-  .about-secure-bento {
-    grid-template-columns: 1fr;
-  }
-  .about-secure-card-art {
-    max-width: 42%;
-    opacity: .85;
-  }
   .about-secure-cards {
     grid-template-columns: 1fr;
   }

@@ -1,0 +1,20 @@
+/* Partnership — mobile shell wrapper; content styles from ../css/partnership.css */
+
+body.mh-page--partnership {
+  background: var(--surface-secondary, #e9eef2);
+}
+
+body.mh-page--partnership .ps-main {
+  min-height: 0;
+}
+
+body.mh-page--partnership .ps-inner {
+  max-width: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px var(--mh-gutter, 12px) 32px;
+}
+
+body.mh-page--partnership .mh-footer {
+  margin-top: 8px;
+}

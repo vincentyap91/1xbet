@@ -1,0 +1,105 @@
+/* =========================================================
+   Mobile — About Us
+   Reuses ../css/about-us.css; thin shell tweaks only.
+   Scoped to body.mh-page.mh-page--about-us
+   ========================================================= */
+
+body.mh-page.mh-page--about-us {
+  --mh-subbar-h: 44px;
+  background: var(--page-bg);
+  color: var(--text-inverse, #fff);
+}
+
+body.mh-page.mh-page--about-us .mh-main.about-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: var(--page-bg);
+  box-sizing: border-box;
+}
+
+/* Tighten desktop marketing layout for phone widths */
+body.mh-page.mh-page--about-us .about-hero {
+  min-height: 0;
+}
+
+body.mh-page.mh-page--about-us .about-hero-inner {
+  padding: 28px 16px 20px;
+  gap: 16px;
+}
+
+body.mh-page.mh-page--about-us .about-hero-title {
+  font-size: 26px;
+}
+
+body.mh-page.mh-page--about-us .about-hero-art {
+  min-height: 180px;
+  padding: 0 8px 12px;
+}
+
+body.mh-page.mh-page--about-us .about-hero-balls {
+  max-height: 220px;
+}
+
+body.mh-page.mh-page--about-us .about-secure {
+  padding: 32px 16px;
+}
+
+/* Decorative padlock / coin / gears — hide art only; keep card text */
+body.mh-page.mh-page--about-us .about-secure-card-art {
+  display: none;
+}
+
+body.mh-page.mh-page--about-us .about-secure-bento {
+  grid-template-columns: 1fr;
+}
+
+body.mh-page.mh-page--about-us .about-secure-card {
+  min-height: 0;
+}
+
+body.mh-page.mh-page--about-us .about-secure-card-body {
+  max-width: none;
+  padding: 20px 16px;
+}
+
+body.mh-page.mh-page--about-us .about-trusted {
+  padding: 32px 16px;
+}
+
+body.mh-page.mh-page--about-us .about-section-title {
+  font-size: 20px;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-inner {
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-art {
+  flex: none;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-title {
+  font-size: 22px;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-desc {
+  margin: 0 auto 20px;
+  font-size: 13px;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-innovation {
+  text-align: left;
+  margin-top: 20px;
+  padding: 16px;
+  gap: 12px;
+}
+
+body.mh-page.mh-page--about-us .about-trusted-cta {
+  justify-content: center;
+}

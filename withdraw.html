@@ -6,6 +6,8 @@
   <title>Withdraw — 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
+  <link rel="stylesheet" href="css/auth-modals.css" />
+  <link rel="stylesheet" href="css/withdraw-modal.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="withdraw" class="is-logged-in">
@@ -170,7 +172,7 @@
                 <a href="about-us.html" role="menuitem">About us</a>
                 <a href="payments.html" role="menuitem">Payments</a>
                 <a href="terms.html" role="menuitem">Terms and Conditions</a>
-                <a href="#" role="menuitem">Bingo</a>
+                <a href="partnership.html" role="menuitem">Partnership</a>
                 <a href="#" role="menuitem">Toto</a>
                 <a href="results.html" role="menuitem">Results</a>
                 <a href="#" role="menuitem">Statistics</a>
@@ -519,11 +521,6 @@
           <h3>Information</h3>
           <a href="about-us.html">About us</a>
           <a href="terms.html">Terms and Conditions</a>
-          <a href="#">Affiliate Program</a>
-          <a href="#">Become an agent</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Cookie Policy</a>
-          <a href="#">Contacts</a>
         </div>
         <div class="footer-col">
           <h3>Betting</h3>
@@ -611,6 +608,95 @@
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Rollover blocked popup (Figma 297:701) -->
+  <div class="auth-backdrop wd-modal-backdrop" id="wd-rollover-backdrop" hidden>
+    <div
+      class="auth-dialog auth-dialog--confirm wd-modal wd-modal--rollover"
+      id="wd-rollover-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="wd-rollover-title"
+      tabindex="-1"
+    >
+      <div class="wd-rollover">
+        <button type="button" class="wd-rollover__close" data-wd-rollover-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="wd-rollover__icon" aria-hidden="true">
+          <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 5.5L32.5 30.5H3.5L18 5.5Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" fill="none"/>
+            <path d="M18 14v8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="18" cy="26" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2 class="wd-rollover__title" id="wd-rollover-title">Rollover requirement is not achieved.</h2>
+        <p class="wd-rollover__lead">Please fulfil all the requirements before proceeding.</p>
+        <section class="wd-rollover__section" aria-labelledby="wd-rollover-progress-label">
+          <h3 class="wd-rollover__section-title" id="wd-rollover-progress-label">Deposit Rollover Progress</h3>
+          <div class="wd-rollover__card">
+            <div
+              class="wd-rollover__ring"
+              id="wd-rollover-ring"
+              style="--pct: 38.33"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="38.33"
+              aria-label="Deposit rollover progress 38.33 percent"
+            >
+              <div class="wd-rollover__ring-inner">
+                <span class="wd-rollover__ring-value" id="wd-rollover-pct">38.33</span><span class="wd-rollover__ring-unit">%</span>
+              </div>
+            </div>
+            <div class="wd-rollover__details">
+              <p class="wd-rollover__topup" id="wd-rollover-topup">Latest Top-Up/Bonus : 100.00</p>
+              <p class="wd-rollover__date" id="wd-rollover-date">24 Mar 2026, 4:14 PM</p>
+              <p class="wd-rollover__remain">
+                You have
+                <span class="wd-rollover__remain-nums" id="wd-rollover-remain">740.00 / 1200.00</span>
+                to go!
+              </p>
+            </div>
+          </div>
+        </section>
+        <div class="wd-rollover__alert" role="alert">
+          <span class="wd-rollover__alert-icon" aria-hidden="true">!</span>
+          <p>Unable to withdraw funds due to incomplete rollover progress.</p>
+        </div>
+        <button type="button" class="wd-rollover__ok" data-wd-rollover-ok id="wd-rollover-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdrawal confirm / success popup (after rollover is met) -->
+  <div class="auth-backdrop wd-modal-backdrop" id="wd-modal-backdrop" hidden>
+    <div
+      class="auth-dialog auth-dialog--confirm wd-modal"
+      id="wd-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="wd-modal-title"
+      tabindex="-1"
+    >
+      <div class="auth-confirm">
+        <button type="button" class="auth-confirm-close" data-wd-modal-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="auth-confirm-icon" id="wd-modal-icon" aria-hidden="true">?</div>
+        <h2 class="auth-confirm-title" id="wd-modal-title">Confirm action</h2>
+        <p class="auth-confirm-text" id="wd-modal-text">
+          Are you sure you want to withdraw
+          <span class="wd-modal__amount" id="wd-modal-amount">0.00 MYR</span>?
+        </p>
+        <p class="wd-modal__meta" id="wd-modal-meta" hidden></p>
+        <div class="auth-confirm-actions" id="wd-modal-actions">
+          <button type="button" class="auth-btn auth-btn--login" data-wd-modal-close>Cancel</button>
+          <button type="button" class="auth-btn auth-btn--register" id="wd-modal-confirm">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="js/script.js"></script>
   <script src="js/account.js"></script>

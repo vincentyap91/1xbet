@@ -167,40 +167,57 @@ body.mh-page.mh-page--favourites .mh-footer {
   margin-top: 12px;
 }
 
-/* Match card (favourites + shared event card) */
-.mh-ev-card {
+/* Favourites match card (screenshot layout) */
+.mh-fv-card {
   margin: 0 0 8px;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid var(--odds-bg, #e8eef5);
   border-radius: 8px;
   background: var(--surface-primary);
   box-sizing: border-box;
 }
 
-.mh-ev-card__top {
+.mh-fv-card__top {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 8px;
   margin: 0 0 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--odds-bg, #e8eef5);
 }
 
-.mh-ev-card__sport {
-  width: 14px;
-  height: 14px;
-  opacity: 0.75;
+.mh-fv-card__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mh-fv-card__sport {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.85;
   filter: brightness(0) saturate(100%) invert(35%) sepia(40%) saturate(700%) hue-rotate(176deg);
 }
 
-.mh-ev-card__time {
-  flex: 1 1 auto;
+.mh-fv-card__status {
   font-size: 12px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 500;
+  color: #8a9bb0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.mh-ev-card__more {
+.mh-fv-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.mh-fv-card__stream,
+.mh-fv-card__more {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -211,67 +228,75 @@ body.mh-page.mh-page--favourites .mh-footer {
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
-  text-decoration: none;
 }
 
-.mh-ev-card__more img {
+.mh-fv-card__stream img {
+  width: 14px;
+  height: 14px;
+  filter: brightness(0) saturate(100%) invert(58%) sepia(45%) saturate(600%) hue-rotate(42deg);
+}
+
+.mh-fv-card__more img {
   width: 14px;
   height: 14px;
   opacity: 0.55;
   filter: brightness(0) saturate(100%) invert(35%) sepia(18%) saturate(600%) hue-rotate(169deg);
 }
 
-.mh-ev-card__league {
-  margin: 0 0 8px;
+.mh-fv-card__league {
+  display: block;
+  margin: 0 0 10px;
   font-size: 13px;
   font-weight: 700;
   color: var(--header-action);
   text-decoration: none;
+  line-height: 1.3;
 }
 
-.mh-ev-card__team {
+.mh-fv-card__teams {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mh-fv-card__row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 0 0 6px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-primary);
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.mh-ev-card__team img {
+.mh-fv-card__team {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.mh-fv-card__team img {
   width: 20px;
   height: 20px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
   background: var(--odds-bg);
 }
 
-.mh-ev-card__note {
-  margin: 4px 0 0;
+.mh-fv-card__score {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+
+.mh-fv-card__note {
+  margin: 10px 0 0;
   font-size: 12px;
   font-weight: 500;
-  color: var(--header-action);
-}
-
-.mh-ev-card__odds {
-  display: flex;
-  gap: 4px;
-  margin-top: 10px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.mh-ev-card__odds::-webkit-scrollbar {
-  display: none;
-}
-
-.mh-ev-card__odds .mh-odds__btn {
-  flex: 0 0 64px;
-  min-height: 40px;
-  border-radius: 4px;
-}
-
-body.mh-page.mh-page--favourites .mh-ev-card__odds {
-  display: none;
+  color: #8a9bb0;
 }

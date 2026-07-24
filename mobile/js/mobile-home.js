@@ -8,7 +8,7 @@
   const SESSION_KEY = "mh-logged-in-v1";
   const header = $("#mh-header");
   const toast = $("#mh-toast");
-  const menuSheet = $("#mh-menu-sheet");
+  let menuSheet = $("#mh-menu-sheet");
   const betCount = $("#mh-bet-count");
   const qbs = $("#mh-qbs");
   const qbsRail = $("[data-mh-qbs-rail]");
@@ -74,11 +74,49 @@
     }
   }
 
-  function iconPath(name) {
+  function scriptBase() {
     const scripts = document.querySelectorAll("script[src*='mobile-home.js']");
     const src = scripts[scripts.length - 1]?.getAttribute("src") || "js/mobile-home.js";
-    const base = src.replace(/js\/mobile-home\.js.*$/, "");
-    return `${base}assets/icons/${name}`;
+    return src.replace(/js\/mobile-home\.js.*$/, "");
+  }
+
+  function iconPath(name) {
+    return `${scriptBase()}assets/icons/${name}`;
+  }
+
+  /** Load canonical menu from partials/menu-sheet.html when page uses [data-mh-menu-include]. */
+  function ensureMenuSheet() {
+    if (menuSheet) return Promise.resolve(menuSheet);
+    const host = $("[data-mh-menu-include]");
+    if (!host) return Promise.resolve(null);
+
+    const url = `${scriptBase()}partials/menu-sheet.html`;
+    return fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`menu sheet HTTP ${res.status}`);
+        return res.text();
+      })
+      .then((html) => {
+        const wrap = document.createElement("div");
+        wrap.innerHTML = html.trim();
+        const sheet = wrap.querySelector("#mh-menu-sheet") || wrap.firstElementChild;
+        if (!sheet) throw new Error("menu sheet root missing");
+        host.replaceWith(sheet);
+        menuSheet = sheet;
+
+        const page = document.body.getAttribute("data-page");
+        if (page === "partnership") {
+          menuSheet.querySelector('a[href="partnership.html"]')?.setAttribute("aria-current", "page");
+        }
+        if (page === "about-us") {
+          menuSheet.querySelector('a[href="about-us.html"]')?.setAttribute("aria-current", "page");
+        }
+        return menuSheet;
+      })
+      .catch((err) => {
+        console.warn("[mh] Failed to load shared menu sheet:", err);
+        return null;
+      });
   }
 
   function showToast(message) {
@@ -994,6 +1032,29 @@
     $$("[data-mh-drag-scroll]").forEach((el) => attachDragScroll(el));
   }
 
+  function initHomeReferral() {
+    const root = document.querySelector(".mh-referral");
+    if (!root) return;
+
+    root.addEventListener("click", (e) => {
+      const copyBtn = e.target.closest("[data-mh-ref-copy]");
+      if (!copyBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const input = root.querySelector("[data-mh-ref-link]");
+      const text = (input?.value || input?.textContent || "").trim();
+      if (!text) return;
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => showToast("Referral link copied"),
+          () => showToast("Referral link copied")
+        );
+      } else {
+        showToast("Referral link copied");
+      }
+    });
+  }
+
   function initToastButtons() {
     document.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-mh-toast]");
@@ -1098,7 +1159,10 @@
       const withdraw = e.target.closest("[data-mh-withdraw]");
       if (withdraw) {
         e.preventDefault();
-        if (document.body.classList.contains("mh-page--withdraw")) return;
+        if (document.body.classList.contains("mh-page--withdraw")) {
+          document.dispatchEvent(new CustomEvent("mh:open-rollover"));
+          return;
+        }
         if (!isLoggedIn()) {
           window.location.href = "login.html";
           return;
@@ -1216,6 +1280,17 @@
         window.location.href = "live-chat.html";
         return;
       }
+      const messages = e.target.closest("[data-mh-messages]");
+      if (messages) {
+        e.preventDefault();
+        if (document.body.classList.contains("mh-page--messages")) return;
+        if (!isLoggedIn()) {
+          window.location.href = "login.html";
+          return;
+        }
+        window.location.href = "messages.html";
+        return;
+      }
       const account = e.target.closest("[data-mh-account]");
       if (account) {
         e.preventDefault();
@@ -1237,18 +1312,21 @@
   }
 
   function init() {
-    initSessionChrome();
-    initHeaderScroll();
-    initQuickNav();
-    initOdds();
-    initQuickBetSlip();
-    initMenu();
-    initTabFlyouts();
-    initAccordions();
-    initHScrollHints();
-    initToastButtons();
-    initNtChips();
-    initSpChips();
+    ensureMenuSheet().then(() => {
+      initSessionChrome();
+      initHeaderScroll();
+      initQuickNav();
+      initOdds();
+      initQuickBetSlip();
+      initMenu();
+      initTabFlyouts();
+      initAccordions();
+      initHScrollHints();
+      initToastButtons();
+      initHomeReferral();
+      initNtChips();
+      initSpChips();
+    });
   }
 
   if (document.readyState === "loading") {

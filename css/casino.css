@@ -180,6 +180,202 @@
   padding: 0 0 24px;
 }
 
+/* ── Wallet · Membership · Current promo ─────────────────── */
+.cs-account {
+  margin: 10px 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-account__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cs-stat-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 76px;
+  padding: 14px 14px 14px 16px;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--sidebar-bg);
+}
+
+.cs-stat-card__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cs-stat-card__label {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--action-green);
+}
+
+.cs-stat-card__value {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-inverse);
+  letter-spacing: 0.01em;
+}
+
+.cs-stat-card__btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-top: 2px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--action-green) 35%, transparent);
+  background: color-mix(in srgb, var(--action-green) 18%, var(--page-bg));
+  color: var(--action-green);
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cs-stat-card__btn:hover {
+  background: color-mix(in srgb, var(--action-green) 28%, var(--page-bg));
+}
+
+.cs-stat-card__btn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.cs-stat-card__btn[data-cs-membership] img {
+  width: 20px;
+  height: 20px;
+}
+
+.cs-current-promo {
+  padding: 16px 16px 18px;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--sidebar-bg);
+}
+
+.cs-current-promo__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+
+.cs-current-promo__title {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  min-width: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.cs-current-promo__eyebrow {
+  color: var(--text-inverse);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.cs-current-promo__sep {
+  color: var(--action-green);
+}
+
+.cs-current-promo__name {
+  color: var(--action-green);
+}
+
+.cs-current-promo__end {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-md, 8px);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--warning) 80%, white) 0%,
+    var(--warning) 55%,
+    color-mix(in srgb, var(--warning) 75%, var(--danger)) 100%
+  );
+  color: var(--page-bg);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.cs-current-promo__end:hover {
+  filter: brightness(1.06);
+}
+
+.cs-current-promo__metric + .cs-current-promo__metric {
+  margin-top: 12px;
+}
+
+.cs-current-promo__meta {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  column-gap: 10px;
+  margin: 0 0 6px;
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.cs-current-promo__meta-label {
+  font-weight: 500;
+  color: rgba(229, 235, 240, 0.92);
+}
+
+.cs-current-promo__meta-val {
+  font-weight: 800;
+  color: var(--action-green);
+}
+
+.cs-current-promo__pct {
+  justify-self: end;
+  font-weight: 800;
+  color: rgba(229, 235, 240, 0.92);
+}
+
+.cs-current-promo__track {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--page-bg);
+}
+
+.cs-current-promo__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--action-green);
+}
+
 /* ── Hero carousel / banner ──────────────────────────────── */
 .casino-hero {
   position: relative;
@@ -540,13 +736,14 @@
   padding: 8px 8px 10px;
   background: #1a2a40;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   min-height: 44px;
 }
 .game-tile-provider {
   width: 20px;
   height: 16px;
+  margin-top: 1px;
   border-radius: 2px;
   background: var(--accent-blue);
   flex-shrink: 0;
@@ -557,6 +754,12 @@
   font-weight: 700;
   color: #fff;
 }
+.game-tile-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 .game-tile-name {
   font-size: 12px;
   color: #fff;
@@ -565,6 +768,30 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.game-tile-rtp {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--warning);
+  white-space: nowrap;
+}
+.game-tile-rtp__trend {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  flex-shrink: 0;
+}
+.game-tile-rtp__trend--up {
+  border-bottom: 5px solid var(--action-green);
+}
+.game-tile-rtp__trend--down {
+  border-top: 5px solid var(--danger);
 }
 /* ── Tournament cards row ────────────────────────────────── */
 .tournament-row {

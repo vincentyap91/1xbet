@@ -445,7 +445,7 @@ Figma structure: [1XBET `235:18`](https://www.figma.com/design/EdLwHua7n5o3CGSLK
 |-------|-----------------|-----------|
 | Page bg | `body.mh-page--profile` | `#e9eef2` (Figma page wash; near `--odds-bg`) |
 | Header | Shared `.mh-header` logged-in: Deposit + account chip | Deposit `--action-green`; chip `--header-action`; badge `--danger` |
-| Account card | `.mh-pf-card` — 32px avatar, Account No. + copy, balance, messages (green count badge), close, My bets / Deposit | Avatar wash `#f3f8fc`; acct `--header-action`; balance `--section-blue`; My bets `--header-action`; Deposit `--action-green` |
+| Account card | `.mh-pf-card` — 32px avatar, Account No. + copy, balance, messages (green count badge → `mobile/messages.html`), close, My bets / Deposit | Avatar wash `#f3f8fc`; acct `--header-action`; balance `--section-blue`; My bets `--header-action`; Deposit `--action-green` |
 | Tabs | `.mh-pf-tabs` horizontal icon+label (Profile · Promo · Settings); active 4px underline | Text/icons `--header-action`; underline `--action-green` |
 | Lists | `.mh-pf-group` / `.mh-pf-list` — My wallet and bets · Profile · Other · Log out | Titles `--text-muted`; rows `--section-blue`; alerts `--danger` |
 | Icons | Figma exports in `mobile/assets/icons/profile/pf-*.svg` (fills remapped) | — |

@@ -128,6 +128,7 @@
     const claimText = $("#dci-claim-text");
     const claimOk = $("#dci-claim-ok");
     const modal = backdrop?.querySelector(".mh-ex-modal");
+    const week = $(".mh-ex-week");
     const MODAL_CLOSE_MS = 220;
     let modalCloseTimer = 0;
     let modalOpenRaf = 0;
@@ -139,6 +140,25 @@
         /* ignore */
       }
       return ms;
+    }
+
+    function scrollActiveDayIntoView(behavior) {
+      if (!week) return;
+      const active =
+        week.querySelector(".mh-ex-day.is-claimable, .dci-day.is-claimable") ||
+        week.querySelector(".mh-ex-day.is-claimed, .dci-day.is-claimed");
+      if (!active) return;
+      const reduce = motionMs(220) <= 1;
+      try {
+        active.scrollIntoView({
+          behavior: reduce ? "auto" : behavior || "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      } catch (_) {
+        const left = active.offsetLeft - (week.clientWidth - active.offsetWidth) / 2;
+        week.scrollLeft = Math.max(0, left);
+      }
     }
 
     function openClaimPopup(reward) {
@@ -201,6 +221,7 @@
         const status = $("#dci-status");
         if (status) status.innerHTML = 'You have accumulated <strong>Day 2</strong> check-in';
         openClaimPopup(reward);
+        requestAnimationFrame(() => scrollActiveDayIntoView("smooth"));
       });
     });
 
@@ -210,6 +231,8 @@
         toast("Check-in record (demo)");
       }
     });
+
+    requestAnimationFrame(() => scrollActiveDayIntoView("smooth"));
   }
 
   function initLiveChat() {

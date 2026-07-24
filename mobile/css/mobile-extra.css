@@ -694,9 +694,21 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
   gap: 12px;
 }
 
-.mh-ex-claim img {
-  width: 36px;
-  height: 36px;
+.mh-ex-claim__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--odds-bg);
+  border: 1px solid var(--accent-blue-soft);
+}
+
+.mh-ex-claim__icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .mh-ex-claim__label {
@@ -781,18 +793,19 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
 }
 
 .mh-ex-week {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: nowrap;
   gap: 8px;
-}
-
-@media (min-width: 400px) {
-  .mh-ex-week {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 2px;
 }
 
 .mh-ex-day {
+  flex: 0 0 auto;
+  width: 76px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -867,10 +880,16 @@ body.mh-page.mh-page--extra .mem-table td:last-child {
 
 .mh-ex-terms ul {
   margin: 0 0 12px;
-  padding-left: 18px;
+  padding-left: 1.25em;
+  list-style: disc;
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-muted);
+}
+
+.mh-ex-terms li {
+  display: list-item;
+  list-style: disc;
 }
 
 .mh-ex-terms li + li {

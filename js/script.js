@@ -689,9 +689,100 @@
     }
   }
 
+  const SB_FAV_KEY = "sb-favourites-v1";
+
+  function readStoredFavourites() {
+    if (window.SbFavourites?.readAll) return window.SbFavourites.readAll();
+    try {
+      const raw = localStorage.getItem(SB_FAV_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function writeStoredFavourites(list) {
+    if (window.SbFavourites?.writeAll) {
+      window.SbFavourites.writeAll(list);
+      return;
+    }
+    try {
+      localStorage.setItem(SB_FAV_KEY, JSON.stringify(list));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function loadFavouriteIdSet() {
+    return new Set(readStoredFavourites().map((item) => item.id).filter(Boolean));
+  }
+
+  function findEventInLeagues(id) {
+    const pools = [];
+    if (typeof liveLeagues !== "undefined") pools.push(...liveLeagues);
+    if (typeof lineLeagues !== "undefined") pools.push(...lineLeagues);
+    for (const league of pools) {
+      const event = (league.events || []).find((e) => e.id === id);
+      if (event) return { league, event };
+    }
+    return null;
+  }
+
+  function eventToFavouriteRecord(league, event) {
+    const sport = league.sport || "football";
+    return {
+      id: event.id,
+      sport,
+      sportIcon: sportIconMap[sport] || `assets/icons/sport-${sport}.svg`,
+      time: event.live ? event.clock || event.time || "Event in progress" : event.time || "",
+      league: league.name || "",
+      home: event.home || "",
+      homeLogo: event.homeLogo || "assets/images/mobile-home/teams/team-01.webp",
+      away: event.away || "",
+      awayLogo: event.awayLogo || "assets/images/mobile-home/teams/team-02.webp",
+      homeScore: event.scoreH != null ? event.scoreH : null,
+      awayScore: event.scoreA != null ? event.scoreA : null,
+      note: event.note || "",
+      scope: event.live ? "live" : "sports",
+      hasStream: Boolean(event.stream) || Boolean(event.live),
+      odds: [],
+    };
+  }
+
+  function persistFavouriteToggle(id, adding) {
+    if (!id || String(id).startsWith("league-")) return;
+    if (window.SbFavourites) {
+      if (adding) {
+        const found = findEventInLeagues(id);
+        if (found) window.SbFavourites.upsert(eventToFavouriteRecord(found.league, found.event));
+        else window.SbFavourites.upsert({ id, scope: "sports", home: id, away: "", league: "Favourite", time: "", sportIcon: "assets/icons/sport-football.svg" });
+      } else {
+        window.SbFavourites.remove(id);
+      }
+      return;
+    }
+    const list = readStoredFavourites().filter((item) => item.id !== id);
+    if (adding) {
+      const found = findEventInLeagues(id);
+      list.unshift(found ? eventToFavouriteRecord(found.league, found.event) : {
+        id,
+        scope: "sports",
+        home: id,
+        away: "",
+        league: "Favourite",
+        time: "",
+        sportIcon: "assets/icons/sport-football.svg",
+        hasStream: false,
+      });
+    }
+    writeStoredFavourites(list);
+  }
+
   const state = {
     betSlip: [],
-    favorites: new Set(),
+    favorites: loadFavouriteIdSet(),
     pinnedMatches: loadPinnedMatches(),
     collapsedLeagues: new Set(),
     activeLiveFilter: null,
@@ -749,6 +840,30 @@
     showToast._t = setTimeout(() => {
       el.hidden = true;
     }, 2200);
+  }
+
+  window.showToast = showToast;
+
+  function initHomeReferral() {
+    const root = document.querySelector(".home-referral");
+    if (!root) return;
+
+    root.addEventListener("click", (e) => {
+      const copyBtn = e.target.closest("[data-home-ref-copy]");
+      if (!copyBtn) return;
+      e.preventDefault();
+      const input = root.querySelector("[data-home-ref-link]");
+      const text = (input?.value || input?.textContent || "").trim();
+      if (!text) return;
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(
+          () => showToast("Referral link copied"),
+          () => showToast("Referral link copied")
+        );
+      } else {
+        showToast("Referral link copied");
+      }
+    });
   }
 
   function formatOdd(v) {
@@ -1878,10 +1993,15 @@
       const fav = e.target.closest("[data-fav]");
       if (fav) {
         const id = fav.getAttribute("data-fav");
-        if (state.favorites.has(id)) state.favorites.delete(id);
-        else state.favorites.add(id);
-        fav.classList.toggle("active");
-        fav.setAttribute("aria-pressed", fav.classList.contains("active") ? "true" : "false");
+        if (!id) return;
+        const adding = !state.favorites.has(id);
+        if (adding) state.favorites.add(id);
+        else state.favorites.delete(id);
+        persistFavouriteToggle(id, adding);
+        document.querySelectorAll(`[data-fav="${id}"]`).forEach((btn) => {
+          btn.classList.toggle("active", adding);
+          btn.setAttribute("aria-pressed", adding ? "true" : "false");
+        });
         return;
       }
 
@@ -2558,6 +2678,7 @@
     initCarousel();
     initPromoSlider();
     initMobileChrome();
+    initHomeReferral();
     requestAnimationFrame(() => {
       layoutLiveFilterOverflow();
       renderMoreMenu("");

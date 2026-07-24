@@ -1,0 +1,365 @@
+/* =========================================================
+   Withdrawal modals
+   - Confirm / success (existing flow when rollover is met)
+   - Rollover blocked (Figma 297:701) — deposit rollover incomplete
+   Colors: modified palette tokens (never Figma chrome hex)
+   Chrome: reuses auth-confirm / auth-backdrop patterns
+   ========================================================= */
+
+body.wd-modal-open {
+  overflow: hidden;
+}
+
+.wd-modal-backdrop[hidden] {
+  display: none !important;
+}
+
+.wd-modal-backdrop {
+  z-index: 10020;
+}
+
+.wd-modal {
+  outline: none;
+  width: min(420px, 100%);
+}
+
+.wd-modal .auth-confirm {
+  padding: 36px 28px 28px;
+}
+
+.wd-modal__amount {
+  display: block;
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--section-blue, #1a4f8a);
+}
+
+.wd-modal__meta {
+  margin: -12px 0 20px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-secondary, #5a738a);
+}
+
+.wd-modal__icon--success {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.wd-modal .auth-confirm-actions--single {
+  justify-content: center;
+}
+
+.wd-modal .auth-confirm-actions--single .auth-btn {
+  flex: 0 1 220px;
+  max-width: 100%;
+}
+
+/* ---------- Rollover blocked (Figma 297:701) ---------- */
+
+.wd-modal--rollover {
+  width: min(440px, 100%);
+  border: 1px solid var(--section-blue, #1a4f8a);
+  border-radius: var(--radius-xl, 12px);
+  background: var(--surface-primary, #fff);
+  box-shadow: 0 20px 50px rgba(7, 21, 40, 0.4);
+}
+
+.wd-rollover {
+  position: relative;
+  padding: 32px 28px 28px;
+  text-align: center;
+}
+
+.wd-rollover__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--header-action, #2f69b1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.wd-rollover__close:hover {
+  background: rgba(47, 105, 177, 0.1);
+  color: var(--header-action-hover, #3b88e6);
+}
+
+.wd-rollover__close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.wd-rollover__icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--danger, #e95555) 16%, #fff);
+  color: var(--danger, #e95555);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wd-rollover__icon svg {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.wd-rollover__title {
+  margin: 0 0 6px;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__lead {
+  margin: 0 0 20px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__section {
+  text-align: left;
+  margin: 0 0 16px;
+}
+
+.wd-rollover__section-title {
+  margin: 0 0 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--border-light, #c9d7e4);
+  border-radius: var(--radius-md, 8px);
+  background: var(--surface-primary, #fff);
+}
+
+.wd-rollover__ring {
+  --pct: 38.33;
+  position: relative;
+  flex: 0 0 auto;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--header-action, #2f69b1) calc(var(--pct) * 1%),
+    var(--surface-tertiary, #e8eef5) 0
+  );
+}
+
+.wd-rollover__ring-inner {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--surface-primary, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transform: translate(-50%, -50%);
+  color: var(--text-primary, #1a3048);
+  font-family: var(--font);
+  line-height: 1;
+  text-align: center;
+}
+
+.wd-rollover__ring-value,
+.wd-rollover__ring-unit {
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.wd-rollover__ring-value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.wd-rollover__ring-unit {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.wd-rollover__details {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.wd-rollover__topup {
+  margin: 0 0 4px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__date {
+  margin: 0 0 8px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #5a738a);
+}
+
+.wd-rollover__remain {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__remain-nums {
+  font-weight: 700;
+  color: var(--header-action, #2f69b1);
+}
+
+.wd-rollover__alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid var(--danger, #e95555);
+  border-radius: var(--radius-md, 8px);
+  background: color-mix(in srgb, var(--danger, #e95555) 10%, #fff);
+}
+
+.wd-rollover__alert-icon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--danger, #e95555);
+  color: var(--text-inverse, #fff);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.wd-rollover__alert p {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text-primary, #1a3048);
+}
+
+.wd-rollover__ok {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
+  min-height: 46px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background: var(--header-action, #2f69b1);
+  color: var(--text-inverse, #fff);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 0.15s ease, filter 0.15s ease;
+}
+
+.wd-rollover__ok:hover {
+  background: var(--section-blue, #1a4f8a);
+  filter: none;
+}
+
+.wd-rollover__ok:active {
+  background: var(--section-blue, #1a4f8a);
+  filter: brightness(0.95);
+}
+
+@media (max-width: 600px) {
+  .wd-modal .auth-confirm {
+    padding: 32px 20px 22px;
+  }
+
+  .wd-modal .auth-confirm-title {
+    font-size: 18px;
+  }
+
+  .wd-modal .auth-confirm-actions {
+    flex-direction: column-reverse;
+  }
+
+  .wd-modal .auth-confirm-actions .auth-btn {
+    width: 100%;
+    flex: none;
+  }
+
+  .wd-rollover {
+    padding: 28px 18px 22px;
+  }
+
+  .wd-rollover__title {
+    font-size: 16px;
+  }
+
+  .wd-rollover__card {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .wd-rollover__ring {
+    width: 76px;
+    height: 76px;
+  }
+
+  .wd-rollover__ring-inner {
+    width: 58px;
+    height: 58px;
+  }
+
+  .wd-rollover__ring-value {
+    font-size: 14px;
+  }
+
+  .wd-rollover__ok {
+    max-width: none;
+  }
+}

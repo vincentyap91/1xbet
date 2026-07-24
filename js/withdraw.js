@@ -138,6 +138,32 @@
 
   var isSubmitting = false;
   var activeStep = 'methods';
+  var modalMode = 'confirm';
+  var lastFocusedBeforeModal = null;
+
+  /* Demo: incomplete rollover blocks withdraw by default (Figma 297:701).
+     Bypass with ?rollover=0 or open confirm/success QA params. */
+  var rolloverIncomplete = true;
+  var DEMO_ROLLOVER = {
+    percent: 38.33,
+    latestTopUp: '100.00',
+    date: '24 Mar 2026, 4:14 PM',
+    remaining: '740.00',
+    target: '1200.00'
+  };
+
+  var modalBackdrop = document.getElementById('wd-modal-backdrop');
+  var modalEl = document.getElementById('wd-modal');
+  var modalIcon = document.getElementById('wd-modal-icon');
+  var modalTitle = document.getElementById('wd-modal-title');
+  var modalText = document.getElementById('wd-modal-text');
+  var modalAmount = document.getElementById('wd-modal-amount');
+  var modalMeta = document.getElementById('wd-modal-meta');
+  var modalActions = document.getElementById('wd-modal-actions');
+  var modalConfirmBtn = document.getElementById('wd-modal-confirm');
+
+  var rolloverBackdrop = document.getElementById('wd-rollover-backdrop');
+  var rolloverModal = document.getElementById('wd-rollover-modal');
 
   function toast(msg) {
     if (typeof window.showToast === 'function') {
@@ -408,6 +434,12 @@
     var method = METHODS[methodId];
     if (!method) return;
 
+    /* Earliest gate: selecting a method starts a withdraw attempt */
+    if (rolloverIncomplete) {
+      openRolloverModal();
+      return;
+    }
+
     state.methodId = methodId;
     state.bankId = method.fields.indexOf('bank') !== -1 ? BANKS[0].id : '';
     state.amount = 0;
@@ -569,21 +601,252 @@
     submitBtn.classList.toggle('is-loading', loading);
     if (submitLabel) submitLabel.textContent = loading ? 'Processing…' : 'Submit';
     if (submitSpinner) submitSpinner.hidden = !loading;
+    if (modalConfirmBtn) {
+      modalConfirmBtn.disabled = loading;
+      modalConfirmBtn.textContent = loading ? 'Processing…' : 'Confirm';
+    }
+  }
+
+  function renderModalConfirm() {
+    var method = getMethod();
+    modalMode = 'confirm';
+    if (modalIcon) {
+      modalIcon.className = 'auth-confirm-icon auth-confirm-icon--warn';
+      modalIcon.textContent = '?';
+    }
+    if (modalTitle) modalTitle.textContent = 'Confirm action';
+    if (modalText) {
+      modalText.innerHTML =
+        'Are you sure you want to withdraw' +
+        '<span class="wd-modal__amount" id="wd-modal-amount">' +
+        escapeHtml(formatAmount(state.amount)) +
+        ' MYR</span>?';
+      modalAmount = document.getElementById('wd-modal-amount');
+    }
+    if (modalMeta) {
+      modalMeta.hidden = !method;
+      modalMeta.textContent = method
+        ? 'Via ' + method.name + ' · Demo only — no real funds move.'
+        : '';
+    }
+    if (modalActions) {
+      modalActions.className = 'auth-confirm-actions';
+      modalActions.innerHTML =
+        '<button type="button" class="auth-btn auth-btn--login" data-wd-modal-close>Cancel</button>' +
+        '<button type="button" class="auth-btn auth-btn--register" id="wd-modal-confirm">Confirm</button>';
+      modalConfirmBtn = document.getElementById('wd-modal-confirm');
+      if (modalConfirmBtn) {
+        modalConfirmBtn.addEventListener('click', confirmWithdrawFromModal);
+      }
+    }
+  }
+
+  function renderModalSuccess() {
+    var method = getMethod();
+    modalMode = 'success';
+    if (modalIcon) {
+      modalIcon.className = 'auth-confirm-icon auth-confirm-icon--warn wd-modal__icon--success';
+      modalIcon.textContent = '✓';
+    }
+    if (modalTitle) modalTitle.textContent = 'Withdrawal submitted';
+    if (modalText) {
+      modalText.textContent =
+        'Your withdrawal of ' +
+        formatAmount(state.amount) +
+        ' MYR' +
+        (method ? ' via ' + method.name : '') +
+        ' has been submitted successfully.';
+    }
+    if (modalMeta) {
+      modalMeta.hidden = false;
+      modalMeta.textContent = 'Demo only — no real transaction has been made.';
+    }
+    if (modalActions) {
+      modalActions.className = 'auth-confirm-actions auth-confirm-actions--single';
+      modalActions.innerHTML =
+        '<button type="button" class="auth-btn auth-btn--register" data-wd-modal-ok id="wd-modal-ok">OK</button>';
+    }
+  }
+
+  function syncRolloverDemo() {
+    var pct = DEMO_ROLLOVER.percent;
+    var ring = document.getElementById('wd-rollover-ring');
+    var pctEl = document.getElementById('wd-rollover-pct');
+    var topup = document.getElementById('wd-rollover-topup');
+    var date = document.getElementById('wd-rollover-date');
+    var remain = document.getElementById('wd-rollover-remain');
+    if (ring) {
+      ring.style.setProperty('--pct', String(pct));
+      ring.setAttribute('aria-valuenow', String(pct));
+      ring.setAttribute('aria-label', 'Deposit rollover progress ' + pct + ' percent');
+    }
+    if (pctEl) pctEl.textContent = String(pct);
+    if (topup) topup.textContent = 'Latest Top-Up/Bonus : ' + DEMO_ROLLOVER.latestTopUp;
+    if (date) date.textContent = DEMO_ROLLOVER.date;
+    if (remain) remain.textContent = DEMO_ROLLOVER.remaining + ' / ' + DEMO_ROLLOVER.target;
+  }
+
+  function openRolloverModal() {
+    if (!rolloverBackdrop) return;
+    syncRolloverDemo();
+    lastFocusedBeforeModal = document.activeElement;
+    rolloverBackdrop.hidden = false;
+    requestAnimationFrame(function () {
+      rolloverBackdrop.classList.add('is-open');
+    });
+    document.body.classList.add('wd-modal-open');
+    if (rolloverModal) rolloverModal.focus();
+  }
+
+  function closeRolloverModal() {
+    if (!rolloverBackdrop) return;
+    rolloverBackdrop.classList.remove('is-open');
+    document.body.classList.remove('wd-modal-open');
+    window.setTimeout(function () {
+      rolloverBackdrop.hidden = true;
+      if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+        lastFocusedBeforeModal.focus();
+      }
+      lastFocusedBeforeModal = null;
+    }, 180);
+  }
+
+  function openWithdrawModal(mode) {
+    if (!modalBackdrop) return;
+    if (mode === 'success') renderModalSuccess();
+    else renderModalConfirm();
+
+    lastFocusedBeforeModal = document.activeElement;
+    modalBackdrop.hidden = false;
+    requestAnimationFrame(function () {
+      modalBackdrop.classList.add('is-open');
+    });
+    document.body.classList.add('wd-modal-open');
+    if (modalEl) modalEl.focus();
+  }
+
+  function closeWithdrawModal() {
+    if (!modalBackdrop) return;
+    modalBackdrop.classList.remove('is-open');
+    document.body.classList.remove('wd-modal-open');
+    window.setTimeout(function () {
+      modalBackdrop.hidden = true;
+      if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+        lastFocusedBeforeModal.focus();
+      }
+      lastFocusedBeforeModal = null;
+    }, 180);
+  }
+
+  function confirmWithdrawFromModal() {
+    if (isSubmitting || modalMode !== 'confirm') return;
+    setSubmitting(true);
+    window.setTimeout(function () {
+      setSubmitting(false);
+      renderModalSuccess();
+      toast('Withdrawal submitted — demo only. No real transaction has been made.');
+    }, SUBMIT_MS);
+  }
+
+  function finishSuccessModal() {
+    closeWithdrawModal();
+    showStep('success');
   }
 
   function submitWithdraw() {
     if (isSubmitting) return;
+    if (rolloverIncomplete) {
+      openRolloverModal();
+      return;
+    }
     if (!validate()) {
       toast('Please check the highlighted fields');
       return;
     }
+    openWithdrawModal('confirm');
+  }
 
-    setSubmitting(true);
-    setTimeout(function () {
-      setSubmitting(false);
-      showStep('success');
-      toast('Withdrawal submitted — demo only. No real transaction has been made.');
-    }, SUBMIT_MS);
+  function bindWithdrawModal() {
+    if (rolloverBackdrop) {
+      rolloverBackdrop.addEventListener('click', function (e) {
+        if (
+          e.target === rolloverBackdrop ||
+          e.target.closest('[data-wd-rollover-close]') ||
+          e.target.closest('[data-wd-rollover-ok]')
+        ) {
+          closeRolloverModal();
+        }
+      });
+    }
+
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', function (e) {
+        if (e.target === modalBackdrop || e.target.closest('[data-wd-modal-close]')) {
+          if (isSubmitting) return;
+          closeWithdrawModal();
+        }
+        if (e.target.closest('[data-wd-modal-ok]')) {
+          finishSuccessModal();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      if (rolloverBackdrop && !rolloverBackdrop.hidden) {
+        e.preventDefault();
+        closeRolloverModal();
+        return;
+      }
+      if (!modalBackdrop || modalBackdrop.hidden) return;
+      if (isSubmitting) return;
+      e.preventDefault();
+      if (modalMode === 'success') finishSuccessModal();
+      else closeWithdrawModal();
+    });
+
+    if (modalConfirmBtn) {
+      modalConfirmBtn.addEventListener('click', confirmWithdrawFromModal);
+    }
+
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var demo = params.get('wd-modal');
+      var rolloverParam = params.get('rollover');
+
+      if (rolloverParam === '0' || rolloverParam === 'false') {
+        rolloverIncomplete = false;
+      }
+      if (demo === 'confirm' || demo === '1' || demo === 'success') {
+        rolloverIncomplete = false;
+      }
+
+      if (demo === 'confirm' || demo === '1') {
+        state.amount = state.amount || 50;
+        state.methodId = state.methodId || 'touchngo';
+        openWithdrawModal('confirm');
+      } else if (demo === 'success') {
+        state.amount = state.amount || 50;
+        state.methodId = state.methodId || 'touchngo';
+        openWithdrawModal('success');
+      } else if (rolloverIncomplete) {
+        /* Force rollover popup on every Withdraw entry (desktop). */
+        openRolloverModal();
+      }
+    } catch (err) { /* ignore */ }
+
+    /* Re-open when user clicks Withdraw Funds / Withdrawal mode while already here. */
+    document.addEventListener('click', function (e) {
+      if (!rolloverIncomplete) return;
+      var navWithdraw = e.target.closest(
+        'a[href*="withdraw.html"], [data-wd-open-rollover], .dep-mode__btn[href*="withdraw"], a.acc-nav-link[href*="withdraw"]'
+      );
+      if (!navWithdraw) return;
+      if (navWithdraw.getAttribute('aria-current') === 'page' || navWithdraw.classList.contains('is-active')) {
+        e.preventDefault();
+        openRolloverModal();
+      }
+    });
   }
 
   function goBack() {
@@ -673,6 +936,7 @@
     if (!stepMethods || !stepDetails) return;
 
     bindRequestsPanel();
+    bindWithdrawModal();
 
     stepMethods.addEventListener('click', function (e) {
       var card = e.target.closest('.pay-method-card[data-method-id]');

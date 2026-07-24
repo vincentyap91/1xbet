@@ -659,6 +659,11 @@ body.is-logged-in .header-lang-btn .lang-flag {
     line-height: 1;
   }
 
+  /* Payment Queries stays in desktop sidebar; omit from mobile chip strip */
+  .acc-subnav-card[href="payment-queries.html"] {
+    display: none !important;
+  }
+
   /* Sidebar moved into .acc-subnav on mobile */
   .account-sidebar {
     display: none !important;
