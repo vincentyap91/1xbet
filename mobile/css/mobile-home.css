@@ -448,6 +448,115 @@ body.mh-page.mh-sheet-open {
   pointer-events: none;
 }
 
+/* ---------- Header balance chip (logged-in) ---------- */
+.mh-header__balance {
+  display: none; /* shown only when .is-logged-in */
+  align-items: center;
+  gap: 4px;
+  height: 2rem;
+  padding: 0 7px;
+  border-radius: 8px;
+  background: var(--header-action);
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  flex-shrink: 0;
+  transition: background var(--mh-ease), transform var(--mh-ease);
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.is-logged-in .mh-header__balance {
+  display: inline-flex;
+}
+
+.mh-header__balance:active {
+  transform: scale(0.96);
+  background: var(--brand-blue);
+}
+
+.mh-header__bal-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.mh-header__bal-row {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.mh-header__bal-label {
+  font-size: 0.58rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+
+.mh-header__bal-value {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-inverse);
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Main wallet value in green */
+.mh-header__bal-row--main .mh-header__bal-value {
+  color: var(--action-green);
+}
+
+.mh-header__bal-refresh {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.65;
+  transition: opacity var(--mh-ease);
+  border-radius: 50%;
+}
+
+.mh-header__bal-refresh:hover {
+  opacity: 1;
+}
+
+.mh-header__bal-refresh:active {
+  opacity: 0.8;
+}
+
+.mh-header__bal-refresh img {
+  width: 11px;
+  height: 11px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+@keyframes mh-spin {
+  to { transform: rotate(360deg); }
+}
+
+.mh-header__bal-refresh.is-spinning img {
+  animation: mh-spin 0.55s linear;
+}
+
+/* Hide game wallet row on very narrow screens */
+@media (max-width: 359px) {
+  .mh-header__bal-row--game {
+    display: none;
+  }
+}
+
 /* ---------- Horizontal scroll ---------- */
 .mh-hscroll {
   display: flex;

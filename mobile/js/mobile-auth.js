@@ -262,6 +262,21 @@
     const actions = document.querySelector(".mh-header__actions");
     if (actions) {
       actions.innerHTML = `
+        <a href="profile.html" class="mh-header__balance" aria-label="Wallet balance" id="mh-header-balance">
+          <div class="mh-header__bal-rows">
+            <div class="mh-header__bal-row mh-header__bal-row--main">
+              <span class="mh-header__bal-label">MYR</span>
+              <span class="mh-header__bal-value" id="mh-hbal-main">100.00</span>
+            </div>
+            <div class="mh-header__bal-row mh-header__bal-row--game">
+              <span class="mh-header__bal-label">Game</span>
+              <span class="mh-header__bal-value" id="mh-hbal-game">0.00</span>
+            </div>
+          </div>
+          <button type="button" class="mh-header__bal-refresh" id="mh-hbal-refresh" aria-label="Refresh balance" data-mh-bal-refresh>
+            <img src="assets/icons/cs-wallet-refresh.svg" alt="" width="11" height="11" />
+          </button>
+        </a>
         <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
         <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
           <img src="assets/icons/mh-account.svg" alt="" width="14" height="16" />

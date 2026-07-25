@@ -1220,12 +1220,29 @@
     if (actions && !actions.dataset.mhAuthReady) {
       actions.dataset.mhAuthReady = "1";
       actions.innerHTML = `
+        <a href="profile.html" class="mh-header__balance" aria-label="Wallet balance" id="mh-header-balance">
+          <div class="mh-header__bal-rows">
+            <div class="mh-header__bal-row mh-header__bal-row--main">
+              <span class="mh-header__bal-label">MYR</span>
+              <span class="mh-header__bal-value" id="mh-hbal-main">0.00</span>
+            </div>
+            <div class="mh-header__bal-row mh-header__bal-row--game">
+              <span class="mh-header__bal-label">Game</span>
+              <span class="mh-header__bal-value" id="mh-hbal-game">0.00</span>
+            </div>
+          </div>
+          <button type="button" class="mh-header__bal-refresh" id="mh-hbal-refresh" aria-label="Refresh balance" data-mh-bal-refresh>
+            <img src="${iconPath("cs-wallet-refresh.svg")}" alt="" width="11" height="11" />
+          </button>
+        </a>
         <button type="button" class="mh-btn-deposit" data-mh-deposit>Deposit</button>
         <button type="button" class="mh-header__account" data-mh-account aria-label="Account">
           <img src="${iconPath("mh-account.svg")}" alt="" width="14" height="16" />
           <span class="mh-header__account-badge" aria-hidden="true"></span>
         </button>`;
     }
+
+    initHeaderBalance();
 
     const loginTab = $('.mh-tabbar .mh-tab[data-auth-open="login"]');
     if (loginTab && !loginTab.hasAttribute("data-mh-deposit-tab")) {
@@ -1253,6 +1270,55 @@
       btn.setAttribute("data-mh-logout", "");
       btn.textContent = "Log out";
       nav.appendChild(btn);
+    }
+  }
+
+
+  function initHeaderBalance() {
+    function readBals() {
+      return {
+        main: (parseFloat(sessionStorage.getItem("1xbet_main_bal")) || 100.00).toFixed(2),
+        game: (parseFloat(sessionStorage.getItem("1xbet_game_bal")) || 0.00).toFixed(2),
+      };
+    }
+
+    function renderBals() {
+      var bals = readBals();
+      var elMain = document.getElementById("mh-hbal-main");
+      var elGame = document.getElementById("mh-hbal-game");
+      if (elMain) elMain.textContent = bals.main;
+      if (elGame) elGame.textContent = bals.game;
+    }
+
+    renderBals();
+
+    // Refresh button — spin + re-render
+    if (!document._mhBalRefreshBound) {
+      document._mhBalRefreshBound = true;
+      document.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-mh-bal-refresh]");
+        if (!btn) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (btn.classList.contains("is-spinning")) return;
+        btn.classList.add("is-spinning");
+        btn.addEventListener("animationend", function () {
+          btn.classList.remove("is-spinning");
+          renderBals();
+        }, { once: true });
+      });
+
+      // Cross-tab sync
+      window.addEventListener("storage", function (e) {
+        if (e.key === "1xbet_main_bal" || e.key === "1xbet_game_bal") renderBals();
+      });
+
+      // Same-tab sync: patch sessionStorage.setItem
+      var _origSetItem = sessionStorage.setItem.bind(sessionStorage);
+      sessionStorage.setItem = function (key, value) {
+        _origSetItem(key, value);
+        if (key === "1xbet_main_bal" || key === "1xbet_game_bal") renderBals();
+      };
     }
   }
 
