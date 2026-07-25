@@ -478,8 +478,9 @@ body.mh-page.mh-sheet-open {
 .mh-header__bal-rows {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 0px;
   min-width: 0;
+  line-height: 14px;
 }
 
 .mh-header__bal-row {
