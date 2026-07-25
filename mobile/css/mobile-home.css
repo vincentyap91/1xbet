@@ -490,6 +490,10 @@ body.mh-page.mh-sheet-open {
   white-space: nowrap;
 }
 
+.mh-header__bal-row--game {
+    display: none;
+  }
+
 .mh-header__bal-label {
   font-size: 0.58rem;
   font-weight: 400;
@@ -509,7 +513,7 @@ body.mh-page.mh-sheet-open {
 
 /* Main wallet value in green */
 .mh-header__bal-row--main .mh-header__bal-value {
-  color: var(--action-green);
+  color: var(--text-inverse);
 }
 
 .mh-header__bal-refresh {
