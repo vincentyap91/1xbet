@@ -39,7 +39,6 @@
                 <img src="assets/icons/profile/pf-copy.svg" alt="" width="11" height="12" />
               </button>
             </p>
-            <p class="mh-pf-card__balance">0 MYR</p>
           </div>
         </div>
         <div class="mh-pf-card__tools">
@@ -52,6 +51,44 @@
           </a>
         </div>
       </div>
+
+      <!-- Total Assets Overview -->
+      <div class="mh-pf-card__total-bar">
+        <span class="mh-pf-card__total-label">Total Assets</span>
+        <span class="mh-pf-card__total-val" data-pf-total-balance>0.00 MYR</span>
+      </div>
+
+      <!-- Balance Details Card (Reference Screenshot Idea - Display Purpose Only) -->
+      <div class="mh-pf-balance-details">
+        <div class="mh-pf-balance-details__header">
+          <h3 class="mh-pf-balance-details__title">Balance Details</h3>
+          <button type="button" class="mh-pf-balance-details__refresh" data-pf-refresh-balance aria-label="Refresh balance">
+            <svg class="mh-pf-refresh-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6"/><path d="M2 11.5a10 10 0 0 1 18.8-4.3L21.5 8M2.5 16l1 1.2A10 10 0 0 0 22 12.5"/></svg>
+          </button>
+        </div>
+        <div class="mh-pf-balance-details__list">
+          <div class="mh-pf-balance-row">
+            <div class="mh-pf-balance-row__left">
+              <span class="mh-pf-balance-row__info-icon" title="Main Wallet used for Sportsbook and Direct Withdrawal">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </span>
+              <span class="mh-pf-balance-row__label">Main Wallet :</span>
+            </div>
+            <span class="mh-pf-balance-row__value" data-pf-main-balance>0.00 MYR</span>
+          </div>
+
+          <div class="mh-pf-balance-row">
+            <div class="mh-pf-balance-row__left">
+              <span class="mh-pf-balance-row__info-icon" title="Game Wallet used for Casino and Slot providers">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              </span>
+              <span class="mh-pf-balance-row__label">Game Wallet :</span>
+            </div>
+            <span class="mh-pf-balance-row__value" data-pf-game-balance>0.00 MYR</span>
+          </div>
+        </div>
+      </div>
+
       <div class="mh-pf-card__actions">
         <button type="button" class="mh-pf-btn mh-pf-btn--bets" data-mh-bets>My bets</button>
         <button type="button" class="mh-pf-btn mh-pf-btn--deposit" data-mh-deposit>Deposit</button>

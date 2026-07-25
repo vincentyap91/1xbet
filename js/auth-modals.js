@@ -358,15 +358,17 @@
       icons.avatar +
       "</span>" +
       '<div class="acc-menu-user">' +
+      '<div class="acc-menu-id-row">' +
       '<p class="acc-menu-id">№1733760863</p>' +
+      "</div>" +
       '<p class="acc-menu-email">wendy.h@example.net</p>' +
       "</div>" +
       "</div>" +
       '<div class="acc-menu-balances">' +
-      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Bonus points ' +
+      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Main account (MYR) ' +
       chevron +
       '</span><span class="acc-menu-balance-value">0</span></div>' +
-      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Main account (MYR) ' +
+      '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Game wallet ' +
       chevron +
       '</span><span class="acc-menu-balance-value">0</span></div>' +
       '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Unsettled bets</span><span class="acc-menu-balance-value">0</span></div>' +
@@ -469,6 +471,8 @@
     }
   }
 
+
+
   function userHeaderHtml() {
     return (
       '<div class="header-user-block" id="header-user-block" hidden>' +
@@ -483,7 +487,7 @@
       '<div class="header-balance-chip">' +
       '<div class="header-balance-rows">' +
       '<div class="header-balance-row"><span>MYR</span><span>0</span></div>' +
-      '<div class="header-balance-row"><span>Bonus points</span><span>0</span></div>' +
+      '<div class="header-balance-row"><span>Game wallet</span><span>0</span></div>' +
       "</div>" +
       '<button type="button" class="header-balance-refresh" aria-label="Update balance">' +
       '<img src="assets/images/account/icon-refresh.svg" alt="" width="10" height="10" />' +
@@ -573,7 +577,9 @@
 
     wireHeaderGiftBtn();
 
-    if (hasStaticUser) return;
+    if (hasStaticUser) {
+      return;
+    }
 
     const meta = $(".header-meta-group", actions);
     if (meta) {
@@ -582,6 +588,8 @@
       actions.insertAdjacentHTML("beforeend", userHeaderHtml());
     }
   }
+
+
 
   function wireHeaderGiftBtn() {
     const gift =

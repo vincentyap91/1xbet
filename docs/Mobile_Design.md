@@ -138,7 +138,7 @@ Logged-in account hub. Opened from header account chip (`data-mh-account`). Gues
 
 | Block | Notes |
 |-------|--------|
-| `.mh-pf-card` | 32px avatar + Account No. + copy, balance, messages (**green** count badge → `messages.html` via `data-mh-messages`), close → home, **My bets** (`data-mh-bets` → bet history) / Deposit (32px tall) |
+| `.mh-pf-card` | 32px avatar + Account No. + copy, Total Assets bar, **Main Wallet** (Withdrawable/Sportsbook) + **Game Wallet** (Casino/Slots) dual grid, 1-tap **Transfer between wallets** trigger (`data-mh-open-transfer` → `.mh-transfer-sheet` bottom modal with preset chips & direction swap), messages (**green** count badge → `messages.html`), close → home, **My bets** (`data-mh-bets`) / Deposit |
 | `.mh-pf-tabs` | Horizontal icon+label: Profile · Promo · Settings; active 4px `--action-green` underline |
 | `.mh-pf-group` / `.mh-pf-list` | **My wallet and bets** → Deposit / Withdraw funds (Payment queries commented out / hidden) · **Profile** → Personal profile / Security (`data-mh-security`) · **History record** → Transaction history / Bet history / Promotion record · **Extra** → Referral / Membership / Rebate / Daily check in / Promotions / Live chat · Log out |
 | History hooks | `data-mh-tx-history` → `transaction-history.html` · `data-mh-bets` → `bet-history.html` · `data-mh-promo-record` → `promotion-record.html` |

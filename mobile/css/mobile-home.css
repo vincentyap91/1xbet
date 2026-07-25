@@ -3164,8 +3164,14 @@ body.is-logged-in .mh-cs-menu__wallet {
   display: flex;
 }
 
-.mh-cs-menu__balance {
+.mh-cs-menu__wallet-select {
+  position: relative;
   flex: 1;
+  min-width: 0;
+}
+
+.mh-cs-menu__balance {
+  width: 100%;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -3181,15 +3187,91 @@ body.is-logged-in .mh-cs-menu__wallet {
   cursor: pointer;
 }
 
+.mh-cs-menu__wallet-select.is-open .mh-cs-menu__balance {
+  border-radius: 8px 8px 0 0;
+}
+
+.mh-cs-menu__wallet-select.is-open .mh-cs-menu__balance img:last-child {
+  transform: rotate(180deg);
+}
+
 .mh-cs-menu__balance img:first-child {
   width: 16px;
   height: 16px;
   filter: brightness(0) saturate(100%) invert(24%) sepia(55%) saturate(900%) hue-rotate(185deg);
 }
 
-.mh-cs-menu__balance span {
+.mh-cs-menu__balance span,
+.mh-cs-menu__balance [data-mh-wallet-label] {
   flex: 1;
   text-align: left;
+}
+
+.mh-cs-menu__balance img:last-child {
+  width: 10px;
+  height: 10px;
+  transition: transform 0.15s;
+  opacity: 0.7;
+  filter: brightness(0) saturate(100%) invert(24%) sepia(55%) saturate(900%) hue-rotate(185deg);
+}
+
+.mh-cs-menu__wallet-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  background: var(--surface-primary, #fff);
+  border: 1px solid var(--border-light);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 20px rgba(11, 29, 51, 0.12);
+}
+
+.mh-cs-menu__wallet-menu[hidden] {
+  display: none;
+}
+
+.mh-cs-menu__wallet-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mh-cs-menu__wallet-option:hover,
+.mh-cs-menu__wallet-option:focus-visible {
+  background: var(--odds-bg, #e8eef5);
+}
+
+.mh-cs-menu__wallet-option.is-active {
+  background: var(--odds-bg, #e8eef5);
+  font-weight: 700;
+}
+
+.mh-cs-menu__wallet-option-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.mh-cs-menu__wallet-option-value {
+  flex-shrink: 0;
+  color: var(--text-primary, #1a3048);
+  font-weight: 700;
 }
 
 .mh-cs-menu__deposit {

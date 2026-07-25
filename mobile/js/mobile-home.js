@@ -845,7 +845,122 @@
       });
     });
 
+    initWalletAccounts();
     initLangPanel();
+  }
+
+  function walletAccountsMenuHtml(iconBase) {
+    const chevron = `${iconBase}icon-chevron-down.svg`;
+    const wallet = `${iconBase}menu/wallet.svg`;
+    const mainBal = (parseFloat(sessionStorage.getItem("1xbet_main_bal")) || 100.00).toFixed(2);
+    const gameBal = (parseFloat(sessionStorage.getItem("1xbet_game_bal")) || 0.00).toFixed(2);
+
+    return (
+      '<div class="mh-cs-menu__wallet-select">' +
+      '<button type="button" class="mh-cs-menu__balance" data-mh-wallet-toggle aria-expanded="false" aria-haspopup="listbox" aria-label="Select account">' +
+      `<img src="${wallet}" alt="" width="16" height="16" />` +
+      `<span data-mh-wallet-label>${mainBal} MYR</span>` +
+      `<img src="${chevron}" alt="" width="10" height="10" />` +
+      "</button>" +
+      '<ul class="mh-cs-menu__wallet-menu" data-mh-wallet-menu role="listbox" hidden>' +
+      '<li><button type="button" class="mh-cs-menu__wallet-option is-active" role="option" aria-selected="true" data-mh-wallet-option data-label="' + mainBal + ' MYR" data-name="Main account">' +
+      '<span class="mh-cs-menu__wallet-option-name">Main Wallet</span>' +
+      `<span class="mh-cs-menu__wallet-option-value" data-mh-val-main>${mainBal} MYR</span></button></li>` +
+      '<li><button type="button" class="mh-cs-menu__wallet-option" role="option" aria-selected="false" data-mh-wallet-option data-label="' + gameBal + ' GW" data-name="Game wallet">' +
+      '<span class="mh-cs-menu__wallet-option-name">Game Wallet</span>' +
+      `<span class="mh-cs-menu__wallet-option-value" data-mh-val-game>${gameBal} MYR</span></button></li>` +
+      '<li><button type="button" class="mh-cs-menu__wallet-option" role="option" aria-selected="false" data-mh-wallet-option data-label="0.00 MYR" data-name="Unsettled bets">' +
+      '<span class="mh-cs-menu__wallet-option-name">Unsettled bets</span>' +
+      '<span class="mh-cs-menu__wallet-option-value">0.00 MYR</span></button></li>' +
+      "</ul></div>"
+    );
+  }
+
+  function closeWalletMenus(except) {
+    $$("[data-mh-menu-wallet] .mh-cs-menu__wallet-select.is-open").forEach((sel) => {
+      if (except && sel === except) return;
+      sel.classList.remove("is-open");
+      const btn = sel.querySelector("[data-mh-wallet-toggle]");
+      const menu = sel.querySelector("[data-mh-wallet-menu]");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+      if (menu) menu.hidden = true;
+    });
+  }
+
+  function enhanceWalletAccounts(root) {
+    if (!root || root.dataset.mhWalletReady === "1") return;
+    root.dataset.mhWalletReady = "1";
+
+    let select = root.querySelector(".mh-cs-menu__wallet-select");
+    if (!select) {
+      const oldBtn = root.querySelector(".mh-cs-menu__balance");
+      const deposit = root.querySelector(".mh-cs-menu__deposit");
+      const iconSrc = oldBtn?.querySelector("img")?.getAttribute("src") || "";
+      const iconBase = iconSrc.includes("/")
+        ? iconSrc.replace(/menu\/wallet\.svg.*$/i, "").replace(/[^/]*$/, "")
+        : "assets/icons/";
+      if (oldBtn) oldBtn.remove();
+      root.insertAdjacentHTML("afterbegin", walletAccountsMenuHtml(iconBase || "assets/icons/"));
+      select = root.querySelector(".mh-cs-menu__wallet-select");
+      if (deposit && select && deposit.previousElementSibling !== select) {
+        root.insertBefore(select, deposit);
+      }
+    }
+
+    const btn = select?.querySelector("[data-mh-wallet-toggle]");
+    const menu = select?.querySelector("[data-mh-wallet-menu]");
+    const label = select?.querySelector("[data-mh-wallet-label]");
+    if (!select || !btn || !menu) return;
+
+    btn.removeAttribute("data-mh-toast");
+
+    // Sync values from sessionStorage if present
+    const mainVal = (parseFloat(sessionStorage.getItem("1xbet_main_bal")) || 100.00).toFixed(2);
+    const gameVal = (parseFloat(sessionStorage.getItem("1xbet_game_bal")) || 0.00).toFixed(2);
+    const mainValEl = select.querySelector("[data-mh-val-main]");
+    const gameValEl = select.querySelector("[data-mh-val-game]");
+    if (mainValEl) mainValEl.textContent = `${mainVal} MYR`;
+    if (gameValEl) gameValEl.textContent = `${gameVal} MYR`;
+
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const willOpen = !select.classList.contains("is-open");
+      closeWalletMenus(willOpen ? select : null);
+      select.classList.toggle("is-open", willOpen);
+      btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      menu.hidden = !willOpen;
+    });
+
+    menu.addEventListener("click", (e) => {
+      const opt = e.target.closest("[data-mh-wallet-option]");
+      if (!opt) return;
+      e.preventDefault();
+      e.stopPropagation();
+      menu.querySelectorAll("[data-mh-wallet-option]").forEach((el) => {
+        el.classList.toggle("is-active", el === opt);
+        el.setAttribute("aria-selected", el === opt ? "true" : "false");
+      });
+      const optVal = opt.querySelector(".mh-cs-menu__wallet-option-value")?.textContent.trim() || "";
+      const optName = opt.querySelector(".mh-cs-menu__wallet-option-name")?.textContent.trim() || "";
+      if (label) label.textContent = `${optName}: ${optVal}`;
+      closeWalletMenus();
+    });
+  }
+
+  function initWalletAccounts() {
+    $$("[data-mh-menu-wallet]").forEach(enhanceWalletAccounts);
+
+    if (!document.body.dataset.mhWalletDocBound) {
+      document.body.dataset.mhWalletDocBound = "1";
+      document.addEventListener("click", (e) => {
+        if (e.target.closest("[data-mh-menu-wallet] .mh-cs-menu__wallet-select")) return;
+        closeWalletMenus();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeWalletMenus();
+      });
+    }
   }
 
   function closeTabFlyout() {

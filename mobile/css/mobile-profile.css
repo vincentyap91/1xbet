@@ -111,12 +111,124 @@ body.mh-page.mh-page--profile .mh-main {
   display: block;
 }
 
-.mh-pf-card__balance {
-  margin: 0;
+/* Total Assets Bar */
+.mh-pf-card__total-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+}
+
+.mh-pf-card__total-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.mh-pf-card__total-val {
+  font-size: 15px;
+  font-weight: 700;
   color: var(--section-blue);
+}
+
+/* Balance Details Card (Reference Screenshot Design - Display Purpose Only) */
+.mh-pf-balance-details {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  margin-top: 6px;
+  gap: 10px;
+}
+
+.mh-pf-balance-details__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 2px;
+}
+
+.mh-pf-balance-details__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.2px;
+}
+
+.mh-pf-balance-details__refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  background: var(--surface-primary);
+  color: var(--header-action);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease, background 0.15s ease;
+}
+
+.mh-pf-balance-details__refresh:active,
+.mh-pf-balance-details__refresh.is-spinning {
+  transform: rotate(180deg);
+  background: var(--odds-hover);
+}
+
+.mh-pf-refresh-icon {
+  display: block;
+}
+
+.mh-pf-balance-details__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mh-pf-balance-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+}
+
+.mh-pf-balance-row__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mh-pf-balance-row__info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.mh-pf-balance-row__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mh-pf-balance-row__value {
   font-size: 14px;
-  font-weight: 500;
-  line-height: 16px;
+  font-weight: 700;
+  color: var(--section-blue);
 }
 
 .mh-pf-card__tools {

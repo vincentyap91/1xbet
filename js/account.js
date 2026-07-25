@@ -872,11 +872,11 @@
         '</div>' +
         '<div class="acc-card-balances">' +
           '<div class="acc-balance-row">' +
-            '<span class="acc-balance-label">Bonus points</span>' +
+            '<span class="acc-balance-label">Main account (MYR)</span>' +
             '<span class="acc-balance-value">0</span>' +
           '</div>' +
           '<div class="acc-balance-row">' +
-            '<span class="acc-balance-label">Main account (MYR)</span>' +
+            '<span class="acc-balance-label">Game wallet</span>' +
             '<span class="acc-balance-value">0</span>' +
           '</div>' +
         '</div>' +

@@ -21,11 +21,33 @@
       </div>
 
       <div class="mh-cs-menu__wallet" data-mh-menu-wallet>
-        <button type="button" class="mh-cs-menu__balance" data-mh-toast="Accounts" aria-label="Balance">
-          <img src="assets/icons/menu/wallet.svg" alt="" width="16" height="16" />
-          <span>0 MYR</span>
-          <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
-        </button>
+        <div class="mh-cs-menu__wallet-select">
+          <button type="button" class="mh-cs-menu__balance" data-mh-wallet-toggle aria-expanded="false" aria-haspopup="listbox" aria-label="Select account">
+            <img src="assets/icons/menu/wallet.svg" alt="" width="16" height="16" />
+            <span data-mh-wallet-label>0 MYR</span>
+            <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+          </button>
+          <ul class="mh-cs-menu__wallet-menu" data-mh-wallet-menu role="listbox" hidden>
+            <li>
+              <button type="button" class="mh-cs-menu__wallet-option is-active" role="option" aria-selected="true" data-mh-wallet-option data-label="0 MYR" data-name="Main account">
+                <span class="mh-cs-menu__wallet-option-name">Main account (MYR)</span>
+                <span class="mh-cs-menu__wallet-option-value">0</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="mh-cs-menu__wallet-option" role="option" aria-selected="false" data-mh-wallet-option data-label="0 GW" data-name="Game wallet">
+                <span class="mh-cs-menu__wallet-option-name">Game wallet</span>
+                <span class="mh-cs-menu__wallet-option-value">0</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="mh-cs-menu__wallet-option" role="option" aria-selected="false" data-mh-wallet-option data-label="0" data-name="Unsettled bets">
+                <span class="mh-cs-menu__wallet-option-name">Unsettled bets</span>
+                <span class="mh-cs-menu__wallet-option-value">0</span>
+              </button>
+            </li>
+          </ul>
+        </div>
         <button type="button" class="mh-cs-menu__deposit" data-mh-deposit>Deposit</button>
       </div>
 
