@@ -6,6 +6,7 @@ Reusable layout, spacing, and class conventions for the mobile site (`mobile/`).
 
 **Reference:** [1xlite mobile](https://1xlite-46272.pro/en?platform_type=mobile)  
 **Canonical home:** `mobile/index.html` + `mobile/css/mobile-home.css` (scoped under `body.mh-page`)  
+Home can use a **floating player-online pill** anchored above the sticky tab bar. Keep it compact, right-aligned, linked to the LIVE section, and hide or fade it while the Quick bet slip is open.
 **Sports (Line):** `mobile/sports.html` + `mobile/css/mobile-sports.css` — [1xlite line](https://1xlite-46272.pro/en/line?platform_type=mobile)  
 **Search / Events:** `mobile/search.html` + `mobile/css/mobile-search.css` + `mobile/js/mobile-search.js`  
 **Event info:** `mobile/event-info.html` + `mobile/css/mobile-event-info.css`  

@@ -129,6 +129,42 @@
     }, 1800);
   }
 
+  function initPlayersOnlineCounter() {
+    const counters = $$("[data-online-counter]");
+    if (!counters.length) return;
+
+    const formatCount = (value) => {
+      try {
+        return new Intl.NumberFormat("en-US").format(value);
+      } catch (_) {
+        return String(value);
+      }
+    };
+
+    counters.forEach((counter, index) => {
+      const valueEl = counter.querySelector("[data-online-value]");
+      if (!valueEl) return;
+
+      const base = Number(counter.getAttribute("data-online-base")) || 5556;
+      const swing = Number(counter.getAttribute("data-online-swing")) || 30;
+      let current = base;
+
+      const render = () => {
+        const formatted = formatCount(current);
+        valueEl.textContent = formatted;
+        counter.setAttribute("aria-label", `${formatted} players online`);
+      };
+
+      render();
+
+      window.setInterval(() => {
+        const delta = Math.round((Math.random() - 0.5) * swing);
+        current = Math.max(base - swing, Math.min(base + swing, current + delta));
+        render();
+      }, 4800 + index * 500);
+    });
+  }
+
   function loadBets() {
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
@@ -1505,6 +1541,7 @@
       initHScrollHints();
       initToastButtons();
       initHomeReferral();
+      initPlayersOnlineCounter();
       initNtChips();
       initSpChips();
     });

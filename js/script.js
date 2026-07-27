@@ -1758,6 +1758,42 @@
     setInterval(() => setPromoSlide(state.promoIndex + 1), 6000);
   }
 
+  function initPlayersOnlineCounter() {
+    const counters = $$("[data-online-counter]");
+    if (!counters.length) return;
+
+    const formatCount = (value) => {
+      try {
+        return new Intl.NumberFormat("en-US").format(value);
+      } catch (_) {
+        return String(value);
+      }
+    };
+
+    counters.forEach((counter, index) => {
+      const valueEl = counter.querySelector("[data-online-value]");
+      if (!valueEl) return;
+
+      const base = Number(counter.getAttribute("data-online-base")) || 5556;
+      const swing = Number(counter.getAttribute("data-online-swing")) || 40;
+      let current = base;
+
+      const render = () => {
+        const formatted = formatCount(current);
+        valueEl.textContent = formatted;
+        counter.setAttribute("aria-label", `${formatted} players online`);
+      };
+
+      render();
+
+      window.setInterval(() => {
+        const delta = Math.round((Math.random() - 0.5) * swing);
+        current = Math.max(base - swing, Math.min(base + swing, current + delta));
+        render();
+      }, 4200 + index * 600);
+    });
+  }
+
   /* ---------- Interactions ---------- */
 
   function initHeaderDropdowns() {
@@ -2677,6 +2713,7 @@
     initRightBlock();
     initCarousel();
     initPromoSlider();
+    initPlayersOnlineCounter();
     initMobileChrome();
     initHomeReferral();
     requestAnimationFrame(() => {

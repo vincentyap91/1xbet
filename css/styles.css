@@ -1456,6 +1456,113 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   box-shadow: 0 0 0 2px var(--action-green);
 }
 
+.promo-live-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(136, 175, 42, 0.96) 0%, rgba(111, 146, 32, 0.98) 100%);
+  box-shadow:
+    0 8px 18px rgba(11, 29, 51, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  color: #fff;
+  text-decoration: none;
+  backdrop-filter: blur(10px);
+}
+
+.promo-live-pill:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 20px rgba(11, 29, 51, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+.promo-live-pill__dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 8px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+}
+
+.promo-live-pill__dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  animation: promo-live-pill-pulse 1.8s ease-out infinite;
+}
+
+.promo-live-pill__value,
+.promo-live-pill__label {
+  line-height: 1;
+}
+
+.promo-live-pill__value {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.promo-live-pill__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes promo-live-pill-pulse {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.85);
+  }
+
+  70% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@media (max-width: 900px) {
+  .promo-live-pill {
+    position: fixed;
+    top: auto;
+    right: 12px;
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px) + 64px);
+    z-index: 124;
+    min-height: 34px;
+    padding: 7px 11px;
+    gap: 7px;
+    box-shadow:
+      0 8px 18px rgba(11, 29, 51, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    backdrop-filter: none;
+  }
+
+  .promo-live-pill__value {
+    font-size: 15px;
+  }
+
+  .promo-live-pill__label {
+    font-size: 10px;
+  }
+}
+
 /* =========================================================
    7. Game strip
    ========================================================= */
