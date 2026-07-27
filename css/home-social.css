@@ -579,7 +579,7 @@
 }
 
 .home-referral__btn--navy {
-  background: var(--header-bg);
+  background: var(--accent-blue);
 }
 
 .home-referral__btn--navy:hover {
