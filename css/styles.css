@@ -1528,6 +1528,11 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   letter-spacing: 0.04em;
 }
 
+/* Mobile-only floating pill — hidden on desktop */
+.promo-live-pill--mobile-float {
+  display: none;
+}
+
 @keyframes promo-live-pill-pulse {
   0% {
     opacity: 0.8;
@@ -1546,12 +1551,19 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 }
 
 @media (max-width: 900px) {
-  .promo-live-pill {
+  /* Hide nav-tools (containing the pill) from the hamburger menu */
+  .nav-tools {
+    display: none;
+  }
+
+  /* Mobile-only floating pill — hidden on desktop */
+  .promo-live-pill--mobile-float {
+    display: inline-flex;
     position: fixed;
     top: auto;
     right: 12px;
-    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px) + 64px);
-    z-index: 124;
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px) + 68px);
+    z-index: 119;
     min-height: 34px;
     padding: 7px 11px;
     gap: 7px;
@@ -1561,13 +1573,14 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
     backdrop-filter: none;
   }
 
-  .promo-live-pill__value {
+  .promo-live-pill--mobile-float .promo-live-pill__value {
     font-size: 15px;
   }
 
-  .promo-live-pill__label {
+  .promo-live-pill--mobile-float .promo-live-pill__label {
     font-size: 10px;
   }
+
 }
 
 /* =========================================================
