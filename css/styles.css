@@ -293,8 +293,18 @@ a:focus-visible {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 1;
   height: 100%;
   min-width: 0;
+}
+
+.nav-tools {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .nav-item {
@@ -1457,30 +1467,26 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 }
 
 .promo-live-pill {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 4;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 36px;
-  padding: 8px 12px;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   background: linear-gradient(180deg, rgba(136, 175, 42, 0.96) 0%, rgba(111, 146, 32, 0.98) 100%);
   box-shadow:
-    0 8px 18px rgba(11, 29, 51, 0.28),
+    0 6px 14px rgba(11, 29, 51, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.24);
   color: #fff;
   text-decoration: none;
-  backdrop-filter: blur(10px);
+  white-space: nowrap;
 }
 
 .promo-live-pill:hover {
   transform: translateY(-1px);
   box-shadow:
-    0 10px 20px rgba(11, 29, 51, 0.32),
+    0 8px 16px rgba(11, 29, 51, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.26);
 }
 
@@ -1515,10 +1521,11 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
 }
 
 .promo-live-pill__label {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   white-space: nowrap;
+  letter-spacing: 0.04em;
 }
 
 @keyframes promo-live-pill-pulse {
