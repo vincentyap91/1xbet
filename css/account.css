@@ -1114,7 +1114,7 @@ body.is-logged-in .header-lang-btn .lang-flag {
 .profile-progress-bar-wrap {
   flex: 1;
   height: 6px;
-  background: var(--surface-primary);
+  background: var(--odds-bg);
   border-radius: 99px;
   overflow: hidden;
 }
