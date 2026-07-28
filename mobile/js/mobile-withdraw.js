@@ -151,12 +151,16 @@
     accountNumber: "",
     cryptoAddress: "",
     typeFilter: "all",
+    cooldownEnd: null,
+    rolloverModalShown: false
   };
 
   const SUBMIT_MS = 1200;
+  const COOLDOWN_DURATION = 300; // 5 minutes in seconds
   let modalMode = "confirm";
   let isSubmitting = false;
   let lastFocusedBeforeModal = null;
+  let cooldownTimer = null;
 
   /* Demo: incomplete rollover blocks withdraw by default (Figma 297:701).
      Bypass with ?rollover=0 or open confirm/success QA params. */
@@ -186,6 +190,123 @@
   function formatAmount(value) {
     const n = Number(value);
     return (isFinite(n) ? n : 0).toFixed(2);
+  }
+  
+  function formatCountdown(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+  
+  function checkCooldown() {
+    try {
+      const stored = localStorage.getItem("mh-withdraw-cooldown");
+      if (!stored) return false;
+      const endTime = parseInt(stored, 10);
+      if (isNaN(endTime)) return false;
+      const now = Date.now();
+      if (now >= endTime) {
+        localStorage.removeItem("mh-withdraw-cooldown");
+        return false;
+      }
+      state.cooldownEnd = endTime;
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+  
+  function startCooldown() {
+    const endTime = Date.now() + (COOLDOWN_DURATION * 1000);
+    state.cooldownEnd = endTime;
+    try {
+      localStorage.setItem("mh-withdraw-cooldown", String(endTime));
+    } catch (_) { /* ignore */ }
+    renderCooldownBanner();
+    updateCooldownTimer();
+  }
+  
+  function clearCooldown() {
+    state.cooldownEnd = null;
+    if (cooldownTimer) {
+      clearInterval(cooldownTimer);
+      cooldownTimer = null;
+    }
+    try {
+      localStorage.removeItem("mh-withdraw-cooldown");
+    } catch (_) { /* ignore */ }
+    removeCooldownBanner();
+  }
+  
+  function updateCooldownTimer() {
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    
+    cooldownTimer = setInterval(() => {
+      if (!state.cooldownEnd) {
+        clearCooldown();
+        return;
+      }
+      
+      const now = Date.now();
+      const remaining = Math.max(0, Math.ceil((state.cooldownEnd - now) / 1000));
+      
+      if (remaining <= 0) {
+        clearCooldown();
+        return;
+      }
+      
+      const timeEl = document.querySelector(".mh-dep-cooldown__time");
+      if (timeEl) {
+        timeEl.textContent = formatCountdown(remaining);
+      }
+    }, 1000);
+  }
+  
+  function renderCooldownBanner() {
+    removeCooldownBanner();
+    
+    const remaining = state.cooldownEnd ? Math.max(0, Math.ceil((state.cooldownEnd - Date.now()) / 1000)) : 0;
+    if (remaining <= 0) {
+      clearCooldown();
+      return;
+    }
+    
+    const banner = document.createElement("div");
+    banner.className = "mh-dep-cooldown";
+    banner.id = "mh-wd-cooldown-banner";
+    banner.innerHTML = `
+      <div class="mh-dep-cooldown__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="mh-dep-cooldown__content">
+        <div class="mh-dep-cooldown__title">Processing now</div>
+        <div class="mh-dep-cooldown__text">Please wait <strong class="mh-dep-cooldown__time">${formatCountdown(remaining)}</strong> for withdrawal approval</div>
+      </div>
+      <div class="mh-dep-cooldown__progress" style="--progress: ${((COOLDOWN_DURATION - remaining) / COOLDOWN_DURATION * 100).toFixed(2)}%"></div>
+    `;
+    
+    const toolbar = document.querySelector(".mh-wd-toolbar");
+    if (toolbar) {
+      toolbar.parentElement.insertBefore(banner, toolbar.nextSibling);
+    }
+  }
+  
+  function removeCooldownBanner() {
+    const existing = document.getElementById("mh-wd-cooldown-banner");
+    if (existing) existing.remove();
+  }
+  
+  function canWithdraw() {
+    if (checkCooldown()) {
+      const remaining = state.cooldownEnd ? Math.ceil((state.cooldownEnd - Date.now()) / 1000) : 0;
+      if (remaining > 0) {
+        toast(`Please wait ${formatCountdown(remaining)} before next withdrawal`);
+        return false;
+      }
+    }
+    return true;
   }
 
   function renderModalConfirm() {
@@ -271,6 +392,7 @@
     const modal = $("#mh-wd-rollover-modal");
     if (!backdrop) return;
     syncRolloverDemo();
+    state.rolloverModalShown = true;
     lastFocusedBeforeModal = document.activeElement;
     backdrop.hidden = false;
     requestAnimationFrame(() => backdrop.classList.add("is-open"));
@@ -332,6 +454,7 @@
           ? `Your withdrawal of ${formatAmount(state.amount)} MYR via ${m.name} was submitted. Processing usually completes within a few hours.`
           : "Your withdrawal request was submitted.";
       }
+      startCooldown();
       renderModalSuccess();
       toast("Withdrawal submitted — demo only");
     }, SUBMIT_MS);
@@ -340,6 +463,8 @@
   function finishSuccessModal() {
     closeWithdrawModal();
     showStep("success");
+    renderCooldownBanner();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function bindWithdrawModal() {
@@ -394,7 +519,9 @@
         openWithdrawModal("success");
       } else if (rolloverIncomplete) {
         /* Force rollover popup on every Withdraw entry (mobile). */
-        openRolloverModal();
+        if (!state.rolloverModalShown) {
+          openRolloverModal();
+        }
       }
     } catch (_) {
       /* ignore */
@@ -413,12 +540,14 @@
         navWithdraw.classList.contains("is-active")
       ) {
         e.preventDefault();
-        openRolloverModal();
+        if (!state.rolloverModalShown) {
+          openRolloverModal();
+        }
       }
     });
 
     document.addEventListener("mh:open-rollover", () => {
-      if (rolloverIncomplete) openRolloverModal();
+      if (rolloverIncomplete && !state.rolloverModalShown) openRolloverModal();
     });
   }
 
@@ -674,8 +803,14 @@
 
   function openMethod(id) {
     if (!METHODS[id]) return;
+    /* Check cooldown first */
+    if (!canWithdraw()) {
+      renderCooldownBanner();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
     /* Earliest gate: selecting a method starts a withdraw attempt */
-    if (rolloverIncomplete) {
+    if (rolloverIncomplete && !state.rolloverModalShown) {
       openRolloverModal();
       return;
     }
@@ -785,6 +920,11 @@
     renderMethods();
     showStep("methods");
     bindWithdrawModal();
+    
+    if (checkCooldown()) {
+      renderCooldownBanner();
+      updateCooldownTimer();
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
@@ -868,7 +1008,12 @@
       }
 
       if (e.target.closest("[data-mh-wd-to-confirm]")) {
-        if (rolloverIncomplete) {
+        if (!canWithdraw()) {
+          renderCooldownBanner();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+        if (rolloverIncomplete && !state.rolloverModalShown) {
           openRolloverModal();
           return;
         }
@@ -880,7 +1025,12 @@
       }
 
       if (e.target.closest("[data-mh-wd-submit]")) {
-        if (rolloverIncomplete) {
+        if (!canWithdraw()) {
+          renderCooldownBanner();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
+        if (rolloverIncomplete && !state.rolloverModalShown) {
           openRolloverModal();
           return;
         }
@@ -889,6 +1039,11 @@
       }
 
       if (e.target.closest("[data-mh-wd-again]")) {
+        if (!canWithdraw()) {
+          renderCooldownBanner();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
         state.methodId = null;
         state.amount = 0;
         showStep("methods");

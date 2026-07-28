@@ -6933,3 +6933,80 @@ body.dci-claim-open {
   }
 }
 
+
+/* ── Deposit / Withdrawal cooldown banner ─────────────────────────────────── */
+.dep-cdwn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px 14px;
+  margin: 0 0 var(--acc-section-gap);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--section-blue) 0%, var(--header-action) 100%);
+  color: #fff;
+  overflow: hidden;
+}
+
+/* inside #dep-step-methods / #wd-step-methods the promo banner already has
+   margin: var(--acc-section-gap) var(--acc-pad-x) 0  — mirror that */
+#dep-step-methods .dep-cdwn,
+#wd-step-methods  .dep-cdwn {
+  margin: var(--acc-section-gap) var(--acc-pad-x) 0;
+}
+
+.dep-cdwn__spin {
+  flex: 0 0 auto;
+  color: var(--cyan-soft);
+  animation: dep-cdwn-spin 2s linear infinite;
+}
+
+@keyframes dep-cdwn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.dep-cdwn__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dep-cdwn__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.dep-cdwn__text {
+  font-size: 12px;
+  color: var(--cyan-soft);
+  line-height: 1.4;
+}
+
+.dep-cdwn__time {
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Progress bar pinned to the bottom edge */
+.dep-cdwn__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255,255,255,.18);
+}
+
+.dep-cdwn__bar {
+  height: 100%;
+  background: var(--action-green);
+  border-radius: 0 2px 0 0;
+  transition: width 1s linear;
+  min-width: 0;
+}
+/* ── end cooldown banner ──────────────────────────────────────────────────── */

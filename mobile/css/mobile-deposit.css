@@ -834,3 +834,68 @@ body.mh-page.mh-page--withdraw .mh-qbs {
 .mh-dep-chip[aria-expanded="true"] {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
+
+/* Cooldown banner (Processing now) */
+.mh-dep-cooldown {
+  position: relative;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #1a4f8a 0%, #2f69b1 100%);
+  color: var(--text-inverse);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(11, 29, 51, 0.15);
+}
+
+.mh-dep-cooldown__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--cyan-soft);
+  animation: mh-dep-spin 2s linear infinite;
+}
+
+@keyframes mh-dep-spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.mh-dep-cooldown__content {
+  padding-left: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.mh-dep-cooldown__title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  color: #fff;
+}
+
+.mh-dep-cooldown__text {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--cyan-soft);
+}
+
+.mh-dep-cooldown__time {
+  font-weight: 800;
+  color: #fff;
+  font-feature-settings: "tnum";
+  letter-spacing: 0.02em;
+}
+
+.mh-dep-cooldown__progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: var(--progress, 0%);
+  background: var(--action-green);
+  border-radius: 0 3px 0 0;
+  transition: width 1s linear;
+}

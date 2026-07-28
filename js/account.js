@@ -956,8 +956,8 @@
   }
 
   var SUBNAV_ICON_KEYS = {
-    deposit: 'wallet',
-    withdraw: 'wallet',
+    deposit: 'deposit',
+    withdraw: 'withdraw',
     'bet-history': 'dice',
     'transaction-history': 'exchange',
     'payment-queries': 'info-circle',
@@ -993,8 +993,8 @@
       headset: 'headset.svg',
       'info-circle': 'info-circle.svg',
       messages: 'messages.svg',
-      deposit: 'wallet.svg',
-      withdraw: 'wallet.svg',
+      deposit: 'deposit.svg',
+      withdraw: 'withdraw.svg',
       history: 'dice.svg',
       transactions: 'exchange.svg',
       queries: 'info-circle.svg',

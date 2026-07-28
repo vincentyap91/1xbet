@@ -9,6 +9,10 @@
   var REFRESH_COOLDOWN_S = 15;
   var PRESET_AMOUNTS = [5, 10, 50, 100, 500, 1000];
   var requestsRefreshTimer = null;
+  var COOLDOWN_DURATION = 300; /* 5 minutes in seconds */
+  var cooldownTimer = null;
+  var cooldownEndTime = null;
+  var rolloverModalShown = false;
 
   var METHODS = {
     touchngo: {
@@ -177,6 +181,98 @@
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.hidden = true; }, 2200);
   }
+
+  /* ── Cooldown helpers ──────────────────────────────────── */
+  function fmtCountdown(secs) {
+    var m = Math.floor(secs / 60);
+    var s = secs % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function checkCooldown() {
+    try {
+      var stored = localStorage.getItem('wd-cooldown');
+      if (!stored) return false;
+      var end = parseInt(stored, 10);
+      if (isNaN(end) || Date.now() >= end) {
+        localStorage.removeItem('wd-cooldown');
+        cooldownEndTime = null;
+        return false;
+      }
+      cooldownEndTime = end;
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function startCooldown() {
+    cooldownEndTime = Date.now() + COOLDOWN_DURATION * 1000;
+    try { localStorage.setItem('wd-cooldown', String(cooldownEndTime)); } catch (e) { /* ignore */ }
+    renderCooldownBanner();
+    tickCooldown();
+  }
+
+  function clearCooldown() {
+    cooldownEndTime = null;
+    if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+    try { localStorage.removeItem('wd-cooldown'); } catch (e) { /* ignore */ }
+    var b = document.getElementById('wd-cooldown-banner');
+    if (b) b.remove();
+  }
+
+  function tickCooldown() {
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function () {
+      if (!cooldownEndTime) { clearCooldown(); return; }
+      var rem = Math.max(0, Math.ceil((cooldownEndTime - Date.now()) / 1000));
+      if (rem <= 0) { clearCooldown(); return; }
+      var t = document.querySelector('#wd-cooldown-banner .dep-cdwn__time');
+      if (t) t.textContent = fmtCountdown(rem);
+      var bar = document.querySelector('#wd-cooldown-banner .dep-cdwn__bar');
+      if (bar) bar.style.width = ((COOLDOWN_DURATION - rem) / COOLDOWN_DURATION * 100).toFixed(1) + '%';
+    }, 1000);
+  }
+
+  function renderCooldownBanner() {
+    var old = document.getElementById('wd-cooldown-banner');
+    if (old) old.remove();
+    if (!cooldownEndTime) return;
+    var rem = Math.max(0, Math.ceil((cooldownEndTime - Date.now()) / 1000));
+    if (rem <= 0) { clearCooldown(); return; }
+    var pct = ((COOLDOWN_DURATION - rem) / COOLDOWN_DURATION * 100).toFixed(1);
+    var el = document.createElement('div');
+    el.id = 'wd-cooldown-banner';
+    el.className = 'dep-cdwn';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML =
+      '<svg class="dep-cdwn__spin" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">' +
+        '<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" fill="none"/>' +
+      '</svg>' +
+      '<div class="dep-cdwn__body">' +
+        '<strong class="dep-cdwn__title">Processing now</strong>' +
+        '<span class="dep-cdwn__text">Please wait <strong class="dep-cdwn__time">' + fmtCountdown(rem) + '</strong> for withdrawal approval</span>' +
+      '</div>' +
+      '<div class="dep-cdwn__track"><div class="dep-cdwn__bar" style="width:' + pct + '%"></div></div>';
+    /* Insert after .dep-promo-banner inside #wd-step-methods */
+    var anchor = document.querySelector('#wd-step-methods .dep-promo-banner');
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    } else {
+      var methods = document.getElementById('wd-step-methods');
+      if (methods) methods.insertBefore(el, methods.firstChild);
+    }
+  }
+
+  function canWithdraw() {
+    if (checkCooldown()) {
+      var rem = Math.ceil((cooldownEndTime - Date.now()) / 1000);
+      toast('Please wait ' + fmtCountdown(rem) + ' before withdrawing again.');
+      renderCooldownBanner();
+      return false;
+    }
+    return true;
+  }
+  /* ── end cooldown helpers ──────────────────────────────── */
 
   function escapeHtml(str) {
     return String(str)
@@ -434,8 +530,11 @@
     var method = METHODS[methodId];
     if (!method) return;
 
+    /* Check cooldown first */
+    if (!canWithdraw()) return;
+
     /* Earliest gate: selecting a method starts a withdraw attempt */
-    if (rolloverIncomplete) {
+    if (rolloverIncomplete && !rolloverModalShown) {
       openRolloverModal();
       return;
     }
@@ -689,6 +788,7 @@
   function openRolloverModal() {
     if (!rolloverBackdrop) return;
     syncRolloverDemo();
+    rolloverModalShown = true;
     lastFocusedBeforeModal = document.activeElement;
     rolloverBackdrop.hidden = false;
     requestAnimationFrame(function () {
@@ -743,6 +843,7 @@
     setSubmitting(true);
     window.setTimeout(function () {
       setSubmitting(false);
+      startCooldown();
       renderModalSuccess();
       toast('Withdrawal submitted — demo only. No real transaction has been made.');
     }, SUBMIT_MS);
@@ -751,11 +852,13 @@
   function finishSuccessModal() {
     closeWithdrawModal();
     showStep('success');
+    renderCooldownBanner();
   }
 
   function submitWithdraw() {
     if (isSubmitting) return;
-    if (rolloverIncomplete) {
+    if (!canWithdraw()) return;
+    if (rolloverIncomplete && !rolloverModalShown) {
       openRolloverModal();
       return;
     }
@@ -830,14 +933,14 @@
         state.methodId = state.methodId || 'touchngo';
         openWithdrawModal('success');
       } else if (rolloverIncomplete) {
-        /* Force rollover popup on every Withdraw entry (desktop). */
-        openRolloverModal();
+        /* Force rollover popup on first Withdraw entry only (desktop). */
+        if (!rolloverModalShown) openRolloverModal();
       }
     } catch (err) { /* ignore */ }
 
-    /* Re-open when user clicks Withdraw Funds / Withdrawal mode while already here. */
+    /* Re-open when user clicks Withdraw Funds while already on this page — only if not yet shown. */
     document.addEventListener('click', function (e) {
-      if (!rolloverIncomplete) return;
+      if (!rolloverIncomplete || rolloverModalShown) return;
       var navWithdraw = e.target.closest(
         'a[href*="withdraw.html"], [data-wd-open-rollover], .dep-mode__btn[href*="withdraw"], a.acc-nav-link[href*="withdraw"]'
       );
@@ -859,6 +962,7 @@
   }
 
   function resetFlow() {
+    if (!canWithdraw()) return;
     state.methodId = null;
     state.bankId = '';
     state.accountName = '';
@@ -937,6 +1041,12 @@
 
     bindRequestsPanel();
     bindWithdrawModal();
+
+    /* Restore cooldown banner if one is still active */
+    if (checkCooldown()) {
+      renderCooldownBanner();
+      tickCooldown();
+    }
 
     stepMethods.addEventListener('click', function (e) {
       var card = e.target.closest('.pay-method-card[data-method-id]');

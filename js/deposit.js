@@ -6,6 +6,9 @@
 
   var STEP_MS = 220;
   var SUBMIT_MS = 1400;
+  var COOLDOWN_DURATION = 300; /* 5 minutes in seconds */
+  var cooldownTimer = null;
+  var cooldownEndTime = null;
 
   var METHODS = {
     touchngo: {
@@ -244,6 +247,98 @@
       window.showToast(msg);
     }
   }
+
+  /* ── Cooldown helpers ──────────────────────────────────── */
+  function fmtCountdown(secs) {
+    var m = Math.floor(secs / 60);
+    var s = secs % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function checkCooldown() {
+    try {
+      var stored = localStorage.getItem('dep-cooldown');
+      if (!stored) return false;
+      var end = parseInt(stored, 10);
+      if (isNaN(end) || Date.now() >= end) {
+        localStorage.removeItem('dep-cooldown');
+        cooldownEndTime = null;
+        return false;
+      }
+      cooldownEndTime = end;
+      return true;
+    } catch (e) { return false; }
+  }
+
+  function startCooldown() {
+    cooldownEndTime = Date.now() + COOLDOWN_DURATION * 1000;
+    try { localStorage.setItem('dep-cooldown', String(cooldownEndTime)); } catch (e) { /* ignore */ }
+    renderCooldownBanner();
+    tickCooldown();
+  }
+
+  function clearCooldown() {
+    cooldownEndTime = null;
+    if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+    try { localStorage.removeItem('dep-cooldown'); } catch (e) { /* ignore */ }
+    var b = document.getElementById('dep-cooldown-banner');
+    if (b) b.remove();
+  }
+
+  function tickCooldown() {
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    cooldownTimer = setInterval(function () {
+      if (!cooldownEndTime) { clearCooldown(); return; }
+      var rem = Math.max(0, Math.ceil((cooldownEndTime - Date.now()) / 1000));
+      if (rem <= 0) { clearCooldown(); return; }
+      var t = document.querySelector('#dep-cooldown-banner .dep-cdwn__time');
+      if (t) t.textContent = fmtCountdown(rem);
+      var bar = document.querySelector('#dep-cooldown-banner .dep-cdwn__bar');
+      if (bar) bar.style.width = ((COOLDOWN_DURATION - rem) / COOLDOWN_DURATION * 100).toFixed(1) + '%';
+    }, 1000);
+  }
+
+  function renderCooldownBanner() {
+    var old = document.getElementById('dep-cooldown-banner');
+    if (old) old.remove();
+    if (!cooldownEndTime) return;
+    var rem = Math.max(0, Math.ceil((cooldownEndTime - Date.now()) / 1000));
+    if (rem <= 0) { clearCooldown(); return; }
+    var pct = ((COOLDOWN_DURATION - rem) / COOLDOWN_DURATION * 100).toFixed(1);
+    var el = document.createElement('div');
+    el.id = 'dep-cooldown-banner';
+    el.className = 'dep-cdwn';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.innerHTML =
+      '<svg class="dep-cdwn__spin" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">' +
+        '<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" fill="none"/>' +
+      '</svg>' +
+      '<div class="dep-cdwn__body">' +
+        '<strong class="dep-cdwn__title">Processing now</strong>' +
+        '<span class="dep-cdwn__text">Please wait <strong class="dep-cdwn__time">' + fmtCountdown(rem) + '</strong> for deposit approval</span>' +
+      '</div>' +
+      '<div class="dep-cdwn__track"><div class="dep-cdwn__bar" style="width:' + pct + '%"></div></div>';
+    /* Insert after .dep-promo-banner inside #dep-step-methods */
+    var anchor = document.querySelector('#dep-step-methods .dep-promo-banner');
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    } else {
+      var methods = document.getElementById('dep-step-methods');
+      if (methods) methods.insertBefore(el, methods.firstChild);
+    }
+  }
+
+  function canDeposit() {
+    if (checkCooldown()) {
+      var rem = Math.ceil((cooldownEndTime - Date.now()) / 1000);
+      toast('Please wait ' + fmtCountdown(rem) + ' before depositing again.');
+      renderCooldownBanner();
+      return false;
+    }
+    return true;
+  }
+  /* ── end cooldown helpers ──────────────────────────────── */
 
   function escapeHtml(str) {
     return String(str)
@@ -643,6 +738,7 @@
   function openDetails(methodId) {
     var method = METHODS[methodId];
     if (!method) return;
+    if (!canDeposit()) return;
 
     state.methodId = methodId;
     state.bankId = method.banks && method.banks[0] ? method.banks[0].id : null;
@@ -862,6 +958,7 @@
 
     setTimeout(function () {
       setSubmitting(false);
+      startCooldown();
       showStep('success');
       toast('Deposit submitted — demo only. No real transaction has been made.');
     }, SUBMIT_MS);
@@ -877,6 +974,7 @@
   }
 
   function resetFlow() {
+    if (!canDeposit()) return;
     state.methodId = null;
     state.bankId = null;
     state.amount = 0;
@@ -920,6 +1018,12 @@
 
   initMethodSelection();
   initActions();
+
+  /* Restore cooldown banner if one is still active from a previous submission */
+  if (checkCooldown()) {
+    renderCooldownBanner();
+    tickCooldown();
+  }
 
   /* Deep-link for Figma / demos: ?step=details&method=touchngo */
   (function openStepFromQuery() {

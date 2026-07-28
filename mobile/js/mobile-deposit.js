@@ -190,9 +190,18 @@
     { id: "crypto", label: "Cryptocurrency" },
   ];
 
-  const state = { step: "methods", methodId: null, amount: 0, typeFilter: "all" };
+  const state = { 
+    step: "methods", 
+    methodId: null, 
+    amount: 0, 
+    typeFilter: "all",
+    cooldownEnd: null 
+  };
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  
+  const COOLDOWN_DURATION = 300; // 5 minutes in seconds
+  let cooldownTimer = null;
 
   function toast(msg) {
     const el = $("#mh-toast");
@@ -203,6 +212,131 @@
     toast._t = window.setTimeout(() => {
       el.hidden = true;
     }, 1800);
+  }
+  
+  function formatCountdown(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  }
+  
+  function checkCooldown() {
+    try {
+      const stored = localStorage.getItem("mh-deposit-cooldown");
+      if (!stored) return false;
+      const endTime = parseInt(stored, 10);
+      if (isNaN(endTime)) return false;
+      const now = Date.now();
+      if (now >= endTime) {
+        localStorage.removeItem("mh-deposit-cooldown");
+        return false;
+      }
+      state.cooldownEnd = endTime;
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+  
+  function startCooldown() {
+    const endTime = Date.now() + (COOLDOWN_DURATION * 1000);
+    state.cooldownEnd = endTime;
+    try {
+      localStorage.setItem("mh-deposit-cooldown", String(endTime));
+    } catch (_) { /* ignore */ }
+    renderCooldownBanner();
+    updateCooldownTimer();
+  }
+  
+  function clearCooldown() {
+    state.cooldownEnd = null;
+    if (cooldownTimer) {
+      clearInterval(cooldownTimer);
+      cooldownTimer = null;
+    }
+    try {
+      localStorage.removeItem("mh-deposit-cooldown");
+    } catch (_) { /* ignore */ }
+    removeCooldownBanner();
+  }
+  
+  function updateCooldownTimer() {
+    if (cooldownTimer) clearInterval(cooldownTimer);
+    
+    cooldownTimer = setInterval(() => {
+      if (!state.cooldownEnd) {
+        clearCooldown();
+        return;
+      }
+      
+      const now = Date.now();
+      const remaining = Math.max(0, Math.ceil((state.cooldownEnd - now) / 1000));
+      
+      if (remaining <= 0) {
+        clearCooldown();
+        return;
+      }
+      
+      const timeEl = document.querySelector(".mh-dep-cooldown__time");
+      if (timeEl) {
+        timeEl.textContent = formatCountdown(remaining);
+      }
+    }, 1000);
+  }
+  
+  function renderCooldownBanner() {
+    removeCooldownBanner();
+    
+    const remaining = state.cooldownEnd ? Math.max(0, Math.ceil((state.cooldownEnd - Date.now()) / 1000)) : 0;
+    if (remaining <= 0) {
+      clearCooldown();
+      return;
+    }
+    
+    const banner = document.createElement("div");
+    banner.className = "mh-dep-cooldown";
+    banner.id = "mh-dep-cooldown-banner";
+    banner.innerHTML = `
+      <div class="mh-dep-cooldown__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="mh-dep-cooldown__content">
+        <div class="mh-dep-cooldown__title">Processing now</div>
+        <div class="mh-dep-cooldown__text">Please wait <strong class="mh-dep-cooldown__time">${formatCountdown(remaining)}</strong> for deposit approval</div>
+      </div>
+      <div class="mh-dep-cooldown__progress" style="--progress: ${((COOLDOWN_DURATION - remaining) / COOLDOWN_DURATION * 100).toFixed(2)}%"></div>
+    `;
+    
+    const promo = document.querySelector(".mh-dep-promo");
+    if (promo) {
+      promo.parentElement.insertBefore(banner, promo.nextSibling);
+    } else {
+      const panel = document.querySelector("#mh-dep-deposit-panel");
+      if (panel) {
+        const filters = panel.querySelector(".mh-dep-filters");
+        if (filters) {
+          filters.after(banner);
+        }
+      }
+    }
+  }
+  
+  function removeCooldownBanner() {
+    const existing = document.getElementById("mh-dep-cooldown-banner");
+    if (existing) existing.remove();
+  }
+  
+  function canDeposit() {
+    if (checkCooldown()) {
+      const remaining = state.cooldownEnd ? Math.ceil((state.cooldownEnd - Date.now()) / 1000) : 0;
+      if (remaining > 0) {
+        toast(`Please wait ${formatCountdown(remaining)} before next deposit`);
+        return false;
+      }
+    }
+    return true;
   }
 
   function esc(s) {
@@ -446,6 +580,10 @@
 
   function openMethod(id) {
     if (!METHODS[id]) return;
+    if (!canDeposit()) {
+      renderCooldownBanner();
+      return;
+    }
     state.methodId = id;
     state.amount = 0;
     renderAmountStep();
@@ -485,6 +623,11 @@
     renderTypeList();
     renderMethods();
     showStep("methods");
+    
+    if (checkCooldown()) {
+      renderCooldownBanner();
+      updateCooldownTimer();
+    }
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") setTypeSheetOpen(false);
@@ -561,12 +704,18 @@
           $("#mh-dep-success-desc").textContent = m
             ? `Your deposit of ${Number(state.amount).toFixed(2)} MYR via ${m.name} was submitted. Funds are usually credited within a few minutes.`
             : "Your deposit was submitted.";
+          startCooldown();
           showStep("success");
         }, 1200);
         return;
       }
 
       if (e.target.closest("[data-mh-dep-again]")) {
+        if (!canDeposit()) {
+          renderCooldownBanner();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          return;
+        }
         state.methodId = null;
         state.amount = 0;
         showStep("methods");
