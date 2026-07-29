@@ -854,8 +854,14 @@ body.mh-page.mh-page--withdraw .mh-qbs {
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
-  color: var(--cyan-soft);
   animation: mh-dep-spin 2s linear infinite;
+}
+
+.mh-dep-cooldown__icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
 }
 
 @keyframes mh-dep-spin {

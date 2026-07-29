@@ -276,9 +276,7 @@
     banner.id = "mh-wd-cooldown-banner";
     banner.innerHTML = `
       <div class="mh-dep-cooldown__icon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
+        <img src="assets/icons/icon-clock.svg" width="20" height="20" alt="" aria-hidden="true" />
       </div>
       <div class="mh-dep-cooldown__content">
         <div class="mh-dep-cooldown__title">Processing now</div>

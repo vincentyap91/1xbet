@@ -6957,8 +6957,8 @@ body.dci-claim-open {
 
 .dep-cdwn__spin {
   flex: 0 0 auto;
-  color: var(--cyan-soft);
-  animation: dep-cdwn-spin 2s linear infinite;
+  color: #fff;
+  filter: brightness(0) invert(1);
 }
 
 @keyframes dep-cdwn-spin {

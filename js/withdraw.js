@@ -245,9 +245,7 @@
     el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     el.innerHTML =
-      '<svg class="dep-cdwn__spin" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">' +
-        '<circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2" fill="none"/>' +
-      '</svg>' +
+      '<img class="dep-cdwn__spin" src="assets/icons/icon-clock.svg" width="18" height="18" alt="" aria-hidden="true" />' +
       '<div class="dep-cdwn__body">' +
         '<strong class="dep-cdwn__title">Processing now</strong>' +
         '<span class="dep-cdwn__text">Please wait <strong class="dep-cdwn__time">' + fmtCountdown(rem) + '</strong> for withdrawal approval</span>' +
