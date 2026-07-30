@@ -215,6 +215,10 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Inputs | `.reg-input`, `.reg-select`, stake inputs | `#fff` + `--text-primary`; placeholder `--text-muted` |
 | Primary CTA | `.btn-reg`, `.btn-slip-reg` | `--action-green` / hover `--action-green-hover` |
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
+| My bets History empty | `.mybets-empty--history` + `.mybets-view-history` | clipboard empty + `--action-green` **View Bet History** CTA |
+| Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | overlay dialog from My Bets → History; cats All/Sports/Casino; date range presets + custom; date-grouped `.bh-desk-card` rows (wide grid: type/odds/stake/winnings/id) |
+
+**Bet Slip → My Bets → History flow (desktop):** History tab shows last-session settled bets (or empty CTA). **View Bet History** opens `.bh-desktop-panel` (not the account `bet-history.html` page). Keep right-rail chrome unchanged; do not copy mobile bottom-sheet layout into the panel.
 
 #### Accumulators (data cards)
 
@@ -407,6 +411,10 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 - `sportsbook-layout`: `250px | 1fr | 260px`, gap `--gap`, padding `--gap`
 - Sticky header; sidebars sticky/scroll within viewport height
 - Desktop design is the **default** — do not redesign it for mobile
+- **Collapsed rails (xxs):** `--sidebar-collapsed-w: 32px`. Classes: `.left-sidebar.collapsed` + `.sportsbook-layout.left-collapsed`, `.right-sidebar.collapsed` + `.sportsbook-layout.right-collapsed`. Homepage defaults both collapsed to match live desktop compact chrome.
+  - **Left rail:** icon-only Favorite / Recommended / Top Games / Live signal + live count chip + sport icons (white cells, dark glyphs). Icons from live: `assets/icons/collapse/common-*.svg`, `sports-*.svg`.
+  - **Right rail:** `.right-compact-rail` — expand chevron (`chevron-double-left`), vertical **Registration** (`--action-green`), vertical **Bet slip** (`--section-blue`), generator/app widget chips. Full panels hidden until expand. Live Figma blues remapped to tokens (do not ship `#205583` / `#276aa5` / `#7eac2f`).
+  - Toggle via `#sidebar-collapse` / `#right-collapse` / `#right-expand` / `.rc-*` buttons in `js/script.js`.
 
 ### Breakpoints (adapt only)
 
@@ -421,9 +429,12 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 ### Mobile chrome (≤900px)
 
 - Hamburger → primary nav drawer (`#header-bottom.is-open`)
-- Bottom tab bar: Home / Promotion / Deposit FAB / Livechat / Account (guest + logged-in). Guest taps on Deposit, Livechat, or Account open the login modal (`data-auth-open="login"`).
+- **Sports homepage tabbar** (`.mobile-tabbar--sports` on `index.html`): Sports · Casino · **Bet Slip** (elevated `--cyan-accent` circle) · Deposit · Account/Log in. Icons from `mobile/assets/icons/tab-*.svg`. Guest 5th label **Log in**; logged-in **Account**. Bet count badge on Bet Slip (`--action-green`). Auth sync via `js/auth-modals.js` `syncSportsTabbarAuth` (does not replace markup).
+- **Account pages tabbar** (`.mobile-tabbar--account` via `js/auth-modals.js`): Home · Promotion · Deposit FAB · Livechat · Account. Guest taps on Deposit / Livechat / Account open login.
+- **Guest header:** hamburger · logo · outline **Log in** · green **Registration** (hide gift + language on sports mobile chrome).
+- **Logged-in header:** hamburger · logo · balance chip (MYR + refresh) · green **Deposit** · language flag chip (hide gift / messages / account avatar on mobile).
 - Left sports = left drawer; bet slip = bottom sheet (`.right-sidebar.is-open`); hide desktop `.right-collapse` + `.reg-panel` (auth via header)
-- Floating `.mobile-betslip-fab` when slip has picks (tab bar has no Bet slip tab)
+- Floating `.mobile-betslip-fab` only when tabbar has no Bet Slip slot (hidden on `.mobile-tabbar--sports`)
 - Backdrop `#drawer-backdrop`; body `.drawer-open` locks scroll
 - Event rows → card layout; hide `.desktop-odds`. Mobile odds (`.event-odds-mobile`) mirror table markets: labeled rows for 1X2, Double Chance (football), Totals O/line/U, Handicap (non-DC)
 
@@ -431,9 +442,9 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 
 | Piece | Implementation |
 |-------|----------------|
-| Top header | Dark `--header-bar-bg`. **Guest mobile:** hamburger · logo · **gift** · Login · Register · language. **Logged-in mobile:** hamburger · logo · balance + refresh · **gift** · language. Gift (`.header-gift-btn`, green `.icon-badge`): guest → login modal; logged-in → `daily-checkin.html` (wired in `js/auth-modals.js`). |
+| Top header | Dark `--header-bar-bg`. **Guest mobile (sports):** hamburger · logo · Log in · Register. **Logged-in mobile (sports):** hamburger · logo · balance + refresh · Deposit · language. Account pages may still show gift for Daily Check-In where authored. |
 | Subcategory strip | `.acc-subnav` (≤900px). **Icons:** Figma [`96:9`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/Untitled?node-id=96-9) exports in `assets/icons/account-subnav/` rendered as `<img>` with fill `#1a4f8a` (`--section-blue`) so glyphs stay visible on light cards. Deposit/Withdraw→wallet; tx→exchange; queries→info-circle; security→key; etc. Active card `--odds-hover` + `--section-blue` border. Badges `--action-green`. |
-| Bottom sticky nav | `.mobile-tabbar--account` (all pages via `js/auth-modals.js`): Home · Promotion · Deposit FAB · Livechat · Account. Guest: Deposit / Livechat / Account open login. Logged-in: normal links; active `--action-green`. |
+| Bottom sticky nav | Sports pages: `.mobile-tabbar--sports`. Account pages: `.mobile-tabbar--account` (Home · Promotion · Deposit FAB · Livechat · Account). |
 
 Wired in `js/account.js` when `.account-main` is present.
 
@@ -509,9 +520,10 @@ Reuse Figma-exported assets under `assets/icons/` with prefixes:
 | Prefix | Area |
 |--------|------|
 | `icon-*`, `logo-*`, `flag-*` | Header |
-| `nav-*`, `sport-*` | Left sidebar |
+| `nav-*`, `sport-*` | Left sidebar (expanded) |
+| `collapse/*` | Left/right collapsed xxs rails (live SVG paths) |
 | `te-*` | TOP-EVENTS / LIVE toolbar |
-| `rb-*` | Right block |
+| `rb-*` | Right block (expanded) |
 | `ft-*` | Footer |
 | `pf-*` (under `mobile/assets/icons/profile/`) | Mobile sportsbook profile (`profile.html`) |
 

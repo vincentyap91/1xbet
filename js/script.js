@@ -794,6 +794,10 @@
     lineType: "live",
     promoIndex: 0,
     myBetsTab: "open",
+    betHistoryCategory: "all",
+    betHistoryRange: "7d",
+    betHistoryCustomFrom: "",
+    betHistoryCustomTo: "",
   };
 
   const PIN_ICON_SVG =
@@ -820,7 +824,161 @@
     },
   ];
 
+  /* Last-session settled bets (empty → show View Bet History CTA) */
   const MOCK_SETTLED_BETS = [];
+
+  const BH_RANGE_LABELS = {
+    today: "Today",
+    yesterday: "Yesterday",
+    "7d": "Last 7 Days",
+    "30d": "Last 30 Days",
+    "90d": "Last 90 Days",
+    custom: "Custom Date Range",
+  };
+
+  /* Full bet history for the dedicated desktop panel (demo, relative to today) */
+  function buildMockBetHistory() {
+    const today = startOfDay(new Date());
+    const fmtKey = (d) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    };
+    const fmtLabel = (d) =>
+      d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+    const fmtPlaced = (d, time) =>
+      d.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ", " + time;
+    const daysAgo = (n) => {
+      const d = new Date(today);
+      d.setDate(d.getDate() - n);
+      return d;
+    };
+
+    const d0 = daysAgo(0);
+    const d1 = daysAgo(1);
+    const d3 = daysAgo(3);
+    const d12 = daysAgo(12);
+    const d40 = daysAgo(40);
+    const d70 = daysAgo(70);
+
+    return [
+      {
+        id: "123456789",
+        category: "sports",
+        sport: "Tennis",
+        icon: "assets/icons/sport-tennis.svg",
+        league: "Wimbledon. Grass",
+        match: "Arthur Fery vs Alexander Zverev",
+        betType: "Single",
+        odds: "1.85",
+        stake: "50.00",
+        winnings: "92.50",
+        status: "Won",
+        dateKey: fmtKey(d1),
+        dateLabel: fmtLabel(d1),
+        placedAt: fmtPlaced(d1, "14:32"),
+      },
+      {
+        id: "123456790",
+        category: "sports",
+        sport: "Basketball",
+        icon: "assets/icons/sport-basketball.svg",
+        league: "NBA. USA",
+        match: "Boston Celtics vs Dallas Mavericks",
+        betType: "Single",
+        odds: "1.72",
+        stake: "40.00",
+        winnings: "0.00",
+        status: "Lost",
+        dateKey: fmtKey(d1),
+        dateLabel: fmtLabel(d1),
+        placedAt: fmtPlaced(d1, "11:05"),
+      },
+      {
+        id: "123456801",
+        category: "sports",
+        sport: "Football",
+        icon: "assets/icons/sport-football.svg",
+        league: "Premier League. England",
+        match: "Arsenal vs Chelsea",
+        betType: "Single",
+        odds: "2.10",
+        stake: "25.00",
+        winnings: "52.50",
+        status: "Won",
+        dateKey: fmtKey(d3),
+        dateLabel: fmtLabel(d3),
+        placedAt: fmtPlaced(d3, "21:18"),
+      },
+      {
+        id: "123456810",
+        category: "casino",
+        sport: "Casino",
+        icon: "assets/icons/icon-dice.svg",
+        league: "Live Casino",
+        match: "Holi Bac 1",
+        betType: "Real money",
+        odds: "—",
+        stake: "20.00",
+        winnings: "38.00",
+        status: "Won",
+        dateKey: fmtKey(d0),
+        dateLabel: fmtLabel(d0),
+        placedAt: fmtPlaced(d0, "16:42"),
+      },
+      {
+        id: "123456820",
+        category: "sports",
+        sport: "Tennis",
+        icon: "assets/icons/sport-tennis.svg",
+        league: "ATP. Hard",
+        match: "Djokovic vs Alcaraz",
+        betType: "Single",
+        odds: "1.95",
+        stake: "30.00",
+        winnings: "0.00",
+        status: "Lost",
+        dateKey: fmtKey(d12),
+        dateLabel: fmtLabel(d12),
+        placedAt: fmtPlaced(d12, "19:03"),
+      },
+      {
+        id: "123456830",
+        category: "casino",
+        sport: "Casino",
+        icon: "assets/icons/icon-dice.svg",
+        league: "Slots",
+        match: "Sweet Bonanza",
+        betType: "Real money",
+        odds: "—",
+        stake: "15.00",
+        winnings: "0.00",
+        status: "Lost",
+        dateKey: fmtKey(d40),
+        dateLabel: fmtLabel(d40),
+        placedAt: fmtPlaced(d40, "09:27"),
+      },
+      {
+        id: "123456840",
+        category: "sports",
+        sport: "Football",
+        icon: "assets/icons/sport-football.svg",
+        league: "La Liga. Spain",
+        match: "Real Madrid vs Barcelona",
+        betType: "Single",
+        odds: "2.40",
+        stake: "60.00",
+        winnings: "144.00",
+        status: "Won",
+        dateKey: fmtKey(d70),
+        dateLabel: fmtLabel(d70),
+        placedAt: fmtPlaced(d70, "22:10"),
+      },
+    ];
+  }
+
+  let MOCK_BET_HISTORY = [];
 
   /* ---------- Helpers ---------- */
 
@@ -1481,8 +1639,15 @@
     const badge = $("#mobile-bet-count");
     const n = state.betSlip.length;
     if (badge) {
-      badge.hidden = n === 0;
-      badge.textContent = String(n);
+      if (n > 0) {
+        badge.hidden = false;
+        badge.removeAttribute("hidden");
+        badge.textContent = String(n);
+      } else {
+        badge.hidden = true;
+        badge.setAttribute("hidden", "");
+        badge.textContent = "";
+      }
     }
 
     let fab = $("#mobile-betslip-fab");
@@ -1506,7 +1671,8 @@
     const fabCount = $("#mobile-betslip-fab-count");
     if (fabCount) fabCount.textContent = String(n);
     const sheetOpen = Boolean($("#right-sidebar")?.classList.contains("is-open"));
-    fab.hidden = n === 0 || !isMobileViewport() || sheetOpen;
+    const hasSportsTabbar = Boolean(document.querySelector(".mobile-tabbar--sports"));
+    fab.hidden = n === 0 || !isMobileViewport() || sheetOpen || hasSportsTabbar;
     fab.setAttribute("aria-expanded", sheetOpen ? "true" : "false");
     fab.classList.toggle("is-open", sheetOpen);
   }
@@ -1648,6 +1814,8 @@
     const regCta = $("#bet-reg-cta");
     syncBetTabCount();
     syncMobileBetCount();
+    const railCount = $("#rc-bet-count");
+    if (railCount) railCount.textContent = String(state.betSlip.length);
 
     if (!state.betSlip.length) {
       empty.hidden = false;
@@ -1874,8 +2042,18 @@
           closeAllMobileDrawers();
           return;
         }
-        sb.classList.toggle("collapsed");
+        const collapsed = sb.classList.toggle("collapsed");
+        const layout = document.querySelector(".sportsbook-layout");
+        if (layout) layout.classList.toggle("left-collapsed", collapsed);
+        collapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        collapse.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
       });
+    }
+
+    const liveCountEl = $("#sidebar-live-count");
+    const sfAll = document.querySelector(".sf-all span");
+    if (liveCountEl && sfAll) {
+      liveCountEl.textContent = sfAll.textContent.trim() || "700";
     }
 
     const tgOdds = $(".tg-odds");
@@ -1899,6 +2077,89 @@
       });
     }
   }
+
+  /* Desktop compact rails — match live xxs collapse (no hover overlay) */
+  (function initSidebarCollapsible() {
+    const layout = document.querySelector(".sportsbook-layout");
+    const left = document.querySelector(".left-sidebar");
+    const right = document.querySelector(".right-sidebar");
+    if (!left || !right || !layout) return;
+
+    function setRightCollapsed(collapsed) {
+      right.classList.toggle("collapsed", collapsed);
+      layout.classList.toggle("right-collapsed", collapsed);
+      const btn = $("#right-collapse");
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
+      }
+    }
+
+    function setLeftCollapsed(collapsed) {
+      left.classList.toggle("collapsed", collapsed);
+      layout.classList.toggle("left-collapsed", collapsed);
+      const btn = $("#sidebar-collapse");
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
+      }
+    }
+
+    // Sync initial state from markup
+    layout.classList.toggle("left-collapsed", left.classList.contains("collapsed"));
+    layout.classList.toggle("right-collapsed", right.classList.contains("collapsed"));
+
+    $("#right-collapse")?.addEventListener("click", () => {
+      if (isMobileViewport()) {
+        closeAllMobileDrawers();
+        return;
+      }
+      setRightCollapsed(!right.classList.contains("collapsed"));
+    });
+
+    $("#right-expand")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+    });
+
+    $("#rc-reg")?.addEventListener("click", (e) => {
+      if (isMobileViewport()) return;
+      e.preventDefault();
+      setRightCollapsed(false);
+      $("#reg-form")?.scrollIntoView({ block: "nearest" });
+    });
+
+    $("#rc-bet")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+    });
+
+    $("#rc-generator")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+      document.querySelector(".generator-panel")?.scrollIntoView({ block: "nearest" });
+    });
+
+    $("#rc-save")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+      document.querySelector(".bet-save-link")?.focus();
+    });
+
+    $("#rc-app")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+      $("#app-panel")?.removeAttribute("hidden");
+      $("#app-panel")?.scrollIntoView({ block: "nearest" });
+    });
+
+    // Keep compact bet count in sync
+    const syncRailCount = () => {
+      const el = $("#rc-bet-count");
+      if (el) el.textContent = String(state.betSlip?.length || 0);
+    };
+    syncRailCount();
+  })();
 
   function initToolbar() {
     document.addEventListener("click", (e) => {
@@ -2202,6 +2463,81 @@
     return Number.isInteger(n) ? String(n) : n.toFixed(2);
   }
 
+  function formatMoneyMyr(amount) {
+    const n = parseFloat(amount);
+    if (!Number.isFinite(n)) return "MYR " + amount;
+    return "MYR " + n.toFixed(2);
+  }
+
+  function parseDateKey(key) {
+    const parts = String(key).split("-").map(Number);
+    if (parts.length !== 3) return null;
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function startOfDay(d) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function ensureMockBetHistory() {
+    if (!MOCK_BET_HISTORY.length) MOCK_BET_HISTORY = buildMockBetHistory();
+  }
+
+  function getBetHistoryRangeBounds() {
+    const today = startOfDay(new Date());
+    const range = state.betHistoryRange;
+    if (range === "today") {
+      return { from: today, to: today };
+    }
+    if (range === "yesterday") {
+      const y = new Date(today);
+      y.setDate(y.getDate() - 1);
+      return { from: y, to: y };
+    }
+    if (range === "7d") {
+      const from = new Date(today);
+      from.setDate(from.getDate() - 6);
+      return { from, to: today };
+    }
+    if (range === "30d") {
+      const from = new Date(today);
+      from.setDate(from.getDate() - 29);
+      return { from, to: today };
+    }
+    if (range === "90d") {
+      const from = new Date(today);
+      from.setDate(from.getDate() - 89);
+      return { from, to: today };
+    }
+    if (range === "custom") {
+      const from = state.betHistoryCustomFrom
+        ? parseDateKey(state.betHistoryCustomFrom)
+        : null;
+      const to = state.betHistoryCustomTo
+        ? parseDateKey(state.betHistoryCustomTo)
+        : null;
+      return {
+        from: from ? startOfDay(from) : null,
+        to: to ? startOfDay(to) : null,
+      };
+    }
+    return { from: null, to: null };
+  }
+
+  function getFilteredBetHistory() {
+    ensureMockBetHistory();
+    const cat = state.betHistoryCategory;
+    const { from, to } = getBetHistoryRangeBounds();
+    return MOCK_BET_HISTORY.filter((bet) => {
+      if (cat !== "all" && bet.category !== cat) return false;
+      const d = parseDateKey(bet.dateKey);
+      if (!d) return true;
+      if (from && d < from) return false;
+      if (to && d > to) return false;
+      return true;
+    });
+  }
+
   function renderMyBetsOpenCard(bet) {
     const oddsLine =
       escapeHtml(bet.odds) +
@@ -2249,6 +2585,23 @@
     );
   }
 
+  function renderMyBetsHistoryEmpty() {
+    return (
+      `<div class="mybets-empty mybets-empty--history">` +
+        `<div class="mybets-empty-icon" aria-hidden="true">` +
+          `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">` +
+            `<rect x="10" y="8" width="28" height="34" rx="3" stroke="currentColor" stroke-width="2"/>` +
+            `<path d="M16 16h16M16 22h16M16 28h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>` +
+            `<circle cx="34" cy="34" r="9" fill="var(--surface-primary)" stroke="currentColor" stroke-width="2"/>` +
+            `<path d="M34 30v5l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
+          `</svg>` +
+        `</div>` +
+        `<p class="bet-empty-text">There are no settled bet slips for the last session.</p>` +
+        `<button type="button" class="mybets-view-history" id="mybets-view-history">View Bet History</button>` +
+      `</div>`
+    );
+  }
+
   function renderMyBetsContent() {
     const container = $("#mybets-content");
     if (!container) return;
@@ -2257,11 +2610,12 @@
     const bets = getMyBetsData(tab);
 
     if (!bets.length) {
-      const emptyMsg =
-        tab === "history"
-          ? "There are no settled bet slips for the last session"
-          : "No open bets. Place a bet to see it here.";
-      container.innerHTML = `<div class="mybets-empty"><p class="bet-empty-text">${emptyMsg}</p></div>`;
+      if (tab === "history") {
+        container.innerHTML = renderMyBetsHistoryEmpty();
+      } else {
+        container.innerHTML =
+          `<div class="mybets-empty"><p class="bet-empty-text">No open bets. Place a bet to see it here.</p></div>`;
+      }
       return;
     }
 
@@ -2290,6 +2644,263 @@
     if (controls) controls.hidden = tab !== "open";
     if (viewAll) viewAll.hidden = tab !== "open";
     renderMyBetsContent();
+  }
+
+  function renderBetHistoryCard(bet) {
+    const won = bet.status === "Won";
+    const winningsClass = won ? " bh-desk-winnings--won" : "";
+    return (
+      `<article class="bh-desk-card">` +
+        `<div class="bh-desk-card-top">` +
+          `<div class="bh-desk-card-league">` +
+            `<span class="bh-desk-sport-icon"><img src="${escapeHtml(bet.icon)}" alt="" width="16" height="16" /></span>` +
+            `<span class="bh-desk-league-name">${escapeHtml(bet.league)}</span>` +
+          `</div>` +
+          `<span class="mybets-status mybets-status--${bet.status.toLowerCase()}">${escapeHtml(bet.status)}</span>` +
+        `</div>` +
+        `<div class="bh-desk-card-match">${escapeHtml(bet.match)}</div>` +
+        `<div class="bh-desk-card-grid">` +
+          `<div class="bh-desk-field">` +
+            `<span class="bh-desk-label">Type</span>` +
+            `<span class="bh-desk-value">${escapeHtml(bet.betType)}</span>` +
+          `</div>` +
+          `<div class="bh-desk-field">` +
+            `<span class="bh-desk-label">Odds</span>` +
+            `<span class="bh-desk-value">${escapeHtml(bet.odds)}</span>` +
+          `</div>` +
+          `<div class="bh-desk-field">` +
+            `<span class="bh-desk-label">Stake</span>` +
+            `<span class="bh-desk-value">${escapeHtml(formatMoneyMyr(bet.stake))}</span>` +
+          `</div>` +
+          `<div class="bh-desk-field">` +
+            `<span class="bh-desk-label">Winnings</span>` +
+            `<span class="bh-desk-value${winningsClass}">${escapeHtml(formatMoneyMyr(bet.winnings))}</span>` +
+          `</div>` +
+          `<div class="bh-desk-field bh-desk-field--meta">` +
+            `<span class="bh-desk-label">Bet ID</span>` +
+            `<span class="bh-desk-value">${escapeHtml(bet.id)}</span>` +
+          `</div>` +
+          `<div class="bh-desk-field bh-desk-field--meta">` +
+            `<span class="bh-desk-label">Placed</span>` +
+            `<span class="bh-desk-value">${escapeHtml(bet.placedAt)}</span>` +
+          `</div>` +
+        `</div>` +
+      `</article>`
+    );
+  }
+
+  function renderBetHistoryResults() {
+    const root = $("#bh-desktop-results");
+    if (!root) return;
+
+    const bets = getFilteredBetHistory();
+    if (!bets.length) {
+      root.innerHTML =
+        `<div class="bh-desk-empty" role="status">` +
+          `<p class="bet-empty-text">No bets found for the selected filters.</p>` +
+        `</div>`;
+      return;
+    }
+
+    const groups = [];
+    const map = new Map();
+    bets.forEach((bet) => {
+      if (!map.has(bet.dateKey)) {
+        const group = { key: bet.dateKey, label: bet.dateLabel, items: [] };
+        map.set(bet.dateKey, group);
+        groups.push(group);
+      }
+      map.get(bet.dateKey).items.push(bet);
+    });
+
+    root.innerHTML = groups
+      .map(
+        (g) =>
+          `<section class="bh-desk-group">` +
+            `<h3 class="bh-desk-group-title">${escapeHtml(g.label)}</h3>` +
+            `<div class="bh-desk-group-list">${g.items.map(renderBetHistoryCard).join("")}</div>` +
+          `</section>`
+      )
+      .join("");
+  }
+
+  function syncBetHistoryControls() {
+    const panel = $("#bh-desktop-panel");
+    if (!panel) return;
+
+    $$("[data-bh-cat]", panel).forEach((btn) => {
+      const on = btn.getAttribute("data-bh-cat") === state.betHistoryCategory;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-selected", on ? "true" : "false");
+    });
+
+    const rangeLabel = $("#bh-desktop-range-label");
+    if (rangeLabel) {
+      rangeLabel.textContent = BH_RANGE_LABELS[state.betHistoryRange] || "Last 7 Days";
+    }
+
+    $$("[data-bh-range]", panel).forEach((btn) => {
+      const on = btn.getAttribute("data-bh-range") === state.betHistoryRange;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
+    const custom = $("#bh-desktop-custom");
+    if (custom) custom.hidden = state.betHistoryRange !== "custom";
+
+    const fromInput = $("#bh-desktop-from");
+    const toInput = $("#bh-desktop-to");
+    if (fromInput) fromInput.value = state.betHistoryCustomFrom || "";
+    if (toInput) toInput.value = state.betHistoryCustomTo || "";
+  }
+
+  function setBetHistoryRangeMenu(open) {
+    const menu = $("#bh-desktop-range-menu");
+    const btn = $("#bh-desktop-range-btn");
+    if (!menu || !btn) return;
+    menu.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  function openBetHistoryPanel() {
+    ensureBetHistoryPanel();
+    const backdrop = $("#bh-desktop-backdrop");
+    if (!backdrop) return;
+    backdrop.hidden = false;
+    document.body.classList.add("bh-desktop-open");
+    syncBetHistoryControls();
+    renderBetHistoryResults();
+    const closeBtn = $("#bh-desktop-close");
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeBetHistoryPanel() {
+    const backdrop = $("#bh-desktop-backdrop");
+    if (!backdrop) return;
+    backdrop.hidden = true;
+    document.body.classList.remove("bh-desktop-open");
+    setBetHistoryRangeMenu(false);
+  }
+
+  function ensureBetHistoryPanel() {
+    if ($("#bh-desktop-backdrop")) return;
+
+    const el = document.createElement("div");
+    el.className = "bh-desktop-backdrop";
+    el.id = "bh-desktop-backdrop";
+    el.hidden = true;
+    el.innerHTML =
+      `<div class="bh-desktop-panel" id="bh-desktop-panel" role="dialog" aria-modal="true" aria-labelledby="bh-desktop-title">` +
+        `<header class="bh-desktop-head">` +
+          `<h2 class="bh-desktop-title" id="bh-desktop-title">Bet History</h2>` +
+          `<button type="button" class="bh-desktop-close" id="bh-desktop-close" aria-label="Close bet history">` +
+            `<span aria-hidden="true">×</span>` +
+          `</button>` +
+        `</header>` +
+        `<div class="bh-desktop-toolbar">` +
+          `<div class="bh-desktop-cats" role="tablist" aria-label="Bet category">` +
+            `<button type="button" class="bh-desktop-cat is-active" role="tab" aria-selected="true" data-bh-cat="all">All</button>` +
+            `<button type="button" class="bh-desktop-cat" role="tab" aria-selected="false" data-bh-cat="sports">Sports</button>` +
+            `<button type="button" class="bh-desktop-cat" role="tab" aria-selected="false" data-bh-cat="casino">Casino</button>` +
+          `</div>` +
+          `<div class="bh-desktop-filter-row">` +
+            `<div class="bh-desktop-range" id="bh-desktop-range">` +
+              `<button type="button" class="bh-desktop-range-btn" id="bh-desktop-range-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="bh-desktop-range-menu">` +
+                `<span id="bh-desktop-range-label">Last 7 Days</span>` +
+                `<img src="assets/icons/account-subnav/calendar-check.svg" alt="" width="14" height="14" />` +
+              `</button>` +
+              `<div class="bh-desktop-range-menu" id="bh-desktop-range-menu" role="listbox" hidden>` +
+                Object.keys(BH_RANGE_LABELS)
+                  .map(
+                    (key) =>
+                      `<button type="button" class="bh-desktop-range-option${key === "7d" ? " is-active" : ""}" role="option" data-bh-range="${key}" aria-checked="${key === "7d" ? "true" : "false"}">` +
+                        `<span>${BH_RANGE_LABELS[key]}</span>` +
+                        `<span class="bh-desktop-range-check" aria-hidden="true">✓</span>` +
+                      `</button>`
+                  )
+                  .join("") +
+              `</div>` +
+            `</div>` +
+            `<button type="button" class="bh-desktop-filter-btn" id="bh-desktop-filter-btn">` +
+              `<span>Filter</span>` +
+            `</button>` +
+          `</div>` +
+        `</div>` +
+        `<div class="bh-desktop-custom" id="bh-desktop-custom" hidden>` +
+          `<label class="bh-desktop-custom-field">` +
+            `<span>From</span>` +
+            `<input type="date" id="bh-desktop-from" class="bh-desktop-date-input" />` +
+          `</label>` +
+          `<label class="bh-desktop-custom-field">` +
+            `<span>To</span>` +
+            `<input type="date" id="bh-desktop-to" class="bh-desktop-date-input" />` +
+          `</label>` +
+          `<button type="button" class="bh-desktop-apply" id="bh-desktop-apply">Apply</button>` +
+        `</div>` +
+        `<div class="bh-desktop-results" id="bh-desktop-results" aria-live="polite"></div>` +
+        `<p class="bh-desktop-note">All transactions are time stamped at GMT-4.</p>` +
+      `</div>`;
+
+    document.body.appendChild(el);
+
+    el.addEventListener("click", (e) => {
+      if (e.target === el || e.target.closest("#bh-desktop-close")) {
+        closeBetHistoryPanel();
+        return;
+      }
+
+      const cat = e.target.closest("[data-bh-cat]");
+      if (cat) {
+        state.betHistoryCategory = cat.getAttribute("data-bh-cat");
+        syncBetHistoryControls();
+        renderBetHistoryResults();
+        return;
+      }
+
+      if (e.target.closest("#bh-desktop-range-btn")) {
+        const menu = $("#bh-desktop-range-menu");
+        setBetHistoryRangeMenu(menu?.hidden !== false);
+        return;
+      }
+
+      const rangeOpt = e.target.closest("[data-bh-range]");
+      if (rangeOpt) {
+        state.betHistoryRange = rangeOpt.getAttribute("data-bh-range");
+        setBetHistoryRangeMenu(false);
+        syncBetHistoryControls();
+        if (state.betHistoryRange !== "custom") {
+          renderBetHistoryResults();
+        }
+        return;
+      }
+
+      if (e.target.closest("#bh-desktop-apply")) {
+        const fromInput = $("#bh-desktop-from");
+        const toInput = $("#bh-desktop-to");
+        state.betHistoryCustomFrom = fromInput?.value || "";
+        state.betHistoryCustomTo = toInput?.value || "";
+        renderBetHistoryResults();
+        return;
+      }
+
+      if (e.target.closest("#bh-desktop-filter-btn")) {
+        const menu = $("#bh-desktop-range-menu");
+        setBetHistoryRangeMenu(menu?.hidden !== false);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !el.hidden) closeBetHistoryPanel();
+    });
+
+    document.addEventListener("click", (e) => {
+      const range = $("#bh-desktop-range");
+      const menu = $("#bh-desktop-range-menu");
+      if (!menu || menu.hidden) return;
+      if (range && !range.contains(e.target) && !e.target.closest("#bh-desktop-filter-btn")) {
+        setBetHistoryRangeMenu(false);
+      }
+    });
   }
 
   function initMyBetsPanel() {
@@ -2339,6 +2950,10 @@
       if (e.target.closest(".mybets-view-all")) {
         showToast("View all bets — demo only");
       }
+      if (e.target.closest(".mybets-view-history") || e.target.closest("#mybets-view-history")) {
+        openBetHistoryPanel();
+        return;
+      }
       if (e.target.closest(".mybets-cashout:not(.is-disabled)")) {
         showToast("Cash Out — demo only");
       }
@@ -2372,13 +2987,6 @@
   }
 
   function initRightBlock() {
-    const rightCollapse = $("#right-collapse");
-    if (rightCollapse) {
-      rightCollapse.addEventListener("click", () => {
-        $(".right-sidebar").classList.toggle("collapsed");
-      });
-    }
-
     const appClose = $("#app-close");
     if (appClose) {
       appClose.addEventListener("click", () => {

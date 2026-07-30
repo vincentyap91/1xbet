@@ -541,30 +541,41 @@ body.is-logged-in .header-lang-btn .lang-flag {
 }
 
 @media (max-width: 900px) {
-  /* Logged-in mobile: hamburger | logo | balance + refresh | gift | language */
+  /* Logged-in mobile sports chrome: hamburger | logo | balance + refresh | Deposit | language */
   body.is-logged-in .header-actions > .icon-btn-square:not(.header-gift-btn):not([aria-label="Bonus"]):not([aria-label="Daily Check-In"]),
   body.is-logged-in .header-account-btn,
   body.is-logged-in .header-account-wrap,
   body.is-logged-in .header-vip-identity,
-  body.is-logged-in .btn-deposit,
-  body.is-logged-in .header-msg-btn {
-    display: none !important;
-  }
-
+  body.is-logged-in .header-msg-btn,
   body.is-logged-in .header-gift-btn,
   body.is-logged-in .header-actions > .icon-btn-square[aria-label="Bonus"],
   body.is-logged-in .header-actions > .icon-btn-square[aria-label="Daily Check-In"] {
+    display: none !important;
+  }
+
+  body.is-logged-in .btn-deposit {
     display: inline-flex !important;
     order: 1;
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    min-height: 32px;
+    height: 32px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    border-radius: 8px;
+    background: var(--action-green);
+    color: #fff;
+  }
+
+  body.is-logged-in .btn-deposit:hover {
+    background: var(--action-green-hover);
+    color: #fff;
   }
 
   body.is-logged-in .header-user-cluster {
     display: flex;
     align-items: stretch;
-    height: 36px;
+    height: 32px;
     overflow: visible;
     order: 0;
   }
@@ -572,20 +583,29 @@ body.is-logged-in .header-lang-btn .lang-flag {
   body.is-logged-in .header-balance-chip {
     display: flex;
     align-items: stretch;
-    height: 36px;
+    height: 32px;
     margin-left: 0;
     border-radius: 8px;
+    background: var(--header-action);
   }
 
   body.is-logged-in .header-balance-rows {
-    min-width: 88px;
-    padding: 2px 8px 2px 10px;
+    min-width: 0;
+    padding: 0 8px 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   body.is-logged-in .header-balance-row {
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 12px;
+    line-height: 14px;
     gap: 6px;
+    color: #fff;
+  }
+
+  body.is-logged-in .header-balance-row:last-child {
+    display: none;
   }
 
   body.is-logged-in .header-balance-refresh {
@@ -602,9 +622,13 @@ body.is-logged-in .header-lang-btn .lang-flag {
   body.is-logged-in .header-meta.header-lang-btn {
     min-width: 36px;
     width: auto;
-    height: 36px;
-    min-height: 36px;
+    height: 32px;
+    min-height: 32px;
     padding: 0 8px;
+  }
+
+  body.is-logged-in .header-lang-label {
+    display: none;
   }
 
   body.is-logged-in .header-actions {

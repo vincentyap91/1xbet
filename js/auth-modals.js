@@ -494,7 +494,7 @@
       "</button>" +
       "</div>" +
       "</div>" +
-      '<a href="deposit.html" class="btn-deposit">Make a Deposit</a>' +
+      '<a href="deposit.html" class="btn-deposit">Deposit</a>' +
       '<button type="button" class="icon-btn icon-btn-square header-msg-btn" aria-label="Messages" aria-haspopup="dialog" aria-expanded="false">' +
       '<span class="icon-btn-inner">' +
       '<img src="assets/images/account/icon-messages.svg" alt="" width="16" height="16" />' +
@@ -654,7 +654,7 @@
     }
 
     const tabbar = document.querySelector(".mobile-tabbar");
-    if (tabbar) {
+    if (tabbar && tabbar.dataset.sportsTabbar !== "1") {
       delete tabbar.dataset.mainTabbar;
       delete tabbar.dataset.accountTabbar;
     }
@@ -913,11 +913,51 @@
     wireOtp();
   }
 
+  function syncSportsTabbarAuth(loggedIn) {
+    const tabbar = document.querySelector('.mobile-tabbar[data-sports-tabbar="1"]');
+    if (!tabbar) return;
+    const label = document.getElementById("mobile-account-label");
+    const accountTab = document.getElementById("mobile-account-tab");
+    const depositTab = document.getElementById("mobile-deposit-tab");
+    if (label) label.textContent = loggedIn ? "Account" : "Log in";
+    if (accountTab) {
+      if (loggedIn) {
+        accountTab.removeAttribute("data-auth-open");
+      } else {
+        accountTab.setAttribute("data-auth-open", "login");
+      }
+      if (!accountTab.dataset.sportsWired) {
+        accountTab.dataset.sportsWired = "1";
+        accountTab.addEventListener("click", (e) => {
+          if (!isLoggedIn()) return;
+          e.preventDefault();
+          window.location.href = "personal-profile.html";
+        });
+      }
+    }
+    if (depositTab) {
+      if (loggedIn) {
+        depositTab.removeAttribute("data-auth-open");
+      } else {
+        depositTab.setAttribute("data-auth-open", "login");
+      }
+    }
+    tabbar.dataset.mainTabbar = "1";
+  }
+
   function initMobileTabbar() {
     const tabbar = document.querySelector(".mobile-tabbar");
-    if (!tabbar || tabbar.dataset.mainTabbar === "1") return;
+    if (!tabbar) return;
 
     const loggedIn = isLoggedIn() || document.body.classList.contains("is-logged-in");
+
+    if (tabbar.dataset.sportsTabbar === "1") {
+      syncSportsTabbarAuth(loggedIn);
+      return;
+    }
+
+    if (tabbar.dataset.mainTabbar === "1") return;
+
     const page = document.body.dataset.page || "";
     const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 

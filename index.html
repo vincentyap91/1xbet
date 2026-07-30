@@ -38,8 +38,8 @@
           <a href="#" class="icon-btn icon-btn-square desktop-only-action" aria-label="Deposit" title="Deposit">
             <img src="assets/icons/icon-deposit.svg" alt="" width="16" height="16" />
           </a>
-          <a href="#reg-form" class="btn-register">Registration</a>
-          <button type="button" class="btn-login">Log in</button>
+          <a href="#reg-form" class="btn-register" data-auth-open="register">Registration</a>
+          <button type="button" class="btn-login" data-auth-open="login">Log in</button>
           <div class="header-meta-group">
             <div class="header-lang" id="header-lang">
               <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
@@ -175,11 +175,11 @@
     </header>
 
     <!-- ========== MAIN LAYOUT ========== -->
-    <div class="sportsbook-layout">
+    <div class="sportsbook-layout left-collapsed right-collapsed">
       <!-- LEFT SIDEBAR (Figma 3:16279) -->
-      <aside class="left-sidebar" id="left-sidebar" aria-label="Sports navigation">
-        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block">
-          <img src="assets/icons/nav-collapse.svg" alt="" width="9" height="10" />
+      <aside class="left-sidebar collapsed" id="left-sidebar" aria-label="Sports navigation">
+        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block" aria-expanded="false">
+          <img src="assets/icons/nav-collapse.svg" alt="" width="10" height="12" />
           <span>Collapse block</span>
         </button>
 
@@ -263,12 +263,13 @@
           <div class="sidebar-tabs" role="tablist" aria-label="Line type">
             <button type="button" class="sidebar-tab active" role="tab" aria-selected="true" data-line="live">
               <img src="assets/icons/nav-live.svg" alt="" width="14" height="14" />
-              Live
+              <span>Live</span>
             </button>
             <button type="button" class="sidebar-tab" role="tab" aria-selected="false" data-line="sports">
-              Sports
+              <span>Sports</span>
             </button>
           </div>
+          <div class="sidebar-live-count" id="sidebar-live-count" aria-hidden="true">700</div>
           <div class="sidebar-filter-bar">
             <button type="button" class="sf-all active">All <span>660</span></button>
             <button type="button" class="sf-stream" aria-label="Events with live stream" title="Show only events with a live stream">
@@ -776,10 +777,34 @@
       </main>
 
       <!-- RIGHT SIDEBAR (Figma 3:16034) � colors: modified-color tokens -->
-      <aside class="right-sidebar" id="right-sidebar" aria-label="Account tools">
-        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block">
+      <aside class="right-sidebar collapsed" id="right-sidebar" aria-label="Account tools">
+        <div class="right-compact-rail" aria-label="Collapsed account tools">
+          <button type="button" class="rc-expand" id="right-expand" aria-label="Expand block">
+            <img src="assets/icons/collapse/chevron-double-left.svg" alt="" width="10" height="12" />
+          </button>
+          <div class="rc-stack">
+            <a href="#reg-form" class="rc-reg" id="rc-reg">Registration</a>
+            <button type="button" class="rc-bet" id="rc-bet" aria-label="Bet slip">
+              <span class="rc-bet-count" id="rc-bet-count">0</span>
+              <span class="rc-bet-label">Bet slip</span>
+            </button>
+            <div class="rc-widgets">
+              <button type="button" class="rc-widget" id="rc-save" aria-label="Save/load events" title="Save/load events">
+                <img src="assets/icons/collapse/widget-tickets.svg" alt="" width="16" height="16" />
+              </button>
+              <button type="button" class="rc-widget" id="rc-generator" aria-label="Bet slip generator" title="Bet slip generator">
+                <img src="assets/icons/collapse/widget-stars.svg" alt="" width="16" height="16" />
+              </button>
+              <button type="button" class="rc-widget" id="rc-app" aria-label="Mobile application" title="Mobile application">
+                <img src="assets/icons/collapse/widget-phone.svg" alt="" width="16" height="16" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block" aria-expanded="false">
           <span>Collapse block</span>
-          <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="9" height="10" />
+          <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="10" height="12" />
         </button>
         <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close bet slip">
           <span class="mobile-drawer-handle" aria-hidden="true"></span>
@@ -1070,23 +1095,31 @@
     <span class="promo-live-pill__label">Players Online</span>
   </a>
 
-  <nav class="mobile-tabbar" aria-label="Mobile shortcuts">
-    <button type="button" class="mobile-tab" id="mobile-sports-btn" aria-controls="left-sidebar" aria-expanded="false">
-      <img src="assets/icons/te-football.svg" alt="" width="18" height="18" />
-      <span>Sports</span>
+  <nav class="mobile-tabbar mobile-tabbar--sports" data-main-tabbar="1" data-sports-tabbar="1" aria-label="Mobile primary">
+    <button type="button" class="mobile-tab is-active" id="mobile-sports-btn" aria-controls="left-sidebar" aria-expanded="false">
+      <img src="mobile/assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label">Sports</span>
     </button>
-    <a href="#live-events" class="mobile-tab">
-      <span class="mobile-tab-live" aria-hidden="true"></span>
-      <span>Live</span>
+    <a href="casino.html" class="mobile-tab">
+      <img src="mobile/assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label">Casino</span>
     </a>
-    <button type="button" class="mobile-tab" id="mobile-betslip-btn" aria-controls="right-sidebar" aria-expanded="false">
-      <img src="assets/icons/rb-bolt.svg" alt="" width="14" height="18" />
-      <span>Bet slip</span>
-      <span class="mobile-tab-badge" id="mobile-bet-count" hidden>0</span>
+    <button type="button" class="mobile-tab mobile-tab--betslip" id="mobile-betslip-btn" aria-controls="right-sidebar" aria-expanded="false" aria-label="Bet slip">
+      <span class="mobile-tab-betslip-wrap">
+        <span class="mobile-tab-betslip-icon" aria-hidden="true">
+          <img src="mobile/assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mobile-tab-badge" id="mobile-bet-count" hidden>0</span>
+      </span>
+      <span class="mobile-tab-label">Bet Slip</span>
     </button>
-    <button type="button" class="mobile-tab" id="mobile-menu-tab" aria-controls="header-bottom" aria-expanded="false">
-      <span class="mobile-menu-bars" aria-hidden="true"></span>
-      <span>Menu</span>
+    <a href="deposit.html" class="mobile-tab" id="mobile-deposit-tab" data-auth-open="login">
+      <img src="mobile/assets/icons/tab-deposit.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label">Deposit</span>
+    </a>
+    <button type="button" class="mobile-tab" id="mobile-account-tab" data-auth-open="login">
+      <img src="mobile/assets/icons/tab-user.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label" id="mobile-account-label">Log in</span>
     </button>
   </nav>
 
