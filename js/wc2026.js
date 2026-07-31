@@ -279,9 +279,7 @@
       showToast("Generated selections added");
     });
 
-    $(".bet-save-link")?.addEventListener("click", () => {
-      showToast("Demo only - save/load unavailable");
-    });
+    // Save/load expand UI handled by js/bet-save-load.js
   }
 
   function initRegistration() {

@@ -626,6 +626,38 @@
     gift.setAttribute("title", loggedIn ? "Daily Check-In" : "Log in");
   }
 
+  function ensureMobileNavLogout() {
+    const drawer = $("#header-bottom");
+    if (!drawer) return null;
+
+    let bar = $(".nav-logout-bar", drawer);
+    if (!bar) {
+      const logoutIcon =
+        '<svg viewBox="0 0 18 18" width="18" height="18" fill="none" aria-hidden="true">' +
+        '<path d="M7.5 3.5H4.2A1.7 1.7 0 002.5 5.2v7.6A1.7 1.7 0 004.2 14.5h3.3M8 9h7.5M12.5 5.5L16 9l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+        "</svg>";
+      drawer.insertAdjacentHTML(
+        "beforeend",
+        '<div class="nav-logout-bar" hidden>' +
+          '<button type="button" class="nav-logout-btn" data-auth-open="logout">' +
+          '<span class="nav-logout-icon" aria-hidden="true">' +
+          logoutIcon +
+          "</span>" +
+          "Log out" +
+          "</button>" +
+          "</div>"
+      );
+      bar = $(".nav-logout-bar", drawer);
+    }
+    return bar;
+  }
+
+  function syncMobileNavLogout(on) {
+    const bar = ensureMobileNavLogout();
+    if (!bar) return;
+    bar.hidden = !on;
+  }
+
   function setLoggedIn(on) {
     ensureUserHeader();
     document.body.classList.toggle("is-logged-in", !!on);
@@ -642,6 +674,7 @@
     });
 
     syncHeaderGiftBtn();
+    syncMobileNavLogout(!!on);
 
     if (on) {
       initAccountDropdowns();
@@ -659,6 +692,10 @@
       delete tabbar.dataset.accountTabbar;
     }
     initMobileTabbar();
+
+    if (typeof window.syncBetSlipAuthUi === "function") {
+      window.syncBetSlipAuthUi();
+    }
   }
 
   function isLoggedIn() {

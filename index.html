@@ -175,10 +175,10 @@
     </header>
 
     <!-- ========== MAIN LAYOUT ========== -->
-    <div class="sportsbook-layout left-collapsed right-collapsed">
+    <div class="sportsbook-layout">
       <!-- LEFT SIDEBAR (Figma 3:16279) -->
-      <aside class="left-sidebar collapsed" id="left-sidebar" aria-label="Sports navigation">
-        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block" aria-expanded="false">
+      <aside class="left-sidebar" id="left-sidebar" aria-label="Sports navigation">
+        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block" aria-expanded="true">
           <img src="assets/icons/nav-collapse.svg" alt="" width="10" height="12" />
           <span>Collapse block</span>
         </button>
@@ -457,6 +457,11 @@
             </div>
           </div>
           </div>
+          <a href="#live-events" class="promo-live-pill promo-live-pill--mobile-inline" aria-label="Players online" data-online-counter data-online-base="5576" data-online-swing="48">
+            <span class="promo-live-pill__dot" aria-hidden="true"></span>
+            <span class="promo-live-pill__value" data-online-value>5,576</span>
+            <span class="promo-live-pill__label">Players Online</span>
+          </a>
           <div class="odds-table-wrap" id="live-table"></div>
         </section>
 
@@ -777,7 +782,7 @@
       </main>
 
       <!-- RIGHT SIDEBAR (Figma 3:16034) � colors: modified-color tokens -->
-      <aside class="right-sidebar collapsed" id="right-sidebar" aria-label="Account tools">
+      <aside class="right-sidebar" id="right-sidebar" aria-label="Account tools">
         <div class="right-compact-rail" aria-label="Collapsed account tools">
           <button type="button" class="rc-expand" id="right-expand" aria-label="Expand block">
             <img src="assets/icons/collapse/chevron-double-left.svg" alt="" width="10" height="12" />
@@ -802,7 +807,7 @@
           </div>
         </div>
 
-        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block" aria-expanded="false">
+        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block" aria-expanded="true">
           <span>Collapse block</span>
           <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="10" height="12" />
         </button>
@@ -1088,13 +1093,6 @@
 
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
 
-  <!-- Mobile-only floating players online pill (desktop version uses the one inside .nav-tools) -->
-  <a href="#live-events" class="promo-live-pill promo-live-pill--mobile-float" aria-label="Players online" data-online-counter data-online-base="5576" data-online-swing="48">
-    <span class="promo-live-pill__dot" aria-hidden="true"></span>
-    <span class="promo-live-pill__value" data-online-value>5,576</span>
-    <span class="promo-live-pill__label">Players Online</span>
-  </a>
-
   <nav class="mobile-tabbar mobile-tabbar--sports" data-main-tabbar="1" data-sports-tabbar="1" aria-label="Mobile primary">
     <button type="button" class="mobile-tab is-active" id="mobile-sports-btn" aria-controls="left-sidebar" aria-expanded="false">
       <img src="mobile/assets/icons/tab-sports.svg" alt="" width="20" height="20" />
@@ -1125,6 +1123,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <script src="js/favourites-store.js"></script>
+  <script src="js/bet-save-load.js"></script>
+  <script src="js/desktop-menu.js"></script>
   <script src="js/script.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

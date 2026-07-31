@@ -302,9 +302,7 @@
       });
     });
 
-    $(".bet-save-link")?.addEventListener("click", () => {
-      toast("Save/load events — demo only");
-    });
+    // Save/load expand UI handled by js/bet-save-load.js
 
     $$(".es-bet-slip .bet-icon-btn").forEach((btn) => {
       btn.addEventListener("click", () => {

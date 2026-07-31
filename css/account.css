@@ -776,7 +776,7 @@ body.is-logged-in .header-lang-btn .lang-flag {
 @media (max-width: 600px) {
   body.is-logged-in .btn-deposit {
     padding: 4px 8px;
-    font-size: 10px;
+    font-size: 13px;
   }
 
   .acc-subnav {

@@ -6,6 +6,20 @@
 (function () {
   "use strict";
 
+  /* Load desktop full-menu companion (≤900 hamburger) when not already present */
+  try {
+    const cur = document.currentScript;
+    const hasMenu =
+      document.querySelector('script[data-ds-menu-src], script[src*="desktop-menu.js"]');
+    if (cur && !hasMenu) {
+      const s = document.createElement("script");
+      s.src = cur.src.replace(/[^/]*$/, "desktop-menu.js");
+      s.dataset.dsMenuSrc = "1";
+      s.async = false;
+      cur.parentNode.insertBefore(s, cur.nextSibling);
+    }
+  } catch (e) { /* ignore */ }
+
   /* ---------- Mock data (live snapshot) ---------- */
 
   const isMarbleLivePage = document.body?.dataset?.page === "marble-live";
@@ -795,9 +809,24 @@
     promoIndex: 0,
     myBetsTab: "open",
     betHistoryCategory: "all",
+    betHistoryStatus: "all",
     betHistoryRange: "7d",
     betHistoryCustomFrom: "",
     betHistoryCustomTo: "",
+    slipSettings: {
+      automax: false,
+      balance: true,
+      potentialWinnings: true,
+      selectAccount: true,
+    },
+  };
+
+  const SLIP_SETTINGS_KEY = "1xbet-bet-slip-settings";
+  const SLIP_SETTINGS_DEFAULTS = {
+    automax: false,
+    balance: true,
+    potentialWinnings: true,
+    selectAccount: true,
   };
 
   const PIN_ICON_SVG =
@@ -834,6 +863,15 @@
     "30d": "Last 30 Days",
     "90d": "Last 90 Days",
     custom: "Custom Date Range",
+  };
+
+  const BH_STATUS_LABELS = {
+    all: "All",
+    open: "Open",
+    won: "Won",
+    lost: "Lost",
+    void: "Void",
+    cancelled: "Cancelled",
   };
 
   /* Full bet history for the dedicated desktop panel (demo, relative to today) */
@@ -906,7 +944,7 @@
         odds: "2.10",
         stake: "25.00",
         winnings: "52.50",
-        status: "Won",
+        status: "Open",
         dateKey: fmtKey(d3),
         dateLabel: fmtLabel(d3),
         placedAt: fmtPlaced(d3, "21:18"),
@@ -928,6 +966,22 @@
         placedAt: fmtPlaced(d0, "16:42"),
       },
       {
+        id: "123456815",
+        category: "sports",
+        sport: "Football",
+        icon: "assets/icons/sport-football.svg",
+        league: "Serie A. Italy",
+        match: "Inter vs Milan",
+        betType: "Single",
+        odds: "1.90",
+        stake: "18.00",
+        winnings: "0.00",
+        status: "Void",
+        dateKey: fmtKey(d3),
+        dateLabel: fmtLabel(d3),
+        placedAt: fmtPlaced(d3, "18:40"),
+      },
+      {
         id: "123456820",
         category: "sports",
         sport: "Tennis",
@@ -938,7 +992,7 @@
         odds: "1.95",
         stake: "30.00",
         winnings: "0.00",
-        status: "Lost",
+        status: "Cancelled",
         dateKey: fmtKey(d12),
         dateLabel: fmtLabel(d12),
         placedAt: fmtPlaced(d12, "19:03"),
@@ -1691,14 +1745,171 @@
     badge.textContent = String(n);
   }
 
+  function isBetSlipLoggedIn() {
+    if (window.AuthModals && typeof window.AuthModals.isLoggedIn === "function") {
+      return !!window.AuthModals.isLoggedIn();
+    }
+    return document.body.classList.contains("is-logged-in");
+  }
+
+  function loadSlipSettings() {
+    try {
+      const raw = localStorage.getItem(SLIP_SETTINGS_KEY);
+      if (!raw) return { ...SLIP_SETTINGS_DEFAULTS };
+      const parsed = JSON.parse(raw);
+      return { ...SLIP_SETTINGS_DEFAULTS, ...parsed };
+    } catch (e) {
+      return { ...SLIP_SETTINGS_DEFAULTS };
+    }
+  }
+
+  function saveSlipSettings(next) {
+    state.slipSettings = { ...SLIP_SETTINGS_DEFAULTS, ...next };
+    try {
+      localStorage.setItem(SLIP_SETTINGS_KEY, JSON.stringify(state.slipSettings));
+    } catch (e) { /* ignore */ }
+  }
+
+  function applyBetSlipSettings(opts) {
+    const panel = $(".bet-slip-panel");
+    if (!panel) return;
+    const s = state.slipSettings;
+    panel.classList.toggle("bss-hide-balance", !s.balance);
+    panel.classList.toggle("bss-hide-winnings", !s.potentialWinnings);
+    panel.classList.toggle("bss-hide-select-account", !s.selectAccount);
+    panel.classList.toggle("bss-automax", !!s.automax);
+
+    if (opts && opts.applyAutomaxStake && s.automax) {
+      const stakeInput = $("#stake-input");
+      if (stakeInput) {
+        stakeInput.value = "31400";
+        updateTotals();
+      }
+    }
+  }
+
+  function ensureBetSlipSettingsModal() {
+    let overlay = $("#bss-overlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.className = "bss-backdrop";
+    overlay.id = "bss-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<div class="bss-panel" role="dialog" aria-modal="true" aria-labelledby="bss-title">` +
+        `<div class="bss-head">` +
+          `<h2 class="bss-title" id="bss-title">Bet Slip Settings</h2>` +
+          `<button type="button" class="bss-close" id="bss-close" aria-label="Close settings">&times;</button>` +
+        `</div>` +
+        `<div class="bss-body">` +
+          `<div class="bss-list">` +
+            `<label class="bss-option">` +
+              `<input type="checkbox" class="bss-check" data-bss="automax" />` +
+              `<span>Automax</span>` +
+            `</label>` +
+            `<label class="bss-option">` +
+              `<input type="checkbox" class="bss-check" data-bss="balance" />` +
+              `<span>Balance</span>` +
+            `</label>` +
+            `<label class="bss-option">` +
+              `<input type="checkbox" class="bss-check" data-bss="potentialWinnings" />` +
+              `<span>Potential winnings</span>` +
+            `</label>` +
+            `<label class="bss-option">` +
+              `<input type="checkbox" class="bss-check" data-bss="selectAccount" />` +
+              `<span>Select account</span>` +
+            `</label>` +
+          `</div>` +
+          `<div class="bss-actions">` +
+            `<button type="button" class="bss-save" id="bss-save">Save</button>` +
+          `</div>` +
+        `</div>` +
+      `</div>`;
+
+    const host = $(".bet-slip-panel") || document.body;
+    host.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeBetSlipSettings();
+    });
+    $("#bss-close", overlay)?.addEventListener("click", closeBetSlipSettings);
+    $("#bss-save", overlay)?.addEventListener("click", () => {
+      const next = {
+        automax: !!overlay.querySelector('[data-bss="automax"]')?.checked,
+        balance: !!overlay.querySelector('[data-bss="balance"]')?.checked,
+        potentialWinnings: !!overlay.querySelector('[data-bss="potentialWinnings"]')?.checked,
+        selectAccount: !!overlay.querySelector('[data-bss="selectAccount"]')?.checked,
+      };
+      saveSlipSettings(next);
+      applyBetSlipSettings({ applyAutomaxStake: true });
+      closeBetSlipSettings();
+      showToast("Bet slip settings saved");
+    });
+
+    return overlay;
+  }
+
+  function mountBetSlipSettingsHost(overlay) {
+    if (!overlay) return;
+    const panel = $(".bet-slip-panel");
+    const mobile = isMobileViewport();
+    const target = mobile ? document.body : panel || document.body;
+    if (overlay.parentElement !== target) target.appendChild(overlay);
+  }
+
+  function syncBetSlipSettingsForm() {
+    const overlay = $("#bss-overlay");
+    if (!overlay) return;
+    const s = state.slipSettings;
+    const map = {
+      automax: s.automax,
+      balance: s.balance,
+      potentialWinnings: s.potentialWinnings,
+      selectAccount: s.selectAccount,
+    };
+    Object.keys(map).forEach((key) => {
+      const input = overlay.querySelector(`[data-bss="${key}"]`);
+      if (input) input.checked = !!map[key];
+    });
+  }
+
+  function openBetSlipSettings() {
+    const overlay = ensureBetSlipSettingsModal();
+    if (!overlay) return;
+    mountBetSlipSettingsHost(overlay);
+    syncBetSlipSettingsForm();
+    overlay.hidden = false;
+    if (isMobileViewport()) document.body.classList.add("bss-open");
+    else document.body.classList.remove("bss-open");
+    $("#bss-close", overlay)?.focus();
+  }
+
+  function closeBetSlipSettings() {
+    const overlay = $("#bss-overlay");
+    if (!overlay) return;
+    overlay.hidden = true;
+    document.body.classList.remove("bss-open");
+  }
+
+  function isBetSlipSettingsTrigger(el) {
+    if (!el) return false;
+    if (el.closest(".ticket-settings")) return true;
+    const btn = el.closest(".bet-icon-btn");
+    if (!btn) return false;
+    const label = (btn.getAttribute("aria-label") || btn.getAttribute("title") || "").toLowerCase();
+    return label === "settings";
+  }
+
   function ensureTicketFooter() {
     const footer = $("#bet-footer");
-    if (!footer || footer.dataset.ticketLayout === "true") return;
-    footer.dataset.ticketLayout = "true";
-    footer.innerHTML = `
+    if (!footer) return;
+    if (footer.dataset.ticketLayout !== "true") {
+      footer.dataset.ticketLayout = "true";
+      footer.innerHTML = `
       <div class="bet-type-row">
         <button type="button" class="ticket-select" id="bet-type-select" aria-haspopup="listbox">
-          <span>Accumulator</span>
+          <span id="bet-type-label">Single bet</span>
           <span class="select-chevron" aria-hidden="true"></span>
         </button>
         <button type="button" class="ticket-trash" id="clear-bets" aria-label="Clear bet slip">
@@ -1728,10 +1939,20 @@
           <button type="button" data-quick-stake="250">+250</button>
         </div>
       </div>
-      <button type="button" class="max-stake-link">
-        <span>Maximum stake</span>
-        <strong>11700 MYR</strong>
-      </button>
+      <div class="ticket-account-meta" id="ticket-account-meta">
+        <button type="button" class="max-stake-link">
+          <span>Maximum stake</span>
+          <strong>31400 MYR</strong>
+        </button>
+        <button type="button" class="ticket-meta-link" data-ticket-meta="balance">
+          <span>Balance</span>
+          <strong>0 MYR</strong>
+        </button>
+        <button type="button" class="ticket-meta-link" data-ticket-meta="advancebet">
+          <span>Available Advancebet</span>
+          <strong class="ticket-meta-adv">0 MYR <span class="ticket-meta-refresh" aria-hidden="true">↻</span></strong>
+        </button>
+      </div>
       <label class="ticket-field">
         <span>When odds change:</span>
         <button type="button" class="ticket-select">
@@ -1743,9 +1964,57 @@
         <span>Promo code</span>
         <span class="select-chevron" aria-hidden="true"></span>
       </button>
+      <div class="ticket-winnings-row">
+        <span>Potential winnings</span>
+        <strong><span id="potential-return">0</span> MYR</strong>
+      </div>
       <button type="button" class="btn-place" id="place-bet">Place Bet</button>
     `;
+    }
+    syncBetSlipAuthUi();
+    applyBetSlipSettings();
   }
+
+  function syncBetSlipAuthUi() {
+    const loggedIn = isBetSlipLoggedIn();
+    const panel = $(".bet-slip-panel");
+    if (panel) panel.classList.toggle("is-logged-in", loggedIn);
+
+    const typeLabel = $("#bet-type-label");
+    if (typeLabel) {
+      typeLabel.textContent = state.betSlip.length > 1 ? "Accumulator" : "Single bet";
+    }
+
+    const meta = $("#ticket-account-meta");
+    if (meta) {
+      meta.classList.toggle("is-guest", !loggedIn);
+      const balanceRow = meta.querySelector('[data-ticket-meta="balance"]');
+      const advRow = meta.querySelector('[data-ticket-meta="advancebet"]');
+      if (balanceRow) balanceRow.hidden = !loggedIn;
+      if (advRow) advRow.hidden = !loggedIn;
+    }
+
+    const place = $("#place-bet");
+    if (place) {
+      if (!loggedIn) {
+        place.textContent = "Registration";
+        place.dataset.cta = "register";
+      } else {
+        place.textContent = "Deposit";
+        place.dataset.cta = "deposit";
+      }
+    }
+
+    const regCta = $("#bet-reg-cta");
+    if (regCta) {
+      /* Empty slip before login: show Registration (screenshot). Hide when slip has bets (CTA is in footer). */
+      regCta.hidden = loggedIn || state.betSlip.length > 0;
+    }
+
+    syncMyBetsAuthUi();
+  }
+
+  window.syncBetSlipAuthUi = syncBetSlipAuthUi;
 
   function ticketScore(b) {
     if (b.score) return b.score;
@@ -1811,19 +2080,21 @@
     const empty = $("#bet-empty");
     const list = $("#bet-list");
     const footer = $("#bet-footer");
-    const regCta = $("#bet-reg-cta");
+    const body = $("#bet-slip-body");
     syncBetTabCount();
     syncMobileBetCount();
     const railCount = $("#rc-bet-count");
     if (railCount) railCount.textContent = String(state.betSlip.length);
+    window.__betSlipCount = state.betSlip.length;
+    if (body) body.classList.toggle("has-bets", state.betSlip.length > 0);
 
     if (!state.betSlip.length) {
       empty.hidden = false;
       list.hidden = true;
       footer.hidden = true;
       footer.classList.remove("is-sticky");
-      if (regCta) regCta.hidden = false;
       list.innerHTML = "";
+      syncBetSlipAuthUi();
       syncOddButtons();
       return;
     }
@@ -1832,23 +2103,7 @@
     list.hidden = false;
     footer.hidden = false;
     footer.classList.add("is-sticky");
-    if (regCta) regCta.hidden = true;
     ensureTicketFooter();
-    list.innerHTML = state.betSlip
-      .map(
-        (b) => `
-      <article class="bet-item" data-bet-id="${b.id}">
-        <button type="button" class="bet-remove" data-remove="${b.id}" aria-label="Remove">×</button>
-        <div class="bet-item-league">${b.league}</div>
-        <div class="bet-item-match">${b.match}</div>
-        <div class="bet-item-market">${b.market}</div>
-        <div class="bet-item-sel">
-          <span>${b.selection}</span>
-          <span class="odds">${formatOdd(b.odds)}</span>
-        </div>
-      </article>`
-      )
-      .join("");
     list.innerHTML = renderTicketCards(state.betSlip);
 
     updateTotals();
@@ -1862,7 +2117,10 @@
     const potentialReturn = $("#potential-return");
     const stake = Number(stakeInput?.value) || 0;
     if (totalOdds) totalOdds.textContent = formatOdd(total);
-    if (potentialReturn) potentialReturn.textContent = (stake * total).toFixed(2);
+    if (potentialReturn) {
+      const win = stake * total;
+      potentialReturn.textContent = Number.isFinite(win) ? String(Math.round(win)) : "0";
+    }
   }
 
   function toggleOdd(data) {
@@ -2105,7 +2363,7 @@
       }
     }
 
-    // Sync initial state from markup
+    // Sync initial state from markup (default open)
     layout.classList.toggle("left-collapsed", left.classList.contains("collapsed"));
     layout.classList.toggle("right-collapsed", right.classList.contains("collapsed"));
 
@@ -2314,6 +2572,9 @@
 
   function initBetSlip() {
     initMyBetsPanel();
+    state.slipSettings = loadSlipSettings();
+    ensureBetSlipSettingsModal();
+    applyBetSlipSettings();
 
     $$(".bet-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
@@ -2326,6 +2587,7 @@
         const which = tab.getAttribute("data-bet-tab");
         $("#bet-slip-body").hidden = which !== "slip";
         $("#my-bets-body").hidden = which !== "mybets";
+        if (which !== "slip") closeBetSlipSettings();
       });
     });
 
@@ -2347,11 +2609,22 @@
     });
 
     $("#bet-slip-body")?.addEventListener("click", (e) => {
+      if (isBetSlipSettingsTrigger(e.target)) {
+        openBetSlipSettings();
+        return;
+      }
+
       const step = e.target.closest("[data-stake-step]");
       const quick = e.target.closest("[data-quick-stake]");
       const clear = e.target.closest("#clear-bets");
       const place = e.target.closest("#place-bet");
       const stakeInput = $("#stake-input");
+
+      if (e.target.closest(".max-stake-link") && stakeInput) {
+        stakeInput.value = "31400";
+        updateTotals();
+        return;
+      }
 
       if (step && stakeInput) {
         const next = Math.max(1, (Number(stakeInput.value) || 0) + Number(step.getAttribute("data-stake-step")));
@@ -2374,7 +2647,29 @@
       }
 
       if (place) {
+        const cta = place.dataset.cta || "place";
+        if (cta === "register") {
+          const reg = $("#reg-form");
+          if (reg) {
+            reg.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            $("#reg-promo")?.focus?.();
+          }
+          showToast("Register to place bets");
+          return;
+        }
+        if (cta === "deposit") {
+          window.location.href = "deposit.html";
+          return;
+        }
         showToast("Demo only — bet not placed");
+      }
+
+      if (e.target.closest('[data-ticket-meta="balance"]')) {
+        window.location.href = "deposit.html";
+        return;
+      }
+      if (e.target.closest('[data-ticket-meta="advancebet"]')) {
+        showToast("Advancebet refreshed (demo)");
       }
     });
 
@@ -2382,17 +2677,11 @@
       if (e.target.closest("#stake-input")) updateTotals();
     });
 
-    $("#clear-bets").addEventListener("click", () => {
-      state.betSlip = [];
-      renderBetSlip();
-      showToast("Bet slip cleared");
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const overlay = $("#bss-overlay");
+      if (overlay && !overlay.hidden) closeBetSlipSettings();
     });
-
-    $("#place-bet").addEventListener("click", () => {
-      showToast("Demo only — bet not placed");
-    });
-
-    $("#stake-input").addEventListener("input", updateTotals);
 
     $("#generate-slip").addEventListener("click", () => {
       const pool = [];
@@ -2527,9 +2816,15 @@
   function getFilteredBetHistory() {
     ensureMockBetHistory();
     const cat = state.betHistoryCategory;
+    const status = state.betHistoryStatus;
     const { from, to } = getBetHistoryRangeBounds();
     return MOCK_BET_HISTORY.filter((bet) => {
       if (cat !== "all" && bet.category !== cat) return false;
+      if (status !== "all") {
+        const betStatus = String(bet.status || "").toLowerCase();
+        const matchOpen = status === "open" && (betStatus === "open" || betStatus === "running");
+        if (!matchOpen && betStatus !== status) return false;
+      }
       const d = parseDateKey(bet.dateKey);
       if (!d) return true;
       if (from && d < from) return false;
@@ -2745,6 +3040,17 @@
       btn.setAttribute("aria-checked", on ? "true" : "false");
     });
 
+    const statusLabel = $("#bh-desktop-status-label");
+    if (statusLabel) {
+      statusLabel.textContent = BH_STATUS_LABELS[state.betHistoryStatus] || "All";
+    }
+
+    $$("[data-bh-status]", panel).forEach((btn) => {
+      const on = btn.getAttribute("data-bh-status") === state.betHistoryStatus;
+      btn.classList.toggle("is-active", on);
+      btn.setAttribute("aria-checked", on ? "true" : "false");
+    });
+
     const custom = $("#bh-desktop-custom");
     if (custom) custom.hidden = state.betHistoryRange !== "custom";
 
@@ -2760,6 +3066,16 @@
     if (!menu || !btn) return;
     menu.hidden = !open;
     btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) setBetHistoryStatusMenu(false);
+  }
+
+  function setBetHistoryStatusMenu(open) {
+    const menu = $("#bh-desktop-status-menu");
+    const btn = $("#bh-desktop-status-btn");
+    if (!menu || !btn) return;
+    menu.hidden = !open;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) setBetHistoryRangeMenu(false);
   }
 
   function openBetHistoryPanel() {
@@ -2780,6 +3096,7 @@
     backdrop.hidden = true;
     document.body.classList.remove("bh-desktop-open");
     setBetHistoryRangeMenu(false);
+    setBetHistoryStatusMenu(false);
   }
 
   function ensureBetHistoryPanel() {
@@ -2821,9 +3138,23 @@
                   .join("") +
               `</div>` +
             `</div>` +
-            `<button type="button" class="bh-desktop-filter-btn" id="bh-desktop-filter-btn">` +
-              `<span>Filter</span>` +
-            `</button>` +
+            `<div class="bh-desktop-status" id="bh-desktop-status">` +
+              `<button type="button" class="bh-desktop-status-btn" id="bh-desktop-status-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="bh-desktop-status-menu" aria-label="Filter by status">` +
+                `<span id="bh-desktop-status-label">All</span>` +
+                `<span class="bh-desktop-status-chevron" aria-hidden="true">▾</span>` +
+              `</button>` +
+              `<div class="bh-desktop-status-menu" id="bh-desktop-status-menu" role="listbox" hidden>` +
+                Object.keys(BH_STATUS_LABELS)
+                  .map(
+                    (key) =>
+                      `<button type="button" class="bh-desktop-status-option${key === "all" ? " is-active" : ""}" role="option" data-bh-status="${key}" aria-checked="${key === "all" ? "true" : "false"}">` +
+                        `<span>${BH_STATUS_LABELS[key]}</span>` +
+                        `<span class="bh-desktop-status-check" aria-hidden="true">✓</span>` +
+                      `</button>`
+                  )
+                  .join("") +
+              `</div>` +
+            `</div>` +
           `</div>` +
         `</div>` +
         `<div class="bh-desktop-custom" id="bh-desktop-custom" hidden>` +
@@ -2863,6 +3194,12 @@
         return;
       }
 
+      if (e.target.closest("#bh-desktop-status-btn")) {
+        const menu = $("#bh-desktop-status-menu");
+        setBetHistoryStatusMenu(menu?.hidden !== false);
+        return;
+      }
+
       const rangeOpt = e.target.closest("[data-bh-range]");
       if (rangeOpt) {
         state.betHistoryRange = rangeOpt.getAttribute("data-bh-range");
@@ -2874,6 +3211,15 @@
         return;
       }
 
+      const statusOpt = e.target.closest("[data-bh-status]");
+      if (statusOpt) {
+        state.betHistoryStatus = statusOpt.getAttribute("data-bh-status") || "all";
+        setBetHistoryStatusMenu(false);
+        syncBetHistoryControls();
+        renderBetHistoryResults();
+        return;
+      }
+
       if (e.target.closest("#bh-desktop-apply")) {
         const fromInput = $("#bh-desktop-from");
         const toInput = $("#bh-desktop-to");
@@ -2881,11 +3227,6 @@
         state.betHistoryCustomTo = toInput?.value || "";
         renderBetHistoryResults();
         return;
-      }
-
-      if (e.target.closest("#bh-desktop-filter-btn")) {
-        const menu = $("#bh-desktop-range-menu");
-        setBetHistoryRangeMenu(menu?.hidden !== false);
       }
     });
 
@@ -2895,12 +3236,32 @@
 
     document.addEventListener("click", (e) => {
       const range = $("#bh-desktop-range");
-      const menu = $("#bh-desktop-range-menu");
-      if (!menu || menu.hidden) return;
-      if (range && !range.contains(e.target) && !e.target.closest("#bh-desktop-filter-btn")) {
+      const rangeMenu = $("#bh-desktop-range-menu");
+      if (rangeMenu && !rangeMenu.hidden && range && !range.contains(e.target)) {
         setBetHistoryRangeMenu(false);
       }
+
+      const status = $("#bh-desktop-status");
+      const statusMenu = $("#bh-desktop-status-menu");
+      if (statusMenu && !statusMenu.hidden && status && !status.contains(e.target)) {
+        setBetHistoryStatusMenu(false);
+      }
     });
+  }
+
+  function syncMyBetsAuthUi() {
+    const body = $("#my-bets-body");
+    if (!body || !body.dataset.initialized) return;
+    const loggedIn = isBetSlipLoggedIn();
+    const guest = body.querySelector(".mybets-guest");
+    const app = body.querySelector(".mybets-app");
+    if (guest) guest.hidden = loggedIn;
+    if (app) app.hidden = !loggedIn;
+    body.classList.toggle("is-guest", !loggedIn);
+    if (loggedIn) {
+      updateMyBetsBadges();
+      setMyBetsTab(state.myBetsTab || "open");
+    }
   }
 
   function initMyBetsPanel() {
@@ -2909,34 +3270,42 @@
     body.dataset.initialized = "1";
 
     body.innerHTML =
-      `<div class="mybets-subtabs" role="tablist" aria-label="My bets views">` +
-        `<button type="button" class="mybets-subtab active" role="tab" aria-selected="true" data-mybets-tab="open">` +
-          `Open <span class="mybets-badge" id="mybets-open-count">0</span>` +
-        `</button>` +
-        `<button type="button" class="mybets-subtab" role="tab" aria-selected="false" data-mybets-tab="history">` +
-          `History <span class="mybets-badge" id="mybets-history-count">0</span>` +
-        `</button>` +
+      `<div class="mybets-guest" id="mybets-guest">` +
+        `<div class="mybets-guest-card">` +
+          `<p class="bet-empty-text">Please log in to your account or register</p>` +
+        `</div>` +
+        `<a href="#reg-form" class="btn-slip-reg mybets-guest-cta">Registration</a>` +
       `</div>` +
-      `<div class="mybets-open-controls" id="mybets-open-controls">` +
-        `<div class="mybets-controls-row">` +
-          `<label class="mybets-check">` +
-            `<input type="checkbox" class="mybets-check-input" id="mybets-cashout-toggle" />` +
-            `<span class="mybets-check-label">Cash Out</span>` +
-            `<span class="mybets-info" title="Enable cash out for eligible bets" tabindex="0" role="img" aria-label="Cash Out information">i</span>` +
-          `</label>` +
-          `<button type="button" class="mybets-refresh" aria-label="Refresh bets">` +
-            `<span class="mybets-refresh-icon" aria-hidden="true">↻</span> 98` +
+      `<div class="mybets-app" id="mybets-app" hidden>` +
+        `<div class="mybets-subtabs" role="tablist" aria-label="My bets views">` +
+          `<button type="button" class="mybets-subtab active" role="tab" aria-selected="true" data-mybets-tab="open">` +
+            `Open <span class="mybets-badge" id="mybets-open-count">0</span>` +
+          `</button>` +
+          `<button type="button" class="mybets-subtab" role="tab" aria-selected="false" data-mybets-tab="history">` +
+            `History <span class="mybets-badge" id="mybets-history-count">0</span>` +
           `</button>` +
         `</div>` +
-        `<label class="mybets-check mybets-check--full">` +
-          `<input type="checkbox" class="mybets-check-input" id="mybets-accept-cashout" />` +
-          `<span class="mybets-check-label">Accept Any Cash Out Value</span>` +
-          `<span class="mybets-info" title="Accept any offered cash out amount" tabindex="0" role="img" aria-label="Accept any cash out value information">i</span>` +
-        `</label>` +
-      `</div>` +
-      `<div class="mybets-content" id="mybets-content"></div>` +
-      `<button type="button" class="mybets-view-all" id="mybets-view-all">View All</button>` +
-      `<p class="mybets-footer-note">All transactions are time stamped at GMT-4.</p>`;
+        `<div class="mybets-open-controls" id="mybets-open-controls">` +
+          `<div class="mybets-controls-row">` +
+            `<label class="mybets-check">` +
+              `<input type="checkbox" class="mybets-check-input" id="mybets-cashout-toggle" />` +
+              `<span class="mybets-check-label">Cash Out</span>` +
+              `<span class="mybets-info" title="Enable cash out for eligible bets" tabindex="0" role="img" aria-label="Cash Out information">i</span>` +
+            `</label>` +
+            `<button type="button" class="mybets-refresh" aria-label="Refresh bets">` +
+              `<span class="mybets-refresh-icon" aria-hidden="true">↻</span> 98` +
+            `</button>` +
+          `</div>` +
+          `<label class="mybets-check mybets-check--full">` +
+            `<input type="checkbox" class="mybets-check-input" id="mybets-accept-cashout" />` +
+            `<span class="mybets-check-label">Accept Any Cash Out Value</span>` +
+            `<span class="mybets-info" title="Accept any offered cash out amount" tabindex="0" role="img" aria-label="Accept any cash out value information">i</span>` +
+          `</label>` +
+        `</div>` +
+        `<div class="mybets-content" id="mybets-content"></div>` +
+        `<button type="button" class="mybets-view-all" id="mybets-view-all">View All</button>` +
+        `<p class="mybets-footer-note">All transactions are time stamped at GMT-4.</p>` +
+      `</div>`;
 
     body.addEventListener("click", (e) => {
       const subtab = e.target.closest("[data-mybets-tab]");
@@ -2951,7 +3320,11 @@
         showToast("View all bets — demo only");
       }
       if (e.target.closest(".mybets-view-history") || e.target.closest("#mybets-view-history")) {
-        openBetHistoryPanel();
+        if (isMobileViewport()) {
+          openBetHistoryPanel();
+        } else {
+          window.location.href = "bet-history.html";
+        }
         return;
       }
       if (e.target.closest(".mybets-cashout:not(.is-disabled)")) {
@@ -2959,8 +3332,7 @@
       }
     });
 
-    updateMyBetsBadges();
-    setMyBetsTab("open");
+    syncMyBetsAuthUi();
   }
 
   function initRegistration() {
@@ -3014,11 +3386,8 @@
       });
     });
 
-    const saveLink = $(".bet-save-link");
-    if (saveLink) {
-      saveLink.addEventListener("click", () => {
-        showToast("Demo only — save/load unavailable");
-      });
+    if (window.BetSaveLoad && typeof window.BetSaveLoad.init === "function") {
+      window.BetSaveLoad.init();
     }
   }
 
@@ -3186,11 +3555,13 @@
     if (left) left.classList.remove("open");
     if (right) right.classList.remove("is-open");
     if (nav) nav.classList.remove("is-open");
+    if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
     if (menuTab) menuTab.setAttribute("aria-expanded", "false");
     if (sportsBtn) sportsBtn.setAttribute("aria-expanded", "false");
     if (betBtn) betBtn.setAttribute("aria-expanded", "false");
     setDrawerBackdrop(false);
+    document.body.classList.remove("ds-menu-open");
     syncMobileBetCount();
   }
 
@@ -3201,6 +3572,7 @@
     const nav = $("#header-bottom");
     if (right) right.classList.remove("is-open");
     if (nav) nav.classList.remove("is-open");
+    if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     $("#mobile-menu-btn")?.setAttribute("aria-expanded", "false");
     $("#mobile-menu-tab")?.setAttribute("aria-expanded", "false");
     $("#mobile-betslip-btn")?.setAttribute("aria-expanded", "false");
@@ -3216,6 +3588,7 @@
     const nav = $("#header-bottom");
     left?.classList.remove("open");
     if (nav) nav.classList.remove("is-open");
+    if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     $("#mobile-menu-btn")?.setAttribute("aria-expanded", "false");
     $("#mobile-menu-tab")?.setAttribute("aria-expanded", "false");
     $("#mobile-sports-btn")?.setAttribute("aria-expanded", "false");
@@ -3227,6 +3600,23 @@
 
   function toggleMobileNav() {
     if (!isMobileViewport()) return;
+    if (!window.DesktopFullMenu) {
+      const pending = document.querySelector("script[data-ds-menu-src]");
+      if (pending) {
+        pending.addEventListener("load", () => toggleMobileNav(), { once: true });
+        return;
+      }
+    }
+    if (window.DesktopFullMenu) {
+      const wasOpen = window.DesktopFullMenu.isOpen();
+      closeAllMobileDrawers();
+      if (!wasOpen) {
+        window.DesktopFullMenu.open();
+        setDrawerBackdrop(false);
+      }
+      return;
+    }
+    /* Fallback: legacy dark drawer if companion script missing */
     const nav = $("#header-bottom");
     const open = !nav?.classList.contains("is-open");
     closeAllMobileDrawers();
@@ -3273,6 +3663,12 @@
 
     window.addEventListener("resize", () => {
       if (!isMobileViewport()) closeAllMobileDrawers();
+      const overlay = $("#bss-overlay");
+      if (overlay && !overlay.hidden) {
+        mountBetSlipSettingsHost(overlay);
+        if (isMobileViewport()) document.body.classList.add("bss-open");
+        else document.body.classList.remove("bss-open");
+      }
       syncMobileBetCount();
       layoutLiveFilterOverflow();
     });
@@ -3324,6 +3720,7 @@
     initPlayersOnlineCounter();
     initMobileChrome();
     initHomeReferral();
+    syncBetSlipAuthUi();
     requestAnimationFrame(() => {
       layoutLiveFilterOverflow();
       renderMoreMenu("");
