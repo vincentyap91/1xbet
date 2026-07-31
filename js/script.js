@@ -819,6 +819,17 @@
       potentialWinnings: true,
       selectAccount: true,
     },
+    baselineOdds: {
+      odds: "",
+      cancelOnScoreChange: false,
+    },
+    stakePrefs: {
+      increment: 10,
+      quick: [1, 100, 250],
+    },
+    betTypeMode: "single",
+    oddsChangeMode: "increase",
+    promoCode: "",
   };
 
   const SLIP_SETTINGS_KEY = "1xbet-bet-slip-settings";
@@ -828,6 +839,44 @@
     potentialWinnings: true,
     selectAccount: true,
   };
+
+  const BASELINE_ODDS_KEY = "1xbet-baseline-odds";
+  const BASELINE_ODDS_DEFAULTS = {
+    odds: "",
+    cancelOnScoreChange: false,
+  };
+
+  const STAKE_PREFS_KEY = "1xbet-stake-prefs";
+  const STAKE_PREFS_DEFAULTS = {
+    increment: 10,
+    quick: [1, 100, 250],
+  };
+
+  const BET_TYPE_LABELS = {
+    single: "Single bet",
+    accumulator: "Accumulator",
+    chain: "Chain bet",
+    anti: "Anti-accumulator",
+    lucky: "Lucky bet",
+    singles: "Singles",
+  };
+
+  const BET_TYPE_MULTI_OPTIONS = [
+    { id: "accumulator", label: "Accumulator" },
+    { id: "chain", label: "Chain bet" },
+    { id: "anti", label: "Anti-accumulator" },
+    { id: "lucky", label: "Lucky bet" },
+    { id: "singles", label: "Singles" },
+  ];
+
+  const ODDS_CHANGE_OPTIONS = [
+    { id: "increase", label: "Accept if odds increase" },
+    { id: "confirm", label: "Confirm" },
+    { id: "any", label: "Accept any change" },
+  ];
+
+  const ODDS_CHANGE_KEY = "1xbet-odds-change-mode";
+  const PROMO_CODE_KEY = "1xbet-promo-code";
 
   const PIN_ICON_SVG =
     '<svg class="pin-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>';
@@ -1874,7 +1923,15 @@
     });
   }
 
+  function closeBetSlipSettings() {
+    const overlay = $("#bss-overlay");
+    if (!overlay) return;
+    overlay.hidden = true;
+    document.body.classList.remove("bss-open");
+  }
+
   function openBetSlipSettings() {
+    closeTicketPopovers();
     const overlay = ensureBetSlipSettingsModal();
     if (!overlay) return;
     mountBetSlipSettingsHost(overlay);
@@ -1885,20 +1942,255 @@
     $("#bss-close", overlay)?.focus();
   }
 
-  function closeBetSlipSettings() {
-    const overlay = $("#bss-overlay");
-    if (!overlay) return;
-    overlay.hidden = true;
-    document.body.classList.remove("bss-open");
-  }
-
   function isBetSlipSettingsTrigger(el) {
     if (!el) return false;
-    if (el.closest(".ticket-settings")) return true;
+    /* Ticket row gears open Baseline / Stake popovers — not the main BSS panel */
+    if (el.closest("[data-ticket-popover]")) return false;
+    if (el.closest(".ticket-settings")) return false;
     const btn = el.closest(".bet-icon-btn");
     if (!btn) return false;
     const label = (btn.getAttribute("aria-label") || btn.getAttribute("title") || "").toLowerCase();
     return label === "settings";
+  }
+
+  function loadBaselineOdds() {
+    try {
+      const raw = localStorage.getItem(BASELINE_ODDS_KEY);
+      if (!raw) return { ...BASELINE_ODDS_DEFAULTS };
+      return { ...BASELINE_ODDS_DEFAULTS, ...JSON.parse(raw) };
+    } catch (e) {
+      return { ...BASELINE_ODDS_DEFAULTS };
+    }
+  }
+
+  function saveBaselineOdds(next) {
+    state.baselineOdds = { ...BASELINE_ODDS_DEFAULTS, ...next };
+    try {
+      localStorage.setItem(BASELINE_ODDS_KEY, JSON.stringify(state.baselineOdds));
+    } catch (e) { /* ignore */ }
+  }
+
+  function loadStakePrefs() {
+    try {
+      const raw = localStorage.getItem(STAKE_PREFS_KEY);
+      if (!raw) return { ...STAKE_PREFS_DEFAULTS, quick: [...STAKE_PREFS_DEFAULTS.quick] };
+      const parsed = JSON.parse(raw);
+      const quick = Array.isArray(parsed.quick)
+        ? parsed.quick.map((n) => Number(n) || 0).filter((n) => n > 0).slice(0, 3)
+        : [...STAKE_PREFS_DEFAULTS.quick];
+      while (quick.length < 3) quick.push(STAKE_PREFS_DEFAULTS.quick[quick.length]);
+      return {
+        increment: Math.max(1, Number(parsed.increment) || STAKE_PREFS_DEFAULTS.increment),
+        quick,
+      };
+    } catch (e) {
+      return { ...STAKE_PREFS_DEFAULTS, quick: [...STAKE_PREFS_DEFAULTS.quick] };
+    }
+  }
+
+  function saveStakePrefs(next) {
+    const quick = (next.quick || STAKE_PREFS_DEFAULTS.quick)
+      .map((n) => Math.max(1, Number(n) || 1))
+      .slice(0, 3);
+    while (quick.length < 3) quick.push(STAKE_PREFS_DEFAULTS.quick[quick.length]);
+    state.stakePrefs = {
+      increment: Math.max(1, Number(next.increment) || STAKE_PREFS_DEFAULTS.increment),
+      quick,
+    };
+    try {
+      localStorage.setItem(STAKE_PREFS_KEY, JSON.stringify(state.stakePrefs));
+    } catch (e) { /* ignore */ }
+  }
+
+  function applyStakePrefs() {
+    const prefs = state.stakePrefs || STAKE_PREFS_DEFAULTS;
+    const inc = Math.max(1, Number(prefs.increment) || 10);
+    $$("[data-stake-step]").forEach((btn) => {
+      const cur = Number(btn.getAttribute("data-stake-step")) || 0;
+      const dir = cur < 0 ? -1 : 1;
+      btn.setAttribute("data-stake-step", String(dir * inc));
+    });
+    const buttons = $$(".quick-stakes [data-quick-stake]");
+    (prefs.quick || STAKE_PREFS_DEFAULTS.quick).forEach((val, i) => {
+      if (!buttons[i]) return;
+      buttons[i].setAttribute("data-quick-stake", String(val));
+      buttons[i].textContent = `+${val}`;
+    });
+  }
+
+  function mountTicketPopoverHost(overlay) {
+    if (!overlay) return;
+    const panel = $(".bet-slip-panel");
+    const mobile = isMobileViewport();
+    const target = mobile ? document.body : panel || document.body;
+    if (overlay.parentElement !== target) target.appendChild(overlay);
+  }
+
+  function closeTicketPopovers() {
+    ["#tsp-baseline-overlay", "#tsp-stake-overlay"].forEach((sel) => {
+      const el = $(sel);
+      if (el) el.hidden = true;
+    });
+    document.body.classList.remove("tsp-open");
+  }
+
+  function ensureBaselineOddsModal() {
+    let overlay = $("#tsp-baseline-overlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.className = "bss-backdrop tsp-backdrop";
+    overlay.id = "tsp-baseline-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<div class="bss-panel tsp-panel" role="dialog" aria-modal="true" aria-labelledby="tsp-baseline-title">` +
+        `<div class="bss-head tsp-head">` +
+          `<div class="tsp-title-row">` +
+            `<h2 class="bss-title" id="tsp-baseline-title">Baseline odds</h2>` +
+            `<button type="button" class="tsp-info" id="tsp-baseline-info" aria-label="About baseline odds" title="About baseline odds">i</button>` +
+          `</div>` +
+          `<button type="button" class="bss-close" id="tsp-baseline-close" aria-label="Close">&times;</button>` +
+        `</div>` +
+        `<div class="bss-body tsp-body">` +
+          `<label class="tsp-field">` +
+            `<span class="tsp-label">Set baseline odds</span>` +
+            `<input type="text" class="tsp-input" id="tsp-baseline-input" inputmode="decimal" autocomplete="off" />` +
+          `</label>` +
+          `<label class="tsp-check-row">` +
+            `<input type="checkbox" class="tsp-check" id="tsp-baseline-cancel" />` +
+            `<span>Cancel request if the score changes</span>` +
+          `</label>` +
+          `<div class="tsp-actions">` +
+            `<button type="button" class="bss-save tsp-save" id="tsp-baseline-save">Save</button>` +
+            `<button type="button" class="tsp-trash" id="tsp-baseline-clear" aria-label="Clear baseline odds">` +
+              `<img src="assets/images/account/icon-trash.svg" alt="" width="16" height="16" />` +
+            `</button>` +
+          `</div>` +
+        `</div>` +
+      `</div>`;
+
+    const host = $(".bet-slip-panel") || document.body;
+    host.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeTicketPopovers();
+    });
+    $("#tsp-baseline-close", overlay)?.addEventListener("click", closeTicketPopovers);
+    $("#tsp-baseline-info", overlay)?.addEventListener("click", () => {
+      showToast("Baseline odds: place only if odds stay at or above your set value (demo)");
+    });
+    $("#tsp-baseline-save", overlay)?.addEventListener("click", () => {
+      const odds = String($("#tsp-baseline-input", overlay)?.value || "").trim();
+      const cancelOnScoreChange = !!$("#tsp-baseline-cancel", overlay)?.checked;
+      saveBaselineOdds({ odds, cancelOnScoreChange });
+      closeTicketPopovers();
+      showToast(odds ? `Baseline odds set to ${odds}` : "Baseline odds cleared");
+    });
+    $("#tsp-baseline-clear", overlay)?.addEventListener("click", () => {
+      saveBaselineOdds({ ...BASELINE_ODDS_DEFAULTS });
+      const input = $("#tsp-baseline-input", overlay);
+      const check = $("#tsp-baseline-cancel", overlay);
+      if (input) input.value = "";
+      if (check) check.checked = false;
+      showToast("Baseline odds cleared");
+    });
+
+    return overlay;
+  }
+
+  function openBaselineOddsSettings() {
+    closeBetSlipSettings();
+    closeTicketPopovers();
+    const overlay = ensureBaselineOddsModal();
+    if (!overlay) return;
+    mountTicketPopoverHost(overlay);
+    const s = state.baselineOdds || loadBaselineOdds();
+    const input = $("#tsp-baseline-input", overlay);
+    const check = $("#tsp-baseline-cancel", overlay);
+    if (input) input.value = s.odds || "";
+    if (check) check.checked = !!s.cancelOnScoreChange;
+    overlay.hidden = false;
+    if (isMobileViewport()) document.body.classList.add("tsp-open");
+    else document.body.classList.remove("tsp-open");
+    input?.focus();
+  }
+
+  function ensureStakeSettingsModal() {
+    let overlay = $("#tsp-stake-overlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.className = "bss-backdrop tsp-backdrop";
+    overlay.id = "tsp-stake-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<div class="bss-panel tsp-panel" role="dialog" aria-modal="true" aria-labelledby="tsp-stake-title">` +
+        `<div class="bss-head tsp-head">` +
+          `<h2 class="bss-title" id="tsp-stake-title">Stake</h2>` +
+          `<button type="button" class="bss-close" id="tsp-stake-close" aria-label="Close">&times;</button>` +
+        `</div>` +
+        `<div class="bss-body tsp-body">` +
+          `<label class="tsp-field">` +
+            `<span class="tsp-label">Set stake increase/decrease increment</span>` +
+            `<input type="number" class="tsp-input" id="tsp-stake-increment" min="1" step="1" />` +
+          `</label>` +
+          `<div class="tsp-divider" aria-hidden="true"></div>` +
+          `<fieldset class="tsp-fieldset">` +
+            `<legend class="tsp-label">Edit quick amounts</legend>` +
+            `<input type="number" class="tsp-input" data-tsp-quick="0" min="1" step="1" />` +
+            `<input type="number" class="tsp-input" data-tsp-quick="1" min="1" step="1" />` +
+            `<input type="number" class="tsp-input" data-tsp-quick="2" min="1" step="1" />` +
+          `</fieldset>` +
+          `<div class="tsp-actions tsp-actions--single">` +
+            `<button type="button" class="bss-save tsp-save" id="tsp-stake-save">Save</button>` +
+          `</div>` +
+        `</div>` +
+      `</div>`;
+
+    const host = $(".bet-slip-panel") || document.body;
+    host.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeTicketPopovers();
+    });
+    $("#tsp-stake-close", overlay)?.addEventListener("click", closeTicketPopovers);
+    $("#tsp-stake-save", overlay)?.addEventListener("click", () => {
+      const increment = Number($("#tsp-stake-increment", overlay)?.value) || STAKE_PREFS_DEFAULTS.increment;
+      const quick = [0, 1, 2].map((i) => {
+        const el = overlay.querySelector(`[data-tsp-quick="${i}"]`);
+        return Number(el?.value) || STAKE_PREFS_DEFAULTS.quick[i];
+      });
+      saveStakePrefs({ increment, quick });
+      applyStakePrefs();
+      closeTicketPopovers();
+      showToast("Stake settings saved");
+    });
+
+    return overlay;
+  }
+
+  function openStakeSettings() {
+    closeBetSlipSettings();
+    closeTicketPopovers();
+    const overlay = ensureStakeSettingsModal();
+    if (!overlay) return;
+    mountTicketPopoverHost(overlay);
+    const prefs = state.stakePrefs || loadStakePrefs();
+    const inc = $("#tsp-stake-increment", overlay);
+    if (inc) inc.value = String(prefs.increment || 10);
+    (prefs.quick || STAKE_PREFS_DEFAULTS.quick).forEach((val, i) => {
+      const el = overlay.querySelector(`[data-tsp-quick="${i}"]`);
+      if (el) el.value = String(val);
+    });
+    overlay.hidden = false;
+    if (isMobileViewport()) document.body.classList.add("tsp-open");
+    else document.body.classList.remove("tsp-open");
+    inc?.focus();
+  }
+
+  function openTicketPopover(kind) {
+    if (kind === "baseline") openBaselineOddsSettings();
+    else if (kind === "stake") openStakeSettings();
   }
 
   function ensureTicketFooter() {
@@ -1908,10 +2200,13 @@
       footer.dataset.ticketLayout = "true";
       footer.innerHTML = `
       <div class="bet-type-row">
-        <button type="button" class="ticket-select" id="bet-type-select" aria-haspopup="listbox">
-          <span id="bet-type-label">Single bet</span>
-          <span class="select-chevron" aria-hidden="true"></span>
-        </button>
+        <div class="bet-type-wrap">
+          <button type="button" class="ticket-select" id="bet-type-select" aria-haspopup="listbox" aria-expanded="false" aria-controls="bet-type-menu">
+            <span id="bet-type-label">Single bet</span>
+            <span class="select-chevron" aria-hidden="true"></span>
+          </button>
+          <ul class="bet-type-menu" id="bet-type-menu" role="listbox" aria-label="Bet type" hidden></ul>
+        </div>
         <button type="button" class="ticket-trash" id="clear-bets" aria-label="Clear bet slip">
           <img src="assets/icons/rb-close.svg" alt="" width="12" height="12" />
         </button>
@@ -1919,17 +2214,17 @@
       <div class="ticket-summary-row">
         <span>Overall odds</span>
         <strong id="total-odds">1.00</strong>
-        <button type="button" class="ticket-settings" aria-label="Place settings" title="Place settings">
+        <button type="button" class="ticket-settings" data-ticket-popover="baseline" aria-label="Baseline odds settings" title="Baseline odds">
           <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
         </button>
       </div>
       <div class="ticket-stake-block">
         <label class="stake-title" for="stake-input">Stake amount (MYR)</label>
         <div class="stake-control">
-          <button type="button" class="stake-step" data-stake-step="-50" aria-label="Decrease stake">-</button>
+          <button type="button" class="stake-step" data-stake-step="-10" aria-label="Decrease stake">-</button>
           <input type="number" id="stake-input" min="1" step="1" value="50" />
-          <button type="button" class="stake-step" data-stake-step="50" aria-label="Increase stake">+</button>
-          <button type="button" class="ticket-settings" aria-label="Stake settings" title="Stake settings">
+          <button type="button" class="stake-step" data-stake-step="10" aria-label="Increase stake">+</button>
+          <button type="button" class="ticket-settings" data-ticket-popover="stake" aria-label="Stake settings" title="Stake settings">
             <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
           </button>
         </div>
@@ -1953,17 +2248,20 @@
           <strong class="ticket-meta-adv">0 MYR <span class="ticket-meta-refresh" aria-hidden="true">↻</span></strong>
         </button>
       </div>
-      <label class="ticket-field">
-        <span>When odds change:</span>
-        <button type="button" class="ticket-select">
-          <span>Accept if odds increase</span>
-          <span class="select-chevron" aria-hidden="true"></span>
-        </button>
+      <div class="ticket-field odds-change-field">
+        <span id="odds-change-label">When odds change:</span>
+        <div class="odds-change-wrap">
+          <button type="button" class="ticket-select" id="odds-change-select" aria-haspopup="listbox" aria-expanded="false" aria-controls="odds-change-menu" aria-labelledby="odds-change-label">
+            <span id="odds-change-value">Accept if odds increase</span>
+            <span class="select-chevron" aria-hidden="true"></span>
+          </button>
+          <ul class="odds-change-menu" id="odds-change-menu" role="listbox" aria-label="When odds change" hidden></ul>
+        </div>
+      </div>
+      <label class="promo-code-field" for="promo-code-input">
+        <span class="visually-hidden">Promo code</span>
+        <input type="text" id="promo-code-input" class="promo-code-input" placeholder="Promo code" autocomplete="off" spellcheck="false" />
       </label>
-      <button type="button" class="promo-code-toggle">
-        <span>Promo code</span>
-        <span class="select-chevron" aria-hidden="true"></span>
-      </button>
       <div class="ticket-winnings-row">
         <span>Potential winnings</span>
         <strong><span id="potential-return">0</span> MYR</strong>
@@ -1973,6 +2271,168 @@
     }
     syncBetSlipAuthUi();
     applyBetSlipSettings();
+    applyStakePrefs();
+    syncBetTypeSelect();
+    syncOddsChangeSelect();
+    syncPromoCodeField();
+  }
+
+  function closeBetTypeMenu() {
+    const select = $("#bet-type-select");
+    const menu = $("#bet-type-menu");
+    const wrap = $(".bet-type-wrap");
+    if (menu) menu.hidden = true;
+    if (select) select.setAttribute("aria-expanded", "false");
+    if (wrap) wrap.classList.remove("is-open");
+  }
+
+  function renderBetTypeMenu() {
+    const menu = $("#bet-type-menu");
+    if (!menu) return;
+    const current = state.betTypeMode;
+    menu.innerHTML = BET_TYPE_MULTI_OPTIONS.map((opt) => {
+      const selected = opt.id === current;
+      return (
+        `<li role="presentation">` +
+        `<button type="button" class="bet-type-option${selected ? " is-active" : ""}" role="option" data-bet-type="${opt.id}" aria-selected="${selected ? "true" : "false"}">${opt.label}</button>` +
+        `</li>`
+      );
+    }).join("");
+  }
+
+  function openBetTypeMenu() {
+    if (state.betSlip.length <= 1) return;
+    const select = $("#bet-type-select");
+    const menu = $("#bet-type-menu");
+    const wrap = $(".bet-type-wrap");
+    if (!select || !menu) return;
+    closeOddsChangeMenu();
+    renderBetTypeMenu();
+    menu.hidden = false;
+    select.setAttribute("aria-expanded", "true");
+    if (wrap) wrap.classList.add("is-open");
+  }
+
+  function syncBetTypeSelect() {
+    const select = $("#bet-type-select");
+    const label = $("#bet-type-label");
+    if (!select || !label) return;
+
+    const multi = state.betSlip.length > 1;
+    if (!multi) {
+      state.betTypeMode = "single";
+      closeBetTypeMenu();
+      select.classList.add("is-disabled");
+      select.setAttribute("aria-disabled", "true");
+      select.setAttribute("title", "Add another selection to change bet type");
+    } else {
+      if (state.betTypeMode === "single" || !BET_TYPE_MULTI_OPTIONS.some((o) => o.id === state.betTypeMode)) {
+        state.betTypeMode = "accumulator";
+      }
+      select.classList.remove("is-disabled");
+      select.setAttribute("aria-disabled", "false");
+      select.removeAttribute("title");
+    }
+
+    label.textContent = BET_TYPE_LABELS[state.betTypeMode] || (multi ? "Accumulator" : "Single bet");
+    if (multi && !$("#bet-type-menu")?.hidden) renderBetTypeMenu();
+  }
+
+  function setBetTypeMode(id) {
+    if (state.betSlip.length <= 1) return;
+    if (!BET_TYPE_MULTI_OPTIONS.some((o) => o.id === id)) return;
+    state.betTypeMode = id;
+    syncBetTypeSelect();
+    closeBetTypeMenu();
+    showToast(`Bet type: ${BET_TYPE_LABELS[id]}`);
+  }
+
+  function loadOddsChangeMode() {
+    try {
+      const saved = sessionStorage.getItem(ODDS_CHANGE_KEY);
+      if (saved && ODDS_CHANGE_OPTIONS.some((o) => o.id === saved)) return saved;
+    } catch (e) { /* ignore */ }
+    return "increase";
+  }
+
+  function saveOddsChangeMode(id) {
+    state.oddsChangeMode = id;
+    try {
+      sessionStorage.setItem(ODDS_CHANGE_KEY, id);
+    } catch (e) { /* ignore */ }
+  }
+
+  function loadPromoCode() {
+    try {
+      return sessionStorage.getItem(PROMO_CODE_KEY) || "";
+    } catch (e) {
+      return "";
+    }
+  }
+
+  function savePromoCode(value) {
+    state.promoCode = String(value || "");
+    try {
+      sessionStorage.setItem(PROMO_CODE_KEY, state.promoCode);
+    } catch (e) { /* ignore */ }
+  }
+
+  function closeOddsChangeMenu() {
+    const select = $("#odds-change-select");
+    const menu = $("#odds-change-menu");
+    const wrap = $(".odds-change-wrap");
+    if (menu) menu.hidden = true;
+    if (select) select.setAttribute("aria-expanded", "false");
+    if (wrap) wrap.classList.remove("is-open");
+  }
+
+  function renderOddsChangeMenu() {
+    const menu = $("#odds-change-menu");
+    if (!menu) return;
+    const current = state.oddsChangeMode || "increase";
+    menu.innerHTML = ODDS_CHANGE_OPTIONS.map((opt) => {
+      const selected = opt.id === current;
+      return (
+        `<li role="presentation">` +
+        `<button type="button" class="odds-change-option${selected ? " is-active" : ""}" role="option" data-odds-change="${opt.id}" aria-selected="${selected ? "true" : "false"}">${opt.label}</button>` +
+        `</li>`
+      );
+    }).join("");
+  }
+
+  function openOddsChangeMenu() {
+    const select = $("#odds-change-select");
+    const menu = $("#odds-change-menu");
+    const wrap = $(".odds-change-wrap");
+    if (!select || !menu) return;
+    closeBetTypeMenu();
+    renderOddsChangeMenu();
+    menu.hidden = false;
+    select.setAttribute("aria-expanded", "true");
+    if (wrap) wrap.classList.add("is-open");
+  }
+
+  function syncOddsChangeSelect() {
+    const label = $("#odds-change-value");
+    if (!label) return;
+    const opt = ODDS_CHANGE_OPTIONS.find((o) => o.id === state.oddsChangeMode) || ODDS_CHANGE_OPTIONS[0];
+    label.textContent = opt.label;
+    if ($("#odds-change-menu") && !$("#odds-change-menu").hidden) renderOddsChangeMenu();
+  }
+
+  function setOddsChangeMode(id) {
+    if (!ODDS_CHANGE_OPTIONS.some((o) => o.id === id)) return;
+    saveOddsChangeMode(id);
+    syncOddsChangeSelect();
+    closeOddsChangeMenu();
+  }
+
+  function syncPromoCodeField() {
+    const input = $("#promo-code-input");
+    if (!input) return;
+    if (document.activeElement !== input) {
+      input.value = state.promoCode || "";
+    }
   }
 
   function syncBetSlipAuthUi() {
@@ -1980,10 +2440,7 @@
     const panel = $(".bet-slip-panel");
     if (panel) panel.classList.toggle("is-logged-in", loggedIn);
 
-    const typeLabel = $("#bet-type-label");
-    if (typeLabel) {
-      typeLabel.textContent = state.betSlip.length > 1 ? "Accumulator" : "Single bet";
-    }
+    syncBetTypeSelect();
 
     const meta = $("#ticket-account-meta");
     if (meta) {
@@ -2076,7 +2533,8 @@
       .join("");
   }
 
-  function renderBetSlip() {
+  function renderBetSlip(opts) {
+    const options = opts || {};
     const empty = $("#bet-empty");
     const list = $("#bet-list");
     const footer = $("#bet-footer");
@@ -2099,12 +2557,46 @@
       return;
     }
 
+    const prevIds = new Set(
+      Array.from(list.querySelectorAll("[data-bet-id]")).map((el) => el.getAttribute("data-bet-id"))
+    );
+    const animateId = options.animateId || null;
+
     empty.hidden = true;
     list.hidden = false;
     footer.hidden = false;
     footer.classList.add("is-sticky");
     ensureTicketFooter();
     list.innerHTML = renderTicketCards(state.betSlip);
+
+    list.querySelectorAll(".ticket-card[data-bet-id]").forEach((card) => {
+      const id = card.getAttribute("data-bet-id");
+      const isNew = animateId ? id === animateId : !prevIds.has(id);
+      if (!isNew) return;
+      card.classList.add("is-entering");
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          card.classList.add("is-entered");
+        });
+      });
+      const clearEnter = () => {
+        card.classList.remove("is-entering", "is-entered");
+        card.removeEventListener("transitionend", clearEnter);
+      };
+      card.addEventListener("transitionend", clearEnter);
+      window.setTimeout(clearEnter, 420);
+    });
+
+    /* Keep newest ticket in view when the stack grows */
+    const focusId = animateId || (prevIds.size < state.betSlip.length ? state.betSlip[state.betSlip.length - 1]?.id : null);
+    if (focusId) {
+      const newest = list.querySelector(`[data-bet-id="${String(focusId).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"]`);
+      if (newest && typeof newest.scrollIntoView === "function") {
+        window.setTimeout(() => {
+          newest.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }, 40);
+      }
+    }
 
     updateTotals();
     syncOddButtons();
@@ -2127,13 +2619,15 @@
     const idx = state.betSlip.findIndex((b) => b.id === data.id);
     if (idx >= 0) {
       state.betSlip.splice(idx, 1);
+      renderBetSlip();
     } else {
       // One selection per match: Draw (X), Double Chance 12, or any other market replaces the previous pick.
       const eventId = betEventId(data);
       state.betSlip = state.betSlip.filter((b) => betEventId(b) !== eventId);
-      state.betSlip.push(hydrateTicketData({ ...data, eventId }));
+      const next = hydrateTicketData({ ...data, eventId });
+      state.betSlip.push(next);
+      renderBetSlip({ animateId: next.id });
     }
-    renderBetSlip();
     openRightDrawer();
   }
 
@@ -2573,8 +3067,15 @@
   function initBetSlip() {
     initMyBetsPanel();
     state.slipSettings = loadSlipSettings();
+    state.baselineOdds = loadBaselineOdds();
+    state.stakePrefs = loadStakePrefs();
+    state.oddsChangeMode = loadOddsChangeMode();
+    state.promoCode = loadPromoCode();
     ensureBetSlipSettingsModal();
+    ensureBaselineOddsModal();
+    ensureStakeSettingsModal();
     applyBetSlipSettings();
+    applyStakePrefs();
 
     $$(".bet-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
@@ -2587,8 +3088,24 @@
         const which = tab.getAttribute("data-bet-tab");
         $("#bet-slip-body").hidden = which !== "slip";
         $("#my-bets-body").hidden = which !== "mybets";
-        if (which !== "slip") closeBetSlipSettings();
+        if (which !== "slip") {
+          closeBetSlipSettings();
+          closeTicketPopovers();
+          closeBetTypeMenu();
+          closeOddsChangeMenu();
+        }
       });
+    });
+
+    $("#bet-slip-body")?.addEventListener("input", (e) => {
+      if (e.target && e.target.id === "promo-code-input") {
+        savePromoCode(e.target.value);
+      }
+    });
+    $("#bet-slip-body")?.addEventListener("change", (e) => {
+      if (e.target && e.target.id === "promo-code-input") {
+        savePromoCode(e.target.value);
+      }
     });
 
     $("#bet-list").addEventListener("click", (e) => {
@@ -2609,6 +3126,46 @@
     });
 
     $("#bet-slip-body")?.addEventListener("click", (e) => {
+      const betTypeOpt = e.target.closest("[data-bet-type]");
+      if (betTypeOpt) {
+        setBetTypeMode(betTypeOpt.getAttribute("data-bet-type"));
+        return;
+      }
+
+      const oddsChangeOpt = e.target.closest("[data-odds-change]");
+      if (oddsChangeOpt) {
+        setOddsChangeMode(oddsChangeOpt.getAttribute("data-odds-change"));
+        return;
+      }
+
+      const betTypeSelect = e.target.closest("#bet-type-select");
+      if (betTypeSelect) {
+        if (betTypeSelect.classList.contains("is-disabled") || betTypeSelect.getAttribute("aria-disabled") === "true") {
+          return;
+        }
+        const menu = $("#bet-type-menu");
+        if (menu && !menu.hidden) closeBetTypeMenu();
+        else openBetTypeMenu();
+        return;
+      }
+
+      const oddsChangeSelect = e.target.closest("#odds-change-select");
+      if (oddsChangeSelect) {
+        const menu = $("#odds-change-menu");
+        if (menu && !menu.hidden) closeOddsChangeMenu();
+        else openOddsChangeMenu();
+        return;
+      }
+
+      if (!e.target.closest(".bet-type-wrap")) closeBetTypeMenu();
+      if (!e.target.closest(".odds-change-wrap")) closeOddsChangeMenu();
+
+      const ticketPopover = e.target.closest("[data-ticket-popover]");
+      if (ticketPopover) {
+        openTicketPopover(ticketPopover.getAttribute("data-ticket-popover"));
+        return;
+      }
+
       if (isBetSlipSettingsTrigger(e.target)) {
         openBetSlipSettings();
         return;

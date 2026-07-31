@@ -104,6 +104,10 @@
     var headerBottom = $("#header-bottom");
 
     function toggleMenu() {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       if (!headerBottom) return;
       var open = headerBottom.classList.toggle("is-open");
       if (menuBtn) menuBtn.setAttribute("aria-expanded", open ? "true" : "false");

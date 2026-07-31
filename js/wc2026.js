@@ -365,6 +365,7 @@
   }
 
   function closeAllMobileDrawers() {
+    if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     $("#left-sidebar")?.classList.remove("open");
     $("#right-sidebar")?.classList.remove("is-open");
     $("#header-bottom")?.classList.remove("is-open");
@@ -393,6 +394,12 @@
 
   function toggleMobileNav() {
     if (!isMobileViewport()) return;
+    if (window.DesktopFullMenu) {
+      const wasOpen = window.DesktopFullMenu.isOpen();
+      closeAllMobileDrawers();
+      if (!wasOpen) window.DesktopFullMenu.open();
+      return;
+    }
     const nav = $("#header-bottom");
     const shouldOpen = !nav?.classList.contains("is-open");
     closeAllMobileDrawers();

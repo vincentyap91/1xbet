@@ -58,6 +58,7 @@
     const menuTab = $("#mobile-menu-tab");
 
     function closeAll() {
+      if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       document.body.classList.remove("drawer-open");
       if (backdrop) backdrop.hidden = true;
       if (bottom) bottom.classList.remove("is-open");
@@ -65,6 +66,10 @@
       menuTab?.setAttribute("aria-expanded", "false");
     }
     function openMenu() {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.open();
+        return;
+      }
       document.body.classList.add("drawer-open");
       if (backdrop) backdrop.hidden = false;
       if (bottom) bottom.classList.add("is-open");
@@ -72,9 +77,17 @@
       menuTab?.setAttribute("aria-expanded", "true");
     }
     menuBtn?.addEventListener("click", () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       bottom?.classList.contains("is-open") ? closeAll() : openMenu();
     });
     menuTab?.addEventListener("click", () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       bottom?.classList.contains("is-open") ? closeAll() : openMenu();
     });
     backdrop?.addEventListener("click", closeAll);

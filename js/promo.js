@@ -58,6 +58,7 @@
     const menuTab = $("#mobile-menu-tab");
 
     function closeAll() {
+      if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       bottom && bottom.classList.remove("is-open");
       backdrop && (backdrop.hidden = true);
       document.body.classList.remove("drawer-open");
@@ -68,6 +69,10 @@
     [menuBtn, menuTab].forEach((btn) => {
       if (!btn) return;
       btn.addEventListener("click", () => {
+        if (window.DesktopFullMenu) {
+          window.DesktopFullMenu.toggle();
+          return;
+        }
         const open = bottom && bottom.classList.contains("is-open");
         closeAll();
         if (!open) {

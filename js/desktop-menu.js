@@ -18,6 +18,10 @@
     return window.matchMedia("(max-width: 900px)").matches;
   }
 
+  function isMobileSite() {
+    return /\/mobile(?:\/|$)/i.test(window.location.pathname || "");
+  }
+
   function isLoggedIn() {
     if (window.AuthModals && typeof window.AuthModals.isLoggedIn === "function") {
       return !!window.AuthModals.isLoggedIn();
@@ -543,10 +547,29 @@
     return !!(sheet && !sheet.hidden && sheet.classList.contains("is-open"));
   }
 
+  function dismissOtherDrawers() {
+    var left = $("#left-sidebar");
+    var right = $("#right-sidebar");
+    var nav = $("#header-bottom");
+    var backdrop = $("#drawer-backdrop");
+    if (left) left.classList.remove("open");
+    if (right) right.classList.remove("is-open");
+    if (nav) nav.classList.remove("is-open");
+    if (backdrop) {
+      backdrop.hidden = true;
+      backdrop.classList.remove("is-visible");
+    }
+    document.body.classList.remove("drawer-open");
+    $("#mobile-sports-btn")?.setAttribute("aria-expanded", "false");
+    $("#mobile-betslip-btn")?.setAttribute("aria-expanded", "false");
+  }
+
   function open() {
     if (!isMobileViewport()) return;
+    if (isMobileSite()) return;
     var sheet = ensure();
     if (!sheet) return;
+    dismissOtherDrawers();
     syncAuthVisibility(sheet);
     tickClock(sheet);
     sheet.hidden = false;
@@ -596,8 +619,49 @@
     },
   };
 
-  // Keep auth visibility in sync when login state changes
-  document.addEventListener("DOMContentLoaded", function () {
+  function wireGlobalChrome() {
+    if (wireGlobalChrome.done || isMobileSite()) return;
+    wireGlobalChrome.done = true;
+
+    document.addEventListener(
+      "click",
+      function (e) {
+        if (!isMobileViewport()) return;
+
+        var menuTrigger = e.target.closest("#mobile-menu-btn, #mobile-menu-tab");
+        if (menuTrigger) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          toggle();
+          return;
+        }
+
+        if (
+          e.target.closest(
+            "#mobile-sports-btn, #mobile-betslip-btn, #drawer-backdrop, #left-drawer-close, #right-drawer-close"
+          )
+        ) {
+          close();
+        }
+      },
+      true
+    );
+
+    window.addEventListener("resize", function () {
+      if (!isMobileViewport()) close();
+    });
+  }
+
+  function boot() {
+    if (isMobileSite()) return;
+    if (!$("#mobile-menu-btn") && !$("#mobile-menu-tab")) return;
     ensure();
-  });
+    wireGlobalChrome();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();

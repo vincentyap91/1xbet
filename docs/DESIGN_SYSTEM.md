@@ -217,6 +217,19 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
 | My bets History empty | `.mybets-empty--history` + `.mybets-view-history` | clipboard empty + `--action-green` **View Bet History** CTA |
 | Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | overlay dialog from My Bets → History; cats All/Sports/Casino; date range presets + custom; date-grouped `.bh-desk-card` rows (wide grid: type/odds/stake/winnings/id) |
+| Bet slip settings (toolbar gear) | `.bss-backdrop` / `.bss-panel` | Automax / Balance / Potential winnings / Select account; Save → `localStorage` (`1xbet-bet-slip-settings`) |
+| Baseline odds popover | `.tsp-backdrop` `#tsp-baseline-overlay` | From **Overall odds** `.ticket-settings[data-ticket-popover="baseline"]`; set odds + cancel-on-score-change; Save + clear (trash) |
+| Stake prefs popover | `.tsp-backdrop` `#tsp-stake-overlay` | From **Stake amount** `.ticket-settings[data-ticket-popover="stake"]`; increment + 3 quick amounts; Save updates ±/quick chips |
+| Bet type select | `#bet-type-select` / `#bet-type-menu` | **1 selection:** label `Single bet`, control **disabled**. **2+ selections:** enabled menu — Accumulator / Chain bet / Anti-accumulator / Lucky bet / **Singles**; default Accumulator |
+| Ticket stack | `#bet-list` / `.ticket-card` | Unbounded stack — **no nested max-height scroll** that clips tickets; panel grows with picks. Perforated join notches between cards. New pick uses `.is-entering` → `.is-entered` expand animation; remove uses `.is-removing` |
+| Odds change select | `#odds-change-select` / `#odds-change-menu` | Accept if odds increase / Confirm / Accept any change |
+| Promo code | `#promo-code-input` | Editable text field (not a dead toggle) |
+
+**Bet slip ticket popovers (desktop + ≤900):** Same host behaviour as Bet Slip Settings — desktop popup **inside** `.bet-slip-panel`; mobile mounts on `body` as full-screen sheet. Do not route Overall-odds / Stake gears to the toolbar BSS panel. Persist baseline → `1xbet-baseline-odds`; stake prefs → `1xbet-stake-prefs` (drives `[data-stake-step]` + `.quick-stakes`).
+
+**Bet type (desktop bet slip, global via `js/script.js`):** Singles and other multi modes are only choosable when `betSlip.length > 1`. With one pick the select stays locked on Single bet (no menu).
+
+**Ticket list growth:** Keep adding selections indefinitely; `.bet-list` stays `overflow: visible` so every ticket remains in the document flow (page/rail scroll, not an inner clipped scroller).
 
 **Bet Slip → My Bets → History flow (desktop):** History tab shows last-session settled bets (or empty CTA). **View Bet History** opens `.bh-desktop-panel` (not the account `bet-history.html` page). Keep right-rail chrome unchanged; do not copy mobile bottom-sheet layout into the panel.
 

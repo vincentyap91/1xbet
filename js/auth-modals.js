@@ -658,6 +658,26 @@
     bar.hidden = !on;
   }
 
+  function ensureDesktopFullMenu() {
+    try {
+      if (/\/mobile(?:\/|$)/i.test(window.location.pathname || "")) return;
+      if (!document.getElementById("mobile-menu-btn") && !document.getElementById("mobile-menu-tab")) {
+        return;
+      }
+      const run = () => {
+        if (window.DesktopFullMenu) {
+          if (typeof window.DesktopFullMenu.ensure === "function") window.DesktopFullMenu.ensure();
+          if (typeof window.DesktopFullMenu.syncAuth === "function") window.DesktopFullMenu.syncAuth();
+        }
+      };
+      if (window.DesktopFullMenu) {
+        run();
+        return;
+      }
+      loadScriptOnce("desktop-menu-js", authScriptBase() + "desktop-menu.js", run);
+    } catch (e) { /* ignore */ }
+  }
+
   function setLoggedIn(on) {
     ensureUserHeader();
     document.body.classList.toggle("is-logged-in", !!on);
@@ -684,6 +704,10 @@
       if (window.MessagesUI && typeof window.MessagesUI.destroy === "function") {
         window.MessagesUI.destroy();
       }
+    }
+
+    if (window.DesktopFullMenu && typeof window.DesktopFullMenu.syncAuth === "function") {
+      window.DesktopFullMenu.syncAuth();
     }
 
     const tabbar = document.querySelector(".mobile-tabbar");
@@ -1110,6 +1134,7 @@
     else setLoggedIn(false);
 
     initMobileTabbar();
+    ensureDesktopFullMenu();
 
     window.AuthModals = {
       open: openPanel,

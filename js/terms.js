@@ -21,11 +21,16 @@
     const backdrop = document.getElementById('drawer-backdrop');
     if (!btn || !nav) return;
     function close() {
+      if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       nav.classList.remove('is-open');
       btn.setAttribute('aria-expanded', 'false');
       if (backdrop) { backdrop.hidden = true; document.body.classList.remove('drawer-open'); }
     }
     btn.addEventListener('click', function () {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       if (nav.classList.contains('is-open')) {
         close();
       } else {

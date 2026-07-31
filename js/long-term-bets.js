@@ -260,6 +260,10 @@
     });
 
     $("#mobile-menu-btn")?.addEventListener("click", () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       const bottom = $("#header-bottom");
       const open = bottom?.classList.toggle("is-open");
       $("#mobile-menu-btn")?.setAttribute("aria-expanded", open ? "true" : "false");

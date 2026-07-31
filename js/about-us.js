@@ -21,16 +21,27 @@
     const backdrop = document.getElementById('drawer-backdrop');
     if (!btn || !nav) return;
     function open() {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.open();
+        return;
+      }
       nav.classList.add('is-open');
       btn.setAttribute('aria-expanded', 'true');
       if (backdrop) { backdrop.hidden = false; document.body.classList.add('drawer-open'); }
     }
     function close() {
+      if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       nav.classList.remove('is-open');
       btn.setAttribute('aria-expanded', 'false');
       if (backdrop) { backdrop.hidden = true; document.body.classList.remove('drawer-open'); }
     }
-    btn.addEventListener('click', () => nav.classList.contains('is-open') ? close() : open());
+    btn.addEventListener('click', () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
+      nav.classList.contains('is-open') ? close() : open();
+    });
     if (backdrop) backdrop.addEventListener('click', close);
   })();
 

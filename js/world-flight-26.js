@@ -64,6 +64,7 @@
     const menuTab = $("#mobile-menu-tab");
 
     function closeAll() {
+      if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       document.body.classList.remove("drawer-open");
       if (backdrop) backdrop.hidden = true;
       if (bottom) bottom.classList.remove("is-open");
@@ -72,6 +73,10 @@
     }
 
     function openMenu() {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.open();
+        return;
+      }
       document.body.classList.add("drawer-open");
       if (backdrop) backdrop.hidden = false;
       if (bottom) bottom.classList.add("is-open");
@@ -80,10 +85,18 @@
     }
 
     menuBtn?.addEventListener("click", () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       if (bottom?.classList.contains("is-open")) closeAll();
       else openMenu();
     });
     menuTab?.addEventListener("click", () => {
+      if (window.DesktopFullMenu) {
+        window.DesktopFullMenu.toggle();
+        return;
+      }
       if (bottom?.classList.contains("is-open")) closeAll();
       else openMenu();
     });
