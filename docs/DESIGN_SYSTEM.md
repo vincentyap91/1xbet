@@ -441,9 +441,9 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 
 ### Mobile chrome (≤900px)
 
-- Hamburger → primary nav drawer (`#header-bottom.is-open`)
-- **Sports homepage tabbar** (`.mobile-tabbar--sports` on `index.html`): Sports · Casino · **Bet Slip** (elevated `--cyan-accent` circle) · Deposit · Account/Log in. Icons from `mobile/assets/icons/tab-*.svg`. Guest 5th label **Log in**; logged-in **Account**. Bet count badge on Bet Slip (`--action-green`). Auth sync via `js/auth-modals.js` `syncSportsTabbarAuth` (does not replace markup).
-- **Account pages tabbar** (`.mobile-tabbar--account` via `js/auth-modals.js`): Home · Promotion · Deposit FAB · Livechat · Account. Guest taps on Deposit / Livechat / Account open login.
+- Hamburger → primary nav drawer (`#header-bottom.is-open`) / full menu `#ds-menu-sheet` (`DesktopFullMenu`). Gear beside close opens **Website settings** (type / odds format / event odds / time / other + Cancel · Apply).
+- **Sports / shared homepage tabbar** (`.mobile-tabbar--sports` on all non-casino desktop→mobile pages): Sports · Casino · **Bet slip** (elevated `--cyan-accent` circle) · Deposit · Account/Log in. Sports / Casino open light flyouts (same inner links as mobile `.mh-tabbar`: National Team / Live / Sports; Casino / Live Casino / 1xGames). Icons from `mobile/assets/icons/tab-*.svg`. Guest 5th label **Log in**; logged-in **Account**. Full menu stays in header hamburger (`DesktopFullMenu`). Auth sync via `js/auth-modals.js` `syncSportsTabbarAuth` + `ensureSportsTabbarMarkup`. Account/profile pages highlight the Account tab.
+- **Casino tabbar** (`.mobile-tabbar--casino` on casino pages incl. `casino-categories.html` / `casino-providers.html`): Categories · Providers · **My Casino** · Promo · Account/Log in — same as mobile `.mh-cs-tabbar`, last item Account/Log in. Categories / Providers pages mirror `mobile/casino-categories.html` / `mobile/casino-providers.html` layout (2-col tiles + banners; Sort + 3-col logos). Icons from `mobile/assets/icons/cs-*.svg`. Wired via `ensureCasinoTabbarMarkup` / `syncCasinoTabbarAuth`.
 - **Guest header:** hamburger · logo · outline **Log in** · green **Registration** (hide gift + language on sports mobile chrome).
 - **Logged-in header:** hamburger · logo · balance chip (MYR + refresh) · green **Deposit** · language flag chip (hide gift / messages / account avatar on mobile).
 - Left sports = left drawer; bet slip = bottom sheet (`.right-sidebar.is-open`); hide desktop `.right-collapse` + `.reg-panel` (auth via header)
@@ -457,7 +457,7 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 |-------|----------------|
 | Top header | Dark `--header-bar-bg`. **Guest mobile (sports):** hamburger · logo · Log in · Register. **Logged-in mobile (sports):** hamburger · logo · balance + refresh · Deposit · language. Account pages may still show gift for Daily Check-In where authored. |
 | Subcategory strip | `.acc-subnav` (≤900px). **Icons:** Figma [`96:9`](https://www.figma.com/design/EdLwHua7n5o3CGSLKW4SFa/Untitled?node-id=96-9) exports in `assets/icons/account-subnav/` rendered as `<img>` with fill `#1a4f8a` (`--section-blue`) so glyphs stay visible on light cards. Deposit/Withdraw→wallet; tx→exchange; queries→info-circle; security→key; etc. Active card `--odds-hover` + `--section-blue` border. Badges `--action-green`. |
-| Bottom sticky nav | Sports pages: `.mobile-tabbar--sports`. Account pages: `.mobile-tabbar--account` (Home · Promotion · Deposit FAB · Livechat · Account). |
+| Bottom sticky nav | Sports (all non-casino): `.mobile-tabbar--sports`. Casino: `.mobile-tabbar--casino` (Categories · Providers · My Casino · Promo · Account/Log in). |
 
 Wired in `js/account.js` when `.account-main` is present.
 

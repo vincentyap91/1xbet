@@ -359,18 +359,110 @@ body[data-page="favourites"] .page-shell {
   display: none !important;
 }
 
-@media (max-width: 600px) {
-  .fv-main {
-    max-width: none;
-    padding: 0 0 24px;
+.fv-mobile-subbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  body[data-page="favourites"] {
+    background: #eef2f6;
   }
 
+  body[data-page="favourites"] .site-footer {
+    display: none;
+  }
+
+  .fv-mobile-subbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 8px 12px;
+    background: var(--section-blue);
+    color: #fff;
+    box-sizing: border-box;
+  }
+
+  .fv-mobile-subbar__back {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .fv-mobile-subbar__back img {
+    width: 10px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+  }
+
+  .fv-mobile-subbar__title {
+    margin: 0;
+    font-family: var(--font);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .sportsbook-layout.fv-layout {
+    padding: 0;
+    background: #eef2f6;
+  }
+
+  .fv-main {
+    max-width: none;
+    margin: 0;
+    padding: 0 0 calc(16px + var(--mobile-tabbar-h, 64px) + env(safe-area-inset-bottom, 0px));
+    background: #eef2f6;
+  }
+
+  .fv-toolbar,
   .fv-title {
-    font-size: 18px;
-    margin: 4px 8px 12px;
+    display: none !important;
   }
 
   .fv-panel {
-    margin: 0 4px;
+    margin: 8px 8px 0;
+    min-height: 280px;
+    border-radius: 8px;
+  }
+
+  .fv-panel__head {
+    padding: 10px 12px;
+  }
+
+  .fv-panel__body {
+    padding: 0 10px 12px;
+  }
+
+  .fv-tabs {
+    margin: 0 0 10px;
+  }
+
+  .fv-empty {
+    padding: 48px 16px 56px;
+  }
+
+  .fv-empty__title {
+    color: var(--section-blue);
+  }
+
+  .fv-empty__hint {
+    color: var(--header-action);
+  }
+}
+
+@media (max-width: 600px) {
+  .fv-main {
+    max-width: none;
+    padding: 0 0 calc(16px + var(--mobile-tabbar-h, 64px) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .fv-panel {
+    margin: 8px 8px 0;
   }
 }

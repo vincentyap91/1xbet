@@ -91,6 +91,9 @@
       if (regCta) regCta.hidden = false;
       list.innerHTML = "";
       syncOddButtons();
+      if (typeof window.DsBetSlipGenerator?.ensureEmptyCta === "function") {
+        window.DsBetSlipGenerator.ensureEmptyCta();
+      }
       return;
     }
 
@@ -271,12 +274,18 @@
 
     $("#stake-input")?.addEventListener("input", updateTotals);
 
-    $("#generate-slip")?.addEventListener("click", () => {
-      demoPool.forEach((item) => {
+    window.addEventListener("ds:bsg-create", (e) => {
+      const detail = e.detail || {};
+      const picks = Array.isArray(detail.picks) ? detail.picks : [];
+      if (!picks.length) return;
+      picks.forEach((item) => {
         if (!state.betSlip.some((bet) => bet.id === item.id)) state.betSlip.push(item);
       });
+      detail.handled = true;
       renderBetSlip();
-      showToast("Generated selections added");
+      if (typeof window.DsBetSlipGenerator?.ensureEmptyCta === "function") {
+        window.DsBetSlipGenerator.ensureEmptyCta();
+      }
     });
 
     // Save/load expand UI handled by js/bet-save-load.js

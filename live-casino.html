@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -106,16 +106,7 @@
                 <a href="index.html#games" role="menuitem">Show all</a>
               </div>
             </div>
-            <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
-                Casino
-                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
-              </button>
-              <div class="dropdown" role="menu">
-                <a href="casino.html" role="menuitem">Slots</a>
-                <a href="casino-favourites.html" role="menuitem">My Casino / Favourites</a>
-              </div>
-            </div>
+            <a href="casino.html" class="nav-link nav-link-plain">Slots</a>
             <a href="live-casino.html" class="nav-link nav-link-plain active" aria-current="page">Live Casino</a>
             <div class="nav-item has-dropdown">
               <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
@@ -910,7 +901,7 @@
           </section>
 
           <!-- ── Provider strip ──────────────────────────── -->
-          <div class="casino-providers lc-providers" aria-label="Live Casino providers">
+          <div class="casino-providers lc-providers" id="casino-providers" aria-label="Live Casino providers">
             <a href="#" class="casino-provider lc-provider" title="Winfinity">
               <img src="assets/images/live-casino/providers/winfinity.png" alt="Winfinity" width="72" height="40" loading="lazy" />
             </a>

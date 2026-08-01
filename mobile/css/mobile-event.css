@@ -1,0 +1,558 @@
+/* Mobile Event page — screenshot scoreboard + markets */
+.mh-page--event .mh-main {
+  padding: 0 0 120px;
+  background: var(--odds-bg, #e8eef5);
+}
+
+.mh-ev-subbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 10px;
+  background: var(--section-blue, #1a4f8a);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.mh-ev-subbar__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  text-decoration: none;
+}
+
+.mh-ev-subbar__back img {
+  filter: brightness(0) invert(1);
+}
+
+.mh-ev-subbar__title {
+  margin: 0;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mh-ev-subbar__actions {
+  display: flex;
+  gap: 6px;
+}
+
+.mh-ev-subbar__btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mh-ev-subbar__btn img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* —— Board —— */
+.mh-ev-board {
+  position: relative;
+  color: #fff;
+  background:
+    linear-gradient(180deg, rgba(11, 29, 51, 0.88) 0%, rgba(15, 39, 68, 0.9) 100%),
+    url("../../assets/images/live-casino/hero-football-studio.png") center 20% / cover no-repeat,
+    var(--header-bg, #0f2744);
+  padding: 0 0 10px;
+  overflow: hidden;
+}
+
+.mh-ev-tools {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 8px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mh-ev-tools__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+}
+
+.mh-ev-tools__btn img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.mh-ev-tools__btn.is-active img {
+  opacity: 1;
+}
+
+.mh-ev-tools__btn.is-active::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 2px;
+  background: var(--action-green, #88af2a);
+  border-radius: 1px;
+}
+
+.mh-ev-tools__more {
+  margin-left: auto;
+}
+
+.mh-ev-board__status {
+  margin: 10px 0 6px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.mh-ev-board__scoreline {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.mh-ev-board__team {
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.mh-ev-board__team--away {
+  text-align: left;
+}
+
+.mh-ev-board__score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.mh-ev-board__score-h,
+.mh-ev-board__score-a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 30px;
+  padding: 0 6px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-ev-board__score-h {
+  background: rgba(62, 180, 240, 0.95);
+  color: #0b1d33;
+}
+
+.mh-ev-board__score-a {
+  background: rgba(183, 212, 74, 0.95);
+  color: #0b1d33;
+}
+
+.mh-ev-board__score-sep {
+  color: #fff;
+  font-size: 18px;
+}
+
+.mh-ev-board__strip {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 0 12px;
+}
+
+.mh-ev-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mh-ev-mini--home {
+  justify-content: flex-start;
+}
+
+.mh-ev-mini--away {
+  justify-content: flex-end;
+}
+
+.mh-ev-mini__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mh-ev-ico {
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.mh-ev-ico--corner {
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 7px solid var(--cyan-accent, #3eb4f0);
+}
+
+.mh-ev-mini--away .mh-ev-ico--corner {
+  border-left-color: #b7d44a;
+}
+
+.mh-ev-ico--ycard {
+  width: 8px;
+  height: 11px;
+  border-radius: 1px;
+  background: #f0c040;
+}
+
+.mh-ev-ico--rcard {
+  width: 8px;
+  height: 11px;
+  border-radius: 1px;
+  background: #e04545;
+}
+
+.mh-ev-ico--sub {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  position: relative;
+}
+
+.mh-ev-ico--sub::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.mh-ev-board__ht {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--cyan-soft, #9adcf8);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.mh-ev-board__league {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font, Arial, sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-ev-board__league img {
+  width: 10px;
+  height: 6px;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* —— Period pills + search —— */
+.mh-ev-filters {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 10px 10px 8px;
+  background: var(--odds-bg, #e8eef5);
+}
+
+.mh-ev-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.mh-ev-pill {
+  flex: 0 0 auto;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #b7c9db;
+  background: #fff;
+  color: var(--section-blue, #1a4f8a);
+  font-family: var(--font, Arial, sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-ev-pill.is-active {
+  background: var(--section-blue, #1a4f8a);
+  border-color: var(--section-blue, #1a4f8a);
+  color: #fff;
+}
+
+.mh-ev-searchrow {
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  gap: 6px;
+  padding: 0 10px 10px;
+  background: var(--odds-bg, #e8eef5);
+}
+
+.mh-ev-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 10px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #d0dde9;
+}
+
+.mh-ev-search img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+.mh-ev-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-family: var(--font, Arial, sans-serif);
+  font-size: 13px;
+  background: transparent;
+  color: var(--text-primary, #1a3048);
+}
+
+.mh-ev-collapse {
+  display: grid;
+  place-items: center;
+  border: 1px solid #d0dde9;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mh-ev-collapse img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.65;
+}
+
+/* —— Markets —— */
+.mh-ev-markets {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 8px 12px;
+  background: var(--odds-bg, #e8eef5);
+}
+
+.mh-ev-market {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 48, 72, 0.08);
+}
+
+.mh-ev-market__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: var(--league-header, #d8e3ee);
+  color: var(--text-primary, #1a3048);
+  font-family: var(--font, Arial, sans-serif);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.mh-ev-market__pin {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.mh-ev-market__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.mh-ev-market__head::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid currentColor;
+  opacity: 0.45;
+}
+
+.mh-ev-market.is-open .mh-ev-market__head::after {
+  transform: rotate(180deg);
+}
+
+.mh-ev-market__body {
+  display: none;
+  gap: 4px;
+  padding: 6px;
+  background: #fff;
+}
+
+.mh-ev-market.is-open .mh-ev-market__body {
+  display: grid;
+}
+
+.mh-ev-market__body--cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.mh-ev-market__body--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mh-ev-odd {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 215, 228, 0.95);
+  background: #fff;
+  font-family: var(--font, Arial, sans-serif);
+  text-align: left;
+  cursor: pointer;
+  color: var(--text-primary, #1a3048);
+}
+
+.mh-ev-odd .mh-odds__lab {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #5a6f86);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mh-ev-odd .mh-odds__val {
+  font-size: 13px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-ev-odd.is-selected,
+.mh-ev-odd.selected {
+  background: var(--odds-selected, #3eb4f0);
+  border-color: #1a8fc4;
+  color: #fff;
+}
+
+.mh-ev-odd.selected .mh-odds__lab,
+.mh-ev-odd.selected .mh-odds__val {
+  color: #fff;
+}
+
+/* —— List of markets / Bet Builder —— */
+.mh-ev-modebar {
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  z-index: 35;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(11, 29, 51, 0.22);
+}
+
+.mh-ev-modebar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: none;
+  font-family: var(--font, Arial, sans-serif);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.mh-ev-modebar__btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.mh-ev-modebar__btn.is-active {
+  background: var(--section-blue, #1a4f8a);
+  color: #fff;
+}
+
+.mh-ev-modebar__btn.is-active img {
+  filter: brightness(0) invert(1);
+}
+
+.mh-ev-modebar__btn:not(.is-active) {
+  background: #e8eef5;
+  color: var(--section-blue, #1a4f8a);
+}
+
+.mh-ev-modebar__btn:not(.is-active) img {
+  opacity: 0.75;
+}

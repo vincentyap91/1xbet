@@ -814,6 +814,13 @@ body.mh-page.mh-sheet-open {
 }
 
 /* ---------- Match card ---------- */
+.mh-match-card,
+.mh-sp-card,
+.mh-sp-match,
+.mh-fv-card {
+  cursor: pointer;
+}
+
 .mh-match-card {
   width: var(--mh-match-w);
   flex: 0 0 var(--mh-match-w);

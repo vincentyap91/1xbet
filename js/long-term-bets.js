@@ -87,6 +87,9 @@
       updateTotals();
       syncOddButtons();
       syncMobileBetCount();
+      if (typeof window.DsBetSlipGenerator?.ensureEmptyCta === "function") {
+        window.DsBetSlipGenerator.ensureEmptyCta();
+      }
       return;
     }
 
@@ -206,6 +209,22 @@
     });
 
     $("#stake-input")?.addEventListener("input", updateTotals);
+
+    window.addEventListener("ds:bsg-create", (e) => {
+      const detail = e.detail || {};
+      const picks = Array.isArray(detail.picks) ? detail.picks : [];
+      if (!picks.length) return;
+      const stake = Number(detail.opts?.stake);
+      if (Number.isFinite(stake) && stake > 0) {
+        const stakeInput = $("#stake-input");
+        if (stakeInput) stakeInput.value = String(stake);
+      }
+      picks.forEach((item) => {
+        if (!state.betSlip.some((bet) => bet.id === item.id)) state.betSlip.push(item);
+      });
+      detail.handled = true;
+      renderBetSlip();
+    });
 
     $$(".bet-tab").forEach((tab) => {
       tab.addEventListener("click", () => {

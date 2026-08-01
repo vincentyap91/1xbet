@@ -34,7 +34,7 @@
         </div>
         <div class="fv-card__actions">
           ${stream}
-          <button type="button" class="fv-card__more" data-toast="Event options" aria-label="More options">
+          <button type="button" class="fv-card__more" data-event-info="${escapeHtml(event.id)}" aria-label="Event info" aria-haspopup="dialog">
             <img src="assets/icons/icon-more.svg" alt="" width="14" height="14" onerror="this.style.display='none';this.parentElement.textContent='⋯'" />
           </button>
         </div>
@@ -94,17 +94,47 @@
 
     document.addEventListener("click", (e) => {
       const toastBtn = e.target.closest("[data-toast]");
-      if (!toastBtn) return;
-      e.preventDefault();
-      const msg = toastBtn.getAttribute("data-toast");
-      const el = document.getElementById("fv-toast");
-      if (!el || !msg) return;
-      el.textContent = msg;
-      el.hidden = false;
-      window.clearTimeout(el._t);
-      el._t = window.setTimeout(() => {
-        el.hidden = true;
-      }, 1800);
+      if (toastBtn) {
+        e.preventDefault();
+        const msg = toastBtn.getAttribute("data-toast");
+        const el = document.getElementById("fv-toast");
+        if (!el || !msg) return;
+        el.textContent = msg;
+        el.hidden = false;
+        window.clearTimeout(el._t);
+        el._t = window.setTimeout(() => {
+          el.hidden = true;
+        }, 1800);
+        return;
+      }
+
+      if (e.target.closest("a, button")) return;
+      const card = e.target.closest("[data-fav-event][data-event-id]");
+      if (!card) return;
+      const id = card.getAttribute("data-event-id");
+      const event = (api.getById && api.getById(id)) || { id };
+      try {
+        sessionStorage.setItem(
+          "ds-event-pending",
+          JSON.stringify({
+            id: event.id,
+            home: event.home || "",
+            away: event.away || "",
+            league: event.league || "",
+            sport: event.sport || "football",
+            sportIcon: event.sportIcon || "assets/icons/sport-football.svg",
+            homeLogo: event.homeLogo || "",
+            awayLogo: event.awayLogo || "",
+            live: event.scope === "live",
+            scoreH: event.homeScore,
+            scoreA: event.awayScore,
+            clock: event.time || "",
+          })
+        );
+      } catch (_) {
+        /* ignore */
+      }
+      window.location.href = `event.html?id=${encodeURIComponent(id)}`;
     });
 
     function render() {

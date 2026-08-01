@@ -583,21 +583,11 @@
     },
   ];
 
-  const homeAccumulators = {
-    1: [
-      { id: "a1", match: "Utah Jazz vs Washington Wizards", selection: "Wizards", odds: 1.72, league: "NBA Summer League", market: "Winner" },
-      { id: "a2", match: "Indiana Fever vs Phoenix Mercury", selection: "Fever", odds: 1.85, league: "WNBA", market: "Winner" },
-      { id: "a3", match: "Spain vs Belgium", selection: "Spain", odds: 2.15, league: "World Cup 2026", market: "1X2", flags: ["ES", "BE"], sportIcon: "assets/icons/lnt/acc-football.svg" },
-      { id: "a4", match: "Colorado Rockies vs Giants", selection: "Rockies", odds: 2.20, league: "MLB", market: "Winner" },
-      { id: "a5", match: "Albuquerque vs Sugar Land", selection: "Isotopes", odds: 1.70, league: "MiLB", market: "Winner" },
-    ],
-    2: [
-      { id: "a6", match: "Arizona Diamondbacks vs Padres", selection: "Padres", odds: 1.75, league: "MLB", market: "Winner" },
-      { id: "a7", match: "Las Vegas Aces vs Portland Fire", selection: "Aces", odds: 1.55, league: "WNBA", market: "Winner" },
-      { id: "a8", match: "Washington Freedom vs LAKR", selection: "LAKR", odds: 1.22, league: "USA Major League", market: "Winner" },
-      { id: "a9", match: "West Coast Rangers vs Western Springs", selection: "Rangers", odds: 1.65, league: "NZ Championship", market: "1X2" },
-    ],
-  };
+  const homeAccumulators =
+    (window.SbAccumulators && window.SbAccumulators.HOME_DATA) || {
+      1: [],
+      2: [],
+    };
 
   const liveNationalAccumulators = {
     1: [
@@ -1325,7 +1315,7 @@
           <div class="event-card-actions">
             ${pinButtonHtml(event.id)}
             <button type="button" class="icon-tiny fav${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
-            <button type="button" class="icon-tiny event-card-more" aria-label="More options">⋯</button>
+            <button type="button" class="icon-tiny event-card-more" data-event-info="${event.id}" aria-label="Event info" aria-haspopup="dialog">⋯</button>
           </div>
         </div>
         <div class="event-card-league">${leagueName}</div>
@@ -1333,6 +1323,7 @@
           <div class="event-side-actions">
             ${pinButtonHtml(event.id, "pin--desktop")}
             <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+            <button type="button" class="icon-tiny event-card-more event-card-more--desktop" data-event-info="${event.id}" aria-label="Event info" aria-haspopup="dialog">⋯</button>
           </div>
           <div class="event-teams">
             <div class="team-line">${homeLogo}<span>${event.home}</span><span class="score">${scoreH}</span></div>
@@ -1678,6 +1669,13 @@
   }
 
   function renderAccumulators() {
+    if (window.SbAccumulators && typeof window.SbAccumulators.render === "function") {
+      window.SbAccumulators.render({
+        data: accumulators,
+        flagIconMap: typeof flagIconMap !== "undefined" ? flagIconMap : {},
+      });
+      return;
+    }
     [1, 2].forEach((n) => {
       const list = $(`#acc-list-${n}`);
       if (!list) return;
@@ -2554,6 +2552,9 @@
       list.innerHTML = "";
       syncBetSlipAuthUi();
       syncOddButtons();
+      if (typeof window.DsBetSlipGenerator?.ensureEmptyCta === "function") {
+        window.DsBetSlipGenerator.ensureEmptyCta();
+      }
       return;
     }
 
@@ -2930,15 +2931,47 @@
 
     const eventSearch = $("#event-search");
     if (eventSearch) {
+      const goSearchPage = () => {
+        if (window.matchMedia("(max-width: 900px)").matches) {
+          const q = eventSearch.value.trim();
+          window.location.href = q
+            ? `search.html?q=${encodeURIComponent(q)}`
+            : "search.html";
+          return true;
+        }
+        return false;
+      };
+      eventSearch.addEventListener("focus", () => {
+        goSearchPage();
+      });
       eventSearch.addEventListener("input", (e) => {
+        if (goSearchPage()) return;
         state.liveSearch = e.target.value.trim();
         renderTables();
+      });
+      eventSearch.closest(".te-search")?.querySelector(".te-search-btn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (goSearchPage()) return;
       });
     }
 
     const lineSearch = $("#line-search");
     if (lineSearch) {
+      const goLineSearchPage = () => {
+        if (window.matchMedia("(max-width: 900px)").matches) {
+          const q = lineSearch.value.trim();
+          window.location.href = q
+            ? `search.html?q=${encodeURIComponent(q)}`
+            : "search.html";
+          return true;
+        }
+        return false;
+      };
+      lineSearch.addEventListener("focus", () => {
+        goLineSearchPage();
+      });
       lineSearch.addEventListener("input", (e) => {
+        if (goLineSearchPage()) return;
         state.lineSearch = e.target.value.trim();
         renderTables();
       });
@@ -3021,8 +3054,56 @@
     }
   }
 
+  function stashEventPending(payload) {
+    try {
+      sessionStorage.setItem("ds-event-pending", JSON.stringify(payload));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function openEventPage(eventId) {
+    if (!eventId || document.body?.dataset?.page === "event") return;
+    const ctx = findEventContext(eventId);
+    const ev = ctx?.event;
+    const league = ctx?.league;
+    const sport = league?.sport || ev?.sport || "football";
+    const payload = { id: eventId };
+    if (ev?.home) payload.home = ev.home;
+    if (ev?.away) payload.away = ev.away;
+    if (league?.name) payload.league = league.name;
+    if (sport) {
+      payload.sport = sport;
+      payload.sportIcon =
+        (typeof sportHeaderIconMap !== "undefined" && sportHeaderIconMap[sport]) ||
+        `assets/icons/sport-${sport}.svg`;
+    }
+    if (ev?.homeLogo) payload.homeLogo = ev.homeLogo;
+    if (ev?.awayLogo) payload.awayLogo = ev.awayLogo;
+    if (ev?.live != null) payload.live = Boolean(ev.live);
+    if (ev?.scoreH != null) payload.scoreH = ev.scoreH;
+    if (ev?.scoreA != null) payload.scoreA = ev.scoreA;
+    if (ev?.clock || ev?.time) payload.clock = ev.clock || ev.time;
+    if (ev?.venue) payload.venue = ev.venue;
+    payload.tabs = ["Main", "1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter"];
+    stashEventPending(payload);
+    window.location.href = `event.html?id=${encodeURIComponent(eventId)}`;
+  }
+
   function initTablesDelegation() {
     document.addEventListener("click", (e) => {
+      const eventInfoBtn = e.target.closest("[data-event-info], .event-card-more");
+      if (eventInfoBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const row = eventInfoBtn.closest("[data-event-id]");
+        const id =
+          eventInfoBtn.getAttribute("data-event-info") ||
+          (row && row.getAttribute("data-event-id"));
+        if (id) openEventInfo(id);
+        return;
+      }
+
       const oddBtn = e.target.closest("[data-odd]");
       if (oddBtn) {
         e.preventDefault();
@@ -3051,6 +3132,7 @@
           btn.classList.toggle("active", adding);
           btn.setAttribute("aria-pressed", adding ? "true" : "false");
         });
+        syncEventInfoFavUi();
         return;
       }
 
@@ -3060,8 +3142,615 @@
         if (state.collapsedLeagues.has(id)) state.collapsedLeagues.delete(id);
         else state.collapsedLeagues.add(id);
         renderTables();
+        return;
+      }
+
+      if (e.target.closest("button, input, label, [data-odd], .stats-cell")) return;
+
+      const moreLink = e.target.closest(".more-link");
+      if (moreLink) {
+        e.preventDefault();
+        const moreRow = moreLink.closest(".event-row[data-event-id]");
+        const moreId = moreRow && moreRow.getAttribute("data-event-id");
+        if (moreId) openEventPage(moreId);
+        return;
+      }
+
+      if (e.target.closest("a")) return;
+      const row = e.target.closest(".event-row[data-event-id]");
+      if (row) {
+        const id = row.getAttribute("data-event-id");
+        if (id) openEventPage(id);
       }
     });
+  }
+
+  const EI_ICO = "mobile/assets/icons/";
+  let eventInfoCurrentId = "";
+
+  function findEventContext(eventId) {
+    const pools = [];
+    if (typeof liveLeagues !== "undefined") pools.push(...liveLeagues);
+    if (typeof lineLeagues !== "undefined") pools.push(...lineLeagues);
+    for (const league of pools) {
+      const event = (league.events || []).find((ev) => ev.id === eventId);
+      if (event) return { event, league };
+    }
+    const current = window.__dsCurrentEvent;
+    if (current && (current.id === eventId || !eventId)) {
+      return { event: current, league: { name: current.league || "Event" } };
+    }
+    try {
+      const raw = sessionStorage.getItem("ds-event-pending");
+      const pending = raw ? JSON.parse(raw) : null;
+      if (pending && (!eventId || pending.id === eventId)) {
+        return { event: pending, league: { name: pending.league || "Event" } };
+      }
+    } catch (_) {
+      /* ignore */
+    }
+    return null;
+  }
+
+  const EI_NOTIF_KEYS = ["score", "corners", "yellow"];
+  const EI_NOTIF_DEFAULT = {
+    instantOn: true,
+    matchOn: true,
+    instant: { score: true, corners: false, yellow: false },
+    match: { score: false, corners: false, yellow: false },
+  };
+
+  function loadEventNotifPrefs(eventId) {
+    try {
+      const raw = localStorage.getItem("ds-event-notif:" + eventId);
+      if (!raw) return structuredClone(EI_NOTIF_DEFAULT);
+      return { ...structuredClone(EI_NOTIF_DEFAULT), ...JSON.parse(raw) };
+    } catch (_) {
+      return structuredClone(EI_NOTIF_DEFAULT);
+    }
+  }
+
+  function saveEventNotifPrefs(eventId, prefs) {
+    try {
+      localStorage.setItem("ds-event-notif:" + eventId, JSON.stringify(prefs));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function buildTeamInfoDemo(event) {
+    const home = event?.home || "Lazio";
+    const away = event?.away || "Avellino 1912";
+    const homeLogo = event?.homeLogo || "assets/images/mobile-home/teams/team-01.webp";
+    const awayLogo = event?.awayLogo || "assets/images/mobile-home/teams/team-02.webp";
+    const logos = [
+      homeLogo,
+      awayLogo,
+      "assets/images/mobile-home/teams/team-03.webp",
+      "assets/images/mobile-home/teams/team-04.webp",
+      "assets/images/mobile-home/teams/team-05.webp",
+      "assets/images/mobile-home/teams/team-06.webp",
+    ];
+    const homeGames = [
+      {
+        date: "27/07/2026",
+        home,
+        away: "A.S.D. Flaminia Civita Castellana",
+        homeScore: 6,
+        awayScore: 0,
+        homeLogo,
+        awayLogo: logos[2],
+      },
+      {
+        date: "25/07/2026",
+        home,
+        away: "Pisa",
+        homeScore: 2,
+        awayScore: 1,
+        homeLogo,
+        awayLogo: logos[3],
+      },
+      {
+        date: "23/07/2026",
+        home: "Roma",
+        away: home,
+        homeScore: 2,
+        awayScore: 0,
+        homeLogo: logos[4],
+        awayLogo: homeLogo,
+      },
+      {
+        date: "04/07/2026",
+        home,
+        away: "Internazionale Milano",
+        homeScore: 0,
+        awayScore: 2,
+        homeLogo,
+        awayLogo: logos[5],
+      },
+      {
+        date: "27/06/2026",
+        home,
+        away: "Internazionale Milano",
+        homeScore: 0,
+        awayScore: 3,
+        homeLogo,
+        awayLogo: logos[5],
+      },
+    ];
+    const awayGames = [
+      {
+        date: "28/07/2026",
+        home: away,
+        away: "Benevento",
+        homeScore: 1,
+        awayScore: 1,
+        homeLogo: awayLogo,
+        awayLogo: logos[2],
+      },
+      {
+        date: "20/07/2026",
+        home: "Cosenza",
+        away,
+        homeScore: 0,
+        awayScore: 2,
+        homeLogo: logos[3],
+        awayLogo: awayLogo,
+      },
+      {
+        date: "12/07/2026",
+        home: away,
+        away: "Salernitana",
+        homeScore: 3,
+        awayScore: 1,
+        homeLogo: awayLogo,
+        awayLogo: logos[4],
+      },
+    ];
+    const meetings = [
+      {
+        date: "15/07/2025",
+        home,
+        away,
+        homeScore: 2,
+        awayScore: 1,
+        homeLogo,
+        awayLogo,
+      },
+      {
+        date: "03/01/2024",
+        home: away,
+        away: home,
+        homeScore: 0,
+        awayScore: 0,
+        homeLogo: awayLogo,
+        awayLogo: homeLogo,
+      },
+    ];
+    return {
+      home,
+      away,
+      homeLogo,
+      awayLogo,
+      homeGames,
+      awayGames,
+      meetings,
+      injured: [
+        { team: home, name: "Demo Player A", reason: "Injury" },
+        { team: away, name: "Demo Player B", reason: "Suspended" },
+      ],
+    };
+  }
+
+  function notifCheckRow(group, key, label, checked) {
+    return `<label class="ds-ei-notif__row${checked ? " is-checked" : ""}">
+      <input type="checkbox" data-ds-ei-notif-opt="${group}:${key}" ${checked ? "checked" : ""} />
+      <span class="ds-ei-notif__box" aria-hidden="true"></span>
+      <span>${label}</span>
+    </label>`;
+  }
+
+  function matchCardHtml(m) {
+    return `<article class="ds-ei-team__match">
+      <p class="ds-ei-team__date">${escapeHtml(m.date)}</p>
+      <div class="ds-ei-team__line">
+        <img src="${escapeHtml(m.homeLogo)}" alt="" width="18" height="18" />
+        <span class="ds-ei-team__name">${escapeHtml(m.home)}</span>
+        <span class="ds-ei-team__score">${escapeHtml(m.homeScore)}</span>
+      </div>
+      <div class="ds-ei-team__line">
+        <img src="${escapeHtml(m.awayLogo)}" alt="" width="18" height="18" />
+        <span class="ds-ei-team__name">${escapeHtml(m.away)}</span>
+        <span class="ds-ei-team__score">${escapeHtml(m.awayScore)}</span>
+      </div>
+      <button type="button" class="ds-ei-team__more" data-ds-ei-toast="Find out more">
+        Find out more
+        <img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="10" />
+      </button>
+    </article>`;
+  }
+
+  function teamAccordionHtml(name, logo, games, open) {
+    return `<section class="ds-ei-team__acc${open ? " is-open" : ""}">
+      <button type="button" class="ds-ei-team__acc-head" data-ds-ei-acc aria-expanded="${open ? "true" : "false"}">
+        <img src="${escapeHtml(logo)}" alt="" width="22" height="22" />
+        <span>${escapeHtml(name)}</span>
+        <img class="ds-ei-team__chev" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="12" />
+      </button>
+      <div class="ds-ei-team__acc-body"${open ? "" : " hidden"}>
+        ${(games || []).map(matchCardHtml).join("")}
+      </div>
+    </section>`;
+  }
+
+  function ensureEventInfoPanel() {
+    let sheet = document.getElementById("ds-event-info");
+    if (sheet) return sheet;
+
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<div class="ds-event-info" id="ds-event-info" hidden>
+        <div class="ds-event-info__panel" role="dialog" aria-modal="true" aria-labelledby="ds-ei-title">
+          <div class="ds-event-info__view is-active" data-ds-ei-view="menu">
+            <div class="ds-event-info__subbar">
+              <button type="button" class="ds-event-info__back" data-ds-ei-close aria-label="Back">
+                <img src="${EI_ICO}sp-back.svg" alt="" width="10" height="16" />
+              </button>
+              <h2 class="ds-event-info__title" id="ds-ei-title">Event info</h2>
+            </div>
+            <div class="ds-event-info__scroll">
+              <section class="ds-event-info__card" aria-label="Event actions">
+                <div class="ds-event-info__menu" role="menu">
+                  <button type="button" class="ds-event-info__item" role="menuitem" data-ds-ei-open="notif">
+                    <img src="${EI_ICO}ei-bell.svg" alt="" width="20" height="20" />
+                    <span>Notifications</span>
+                  </button>
+                  <button type="button" class="ds-event-info__item ds-event-info__item--fav" role="menuitem" data-ds-ei-fav>
+                    <img src="${EI_ICO}ei-star.svg" alt="" width="20" height="20" />
+                    <span data-ds-ei-fav-label>Add to favorites</span>
+                  </button>
+                  <button type="button" class="ds-event-info__item" role="menuitem" data-ds-ei-toast="Live Stream">
+                    <img src="assets/icons/lnt/icon-stream.svg" alt="" width="20" height="20" />
+                    <span>Live Stream</span>
+                  </button>
+                  <button type="button" class="ds-event-info__item" role="menuitem" data-ds-ei-toast="1xZone">
+                    <img src="${EI_ICO}ei-zone.svg" alt="" width="20" height="20" />
+                    <span>1xZone</span>
+                  </button>
+                  <button type="button" class="ds-event-info__item" role="menuitem" data-ds-ei-toast="Statistics">
+                    <img src="${EI_ICO}ei-stats.svg" alt="" width="20" height="20" />
+                    <span>Statistics</span>
+                  </button>
+                  <button type="button" class="ds-event-info__item" role="menuitem" data-ds-ei-open="team">
+                    <img src="${EI_ICO}ei-info.svg" alt="" width="20" height="20" />
+                    <span>Team information</span>
+                  </button>
+                </div>
+              </section>
+              <section class="ds-event-info__card ds-event-info__weather" aria-label="Weather conditions">
+                <div class="ds-event-info__weather-item">
+                  <img src="${EI_ICO}ei-cloud.svg" alt="" width="20" height="20" />
+                  <span data-ds-ei-temp>+24°C</span>
+                </div>
+                <div class="ds-event-info__weather-item">
+                  <img src="${EI_ICO}ei-wind.svg" alt="" width="20" height="20" />
+                  <span data-ds-ei-wind>4.4</span>
+                </div>
+                <div class="ds-event-info__weather-item">
+                  <img src="${EI_ICO}ei-pressure.svg" alt="" width="20" height="20" />
+                  <span data-ds-ei-pressure>757</span>
+                </div>
+                <div class="ds-event-info__weather-item">
+                  <img src="${EI_ICO}ei-drop.svg" alt="" width="20" height="20" />
+                  <span data-ds-ei-humidity>52</span>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="ds-event-info__view" data-ds-ei-view="notif" hidden>
+            <div class="ds-event-info__subbar">
+              <button type="button" class="ds-event-info__back" data-ds-ei-back aria-label="Back">
+                <img src="${EI_ICO}sp-back.svg" alt="" width="10" height="16" />
+              </button>
+              <h2 class="ds-event-info__title">Notification settings</h2>
+            </div>
+            <div class="ds-event-info__scroll ds-ei-notif__scroll">
+              <section class="ds-event-info__card ds-ei-notif__card">
+                <div class="ds-ei-notif__head">
+                  <span>Instant notifications</span>
+                  <label class="ds-ei-switch ds-ei-switch--green">
+                    <input type="checkbox" data-ds-ei-notif-toggle="instant" checked />
+                    <span class="ds-ei-switch__track" aria-hidden="true"></span>
+                  </label>
+                </div>
+                <div class="ds-ei-notif__list" data-ds-ei-notif-list="instant"></div>
+              </section>
+              <section class="ds-event-info__card ds-ei-notif__card">
+                <div class="ds-ei-notif__head">
+                  <span>Match details</span>
+                  <label class="ds-ei-switch ds-ei-switch--blue">
+                    <input type="checkbox" data-ds-ei-notif-toggle="match" checked />
+                    <span class="ds-ei-switch__track" aria-hidden="true"></span>
+                  </label>
+                </div>
+                <div class="ds-ei-notif__list" data-ds-ei-notif-list="match"></div>
+              </section>
+            </div>
+            <div class="ds-ei-notif__footer">
+              <button type="button" class="ds-ei-notif__delete" data-ds-ei-notif-delete aria-label="Delete settings">
+                <img src="assets/images/account/icon-trash.svg" alt="" width="16" height="16" />
+              </button>
+              <button type="button" class="ds-ei-notif__apply" data-ds-ei-notif-apply>Apply</button>
+            </div>
+          </div>
+
+          <div class="ds-event-info__view" data-ds-ei-view="team" hidden>
+            <div class="ds-event-info__subbar">
+              <button type="button" class="ds-event-info__back" data-ds-ei-back aria-label="Back">
+                <img src="${EI_ICO}sp-back.svg" alt="" width="10" height="16" />
+              </button>
+              <h2 class="ds-event-info__title">Team information</h2>
+            </div>
+            <div class="ds-ei-team__tabs" role="tablist" aria-label="Team information">
+              <button type="button" class="ds-ei-team__tab is-active" role="tab" aria-selected="true" data-ds-ei-team-tab="recent">Recent Games</button>
+              <button type="button" class="ds-ei-team__tab" role="tab" aria-selected="false" data-ds-ei-team-tab="meetings">Previous meetings</button>
+              <button type="button" class="ds-ei-team__tab" role="tab" aria-selected="false" data-ds-ei-team-tab="players">Players not in the lineup</button>
+            </div>
+            <div class="ds-event-info__scroll ds-ei-team__scroll" data-ds-ei-team-body></div>
+          </div>
+        </div>
+      </div>`
+    );
+
+    sheet = document.getElementById("ds-event-info");
+    sheet.addEventListener("click", (e) => {
+      if (e.target === sheet) {
+        closeEventInfo();
+        return;
+      }
+      if (e.target.closest("[data-ds-ei-close]")) {
+        closeEventInfo();
+        return;
+      }
+      if (e.target.closest("[data-ds-ei-back]")) {
+        showEventInfoView("menu");
+        return;
+      }
+      const openBtn = e.target.closest("[data-ds-ei-open]");
+      if (openBtn) {
+        showEventInfoView(openBtn.getAttribute("data-ds-ei-open"));
+        return;
+      }
+      const toastBtn = e.target.closest("[data-ds-ei-toast]");
+      if (toastBtn) {
+        showToast(toastBtn.getAttribute("data-ds-ei-toast") || "Coming soon");
+        return;
+      }
+      if (e.target.closest("[data-ds-ei-fav]")) {
+        if (!eventInfoCurrentId) return;
+        const adding = !state.favorites.has(eventInfoCurrentId);
+        if (adding) state.favorites.add(eventInfoCurrentId);
+        else state.favorites.delete(eventInfoCurrentId);
+        persistFavouriteToggle(eventInfoCurrentId, adding);
+        document.querySelectorAll(`[data-fav="${eventInfoCurrentId}"]`).forEach((btn) => {
+          btn.classList.toggle("active", adding);
+          btn.setAttribute("aria-pressed", adding ? "true" : "false");
+        });
+        syncEventInfoFavUi();
+        showToast(adding ? "Added to favorites" : "Removed from favorites");
+        return;
+      }
+      const accBtn = e.target.closest("[data-ds-ei-acc]");
+      if (accBtn) {
+        const acc = accBtn.closest(".ds-ei-team__acc");
+        if (!acc) return;
+        const open = !acc.classList.contains("is-open");
+        acc.classList.toggle("is-open", open);
+        accBtn.setAttribute("aria-expanded", open ? "true" : "false");
+        const body = acc.querySelector(".ds-ei-team__acc-body");
+        if (body) body.hidden = !open;
+        return;
+      }
+      const teamTab = e.target.closest("[data-ds-ei-team-tab]");
+      if (teamTab) {
+        const key = teamTab.getAttribute("data-ds-ei-team-tab");
+        sheet.querySelectorAll("[data-ds-ei-team-tab]").forEach((t) => {
+          const on = t === teamTab;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        renderTeamInfoBody(key);
+        return;
+      }
+      if (e.target.closest("[data-ds-ei-notif-delete]")) {
+        fillNotifSettings(structuredClone(EI_NOTIF_DEFAULT));
+        showToast("Notification settings cleared");
+        return;
+      }
+      if (e.target.closest("[data-ds-ei-notif-apply]")) {
+        const prefs = readNotifSettingsFromUi();
+        if (eventInfoCurrentId) saveEventNotifPrefs(eventInfoCurrentId, prefs);
+        showToast("Notification settings applied");
+        showEventInfoView("menu");
+      }
+    });
+
+    sheet.addEventListener("change", (e) => {
+      const toggle = e.target.closest("[data-ds-ei-notif-toggle]");
+      if (toggle) {
+        const group = toggle.getAttribute("data-ds-ei-notif-toggle");
+        const list = sheet.querySelector(`[data-ds-ei-notif-list="${group}"]`);
+        if (list) list.classList.toggle("is-disabled", !toggle.checked);
+        return;
+      }
+      const opt = e.target.closest("[data-ds-ei-notif-opt]");
+      if (opt) {
+        const row = opt.closest(".ds-ei-notif__row");
+        if (row) row.classList.toggle("is-checked", opt.checked);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape" || !isEventInfoOpen()) return;
+      const active = sheet.querySelector(".ds-event-info__view.is-active");
+      const view = active?.getAttribute("data-ds-ei-view");
+      if (view && view !== "menu") showEventInfoView("menu");
+      else closeEventInfo();
+      e.stopPropagation();
+    });
+
+    return sheet;
+  }
+
+  function fillNotifSettings(prefs) {
+    const sheet = document.getElementById("ds-event-info");
+    if (!sheet) return;
+    const instantToggle = sheet.querySelector('[data-ds-ei-notif-toggle="instant"]');
+    const matchToggle = sheet.querySelector('[data-ds-ei-notif-toggle="match"]');
+    if (instantToggle) instantToggle.checked = !!prefs.instantOn;
+    if (matchToggle) matchToggle.checked = !!prefs.matchOn;
+
+    const labels = { score: "Score", corners: "Corners", yellow: "Yellow cards" };
+    ["instant", "match"].forEach((group) => {
+      const list = sheet.querySelector(`[data-ds-ei-notif-list="${group}"]`);
+      if (!list) return;
+      const on = group === "instant" ? prefs.instantOn : prefs.matchOn;
+      const map = prefs[group] || {};
+      list.innerHTML = EI_NOTIF_KEYS.map((key) =>
+        notifCheckRow(group, key, labels[key], !!map[key])
+      ).join("");
+      list.classList.toggle("is-disabled", !on);
+    });
+  }
+
+  function readNotifSettingsFromUi() {
+    const sheet = document.getElementById("ds-event-info");
+    const prefs = structuredClone(EI_NOTIF_DEFAULT);
+    if (!sheet) return prefs;
+    prefs.instantOn = !!sheet.querySelector('[data-ds-ei-notif-toggle="instant"]')?.checked;
+    prefs.matchOn = !!sheet.querySelector('[data-ds-ei-notif-toggle="match"]')?.checked;
+    EI_NOTIF_KEYS.forEach((key) => {
+      prefs.instant[key] = !!sheet.querySelector(
+        `[data-ds-ei-notif-opt="instant:${key}"]`
+      )?.checked;
+      prefs.match[key] = !!sheet.querySelector(`[data-ds-ei-notif-opt="match:${key}"]`)?.checked;
+    });
+    return prefs;
+  }
+
+  function renderTeamInfoBody(tab) {
+    const sheet = document.getElementById("ds-event-info");
+    const body = sheet?.querySelector("[data-ds-ei-team-body]");
+    if (!body) return;
+    const ctx = findEventContext(eventInfoCurrentId);
+    const demo = buildTeamInfoDemo(ctx?.event);
+    const key = tab || "recent";
+    if (key === "meetings") {
+      body.innerHTML = `<section class="ds-ei-team__acc is-open">
+        <div class="ds-ei-team__acc-body">
+          ${demo.meetings.map(matchCardHtml).join("")}
+        </div>
+      </section>`;
+      return;
+    }
+    if (key === "players") {
+      body.innerHTML = `<section class="ds-event-info__card ds-ei-team__players">
+        ${demo.injured
+          .map(
+            (p) => `<div class="ds-ei-team__player">
+            <strong>${escapeHtml(p.name)}</strong>
+            <span>${escapeHtml(p.team)} · ${escapeHtml(p.reason)}</span>
+          </div>`
+          )
+          .join("")}
+      </section>`;
+      return;
+    }
+    body.innerHTML =
+      teamAccordionHtml(demo.home, demo.homeLogo, demo.homeGames, true) +
+      teamAccordionHtml(demo.away, demo.awayLogo, demo.awayGames, false);
+  }
+
+  function showEventInfoView(name) {
+    const sheet = ensureEventInfoPanel();
+    if (!sheet) return;
+    const view = name || "menu";
+    sheet.querySelectorAll("[data-ds-ei-view]").forEach((el) => {
+      const on = el.getAttribute("data-ds-ei-view") === view;
+      el.classList.toggle("is-active", on);
+      el.hidden = !on;
+    });
+    if (view === "notif") {
+      fillNotifSettings(loadEventNotifPrefs(eventInfoCurrentId || "default"));
+    }
+    if (view === "team") {
+      sheet.querySelectorAll("[data-ds-ei-team-tab]").forEach((t, i) => {
+        const on = i === 0;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      renderTeamInfoBody("recent");
+    }
+  }
+
+  function syncEventInfoFavUi() {
+    const sheet = document.getElementById("ds-event-info");
+    if (!sheet || !eventInfoCurrentId) return;
+    const on = state.favorites.has(eventInfoCurrentId);
+    const btn = sheet.querySelector("[data-ds-ei-fav]");
+    const label = sheet.querySelector("[data-ds-ei-fav-label]");
+    if (btn) btn.classList.toggle("is-fav", on);
+    if (label) label.textContent = on ? "Remove from favorites" : "Add to favorites";
+  }
+
+  function isEventInfoOpen() {
+    const sheet = document.getElementById("ds-event-info");
+    return !!(sheet && !sheet.hidden);
+  }
+
+  function openEventInfo(eventId) {
+    const sheet = ensureEventInfoPanel();
+    if (!sheet) return;
+    const ctx = findEventContext(eventId);
+    eventInfoCurrentId = eventId;
+    const note = sheet.querySelector("[data-ds-ei-note]");
+    const leagueName = ctx?.league?.name || "Event";
+    const event = ctx?.event;
+    if (note) {
+      const stage =
+        event?.note ||
+        [leagueName, event?.round || (event?.live ? "Live" : null)].filter(Boolean).join(". ");
+      note.textContent = stage || "Event details";
+    }
+
+    const weather = event?.weather || {};
+    const map = {
+      "[data-ds-ei-temp]": weather.temp || "+33°C",
+      "[data-ds-ei-wind]": weather.wind || "2",
+      "[data-ds-ei-pressure]": weather.pressure || "759",
+      "[data-ds-ei-humidity]": weather.humidity || "37",
+    };
+    Object.entries(map).forEach(([sel, val]) => {
+      const el = sheet.querySelector(sel);
+      if (el) el.textContent = val;
+    });
+
+    syncEventInfoFavUi();
+    showEventInfoView("menu");
+    sheet.hidden = false;
+    document.body.classList.add("ds-event-info-open");
+    requestAnimationFrame(() => sheet.classList.add("is-open"));
+  }
+
+  function closeEventInfo() {
+    const sheet = document.getElementById("ds-event-info");
+    if (!sheet) return;
+    sheet.classList.remove("is-open");
+    sheet.hidden = true;
+    document.body.classList.remove("ds-event-info-open");
+    eventInfoCurrentId = "";
+    showEventInfoView("menu");
   }
 
   function initBetSlip() {
@@ -3236,39 +3925,31 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
+      if (window.DsBetSlipGenerator?.isOpen?.()) {
+        window.DsBetSlipGenerator.close();
+        return;
+      }
       const overlay = $("#bss-overlay");
       if (overlay && !overlay.hidden) closeBetSlipSettings();
     });
 
-    $("#generate-slip").addEventListener("click", () => {
-      const pool = [];
-      [...liveLeagues, ...lineLeagues].forEach((l) => {
-        l.events.forEach((ev) => {
-          if (ev.o1 != null) {
-            pool.push({
-              id: `gen-${ev.id}-1`,
-              league: l.name,
-              match: `${ev.home} vs ${ev.away}`,
-              market: "1X2",
-              selection: "1",
-              odds: ev.o1,
-            });
-          }
-        });
-      });
-      const picks = [];
-      const used = new Set();
-      while (picks.length < 3 && used.size < pool.length) {
-        const i = Math.floor(Math.random() * pool.length);
-        if (used.has(i)) continue;
-        used.add(i);
-        picks.push(pool[i]);
+    window.addEventListener("ds:bsg-create", (e) => {
+      const detail = e.detail || {};
+      const picks = Array.isArray(detail.picks) ? detail.picks : [];
+      if (!picks.length) return;
+      const stake = Number(detail.opts?.stake);
+      if (Number.isFinite(stake) && stake > 0) {
+        const stakeInput = $("#stake-input");
+        if (stakeInput) stakeInput.value = String(stake);
       }
       picks.forEach((p) => {
-        if (!state.betSlip.some((b) => b.id === p.id)) state.betSlip.push(p);
+        if (!state.betSlip.some((b) => b.id === p.id)) {
+          state.betSlip.push(typeof hydrateTicketData === "function" ? hydrateTicketData(p) : p);
+        }
       });
+      detail.handled = true;
       renderBetSlip();
-      showToast("Generated selections added");
+      openRightDrawer();
     });
 
     $$("[data-acc-add]").forEach((btn) => {
@@ -4115,8 +4796,11 @@
     if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
     if (menuTab) menuTab.setAttribute("aria-expanded", "false");
-    if (sportsBtn) sportsBtn.setAttribute("aria-expanded", "false");
+    if (sportsBtn && !sportsBtn.hasAttribute("data-mt-flyout-open")) {
+      sportsBtn.setAttribute("aria-expanded", "false");
+    }
     if (betBtn) betBtn.setAttribute("aria-expanded", "false");
+    if (typeof window.closeSportsTabFlyout === "function") window.closeSportsTabFlyout();
     setDrawerBackdrop(false);
     document.body.classList.remove("ds-menu-open");
     syncMobileBetCount();
@@ -4186,40 +4870,53 @@
   }
 
   function initMobileChrome() {
-    const menuBtn = $("#mobile-menu-btn");
-    const menuTab = $("#mobile-menu-tab");
-    const sportsBtn = $("#mobile-sports-btn");
-    const betBtn = $("#mobile-betslip-btn");
+    if (document.documentElement.dataset.mobileChromeWired === "1") return;
+    document.documentElement.dataset.mobileChromeWired = "1";
+
     const backdrop = $("#drawer-backdrop");
     const rightClose = $("#right-drawer-close");
 
-    menuBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleMobileNav();
+    document.addEventListener("click", (e) => {
+      const menuBtn = e.target.closest("#mobile-menu-btn, #mobile-menu-tab");
+      if (menuBtn) {
+        e.stopPropagation();
+        if (typeof window.closeSportsTabFlyout === "function") window.closeSportsTabFlyout();
+        toggleMobileNav();
+        return;
+      }
+
+      const sportsBtn = e.target.closest("#mobile-sports-btn");
+      if (sportsBtn && !sportsBtn.hasAttribute("data-mt-flyout-open")) {
+        e.stopPropagation();
+        if ($("#left-sidebar")?.classList.contains("open")) closeAllMobileDrawers();
+        else openLeftDrawer();
+        return;
+      }
+
+      const betBtn = e.target.closest("#mobile-betslip-btn");
+      if (betBtn) {
+        e.stopPropagation();
+        if (typeof window.closeSportsTabFlyout === "function") window.closeSportsTabFlyout();
+        if ($("#right-sidebar")?.classList.contains("is-open")) closeAllMobileDrawers();
+        else openRightDrawer();
+      }
     });
-    menuTab?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleMobileNav();
-    });
-    sportsBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if ($("#left-sidebar")?.classList.contains("open")) closeAllMobileDrawers();
-      else openLeftDrawer();
-    });
-    betBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if ($("#right-sidebar")?.classList.contains("is-open")) closeAllMobileDrawers();
-      else openRightDrawer();
-    });
+
     rightClose?.addEventListener("click", closeAllMobileDrawers);
-    backdrop?.addEventListener("click", closeAllMobileDrawers);
+    backdrop?.addEventListener("click", () => {
+      if (typeof window.closeSportsTabFlyout === "function") window.closeSportsTabFlyout();
+      closeAllMobileDrawers();
+    });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeAllMobileDrawers();
     });
 
     window.addEventListener("resize", () => {
-      if (!isMobileViewport()) closeAllMobileDrawers();
+      if (!isMobileViewport()) {
+        closeAllMobileDrawers();
+        closeEventInfo();
+      }
       const overlay = $("#bss-overlay");
       if (overlay && !overlay.hidden) {
         mountBetSlipSettingsHost(overlay);
@@ -4252,6 +4949,9 @@
         openRightDrawer();
       });
     });
+
+    window.closeAllMobileDrawers = closeAllMobileDrawers;
+    window.syncMobileBetCount = syncMobileBetCount;
   }
 
   /* ---------- Init ---------- */
@@ -4289,4 +4989,8 @@
   } else {
     init();
   }
+
+  window.syncOddButtons = syncOddButtons;
+  window.openEventInfo = openEventInfo;
+  window.closeEventInfo = closeEventInfo;
 })();

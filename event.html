@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multi-LIVE ï¿½ 1xBet</title>
+  <title>Event â€” 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/multi-live.css" />
+  <link rel="stylesheet" href="css/event.css" />
+  <link rel="stylesheet" href="css/home-social.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
-<body data-page="multi-live">
+<body class="ds-event-page" data-page="event">
   <div class="page-shell">
     <!-- ========== HEADER (Figma 3:18823) ========== -->
     <header class="site-header" role="banner">
@@ -17,16 +19,16 @@
           <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="header-bottom">
             <span class="mobile-menu-bars" aria-hidden="true"></span>
           </button>
-          <a href="index.html" class="logo" aria-label="1xBet home">
+          <a href="#" class="logo" aria-label="1xBet home">
             <img src="assets/icons/logo-1xbet.svg" alt="1xBet" class="logo-img" width="122" height="27" />
           </a>
-          <a href="index.html" class="logo-flag-link" aria-label="Country">
+          <a href="#" class="logo-flag-link" aria-label="Country">
             <img src="assets/icons/flag-my.svg" alt="MY" class="logo-flag" width="32" height="32" />
           </a>
         </div>
 
         <div class="header-actions">
-          <button type="button" class="icon-btn icon-btn-square" aria-label="Bonus" title="Bonus">
+          <button type="button" class="icon-btn icon-btn-square header-gift-btn" aria-label="Bonus" title="Bonus">
             <span class="icon-btn-inner">
               <img src="assets/icons/icon-gift.svg" alt="" width="16" height="16" />
               <span class="icon-badge">1</span>
@@ -38,8 +40,8 @@
           <a href="#" class="icon-btn icon-btn-square desktop-only-action" aria-label="Deposit" title="Deposit">
             <img src="assets/icons/icon-deposit.svg" alt="" width="16" height="16" />
           </a>
-          <a href="#reg-form" class="btn-register">Registration</a>
-          <button type="button" class="btn-login">Log in</button>
+          <a href="#reg-form" class="btn-register" data-auth-open="register">Registration</a>
+          <button type="button" class="btn-login" data-auth-open="login">Log in</button>
           <div class="header-meta-group">
             <div class="header-lang" id="header-lang">
               <button type="button" class="header-meta header-lang-btn" id="header-lang-btn" aria-label="Change language" aria-expanded="false" aria-haspopup="listbox" aria-controls="header-lang-menu">
@@ -79,12 +81,12 @@
               </div>
             </div>
             <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link active" aria-expanded="false" aria-haspopup="true" aria-current="page">
+              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
                 Live
                 <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
               </button>
               <div class="dropdown" role="menu">
-                <a href="multi-live.html" role="menuitem" aria-current="page">Multi-LIVE</a>
+                <a href="multi-live.html" role="menuitem">Multi-LIVE</a>
                 <a href="live-national-team.html" role="menuitem">Bet on Your National Team</a>
                 <a href="marble-live.html" role="menuitem">Marble-Live</a>
                 <a href="fast-bet.html" role="menuitem">Fast bet</a>
@@ -97,12 +99,12 @@
               </button>
               <div class="dropdown dropdown-wide" role="menu">
                 <a href="world-flight-26.html" role="menuitem">World Flight 26</a>
-                <a href="index.html#games" role="menuitem">Crash</a>
-                <a href="index.html#games" role="menuitem">Crystal</a>
-                <a href="index.html#games" role="menuitem">Midgard Zombies</a>
-                <a href="index.html#games" role="menuitem">Burning Hot</a>
-                <a href="index.html#games" role="menuitem">Western slot</a>
-                <a href="index.html#games" role="menuitem">Show all</a>
+                <a href="#games" role="menuitem">Crash</a>
+                <a href="#games" role="menuitem">Crystal</a>
+                <a href="#games" role="menuitem">Midgard Zombies</a>
+                <a href="#games" role="menuitem">Burning Hot</a>
+                <a href="#games" role="menuitem">Western slot</a>
+                <a href="#games" role="menuitem">Show all</a>
               </div>
             </div>
             <a href="casino.html" class="nav-link nav-link-plain">Slots</a>
@@ -124,7 +126,9 @@
                 PROMO
                 <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
               </button>
-              <div class="dropdown" role="menu"><a href="promo.html" role="menuitem">All promotions</a><a href="index.html#promo-slider" role="menuitem">WORLD WIN 26</a>
+              <div class="dropdown" role="menu">
+                <a href="promo.html" role="menuitem">All promotions</a>
+                <a href="#promo-slider" role="menuitem">WORLD WIN 26</a>
                 <a href="#reg-form" role="menuitem">Welcome Bonus</a>
               </div>
             </div>
@@ -147,9 +151,16 @@
                 <a href="#" role="menuitem">Other games</a>
               </div>
             </div>
-            <a href="index.html#games" class="nav-link nav-dice">
+            <a href="#games" class="nav-link nav-dice">
               <img src="assets/icons/icon-dice.svg" alt="" class="nav-icon dice-icon" width="32" height="32" />
               Dice
+            </a>
+          </div>
+          <div class="nav-tools">
+            <a href="#live-events" class="promo-live-pill" data-online-counter data-online-base="5576" data-online-swing="48">
+              <span class="promo-live-pill__dot" aria-hidden="true"></span>
+              <span class="promo-live-pill__value" data-online-value>5,576</span>
+              <span class="promo-live-pill__label">Players Online</span>
             </a>
           </div>
         </nav>
@@ -157,103 +168,237 @@
     </header>
 
     <!-- ========== MAIN LAYOUT ========== -->
-    <div class="sportsbook-layout ml-layout">
-      <!-- MAIN ï¿½ Multi-LIVE empty board (Figma 21:2) -->
-      <main class="main-content ml-main" id="main-content">
-        <div class="ml-toolbar">
-          <nav class="ml-crumbs" aria-label="Breadcrumb">
-            <a href="index.html" class="ml-crumb" aria-label="Home">
-              <img src="assets/icons/te-home.svg" alt="" width="16" height="16" />
+    <div class="sportsbook-layout">
+      <!-- LEFT SIDEBAR (Figma 3:16279) -->
+      <aside class="left-sidebar" id="left-sidebar" aria-label="Sports navigation">
+        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block" aria-expanded="true">
+          <img src="assets/icons/nav-collapse.svg" alt="" width="10" height="12" />
+          <span>Collapse block</span>
+        </button>
+
+        <div class="sidebar-quick">
+          <div class="sidebar-row-wrap">
+            <a href="favourites.html" class="sidebar-row">
+              <img src="assets/icons/nav-star.svg" alt="" class="row-icon" width="16" height="16" />
+              <span class="row-label">Favorite matches</span>
             </a>
-            <img src="assets/icons/te-chevron.svg" alt="" class="ml-crumb-sep" width="6" height="10" />
-            <span class="ml-crumb ml-crumb-label" aria-current="page">Multi-LIVE</span>
-          </nav>
-          <div class="ml-toolbar-main">
-            <form class="ml-search" role="search" action="#" onsubmit="return false;">
-              <input type="search" id="ml-search" placeholder="Search by match" autocomplete="off" />
-              <button type="submit" aria-label="Search">
-                <img src="assets/icons/te-search.svg" alt="" width="12" height="12" />
+            <button type="button" class="sidebar-row-chevron" aria-label="Expand favorite matches">
+              <img src="assets/icons/nav-chevron-down.svg" alt="" width="10" height="6" />
+            </button>
+          </div>
+          <div class="sidebar-row-wrap">
+            <a href="#live-events" class="sidebar-row">
+              <img src="assets/icons/nav-thumbs.svg" alt="" class="row-icon" width="16" height="16" />
+              <span class="row-label">Recommended</span>
+            </a>
+            <button type="button" class="sidebar-row-chevron" aria-label="Expand recommended">
+              <img src="assets/icons/nav-chevron-down.svg" alt="" width="10" height="6" />
+            </button>
+          </div>
+
+          <div class="top-games" id="top-games">
+            <div class="top-games-head">
+              <a href="#live-events" class="top-games-title">
+                <img src="assets/icons/nav-medal.svg" alt="" width="13" height="16" />
+                <span>Top Games</span>
+              </a>
+              <div class="top-games-pager">
+                <button type="button" class="pager-btn" id="tg-prev" aria-label="Previous">
+                  <img src="assets/icons/nav-page-prev.svg" alt="" width="6" height="10" />
+                </button>
+                <span class="pager-label"><span id="tg-page">1</span><span class="pager-muted"> / 5</span></span>
+                <button type="button" class="pager-btn" id="tg-next" aria-label="Next">
+                  <img src="assets/icons/nav-page-next.svg" alt="" width="6" height="10" />
+                </button>
+              </div>
+            </div>
+            <div class="top-games-card">
+              <div class="tg-meta">
+                <div class="tg-league">
+                  <img src="assets/icons/nav-football-sm.svg" alt="" width="16" height="16" />
+                  <span>Club Friendlies</span>
+                </div>
+                <button type="button" class="tg-fav" aria-label="Add to favorites">
+                  <img src="assets/icons/nav-fav-outline.svg" alt="" width="12" height="12" />
+                </button>
+              </div>
+              <div class="tg-status">2nd half, 73 minutes</div>
+              <div class="tg-teams">
+                <div class="tg-team-col">
+                  <div class="tg-team">
+                    <img src="assets/images/team-santos.webp" alt="" width="16" height="16" />
+                    <span>Santos Laguna</span>
+                  </div>
+                  <div class="tg-team">
+                    <img src="assets/images/team-america.webp" alt="" width="16" height="16" />
+                    <span>America de Cali</span>
+                  </div>
+                </div>
+                <div class="tg-score">
+                  <span>0</span>
+                  <span>0</span>
+                </div>
+              </div>
+              <button type="button" class="tg-detail">
+                Detailed score
+                <img src="assets/icons/nav-detail-chevron.svg" alt="" width="10" height="6" />
               </button>
-            </form>
+              <div class="tg-odds">
+                <button type="button" class="tg-odd" data-odd='{"id":"tg-w1","league":"Club Friendlies","match":"Santos Laguna vs America de Cali","market":"1X2","selection":"W1","odds":3.63}'>W1 <span>3.63</span></button>
+                <button type="button" class="tg-odd" data-odd='{"id":"tg-x","league":"Club Friendlies","match":"Santos Laguna vs America de Cali","market":"1X2","selection":"X","odds":1.68}'>X <span>1.68</span></button>
+                <button type="button" class="tg-odd" data-odd='{"id":"tg-w2","league":"Club Friendlies","match":"Santos Laguna vs America de Cali","market":"1X2","selection":"W2","odds":5.04}'>W2 <span>5.04</span></button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="ml-filters" role="tablist" aria-label="Add live sports">
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="basketball">
-            <img src="assets/icons/te-basketball.svg" alt="" width="16" height="16" />
-            Basketball
+        <div class="sidebar-line">
+          <div class="sidebar-tabs" role="tablist" aria-label="Line type">
+            <button type="button" class="sidebar-tab active" role="tab" aria-selected="true" data-line="live">
+              <img src="assets/icons/nav-live.svg" alt="" width="14" height="14" />
+              <span>Live</span>
+            </button>
+            <button type="button" class="sidebar-tab" role="tab" aria-selected="false" data-line="sports">
+              <span>Sports</span>
+            </button>
+          </div>
+          <div class="sidebar-live-count" id="sidebar-live-count" aria-hidden="true">700</div>
+          <div class="sidebar-filter-bar">
+            <button type="button" class="sf-all active">All <span>660</span></button>
+            <button type="button" class="sf-stream" aria-label="Events with live stream" title="Show only events with a live stream">
+              <img src="assets/icons/nav-stream.svg" alt="" width="12" height="12" />
+              <span>254</span>
+            </button>
+            <button type="button" class="sf-globe" aria-label="Group events by country" title="Group events by country">
+              <img src="assets/icons/nav-globe.svg" alt="" width="14" height="14" />
+            </button>
+          </div>
+          <div class="sidebar-sports-panel">
+            <div class="sports-section-label">Top</div>
+            <ul class="sports-list" id="sports-list-top" aria-label="Top sports"></ul>
+            <div class="sports-section-label az">Categories from A to Z</div>
+            <ul class="sports-list" id="sports-list-az" aria-label="Categories from A to Z"></ul>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER CONTENT -->
+      <main class="main-content ev-main" id="main-content">
+        <div class="ev-mobile-subbar" aria-label="Event navigation">
+          <a href="javascript:history.back()" class="ev-mobile-subbar__back" aria-label="Back">
+            <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+          </a>
+          <h1 class="ev-mobile-subbar__title">Event</h1>
+          <div class="ev-mobile-subbar__actions">
+            <button type="button" class="ev-mobile-subbar__btn" aria-label="Favourite" data-toast="Favourites">
+              <img src="mobile/assets/icons/ei-star.svg" alt="" width="16" height="16" />
+            </button>
+            <button type="button" class="ev-mobile-subbar__btn" aria-label="Notifications" data-toast="Notifications">
+              <img src="mobile/assets/icons/ei-bell.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+        </div>
+
+        <div class="ml-toolbar" id="ev-topbar" aria-label="Event toolbar"></div>
+
+        <section class="ev-board" id="ev-board" aria-label="Match scoreboard"></section>
+        <div class="ev-tabs" id="ev-tabs" role="tablist" aria-label="Period markets"></div>
+        <div class="ev-m-searchrow">
+          <label class="ev-m-search">
+            <img src="assets/icons/search.svg" alt="" />
+            <input type="search" placeholder="Search by market" data-ev-market-search aria-label="Search by market" />
+          </label>
+          <button type="button" class="ev-m-collapse" data-ev-collapse-all aria-label="Collapse markets">
+            <img src="assets/icons/rb-collapse.svg" alt="" />
           </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="football">
-            <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
-            Football
+        </div>
+        <div class="ml-filters ev-filters" id="ev-toolbar" role="tablist" aria-label="Market filters"></div>
+        <div class="ev-markets-wrap">
+          <div class="ev-markets" id="ev-markets" aria-label="Betting markets"></div>
+        </div>
+
+        <div class="ev-m-modebar" aria-label="Market view">
+          <button type="button" class="ev-m-modebar__btn is-active" data-ev-mode="list">
+            <img src="assets/icons/te-menu.svg" alt="" />
+            <span>List of markets</span>
           </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="volleyball">
-            <img src="assets/icons/te-volleyball.svg" alt="" width="16" height="16" />
-            Volleyball
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="esports">
-            <img src="assets/icons/te-esports.svg" alt="" width="16" height="16" />
-            Esports
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="tennis">
-            <img src="assets/icons/te-tennis.svg" alt="" width="16" height="16" />
-            Tennis
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="hockey">
-            <img src="assets/icons/te-hockey.svg" alt="" width="16" height="16" />
-            Ice Hockey
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="tabletennis">
-            <img src="assets/icons/te-tabletennis.svg" alt="" width="16" height="16" />
-            Table Tennis
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="athletics">
-            <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-            Athletics
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="badminton">
-            <img src="assets/icons/te-badminton.svg" alt="" width="16" height="16" />
-            Badminton
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="baseball">
-            <img src="assets/icons/sport-baseball.svg" alt="" width="16" height="16" />
-            Baseball
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="beachvolleyball">
-            <img src="assets/icons/sport-beachvolleyball.svg" alt="" width="16" height="16" />
-            Beach Volleyball
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="boatracing">
-            <img src="assets/icons/sport-boatracing.svg" alt="" width="16" height="16" />
-            Boat Racing
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="cricket">
-            <img src="assets/icons/sport-cricket.svg" alt="" width="16" height="16" />
-            Cricket
-          </button>
-          <button type="button" class="ml-chip" role="tab" aria-selected="false" data-sport="fieldhockey">
-            <img src="assets/icons/sport-hockey.svg" alt="" width="16" height="16" />
-            Field Hockey
-          </button>
-          <button type="button" class="ml-chip-more" aria-label="Other sports">
-            <img src="assets/icons/te-menu.svg" alt="" width="16" height="16" />
-            <img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+          <button type="button" class="ev-m-modebar__btn" data-ev-mode="builder" data-toast="Bet Builder coming soon">
+            <img src="assets/icons/icon-more.svg" alt="" />
+            <span>Bet Builder</span>
           </button>
         </div>
 
-        <section class="ml-board" aria-label="Multi-Live board">
-          <h1 class="ml-board-title">Multi-Live page</h1>
-          <p class="ml-board-text">Put together your own online events page by adding them from the menu above, and place your bets</p>
+        <section class="accumulators" aria-label="Accumulators of the day" data-sb-accumulators>
+          <article class="acc-block" data-acc="1x2">
+            <header class="acc-header">
+              <h3 class="acc-title">Accumulator Of The Day</h3>
+              <span class="acc-bonus">Bonus from 1xBet Â· 1.1</span>
+            </header>
+            <div class="acc-table">
+              <ul class="acc-list" id="acc-list-1"></ul>
+              <div class="acc-footer">
+                <div class="acc-odds">
+                  <span>Overall odds</span>
+                  <strong id="acc-odds-1">â€”</strong>
+                </div>
+                <button type="button" class="btn-acc" data-acc-add="1">ADD TO BET SLIP</button>
+              </div>
+            </div>
+          </article>
+          <article class="acc-block" data-acc="live">
+            <header class="acc-header">
+              <h3 class="acc-title">Live Accumulator Of The Day</h3>
+              <span class="acc-bonus">Bonus from 1xBet Â· 1.08</span>
+            </header>
+            <div class="acc-table">
+              <ul class="acc-list" id="acc-list-2"></ul>
+              <div class="acc-footer">
+                <div class="acc-odds">
+                  <span>Overall odds</span>
+                  <strong id="acc-odds-2">â€”</strong>
+                </div>
+                <button type="button" class="btn-acc" data-acc-add="2">ADD TO BET SLIP</button>
+              </div>
+            </div>
+          </article>
         </section>
       </main>
 
       <!-- RIGHT SIDEBAR (Figma 3:16034) ï¿½ colors: modified-color tokens -->
       <aside class="right-sidebar" id="right-sidebar" aria-label="Account tools">
-        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block">
+        <div class="right-compact-rail" aria-label="Collapsed account tools">
+          <button type="button" class="rc-expand" id="right-expand" aria-label="Expand block">
+            <img src="assets/icons/collapse/chevron-double-left.svg" alt="" width="10" height="12" />
+          </button>
+          <div class="rc-stack">
+            <a href="#reg-form" class="rc-reg" id="rc-reg">Registration</a>
+            <button type="button" class="rc-bet" id="rc-bet" aria-label="Bet slip">
+              <span class="rc-bet-count" id="rc-bet-count">0</span>
+              <span class="rc-bet-label">Bet slip</span>
+            </button>
+            <div class="rc-widgets">
+              <button type="button" class="rc-widget" id="rc-save" aria-label="Save/load events" title="Save/load events">
+                <img src="assets/icons/collapse/widget-tickets.svg" alt="" width="16" height="16" />
+              </button>
+              <button type="button" class="rc-widget" id="rc-generator" aria-label="Bet slip generator" title="Bet slip generator">
+                <img src="assets/icons/collapse/widget-stars.svg" alt="" width="16" height="16" />
+              </button>
+              <button type="button" class="rc-widget" id="rc-app" aria-label="Mobile application" title="Mobile application">
+                <img src="assets/icons/collapse/widget-phone.svg" alt="" width="16" height="16" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="right-collapse" id="right-collapse" aria-label="Collapse block" aria-expanded="true">
           <span>Collapse block</span>
-          <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="9" height="10" />
+          <img src="assets/icons/rb-collapse-chevron.svg" alt="" width="10" height="12" />
         </button>
-        <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close panel">Close</button>
+        <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close bet slip">
+          <span class="mobile-drawer-handle" aria-hidden="true"></span>
+          <span class="mobile-drawer-close-title">Bet slip</span>
+          <span class="mobile-drawer-close-action">Close</span>
+        </button>
 
         <div class="reg-panel">
           <h2 class="reg-title">REGISTRATION</h2>
@@ -337,9 +482,7 @@
             <a href="#reg-form" class="btn-slip-reg" id="bet-reg-cta">Registration</a>
             <button type="button" class="bet-save-link">Save/load events</button>
           </div>
-          <div class="my-bets-body" id="my-bets-body" hidden>
-            <p class="bet-empty-text">No open bets. Place a bet to see it here.</p>
-          </div>
+          <div class="my-bets-body" id="my-bets-body" hidden></div>
         </div>
 
         <div class="generator-panel">
@@ -392,16 +535,16 @@
         </div>
         <div class="footer-col">
           <h3>Betting</h3>
-          <a href="index.html#live-events">Sports</a>
+          <a href="#live-events">Sports</a>
           <a href="multi-live.html">Multi-LIVE</a>
-          <a href="index.html#live-events">Live</a>
+          <a href="#live-events">Live</a>
           <a href="#">Toto</a>
         </div>
         <div class="footer-col">
           <h3>Games</h3>
           <a href="casino.html">Casino</a>
-          <a href="index.html#games">1xGames</a>
-          <a href="index.html#games">Live Casino</a>
+          <a href="#games">1xGames</a>
+          <a href="live-casino.html">Live Casino</a>
         </div>
         <div class="footer-col">
           <h3>Statistics</h3>
@@ -525,7 +668,7 @@
             </div>
             <span class="age-badge">18+</span>
           </div>
-          <a href="#" class="footer-mobile-btn">MOBILE VERSION</a>
+          <a href="mobile/index.html" class="footer-mobile-btn">MOBILE VERSION</a>
         </div>
       </div>
     </footer>
@@ -533,30 +676,99 @@
 
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
 
-  <nav class="mobile-tabbar" aria-label="Mobile shortcuts">
-    <button type="button" class="mobile-tab" id="mobile-sports-btn" aria-controls="left-sidebar" aria-expanded="false">
-      <img src="assets/icons/te-football.svg" alt="" width="18" height="18" />
-      <span>Sports</span>
+  <div class="mobile-tab-flyout-backdrop" id="mt-tab-flyout-backdrop" hidden></div>
+
+  <nav class="mobile-tabbar mobile-tabbar--sports" data-main-tabbar="1" data-sports-tabbar="1" aria-label="Mobile primary">
+    <div class="mobile-tab-slot" data-mt-flyout-slot="sports">
+      <button
+        type="button"
+        class="mobile-tab is-active"
+        id="mobile-sports-btn"
+        data-mt-flyout-open="sports"
+        aria-expanded="false"
+        aria-controls="mt-flyout-sports"
+        aria-haspopup="menu"
+      >
+        <img src="mobile/assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span class="mobile-tab-label">Sports</span>
+      </button>
+      <div class="mobile-tab-flyout" id="mt-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img class="mobile-tab-flyout__icon--flag" src="assets/icons/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="live-national-team.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img class="mobile-tab-flyout__icon--live" src="mobile/assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="index.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img src="mobile/assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mobile-tab-flyout__close" data-mt-flyout-close aria-label="Close">
+          <img src="mobile/assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-tab-slot" data-mt-flyout-slot="casino">
+      <button
+        type="button"
+        class="mobile-tab"
+        data-mt-flyout-open="casino"
+        aria-expanded="false"
+        aria-controls="mt-flyout-casino"
+        aria-haspopup="menu"
+      >
+        <img src="mobile/assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span class="mobile-tab-label">Casino</span>
+      </button>
+      <div class="mobile-tab-flyout" id="mt-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img src="mobile/assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="live-casino.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img src="mobile/assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="world-flight-26.html" class="mobile-tab-flyout__item" role="menuitem">
+          <img src="mobile/assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mobile-tab-flyout__close" data-mt-flyout-close aria-label="Close">
+          <img src="mobile/assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mobile-tab mobile-tab--betslip" id="mobile-betslip-btn" aria-controls="right-sidebar" aria-expanded="false" aria-label="Bet slip">
+      <span class="mobile-tab-betslip-wrap">
+        <span class="mobile-tab-betslip-icon" aria-hidden="true">
+          <img src="mobile/assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mobile-tab-badge" id="mobile-bet-count" hidden>0</span>
+      </span>
+      <span class="mobile-tab-label">Bet slip</span>
     </button>
-    <a href="multi-live.html" class="mobile-tab" aria-current="page">
-      <span class="mobile-tab-live" aria-hidden="true"></span>
-      <span>Live</span>
+    <a href="deposit.html" class="mobile-tab" id="mobile-deposit-tab" data-auth-open="login">
+      <img src="mobile/assets/icons/tab-deposit.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label">Deposit</span>
     </a>
-    <button type="button" class="mobile-tab" id="mobile-betslip-btn" aria-controls="right-sidebar" aria-expanded="false">
-      <img src="assets/icons/rb-bolt.svg" alt="" width="14" height="18" />
-      <span>Bet slip</span>
-      <span class="mobile-tab-badge" id="mobile-bet-count" hidden>0</span>
-    </button>
-    <button type="button" class="mobile-tab" id="mobile-menu-tab" aria-controls="header-bottom" aria-expanded="false">
-      <span class="mobile-menu-bars" aria-hidden="true"></span>
-      <span>Menu</span>
+    <button type="button" class="mobile-tab" id="mobile-account-tab" data-auth-open="login">
+      <img src="mobile/assets/icons/tab-user.svg" alt="" width="20" height="20" />
+      <span class="mobile-tab-label" id="mobile-account-label">Log in</span>
     </button>
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/favourites-store.js"></script>
+  <script src="js/accumulators.js"></script>
   <script src="js/bet-save-load.js"></script>
+  <script src="js/desktop-menu.js"></script>
   <script src="js/bet-slip-generator.js"></script>
-  <script src="js/multi-live.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/event.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>
 </html>

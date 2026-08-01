@@ -224,14 +224,31 @@
     window.location.href = toQuery(event);
   }
 
+  function openEvent(event) {
+    if (!event) return;
+    stashPending(event);
+    const params = new URLSearchParams();
+    params.set("id", event.id);
+    window.location.href = `event.html?${params.toString()}`;
+  }
+
   function initEventInfoLinks() {
     document.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-mh-event-info]");
-      if (!btn) return;
-      e.preventDefault();
-      const event = parseCard(btn);
-      if (event) openEventInfo(event);
-      else window.location.href = "event-info.html";
+      const infoBtn = e.target.closest("[data-mh-event-info]");
+      if (infoBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const event = parseCard(infoBtn);
+        if (event) openEventInfo(event);
+        else window.location.href = "event-info.html";
+        return;
+      }
+
+      if (e.target.closest("a, button, .mh-odds__btn, .mh-nt-odd, .mh-bt-odd")) return;
+      const card = e.target.closest("[data-mh-event][data-event-id]");
+      if (!card) return;
+      const event = parseCard(card);
+      if (event) openEvent(event);
     });
   }
 
@@ -250,6 +267,7 @@
     toggle,
     parseCard,
     openEventInfo,
+    openEvent,
     takePending,
     peekPending,
     stashPending,

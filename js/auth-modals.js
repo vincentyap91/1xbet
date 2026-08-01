@@ -711,7 +711,7 @@
     }
 
     const tabbar = document.querySelector(".mobile-tabbar");
-    if (tabbar && tabbar.dataset.sportsTabbar !== "1") {
+    if (tabbar && tabbar.dataset.sportsTabbar !== "1" && tabbar.dataset.casinoTabbar !== "1") {
       delete tabbar.dataset.mainTabbar;
       delete tabbar.dataset.accountTabbar;
     }
@@ -974,6 +974,410 @@
     wireOtp();
   }
 
+  let mtFlyoutCloseTimer = 0;
+  const MT_FLYOUT_CLOSE_MS = 220;
+
+  function isAccountShellPage(page, file) {
+    const accountPages = [
+      "personal-profile", "security", "change-password", "information-center", "change-language",
+      "deposit", "withdraw", "payment-queries", "transaction-history", "bet-history",
+      "commission-record", "rebate-record", "checkin-record", "promotion-record",
+      "daily-checkin", "live-chat"
+    ];
+    if (document.querySelector(".account-main")) return true;
+    if (accountPages.indexOf(page) !== -1) return true;
+    const accountFiles = accountPages.map((p) => p + ".html");
+    return accountFiles.indexOf(file) !== -1;
+  }
+
+  function isCasinoChromePage(page, file) {
+    const casinoFiles = [
+      "casino.html",
+      "live-casino.html",
+      "casino-favourites.html",
+      "world-flight-26.html",
+      "casino-categories.html",
+      "casino-providers.html"
+    ];
+    if (casinoFiles.indexOf(file) !== -1) return true;
+    return (
+      page === "casino" ||
+      page === "live-casino" ||
+      page === "casino-favourites" ||
+      page === "world-flight-26" ||
+      page === "casino-categories" ||
+      page === "casino-providers"
+    );
+  }
+
+  function isSportsbookChromePage(page, file) {
+    if (isAccountShellPage(page, file)) return false;
+    if (isCasinoChromePage(page, file)) return false;
+    if (document.querySelector(".sportsbook-layout")) return true;
+    const sportsFiles = [
+      "index.html", "national-team.html", "live-national-team.html", "big-tournaments.html",
+      "long-term-bets.html", "multi-live.html", "marble-live.html", "esports.html",
+      "wc2026.html", "msi.html", "favourites.html", "results.html", "fast-bet.html",
+      "referral-invite.html", "rebate-invite.html", "membership-invite.html",
+      "search.html", "event.html"
+    ];
+    return sportsFiles.indexOf(file) !== -1 || file === "" || file === "/";
+  }
+
+  function sportsTabActiveKey(file, page) {
+    const p = page || "";
+    if (file === "deposit.html" || p === "deposit") return "deposit";
+    if (file === "personal-profile.html" || p === "personal-profile") return "account";
+    if (isAccountShellPage(p, file)) return "account";
+    return "sports";
+  }
+
+  function casinoTabActiveKey(file) {
+    if (file === "casino-favourites.html") return "mycasino";
+    if (file === "promo.html") return "promo";
+    if (file === "casino-providers.html") return "providers";
+    if (file === "casino-categories.html") return "categories";
+    return "";
+  }
+
+  function casinoLobbyHref() {
+    return "casino-categories.html";
+  }
+
+  function casinoProvidersHref() {
+    return "casino-providers.html";
+  }
+
+  function buildCasinoTabbarHtml(activeKey, file) {
+    const catOn = activeKey === "categories" ? " is-active" : "";
+    const provOn = activeKey === "providers" ? " is-active" : "";
+    const myOn = activeKey === "mycasino" ? " is-active" : "";
+    const promoOn = activeKey === "promo" ? " is-active" : "";
+    const lobby = casinoLobbyHref(file);
+    const providers = casinoProvidersHref(file);
+    return (
+      '<a href="' + lobby + '" class="mobile-tab' + catOn + '"' +
+      (activeKey === "categories" ? ' aria-current="page"' : "") + ">" +
+      '<img src="mobile/assets/icons/cs-categories.svg" alt="" width="22" height="22" />' +
+      '<span class="mobile-tab-label">Categories</span></a>' +
+      '<a href="' + providers + '" class="mobile-tab' + provOn + '"' +
+      (activeKey === "providers" ? ' aria-current="page"' : "") + ">" +
+      '<img src="mobile/assets/icons/cs-providers.svg" alt="" width="22" height="22" />' +
+      '<span class="mobile-tab-label">Providers</span></a>' +
+      '<a href="casino-favourites.html" class="mobile-tab mobile-tab--mycasino' + myOn + '"' +
+      (activeKey === "mycasino" ? ' aria-current="page"' : "") + ' aria-label="My Casino">' +
+      '<span class="mobile-tab-mycasino-wrap">' +
+      '<span class="mobile-tab-mycasino-icon" aria-hidden="true">' +
+      '<img src="mobile/assets/icons/cs-mycasino.svg" alt="" width="18" height="18" /></span></span>' +
+      '<span class="mobile-tab-label">My Casino</span></a>' +
+      '<a href="promo.html" class="mobile-tab' + promoOn + '"' +
+      (activeKey === "promo" ? ' aria-current="page"' : "") + ">" +
+      '<img src="mobile/assets/icons/cs-promo.svg" alt="" width="22" height="22" />' +
+      '<span class="mobile-tab-label">Promo</span></a>' +
+      '<button type="button" class="mobile-tab" id="mobile-account-tab" data-auth-open="login">' +
+      '<img src="mobile/assets/icons/tab-user.svg" alt="" width="20" height="20" />' +
+      '<span class="mobile-tab-label" id="mobile-account-label">Log in</span></button>'
+    );
+  }
+
+  function ensureCasinoTabbarMarkup(tabbar) {
+    if (!tabbar) return;
+    const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const activeKey = casinoTabActiveKey(file);
+    const needsBuild =
+      !tabbar.classList.contains("mobile-tabbar--casino") ||
+      !tabbar.querySelector(".mobile-tab--mycasino") ||
+      !document.getElementById("mobile-account-tab");
+    tabbar.classList.add("mobile-tabbar--casino");
+    tabbar.classList.remove("mobile-tabbar--sports", "mobile-tabbar--account");
+    document.body.classList.remove("has-account-tabbar");
+    delete tabbar.dataset.sportsTabbar;
+    tabbar.dataset.casinoTabbar = "1";
+    tabbar.dataset.mainTabbar = "1";
+    tabbar.setAttribute("aria-label", "Casino primary");
+    if (needsBuild) {
+      tabbar.innerHTML = buildCasinoTabbarHtml(activeKey, file);
+    }
+  }
+
+  function syncCasinoTabbarAuth(loggedIn) {
+    const tabbar = document.querySelector('.mobile-tabbar[data-casino-tabbar="1"]');
+    if (!tabbar) return;
+    const label = document.getElementById("mobile-account-label");
+    const accountTab = document.getElementById("mobile-account-tab");
+    if (label) label.textContent = loggedIn ? "Account" : "Log in";
+    if (accountTab) {
+      if (loggedIn) {
+        accountTab.removeAttribute("data-auth-open");
+      } else {
+        accountTab.setAttribute("data-auth-open", "login");
+      }
+      if (!accountTab.dataset.casinoWired) {
+        accountTab.dataset.casinoWired = "1";
+        accountTab.addEventListener("click", (e) => {
+          if (!isLoggedIn()) return;
+          e.preventDefault();
+          window.location.href = "personal-profile.html";
+        });
+      }
+    }
+    tabbar.dataset.mainTabbar = "1";
+  }
+
+  function buildSportsTabbarHtml(activeKey) {
+    const sportsOn = activeKey === "sports" ? " is-active" : "";
+    const casinoOn = activeKey === "casino" ? " is-active" : "";
+    const depositOn = activeKey === "deposit" ? " is-active" : "";
+    const accountOn = activeKey === "account" ? " is-active" : "";
+    return (
+      '<div class="mobile-tab-slot" data-mt-flyout-slot="sports">' +
+      '<button type="button" class="mobile-tab' + sportsOn + '" id="mobile-sports-btn" data-mt-flyout-open="sports" aria-expanded="false" aria-controls="mt-flyout-sports" aria-haspopup="menu">' +
+      '<img src="mobile/assets/icons/tab-sports.svg" alt="" width="20" height="20" />' +
+      '<span class="mobile-tab-label">Sports</span></button>' +
+      '<div class="mobile-tab-flyout" id="mt-flyout-sports" role="menu" aria-label="Sports" hidden>' +
+      '<a href="national-team.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img class="mobile-tab-flyout__icon--flag" src="assets/icons/flag-my.svg" alt="" width="22" height="22" />' +
+      "<span>Bet on Your National Team</span></a>" +
+      '<a href="live-national-team.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img class="mobile-tab-flyout__icon--live" src="mobile/assets/icons/tab-live.svg" alt="" width="22" height="22" />' +
+      "<span>Live</span></a>" +
+      '<a href="index.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img src="mobile/assets/icons/tab-menu.svg" alt="" width="22" height="22" />' +
+      "<span>Sports</span></a>" +
+      '<button type="button" class="mobile-tab-flyout__close" data-mt-flyout-close aria-label="Close">' +
+      '<img src="mobile/assets/icons/tab-close.svg" alt="" width="22" height="22" /></button>' +
+      "</div></div>" +
+      '<div class="mobile-tab-slot" data-mt-flyout-slot="casino">' +
+      '<button type="button" class="mobile-tab' + casinoOn + '" data-mt-flyout-open="casino" aria-expanded="false" aria-controls="mt-flyout-casino" aria-haspopup="menu">' +
+      '<img src="mobile/assets/icons/tab-casino.svg" alt="" width="20" height="20" />' +
+      '<span class="mobile-tab-label">Casino</span></button>' +
+      '<div class="mobile-tab-flyout" id="mt-flyout-casino" role="menu" aria-label="Casino" hidden>' +
+      '<a href="casino.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img src="mobile/assets/icons/tab-cherries.svg" alt="" width="22" height="22" />' +
+      "<span>Casino</span></a>" +
+      '<a href="live-casino.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img src="mobile/assets/icons/tab-spade.svg" alt="" width="22" height="22" />' +
+      "<span>Live Casino</span></a>" +
+      '<a href="world-flight-26.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<img src="mobile/assets/icons/tab-dice.svg" alt="" width="22" height="22" />' +
+      "<span>1xGames</span></a>" +
+      '<button type="button" class="mobile-tab-flyout__close" data-mt-flyout-close aria-label="Close">' +
+      '<img src="mobile/assets/icons/tab-close.svg" alt="" width="22" height="22" /></button>' +
+      "</div></div>" +
+      '<button type="button" class="mobile-tab mobile-tab--betslip" id="mobile-betslip-btn" aria-controls="right-sidebar" aria-expanded="false" aria-label="Bet slip">' +
+      '<span class="mobile-tab-betslip-wrap"><span class="mobile-tab-betslip-icon" aria-hidden="true">' +
+      '<img src="mobile/assets/icons/tab-coupon.svg" alt="" width="18" height="18" /></span>' +
+      '<span class="mobile-tab-badge" id="mobile-bet-count" hidden>0</span></span>' +
+      '<span class="mobile-tab-label">Bet slip</span></button>' +
+      '<a href="deposit.html" class="mobile-tab' + depositOn + '" id="mobile-deposit-tab" data-auth-open="login">' +
+      '<img src="mobile/assets/icons/tab-deposit.svg" alt="" width="20" height="20" />' +
+      '<span class="mobile-tab-label">Deposit</span></a>' +
+      '<button type="button" class="mobile-tab' + accountOn + '" id="mobile-account-tab" data-auth-open="login"' +
+      (activeKey === "account" ? ' aria-current="page"' : "") + ">" +
+      '<img src="mobile/assets/icons/tab-user.svg" alt="" width="20" height="20" />' +
+      '<span class="mobile-tab-label" id="mobile-account-label">Log in</span></button>'
+    );
+  }
+
+  function ensureSportsTabbarMarkup(tabbar) {
+    if (!tabbar) return;
+    if (!document.getElementById("mt-tab-flyout-backdrop")) {
+      const backdrop = document.createElement("div");
+      backdrop.className = "mobile-tab-flyout-backdrop";
+      backdrop.id = "mt-tab-flyout-backdrop";
+      backdrop.hidden = true;
+      tabbar.parentNode.insertBefore(backdrop, tabbar);
+    }
+    const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const page = document.body.dataset.page || "";
+    const activeKey = sportsTabActiveKey(file, page);
+    const needsBuild =
+      tabbar.classList.contains("mobile-tabbar--account") ||
+      tabbar.dataset.accountTabbar === "1" ||
+      !tabbar.querySelector("[data-mt-flyout-slot]") ||
+      !document.getElementById("mobile-account-tab");
+    tabbar.classList.add("mobile-tabbar--sports");
+    tabbar.classList.remove("mobile-tabbar--account", "mobile-tabbar--casino");
+    document.body.classList.remove("has-account-tabbar");
+    delete tabbar.dataset.accountTabbar;
+    delete tabbar.dataset.casinoTabbar;
+    tabbar.dataset.sportsTabbar = "1";
+    tabbar.dataset.mainTabbar = "1";
+    tabbar.setAttribute("aria-label", "Mobile primary");
+    if (needsBuild) {
+      tabbar.innerHTML = buildSportsTabbarHtml(activeKey);
+      if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
+    } else {
+      tabbar.querySelectorAll(".mobile-tab").forEach((el) => {
+        el.classList.remove("is-active");
+        el.removeAttribute("aria-current");
+      });
+      if (activeKey === "sports") {
+        const btn = document.getElementById("mobile-sports-btn");
+        if (btn) btn.classList.add("is-active");
+      } else if (activeKey === "deposit") {
+        const dep = document.getElementById("mobile-deposit-tab");
+        if (dep) {
+          dep.classList.add("is-active");
+          dep.setAttribute("aria-current", "page");
+        }
+      } else if (activeKey === "account") {
+        const acc = document.getElementById("mobile-account-tab");
+        if (acc) {
+          acc.classList.add("is-active");
+          acc.setAttribute("aria-current", "page");
+        }
+      }
+    }
+  }
+
+  function closeSportsTabFlyout() {
+    clearTimeout(mtFlyoutCloseTimer);
+    const backdrop = document.getElementById("mt-tab-flyout-backdrop");
+    const openSlots = Array.prototype.slice.call(document.querySelectorAll("[data-mt-flyout-slot].is-open"));
+    if (!openSlots.length) {
+      if (backdrop) backdrop.hidden = true;
+      return;
+    }
+    openSlots.forEach((slot) => {
+      const panel = slot.querySelector(".mobile-tab-flyout");
+      if (panel) panel.classList.add("is-closing");
+    });
+    mtFlyoutCloseTimer = window.setTimeout(() => {
+      if (backdrop) backdrop.hidden = true;
+      document.querySelectorAll("[data-mt-flyout-slot]").forEach((slot) => {
+        slot.classList.remove("is-open");
+        const panel = slot.querySelector(".mobile-tab-flyout");
+        const btn = slot.querySelector("[data-mt-flyout-open]");
+        if (panel) {
+          panel.classList.remove("is-closing");
+          panel.hidden = true;
+        }
+        if (btn) btn.setAttribute("aria-expanded", "false");
+      });
+      mtFlyoutCloseTimer = 0;
+    }, MT_FLYOUT_CLOSE_MS);
+  }
+
+  function openSportsTabFlyout(key) {
+    clearTimeout(mtFlyoutCloseTimer);
+    const backdrop = document.getElementById("mt-tab-flyout-backdrop");
+    if (backdrop) backdrop.hidden = false;
+    document.querySelectorAll("[data-mt-flyout-slot]").forEach((slot) => {
+      const on = slot.getAttribute("data-mt-flyout-slot") === key;
+      const panel = slot.querySelector(".mobile-tab-flyout");
+      const btn = slot.querySelector("[data-mt-flyout-open]");
+      if (!on) {
+        slot.classList.remove("is-open");
+        if (panel) {
+          panel.classList.remove("is-closing");
+          panel.hidden = true;
+        }
+        if (btn) btn.setAttribute("aria-expanded", "false");
+        return;
+      }
+      if (panel) {
+        panel.classList.remove("is-closing");
+        panel.hidden = false;
+        slot.classList.remove("is-open");
+        void panel.offsetWidth;
+      }
+      slot.classList.add("is-open");
+      if (btn) btn.setAttribute("aria-expanded", "true");
+    });
+  }
+
+  function isMobileViewport() {
+    return window.matchMedia("(max-width: 900px)").matches;
+  }
+
+  function setSportsDrawerBackdrop(visible) {
+    const backdrop = document.getElementById("drawer-backdrop");
+    if (!backdrop) return;
+    backdrop.hidden = !visible;
+    backdrop.classList.toggle("is-visible", visible);
+    document.body.classList.toggle("drawer-open", visible);
+  }
+
+  function closeSportsMobileDrawers() {
+    document.getElementById("left-sidebar")?.classList.remove("open");
+    document.getElementById("right-sidebar")?.classList.remove("is-open");
+    document.getElementById("header-bottom")?.classList.remove("is-open");
+    if (window.DesktopFullMenu) window.DesktopFullMenu.close();
+    document.getElementById("mobile-menu-btn")?.setAttribute("aria-expanded", "false");
+    document.getElementById("mobile-menu-tab")?.setAttribute("aria-expanded", "false");
+    document.getElementById("mobile-betslip-btn")?.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("ds-menu-open");
+    setSportsDrawerBackdrop(false);
+    if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
+  }
+
+  function toggleSportsBetSlip() {
+    if (!isMobileViewport()) return;
+    const right = document.getElementById("right-sidebar");
+    if (!right) return;
+    const open = right.classList.contains("is-open");
+    closeSportsTabFlyout();
+    closeSportsMobileDrawers();
+    if (!open) {
+      right.classList.add("is-open");
+      document.getElementById("mobile-betslip-btn")?.setAttribute("aria-expanded", "true");
+      setSportsDrawerBackdrop(true);
+      if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
+    }
+  }
+
+  function initSportsTabFlyouts() {
+    if (document.documentElement.dataset.mtFlyoutWired === "1") return;
+    document.documentElement.dataset.mtFlyoutWired = "1";
+    window.closeSportsTabFlyout = closeSportsTabFlyout;
+
+    /* Capture phase so rebuilt tabbar still works after page scripts bound old nodes */
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (!document.querySelector('.mobile-tabbar[data-sports-tabbar="1"]')) return;
+
+        const openBtn = e.target.closest("[data-mt-flyout-open]");
+        if (openBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          const key = openBtn.getAttribute("data-mt-flyout-open");
+          const slot = openBtn.closest("[data-mt-flyout-slot]");
+          if (!key || !slot) return;
+          closeSportsMobileDrawers();
+          if (slot.classList.contains("is-open")) closeSportsTabFlyout();
+          else openSportsTabFlyout(key);
+          return;
+        }
+
+        if (e.target.closest("[data-mt-flyout-close]")) {
+          e.preventDefault();
+          e.stopPropagation();
+          closeSportsTabFlyout();
+          return;
+        }
+
+        if (e.target.closest("#mt-tab-flyout-backdrop")) {
+          e.stopPropagation();
+          closeSportsTabFlyout();
+          return;
+        }
+
+        if (e.target.closest("#mobile-betslip-btn")) {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleSportsBetSlip();
+        }
+      },
+      true
+    );
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSportsTabFlyout();
+    });
+  }
+
   function syncSportsTabbarAuth(loggedIn) {
     const tabbar = document.querySelector('.mobile-tabbar[data-sports-tabbar="1"]');
     if (!tabbar) return;
@@ -1011,111 +1415,20 @@
     if (!tabbar) return;
 
     const loggedIn = isLoggedIn() || document.body.classList.contains("is-logged-in");
-
-    if (tabbar.dataset.sportsTabbar === "1") {
-      syncSportsTabbarAuth(loggedIn);
-      return;
-    }
-
-    if (tabbar.dataset.mainTabbar === "1") return;
-
     const page = document.body.dataset.page || "";
     const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
-    const accountPages = [
-      "personal-profile", "security", "change-password", "information-center", "change-language",
-      "deposit", "withdraw", "payment-queries", "transaction-history", "bet-history",
-      "commission-record", "rebate-record", "checkin-record", "promotion-record",
-      "daily-checkin", "live-chat"
-    ];
-
-    let active = "home";
-    if (file === "promo.html" || page === "promo") active = "promo";
-    else if (file === "deposit.html" || page === "deposit") active = "deposit";
-    else if (file === "live-chat.html" || page === "live-chat") active = "livechat";
-    else if (accountPages.indexOf(page) !== -1 || document.querySelector(".account-main")) {
-      active = "account";
+    /* Casino pages keep their own Categories / Providers / My Casino tabbar */
+    if (tabbar.dataset.casinoTabbar === "1" || isCasinoChromePage(page, file)) {
+      ensureCasinoTabbarMarkup(tabbar);
+      syncCasinoTabbarAuth(loggedIn);
+      return;
     }
 
-    function tabClass(key) {
-      return "mobile-tab" + (active === key ? " is-active" : "");
-    }
-
-    function iconWrap(svg, badge) {
-      return (
-        '<span class="mobile-tab-icon" aria-hidden="true">' +
-        svg +
-        (badge ? '<span class="mobile-tab-badge">' + badge + "</span>" : "") +
-        "</span>"
-      );
-    }
-
-    const iconHome =
-      '<svg viewBox="0 0 24 24" fill="none"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
-    const iconPromo =
-      '<img src="assets/icons/icon-bottom-promo.svg" alt="" width="22" height="22" />';
-    const iconPlus =
-      '<svg viewBox="0 0 24 24" fill="none"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-    const iconChat =
-      '<svg viewBox="0 0 24 24" fill="none"><path d="M7 15.5H5.8A1.8 1.8 0 014 13.7V6.8A1.8 1.8 0 015.8 5h9.4A1.8 1.8 0 0117 6.8v1.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10.5h9.2A1.8 1.8 0 0120 12.3v6.4a.8.8 0 01-1.3.6L16 17.5H9.8A1.8 1.8 0 018 15.7v-3.4A1.8 1.8 0 019.8 10.5H9z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
-    const iconAccount =
-      '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5.5 19c.8-3.2 3.3-5 6.5-5s5.7 1.8 6.5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>';
-
-    function authItem(key, label, iconHtml, extraClass) {
-      return (
-        '<button type="button" class="' +
-        tabClass(key) +
-        (extraClass ? " " + extraClass : "") +
-        '" data-auth-open="login">' +
-        iconHtml +
-        '<span class="mobile-tab-label">' +
-        label +
-        "</span>" +
-        "</button>"
-      );
-    }
-
-    function linkItem(key, href, label, iconHtml, extraClass, id) {
-      return (
-        '<a href="' +
-        href +
-        '" class="' +
-        tabClass(key) +
-        (extraClass ? " " + extraClass : "") +
-        '"' +
-        (id ? ' id="' + id + '"' : "") +
-        (active === key ? ' aria-current="page"' : "") +
-        ">" +
-        iconHtml +
-        '<span class="mobile-tab-label">' +
-        label +
-        "</span>" +
-        "</a>"
-      );
-    }
-
-    const home = linkItem("home", "index.html", "Home", iconWrap(iconHome));
-    const promo = linkItem("promo", "promo.html", "Promotion", iconWrap(iconPromo, "1"));
-    const depositIcon =
-      '<span class="mobile-tab-icon" aria-hidden="true"><span class="mobile-tab-fab-btn">' +
-      iconPlus +
-      "</span></span>";
-    const deposit = loggedIn
-      ? linkItem("deposit", "deposit.html", "Deposit", depositIcon, "mobile-tab--fab")
-      : authItem("deposit", "Deposit", depositIcon, "mobile-tab--fab");
-    const livechat = loggedIn
-      ? linkItem("livechat", "live-chat.html", "Livechat", iconWrap(iconChat, "1"), "", "mobile-livechat-btn")
-      : authItem("livechat", "Livechat", iconWrap(iconChat, "1"));
-    const account = loggedIn
-      ? linkItem("account", "personal-profile.html", "Account", iconWrap(iconAccount))
-      : authItem("account", "Account", iconWrap(iconAccount));
-
-    document.body.classList.add("has-account-tabbar");
-    tabbar.classList.add("mobile-tabbar--account");
-    tabbar.setAttribute("aria-label", "Mobile navigation");
-    tabbar.dataset.mainTabbar = "1";
-    tabbar.dataset.accountTabbar = "1";
-    tabbar.innerHTML = home + promo + deposit + livechat + account;
+    /* All other desktop→mobile pages use the home sports tabbar */
+    ensureSportsTabbarMarkup(tabbar);
+    syncSportsTabbarAuth(loggedIn);
+    initSportsTabFlyouts();
   }
 
   function init() {

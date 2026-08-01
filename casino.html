@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -105,16 +105,7 @@
                 <a href="index.html#games" role="menuitem">Show all</a>
               </div>
             </div>
-            <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link active" aria-expanded="false" aria-haspopup="true" aria-current="page">
-                Casino
-                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
-              </button>
-              <div class="dropdown" role="menu">
-                <a href="casino.html" role="menuitem" aria-current="page">Slots</a>
-                <a href="casino-favourites.html" role="menuitem">My Casino / Favourites</a>
-              </div>
-            </div>
+            <a href="casino.html" class="nav-link nav-link-plain active" aria-current="page">Slots</a>
             <a href="live-casino.html" class="nav-link nav-link-plain">Live Casino</a>
             <div class="nav-item has-dropdown">
               <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
@@ -936,7 +927,7 @@
           </section>
 
           <!-- -- Provider logos strip ----------------------- -->
-          <div class="casino-providers" aria-label="Game providers">
+          <div class="casino-providers" id="casino-providers" aria-label="Game providers">
             <a href="#" class="casino-provider">Infinity</a>
             <a href="#" class="casino-provider">Amatic</a>
             <a href="#" class="casino-provider">888888</a>

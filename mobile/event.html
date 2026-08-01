@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2744" />
+  <title>Event - 1xBet Mobile</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/auth-modals.css" />
+  <link rel="stylesheet" href="css/mobile-home.css" />
+  <link rel="stylesheet" href="css/mobile-event.css" />
+</head>
+<body class="mh-page mh-page--event" data-page="event">
+  <header class="mh-header" id="mh-header">
+    <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
+      <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
+      <img class="mh-header__flag" src="assets/logos/flag-my.svg" alt="" width="18" height="18" />
+    </a>
+    <div class="mh-header__actions">
+      <button type="button" class="btn-login mh-btn-login" data-auth-open="login">Log in</button>
+      <a href="#reg-form" class="btn-register mh-btn-register" data-auth-open="register">Registration</a>
+    </div>
+  </header>
+
+  <div class="mh-ev-subbar">
+    <a href="javascript:history.back()" class="mh-ev-subbar__back" aria-label="Back" id="mh-ev-back">
+      <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+    </a>
+    <h1 class="mh-ev-subbar__title">Event</h1>
+    <div class="mh-ev-subbar__actions">
+      <button type="button" class="mh-ev-subbar__btn" aria-label="Favourite" data-mh-toast="Favourites">
+        <img src="assets/icons/ei-star.svg" alt="" width="16" height="16" />
+      </button>
+      <button type="button" class="mh-ev-subbar__btn" aria-label="Notifications" data-mh-toast="Notifications">
+        <img src="assets/icons/ei-bell.svg" alt="" width="16" height="16" />
+      </button>
+    </div>
+  </div>
+
+  <main class="mh-main">
+    <section class="mh-ev-board" id="mh-ev-board" aria-label="Match scoreboard"></section>
+    <div class="mh-ev-filters" id="mh-ev-filters" role="tablist" aria-label="Market periods"></div>
+    <div class="mh-ev-searchrow">
+      <label class="mh-ev-search">
+        <img src="assets/icons/sp-search.svg" alt="" />
+        <input type="search" placeholder="Search by market" data-mh-ev-search aria-label="Search by market" />
+      </label>
+      <button type="button" class="mh-ev-collapse" data-mh-ev-collapse aria-label="Collapse markets">
+        <img src="assets/icons/icon-chevron-double-down.svg" alt="" />
+      </button>
+    </div>
+    <div class="mh-ev-markets" id="mh-ev-markets" aria-label="Betting markets"></div>
+  </main>
+
+  <div class="mh-ev-modebar" aria-label="Market view">
+    <button type="button" class="mh-ev-modebar__btn is-active" data-mh-ev-mode="list">
+      <img src="assets/icons/bh-stack.svg" alt="" />
+      <span>List of markets</span>
+    </button>
+    <button type="button" class="mh-ev-modebar__btn" data-mh-ev-mode="builder" data-mh-toast="Bet Builder coming soon">
+      <img src="assets/icons/icon-dice.svg" alt="" />
+      <span>Bet Builder</span>
+    </button>
+  </div>
+
+  <div class="mh-tab-flyout-backdrop" id="mh-tab-flyout-backdrop" hidden></div>
+
+  <nav class="mh-tabbar" aria-label="Mobile primary">
+    <div class="mh-tab-slot" data-mh-flyout-slot="sports">
+      <button type="button" class="mh-tab is-active" data-mh-flyout-open="sports" aria-expanded="false" aria-controls="mh-flyout-sports" aria-haspopup="menu">
+        <img src="assets/icons/tab-sports.svg" alt="" width="20" height="20" />
+        <span>Sports</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-sports" role="menu" aria-label="Sports" hidden>
+        <a href="national-team-line.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--flag" src="assets/logos/flag-my.svg" alt="" width="22" height="22" />
+          <span>Bet on Your National Team</span>
+        </a>
+        <a href="national-team-live.html" class="mh-tab-flyout__item" role="menuitem">
+          <img class="mh-tab-flyout__icon--live" src="assets/icons/tab-live.svg" alt="" width="22" height="22" />
+          <span>Live</span>
+        </a>
+        <a href="sports.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+          <span>Sports</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <div class="mh-tab-slot" data-mh-flyout-slot="casino">
+      <button type="button" class="mh-tab" data-mh-flyout-open="casino" aria-expanded="false" aria-controls="mh-flyout-casino" aria-haspopup="menu">
+        <img src="assets/icons/tab-casino.svg" alt="" width="20" height="20" />
+        <span>Casino</span>
+      </button>
+      <div class="mh-tab-flyout" id="mh-flyout-casino" role="menu" aria-label="Casino" hidden>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-cherries.svg" alt="" width="22" height="22" />
+          <span>Casino</span>
+        </a>
+        <a href="live-casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-spade.svg" alt="" width="22" height="22" />
+          <span>Live Casino</span>
+        </a>
+        <a href="casino.html" class="mh-tab-flyout__item" role="menuitem">
+          <img src="assets/icons/tab-dice.svg" alt="" width="22" height="22" />
+          <span>1xGames</span>
+        </a>
+        <button type="button" class="mh-tab-flyout__close" data-mh-flyout-close aria-label="Close">
+          <img src="assets/icons/tab-close.svg" alt="" width="22" height="22" />
+        </button>
+      </div>
+    </div>
+
+    <button type="button" class="mh-tab mh-tab--coupon" id="mh-betslip-btn" aria-label="Bet slip">
+      <span class="mh-tab__coupon-wrap">
+        <span class="mh-tab__coupon-icon">
+          <img src="assets/icons/tab-coupon.svg" alt="" width="18" height="18" />
+        </span>
+        <span class="mh-tab__badge" id="mh-bet-count" hidden>0</span>
+      </span>
+      <span>Bet slip</span>
+    </button>
+    <a class="mh-tab" href="deposit.html">
+      <img src="assets/icons/tab-deposit.svg" alt="" width="20" height="20" />
+      <span>Deposit</span>
+    </a>
+    <button type="button" class="mh-tab" id="mh-menu-btn" aria-expanded="false" aria-controls="mh-menu-sheet">
+      <img src="assets/icons/tab-menu.svg" alt="" width="20" height="20" />
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <div class="mh-sheet" id="mh-menu-sheet" hidden>
+      <div class="mh-sheet__backdrop" data-mh-close-menu></div>
+      <div class="mh-sheet__panel mh-cs-menu" role="dialog" aria-modal="true" aria-label="Menu">
+        <div class="mh-cs-menu__top">
+          <button type="button" class="mh-cs-menu__clock" data-mh-toast="Timezone" aria-label="Time">
+            <span data-mh-menu-clock>14:51</span>
+            <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+          </button>
+          <button type="button" class="mh-cs-menu__lang" data-mh-open-lang aria-haspopup="dialog" aria-controls="mh-lang-panel" aria-expanded="false" aria-label="Select language">
+            <img class="mh-cs-menu__lang-flag" src="assets/logos/flag-my.svg" alt="" width="16" height="12" data-mh-lang-flag />
+            <span data-mh-lang-code>EN</span>
+            <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+          </button>
+          <span class="mh-cs-menu__spacer"></span>
+          <button type="button" class="mh-cs-menu__settings" data-mh-toast="Settings" aria-label="Settings">
+            <img src="assets/icons/icon-settings.svg" alt="" width="18" height="18" />
+          </button>
+          <button type="button" class="mh-cs-menu__close" data-mh-close-menu aria-label="Close">
+            <img src="assets/icons/icon-close.svg" alt="" width="14" height="14" />
+          </button>
+        </div>
+
+        <div class="mh-cs-menu__wallet" data-mh-menu-wallet>
+          <button type="button" class="mh-cs-menu__balance" data-mh-toast="Accounts" aria-label="Balance">
+            <img src="assets/icons/menu/wallet.svg" alt="" width="16" height="16" />
+            <span>0 MYR</span>
+            <img src="assets/icons/icon-chevron-down.svg" alt="" width="10" height="10" />
+          </button>
+          <button type="button" class="mh-cs-menu__deposit" data-mh-deposit>Deposit</button>
+        </div>
+
+        <label class="mh-cs-menu__search">
+          <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+          <input type="search" placeholder="Search menu" autocomplete="off" />
+        </label>
+
+        <ul class="mh-cs-menu__list">
+          <li>
+            <a href="index.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/icon-home.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Main page</span>
+            </a>
+          </li>
+          <li>
+            <a href="sports.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/tab-menu.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Sports</span>
+            </a>
+          </li>
+          <li>
+            <a href="national-team-live.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/tab-live.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Live</span>
+            </a>
+          </li>
+          <li>
+            <a href="sports.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/t20.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">T20 Blast</span>
+              <span class="mh-cs-menu__badge">TOP</span>
+            </a>
+          </li>
+          <li>
+            <a href="../esports.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/menu/gamepad.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Esports</span>
+            </a>
+          </li>
+          <li>
+            <a href="favourites.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/star.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Favorites</span>
+            </a>
+          </li>
+          <li>
+            <a href="results.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/icon-clock.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Results</span>
+            </a>
+          </li>
+          <li>
+            <a href="statistics.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/ei-stats.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Statistics</span>
+            </a>
+          </li>
+          <li>
+            <a href="big-tournaments.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/bobt.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Bet on Big Tournaments</span>
+            </a>
+          </li>
+        </ul>
+
+        <h2 class="mh-cs-menu__section-title">Casino</h2>
+        <ul class="mh-cs-menu__list">
+          <li>
+            <a href="casino.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/casino.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Casino</span>
+              <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+            </a>
+          </li>
+        
+        <li>
+          <a href="live-casino.html">
+            <span class="mh-cs-menu__ico"><img src="assets/casino/categories/live-casino.svg" alt="" /></span>
+            <span class="mh-cs-menu__label">Live Casino</span>
+          </a>
+        </li>
+      </ul>
+
+        <h2 class="mh-cs-menu__section-title">Games</h2>
+        <ul class="mh-cs-menu__list">
+          <li>
+            <a href="../world-flight-26.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/icon-dice.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">1xGames</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- My Account � same destinations/hooks/icons as mobile/profile.html -->
+        <div class="mh-cs-menu__account" data-mh-menu-account>
+          <h2 class="mh-cs-menu__section-title">My Account</h2>
+          <ul class="mh-cs-menu__list">
+            <li>
+              <button type="button" data-mh-bets>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-bet-history.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Bet history</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-messages>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-mail.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Messages</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-deposit>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-deposit.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Make a deposit</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-withdraw>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-withdraw.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Withdraw funds</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-tx-history>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-transfer.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Transaction history</span>
+              </button>
+            </li>
+            <!-- Payment queries - hidden on mobile; keep markup for restore -->
+            <!--
+            <li>
+              <button type="button" data-mh-toast="Payment queries (demo)">
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-payment.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Payment queries</span>
+              </button>
+            </li>
+            -->
+            <li>
+              <button type="button" data-mh-personal-profile>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-user.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Personal profile</span>
+                <span class="mh-cs-menu__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="14" height="14" /></span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-security>
+                <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-lock.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Security</span>
+                <span class="mh-cs-menu__alert" aria-label="Attention required"><img src="assets/icons/profile/pf-alert.svg" alt="" width="14" height="14" /></span>
+              </button>
+            </li>
+            <li>
+              <button type="button" data-mh-toast="Your accounts (demo)">
+                <span class="mh-cs-menu__ico"><img src="assets/icons/menu/wallet.svg" alt="" /></span>
+                <span class="mh-cs-menu__label">Your accounts</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Extra � profile Extra links + site Extra + logout -->
+        <h2 class="mh-cs-menu__section-title">Extra</h2>
+        <ul class="mh-cs-menu__list">
+          <li>
+            <a href="referral.html" data-mh-referral>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-referral.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Referral</span>
+            </a>
+          </li>
+          <li>
+            <a href="membership.html" data-mh-membership>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-membership.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Membership</span>
+            </a>
+          </li>
+          <li>
+            <a href="rebate.html" data-mh-rebate>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-rebate.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Rebate</span>
+            </a>
+          </li>
+          <li>
+            <a href="daily-checkin.html" data-mh-checkin>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-checkin.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Daily check in</span>
+            </a>
+          </li>
+          <li>
+            <a href="casino-promo.html">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-promotions.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Promotions</span>
+            </a>
+          </li>
+          <li>
+            <a href="live-chat.html" data-mh-live-chat>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-chat.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Live chat</span>
+            </a>
+          </li>
+          <li class="mh-cs-menu__acc-item" data-mh-menu-acc-item>
+            <button type="button" class="mh-cs-menu__acc-btn" data-mh-menu-acc aria-expanded="false">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/menu/info.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Information</span>
+              <img class="mh-cs-menu__chev" src="assets/icons/icon-chevron-down.svg" alt="" />
+            </button>
+            <ul class="mh-cs-menu__sub" hidden>
+              <li><a href="about-us.html">About us</a></li>
+              <li><a href="terms.html">Terms and Conditions</a></li>
+              <li><a href="payment-methods.html">Payment methods</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="partnership.html">
+              <span class="mh-cs-menu__ico"><img src="../assets/icons/partnership/icon-shield.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Partnership</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-mh-toast="Mobile application (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/menu/phone.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Mobile application</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-mh-toast="Other apps (demo)">
+              <span class="mh-cs-menu__ico"><img src="assets/icons/menu/other-apps.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Other apps</span>
+            </a>
+          </li>
+          <li class="mh-cs-menu__logout-row" data-mh-menu-logout>
+            <button type="button" data-mh-logout>
+              <span class="mh-cs-menu__ico"><img src="assets/icons/profile/pf-logout.svg" alt="" /></span>
+              <span class="mh-cs-menu__label">Log out</span>
+            </button>
+          </li>
+        </ul>
+
+        <!-- Select Language overlay (opened from menu language control) -->
+        <div class="mh-cs-lang" id="mh-lang-panel" hidden role="dialog" aria-modal="true" aria-labelledby="mh-lang-title">
+          <div class="mh-cs-lang__subbar">
+            <button type="button" class="mh-cs-lang__back" data-mh-close-lang aria-label="Back to menu">
+              <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
+            </button>
+            <h2 class="mh-cs-lang__title" id="mh-lang-title">SELECT LANGUAGE</h2>
+          </div>
+          <label class="mh-cs-lang__search">
+            <img src="assets/icons/sp-search.svg" alt="" width="16" height="16" />
+            <input type="search" placeholder="Search" autocomplete="off" data-mh-lang-search />
+          </label>
+                  <ul class="mh-cs-lang__list" role="listbox" aria-label="Languages" data-mh-lang-list>
+          <!-- populated by mobile-home.js from assets/flags/languages.json -->
+        </ul>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/auth-modals.js"></script>
+  <script src="js/mobile-languages-data.js"></script>
+  <script src="js/mobile-home.js"></script>
+  <script src="js/mobile-favourites.js"></script>
+  <script src="js/mobile-event.js"></script>
+</body>
+</html>
