@@ -6909,6 +6909,16 @@ body.bsg-open {
     display: none;
   }
 
+  .mybets-empty--history .bet-empty-text {
+    display: block;
+    max-width: 240px;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-primary);
+    text-align: center;
+  }
+
   .bet-empty-gen {
     display: flex;
     flex-direction: column;
