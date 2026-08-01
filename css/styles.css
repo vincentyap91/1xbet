@@ -6919,6 +6919,15 @@ body.bsg-open {
     text-align: center;
   }
 
+  .mybets-guest-card .bet-empty-text {
+    display: block;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-primary);
+    text-align: center;
+  }
+
   .bet-empty-gen {
     display: flex;
     flex-direction: column;

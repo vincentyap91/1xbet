@@ -4512,7 +4512,7 @@
         `<div class="mybets-guest-card">` +
           `<p class="bet-empty-text">Please log in to your account or register</p>` +
         `</div>` +
-        `<a href="#reg-form" class="btn-slip-reg mybets-guest-cta">Registration</a>` +
+        `<a href="#reg-form" class="btn-slip-reg mybets-guest-cta" data-auth-open="register">Registration</a>` +
       `</div>` +
       `<div class="mybets-app" id="mybets-app" hidden>` +
         `<div class="mybets-subtabs" role="tablist" aria-label="My bets views">` +
