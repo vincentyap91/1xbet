@@ -168,19 +168,32 @@ a:focus-visible {
    ========================================================= */
 .page-shell {
   width: 100%;
-  min-width: 1180px;
+  min-width: 0;
   max-width: 1920px;
   margin: 0 auto;
   background: var(--page-bg);
 }
 
+/* Desktop lock only — never force 1180px on phone / DevTools device mode */
+@media (min-width: 1181px) {
+  .page-shell {
+    min-width: 1180px;
+  }
+}
+
 .sportsbook-layout {
   display: grid;
-  grid-template-columns: var(--sidebar-left-w) minmax(720px, 1fr) var(--sidebar-right-w);
+  grid-template-columns: var(--sidebar-left-w) minmax(0, 1fr) var(--sidebar-right-w);
   align-items: start;
   gap: var(--gap);
   padding: var(--gap);
   background: var(--page-bg-secondary);
+}
+
+@media (min-width: 1181px) {
+  .sportsbook-layout {
+    grid-template-columns: var(--sidebar-left-w) minmax(720px, 1fr) var(--sidebar-right-w);
+  }
 }
 
 .main-content {
@@ -7759,6 +7772,13 @@ body.bsg-open {
     --mobile-tabbar-h: 64px;
   }
 
+  /* Stop wide children from expanding layout viewport (causes “zoomed in” mobile view) */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     padding-bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px));
   }
@@ -7770,6 +7790,7 @@ body.bsg-open {
   .page-shell {
     min-width: 0;
     max-width: 100%;
+    overflow-x: clip;
   }
 
   .sportsbook-layout {
