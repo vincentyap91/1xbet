@@ -6,6 +6,7 @@
   <title>Long-term bets ï¿½ 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/long-term-bets.css" />
+  <link rel="stylesheet" href="mobile/css/mobile-markets-filter.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="long-term-bets">
@@ -68,10 +69,10 @@
               </div>
             </div>
             <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link active" aria-expanded="false" aria-haspopup="true" aria-current="page">
+              <a href="sports.html" class="nav-link active" aria-current="page" aria-haspopup="true" aria-expanded="false">
                 Sports
-                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
-              </button>
+                <span class="nav-dd-caret" aria-hidden="true"><img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" /></span>
+              </a>
               <div class="dropdown" role="menu">
                 <a href="national-team.html" role="menuitem">Bet on Your National Team</a>
                 <a href="big-tournaments.html" role="menuitem">Bet on Big Tournaments</a>
@@ -270,6 +271,25 @@
 
       <!-- CENTER ï¿½ Long-term markets feed -->
       <main class="main-content lt-main" id="main-content">
+        <!-- ≤900: page title + search / fav / filter -->
+        <div class="nt-mobile-subbar" aria-label="Long-term bets">
+          <a href="sports.html" class="nt-mobile-subbar__back" aria-label="Back">
+            <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+          </a>
+          <h1 class="nt-mobile-subbar__title">Long-term bets</h1>
+          <div class="nt-mobile-subbar__actions">
+            <a href="search.html" class="nt-mobile-subbar__btn" aria-label="Search">
+              <img src="mobile/assets/icons/sp-search.svg" alt="" width="16" height="16" />
+            </a>
+            <a href="favourites.html" class="nt-mobile-subbar__btn" aria-label="Favourites">
+              <img src="mobile/assets/icons/sp-star.svg" alt="" width="16" height="16" />
+            </a>
+            <button type="button" class="nt-mobile-subbar__btn" aria-label="Filter" data-mh-mf-open aria-haspopup="dialog" aria-controls="mh-mf" title="Filter">
+              <img src="mobile/assets/icons/sp-filter.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+        </div>
+
         <div class="lt-toolbar">
           <nav class="lt-crumbs" aria-label="Breadcrumb">
             <a href="index.html#line-events" class="lt-crumb" aria-label="LINE">
@@ -923,5 +943,6 @@
   <script src="js/bet-slip-generator.js"></script>
   <script src="js/long-term-bets.js"></script>
   <script src="js/auth-modals.js"></script>
+  <script src="mobile/js/mobile-markets-filter.js"></script>
 </body>
 </html>

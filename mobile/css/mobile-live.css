@@ -1,0 +1,141 @@
+/* =========================================================
+   Mobile — Live (sports) — scores, stream, league chips
+   Shares sports shell via body.mh-page--sports.mh-page--live
+   Tokens only from design system
+   ========================================================= */
+
+body.mh-page.mh-page--live .mh-sp-card__top {
+  gap: 6px;
+}
+
+body.mh-page.mh-page--live .mh-sp-card__stream,
+body.mh-page.mh-page--live .mh-sp-match .mh-sp-card__stream {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--action-green) 18%, var(--odds-bg));
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+body.mh-page.mh-page--live .mh-sp-card__stream img {
+  width: 14px;
+  height: 14px;
+  display: block;
+  filter: brightness(0) saturate(100%) invert(58%) sepia(45%) saturate(600%) hue-rotate(42deg);
+}
+
+body.mh-page.mh-page--live .mh-sp-card__teams,
+body.mh-page.mh-page--live .mh-sp-match__teams {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+body.mh-page.mh-page--live .mh-sp-card__row,
+body.mh-page.mh-page--live .mh-sp-match__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+body.mh-page.mh-page--live .mh-sp-card__row .mh-sp-card__team,
+body.mh-page.mh-page--live .mh-sp-match__row .mh-sp-match__team {
+  margin: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+body.mh-page.mh-page--live .mh-sp-card__score,
+body.mh-page.mh-page--live .mh-sp-match__score {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+body.mh-page.mh-page--live .mh-sp-match__top .mh-sp-match__time {
+  order: 0;
+}
+
+body.mh-page.mh-page--live .mh-sp-match__top .mh-sp-match__sport {
+  margin-left: auto;
+}
+
+body.mh-page.mh-page--live .mh-sp-match__odds--4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+body.mh-page.mh-page--live .mh-sp-match__odds--4 .mh-odds__lab {
+  font-size: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Dark horizontal league / tournament chips */
+body.mh-page.mh-page--live .mh-sp-rail--live-chips {
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.mh-lv-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  max-width: min(220px, 70vw);
+  padding: 6px 12px 6px 8px;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--cyan-accent) 22%, transparent);
+  background:
+    linear-gradient(160deg, rgba(62, 180, 240, 0.18) 0%, transparent 50%),
+    linear-gradient(180deg, var(--section-blue) 0%, var(--header-bg) 100%);
+  color: var(--text-inverse);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(11, 29, 51, 0.18);
+}
+
+.mh-lv-chip__flag {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--surface-primary);
+}
+
+.mh-lv-chip__sport {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
+.mh-lv-chip__name {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* League accordion flag icons (no blue sport filter) */
+body.mh-page.mh-page--live .mh-sp-league__head img:first-child[src*="flags/"] {
+  border-radius: 50%;
+  object-fit: cover;
+  filter: none;
+}

@@ -23,6 +23,8 @@
   /* ---------- Mock data (live snapshot) ---------- */
 
   const isMarbleLivePage = document.body?.dataset?.page === "marble-live";
+  const isSportsPage = document.body?.dataset?.page === "sports";
+  const isEsportsPage = document.body?.dataset?.page === "esports";
   const isLiveNationalTeamPage =
     document.body?.dataset?.page === "live-national-team";
   const isNationalTeamPage =
@@ -57,6 +59,8 @@
     AR: "assets/icons/lnt/flag-argentina.svg",
     CH: "assets/icons/lnt/flag-switzerland.svg",
     WC: "assets/icons/lnt/crumb-trophy.svg",
+    RU: "assets/icons/lnt/crumb-trophy.svg",
+    UA: "assets/icons/lnt/crumb-trophy.svg",
   };
 
   const sportHeaderIconMap = {
@@ -379,7 +383,7 @@
           id: "nt-dl1",
           time: "10:37",
           live: true,
-          clock: "10:37 / 2nd quarter / Including Overtime / Round of 8",
+          clock: "Live",
           stream: true,
           home: "Selangor EST Jersey U20 (Women)",
           away: "NS Matrix U20 (Women)",
@@ -511,6 +515,100 @@
 
   /** LINE dashboard — pre-match from live site */
   const lineLeagues = [
+    {
+      id: "ru-l1",
+      name: "Russian Championship. League 1",
+      sport: "football",
+      icon: "RU",
+      events: [
+        {
+          id: "ln-ru1",
+          time: "03 Aug 22:00",
+          live: false,
+          home: "Ufa",
+          away: "KAMAZ",
+          scoreH: null,
+          scoreA: null,
+          o1: 2.45,
+          ox: 3.10,
+          o2: 2.90,
+          dc1x: 1.38,
+          dc12: 1.32,
+          dc2x: 1.50,
+          total: 2.5,
+          over: 1.92,
+          under: 1.87,
+          more: 1084,
+        },
+      ],
+    },
+    {
+      id: "ua-pl",
+      name: "Ukraine. Premier League",
+      sport: "football",
+      icon: "UA",
+      events: [
+        {
+          id: "ln-ua1",
+          time: "03 Aug 23:30",
+          live: false,
+          home: "Bukovyna Chernivtsi",
+          away: "LNZ",
+          scoreH: null,
+          scoreA: null,
+          o1: 2.20,
+          ox: 3.25,
+          o2: 3.30,
+          dc1x: 1.32,
+          dc12: 1.34,
+          dc2x: 1.64,
+          total: 2.5,
+          over: 1.90,
+          under: 1.89,
+          more: 944,
+        },
+        {
+          id: "ln-ua2",
+          time: "04 Aug 01:00",
+          live: false,
+          home: "Shakhtar Donetsk",
+          away: "Kudrivka",
+          scoreH: null,
+          scoreA: null,
+          o1: 1.28,
+          ox: 5.40,
+          o2: 9.50,
+          dc1x: 1.05,
+          dc12: 1.12,
+          dc2x: 3.40,
+          total: 2.5,
+          over: 1.78,
+          under: 2.02,
+          more: 936,
+        },
+      ],
+    },
+    {
+      id: "atp-mtl",
+      name: "ATP. Montreal. Hard",
+      sport: "tennis",
+      icon: "CA",
+      events: [
+        { id: "ln-atp1", time: "03 Aug 22:00", live: false, home: "Alexis Galarneau", away: "Vit Kopriva", scoreH: null, scoreA: null, o1: 2.10, ox: null, o2: 1.72, total: 22.5, over: 1.88, under: 1.90, hcap: "+2.5", h1: 1.85, h2: 1.93, more: 187 },
+        { id: "ln-atp2", time: "03 Aug 23:30", live: false, home: "James Duckworth", away: "Christopher O'Connell", scoreH: null, scoreA: null, o1: 2.05, ox: null, o2: 1.76, total: 22.5, over: 1.90, under: 1.88, hcap: "+1.5", h1: 1.90, h2: 1.88, more: 187 },
+        { id: "ln-atp3", time: "04 Aug 01:00", live: false, home: "Matteo Berrettini", away: "Mariano Navone", scoreH: null, scoreA: null, o1: 1.55, ox: null, o2: 2.45, total: 22.5, over: 1.87, under: 1.91, hcap: "-2.5", h1: 1.88, h2: 1.90, more: 187 },
+      ],
+    },
+    {
+      id: "wnba-line",
+      name: "WNBA",
+      sport: "basketball",
+      icon: "US",
+      events: [
+        { id: "ln-wnba1", time: "02:00", live: false, home: "Atlanta Dream", away: "Las Vegas Aces", scoreH: null, scoreA: null, o1: 4.12, ox: null, o2: 1.25, total: 165.5, over: 1.90, under: 1.88, hcap: "+8.5", h1: 1.90, h2: 1.88, more: 253 },
+        { id: "ln-wnba2", time: "Tomorrow 07:00", live: false, home: "Connecticut Sun", away: "Indiana Fever", scoreH: null, scoreA: null, o1: 2.58, ox: null, o2: 1.52, total: 162.5, over: 1.91, under: 1.87, hcap: "+3.5", h1: 1.89, h2: 1.89, more: 240 },
+      ],
+    },
     {
       id: "wc2026",
       name: "World Cup 2026",
@@ -791,11 +889,14 @@
     collapsedLeagues: new Set(),
     activeLiveFilter: null,
     activeLineFilter: null,
+    /** National Team mode bar: "live" | "sports" — driven by page (links navigate) */
+    ntMarketMode: isLiveNationalTeamPage ? "live" : "sports",
+    streamOnly: false,
     sportsExpanded: false,
     searchQuery: "",
     liveSearch: "",
     lineSearch: "",
-    lineType: "live",
+    lineType: isSportsPage ? "sports" : "live",
     promoIndex: 0,
     myBetsTab: "open",
     betHistoryCategory: "all",
@@ -1424,6 +1525,11 @@
     leagues.forEach((league) => {
       if (!leagueMatchesFilter(league, filterSport)) return;
       league.events.forEach((event) => {
+        if (isNationalTeamPage) {
+          const wantLive = state.ntMarketMode === "live";
+          if (!!event.live !== wantLive) return;
+        }
+        if (state.streamOnly && !event.stream) return;
         eventIndex.set(event.id, { league, event });
       });
     });
@@ -1441,9 +1547,24 @@
 
     leagues.forEach((league) => {
       if (!leagueMatchesFilter(league, filterSport)) return;
-      const events = league.events.filter((event) => !pinnedSet.has(event.id));
+      const events = league.events.filter((event) => {
+        if (pinnedSet.has(event.id)) return false;
+        if (isNationalTeamPage) {
+          const wantLive = state.ntMarketMode === "live";
+          if (!!event.live !== wantLive) return false;
+        }
+        if (state.streamOnly && !event.stream) return false;
+        return true;
+      });
       if (events.length) sections.push({ league, events });
     });
+
+    if (!sections.length && isNationalTeamPage) {
+      return `<div class="nt-mode-empty" role="status">
+        <p class="nt-mode-empty__title">${state.ntMarketMode === "live" ? "No live matches" : "No championships"}</p>
+        <p class="nt-mode-empty__text">Information will be displayed here soon</p>
+      </div>`;
+    }
 
     return sections
       .map(({ league, events }) => renderLeague(league, null, searchQuery, events))
@@ -1454,8 +1575,10 @@
     const liveEl = $("#live-table");
     const lineEl = $("#line-table");
     if (liveEl) {
+      /* Sports page: Line (pre-match) data in the national-team table chrome */
+      const leagues = isSportsPage ? lineLeagues : liveLeagues;
       liveEl.innerHTML = renderOrderedLeagues(
-        liveLeagues,
+        leagues,
         state.activeLiveFilter,
         state.liveSearch
       );
@@ -1472,9 +1595,10 @@
   /* ---------- Sidebar ---------- */
 
   function sportRowHtml(s) {
+    const sportHref = "#live-events";
     return `
       <li class="sport-item" data-sport-id="${s.id}">
-        <a href="#live-events" class="sport-item-main">
+        <a href="${sportHref}" class="sport-item-main">
           <img class="sport-icon-img" src="${s.icon}" alt="" width="16" height="16" />
           <span class="row-label">${s.name}&nbsp;</span>
           <span class="count">(${s.count})</span>
@@ -1591,6 +1715,9 @@
     const chips = Array.from(list.querySelectorAll(".filter-chip"));
     chips.forEach((chip) => chip.classList.remove("is-overflow"));
 
+    // National Team / Sports: keep all chips visible and scroll horizontally
+    if (isNationalTeamPage || isSportsPage) return;
+
     const available = list.clientWidth;
     if (available <= 0) return;
 
@@ -1617,8 +1744,9 @@
 
   function moreMenuItemHtml(sport) {
     const active = state.activeLiveFilter === sport.id ? " active" : "";
+    // Light dropdown: use dark sport-* icons (not white te-* chip icons)
     return `<button type="button" class="te-more-item${active}" data-filter="${sport.id}">
-      <img src="${teIconMap[sport.id] || sport.icon}" alt="" width="16" height="16" />
+      <img src="${sport.icon}" alt="" width="16" height="16" />
       <span>${sport.name}</span>
       <span class="te-more-count">${sport.count}</span>
     </button>`;
@@ -2628,8 +2756,79 @@
       const next = hydrateTicketData({ ...data, eventId });
       state.betSlip.push(next);
       renderBetSlip({ animateId: next.id });
+      if (isEsportsPage && !isMobileViewport()) {
+        const right = $(".right-sidebar");
+        const layout = document.querySelector(".sportsbook-layout");
+        right?.classList.remove("collapsed");
+        layout?.classList.remove("right-collapsed");
+      }
     }
     openRightDrawer();
+  }
+
+  /* Esports page: map .es-odd / .es-odd-dark → data-odd ticket payloads (live esports/real slip). */
+  function hydrateEsportsOdds() {
+    if (!isEsportsPage) return;
+    let seq = 204291;
+    $$(".es-odd, .es-odd-dark").forEach((btn) => {
+      if (btn.getAttribute("data-odd")) return;
+      const marketSel = (btn.getAttribute("data-market") || "W1").trim();
+      const odds = Number(btn.getAttribute("data-val"));
+      if (!Number.isFinite(odds) || odds <= 0) return;
+
+      const row = btn.closest(".es-row");
+      const card = btn.closest(".es-pop-card");
+      let home = "";
+      let away = "";
+      let scoreH = "0";
+      let scoreA = "0";
+      let league = "Esports";
+      let sportIcon = "assets/icons/sport-esports.svg";
+      let live = true;
+
+      if (row) {
+        const names = $$(".es-team-name", row);
+        const scores = $$(".es-score", row);
+        home = names[0]?.textContent.trim() || "";
+        away = names[1]?.textContent.trim() || "";
+        scoreH = scores[0]?.textContent.trim() || "0";
+        scoreA = scores[1]?.textContent.trim() || "0";
+        const leagueBlock = row.closest(".es-league");
+        league = leagueBlock?.querySelector(".es-league-name")?.textContent.trim() || league;
+        const iconSrc = leagueBlock?.querySelector(".es-league-icon img")?.getAttribute("src");
+        if (iconSrc) sportIcon = iconSrc;
+        live = !row.closest(".es-line-section");
+      } else if (card) {
+        const names = $$(".es-pop-team-name", card);
+        const scores = $$(".es-pop-score", card);
+        home = names[0]?.textContent.trim() || "";
+        away = names[1]?.textContent.trim() || "";
+        scoreH = scores[0]?.textContent.trim() || "0";
+        scoreA = scores[1]?.textContent.trim() || "0";
+        const leagueEl = card.querySelector(".es-pop-card-league");
+        league = (leagueEl?.textContent || league).replace(/\s+/g, " ").trim();
+        const iconSrc = leagueEl?.querySelector("img")?.getAttribute("src");
+        if (iconSrc) sportIcon = iconSrc;
+        const sectionLabel = (card.closest(".es-pop-section")?.getAttribute("aria-label") || "").toLowerCase();
+        live = !sectionLabel.includes("pre-match");
+      }
+
+      const eventId = String(seq++);
+      const selection = marketSel === "1" ? "W1" : marketSel === "2" ? "W2" : marketSel;
+      const payload = {
+        id: `${eventId}-1X2-${selection}`,
+        eventId,
+        league,
+        match: `${home} - ${away}`,
+        market: "1X2",
+        selection,
+        odds,
+        live,
+        score: live ? `[ ${scoreH} : ${scoreA} ]` : "",
+        sportIcon,
+      };
+      btn.setAttribute("data-odd", JSON.stringify(payload));
+    });
   }
 
   function parseOddAttr(el) {
@@ -2721,6 +2920,22 @@
     document.addEventListener("click", (e) => {
       const trigger = e.target.closest(".nav-item.has-dropdown > .nav-link");
       if (trigger) {
+        const href = trigger.getAttribute("href");
+        const isPageLink =
+          trigger.tagName === "A" &&
+          href &&
+          !href.startsWith("#") &&
+          href !== "";
+        const onCaret = e.target.closest(".nav-dd-caret, .nav-chevron");
+        /* Sports (and similar): click label → navigate; click chevron → toggle menu */
+        if (isPageLink && !onCaret) {
+          $$(".nav-item.open").forEach((n) => {
+            n.classList.remove("open");
+            const btn = n.querySelector(".nav-link");
+            if (btn) btn.setAttribute("aria-expanded", "false");
+          });
+          return;
+        }
         e.preventDefault();
         const item = trigger.closest(".nav-item");
         const open = item.classList.contains("open");
@@ -2833,6 +3048,8 @@
 
   /* Desktop compact rails — match live xxs collapse (no hover overlay) */
   (function initSidebarCollapsible() {
+    /* Esports wires collapse in js/esports.js (keeps dark chrome + compact rail). */
+    if (isEsportsPage) return;
     const layout = document.querySelector(".sportsbook-layout");
     const left = document.querySelector(".left-sidebar");
     const right = document.querySelector(".right-sidebar");
@@ -3000,16 +3217,23 @@
 
     if (liveStreamToggle) {
       liveStreamToggle.addEventListener("change", () => {
+        state.streamOnly = !!liveStreamToggle.checked;
         if (liveStreamToggle.checked) {
-          state.activeLiveFilter = "stream";
-        } else if (state.activeLiveFilter === "stream") {
-          state.activeLiveFilter = null;
+          if (state.activeLiveFilter === "stream") {
+            /* keep */
+          }
         }
         renderLiveFilterBar();
         renderTables();
         showToast(liveStreamToggle.checked ? "Showing events with live streams" : "All live events");
       });
     }
+
+    window.applyNtStreamFilter = (on) => {
+      state.streamOnly = !!on;
+      if (liveStreamToggle) liveStreamToggle.checked = !!on;
+      renderTables();
+    };
 
     const moreBtn = $("#te-more-btn");
     const moreMenu = $("#te-more-menu");
@@ -3052,6 +3276,8 @@
         renderTables();
       });
     }
+
+    /* National Team Live | Sports mode bar uses <a> page links — no in-place filter */
   }
 
   function stashEventPending(payload) {
@@ -4827,12 +5053,16 @@
     const left = $("#left-sidebar");
     const right = $("#right-sidebar");
     const nav = $("#header-bottom");
+    const layout = document.querySelector(".sportsbook-layout");
     left?.classList.remove("open");
     if (nav) nav.classList.remove("is-open");
     if (window.DesktopFullMenu) window.DesktopFullMenu.close();
     $("#mobile-menu-btn")?.setAttribute("aria-expanded", "false");
     $("#mobile-menu-tab")?.setAttribute("aria-expanded", "false");
     $("#mobile-sports-btn")?.setAttribute("aria-expanded", "false");
+    /* ≤900 sheet uses full slip chrome — clear desktop compact-rail collapse */
+    right?.classList.remove("collapsed");
+    layout?.classList.remove("right-collapsed");
     right?.classList.add("is-open");
     $("#mobile-betslip-btn")?.setAttribute("aria-expanded", "true");
     setDrawerBackdrop(true);
@@ -4877,6 +5107,12 @@
     const rightClose = $("#right-drawer-close");
 
     document.addEventListener("click", (e) => {
+      const toastEl = e.target.closest("[data-toast]");
+      if (toastEl) {
+        const msg = toastEl.getAttribute("data-toast");
+        if (msg) showToast(msg);
+      }
+
       const menuBtn = e.target.closest("#mobile-menu-btn, #mobile-menu-tab");
       if (menuBtn) {
         e.stopPropagation();
@@ -4957,30 +5193,52 @@
   /* ---------- Init ---------- */
 
   function init() {
-    renderSportsList();
-    renderFilters("#live-filter-list", "activeLiveFilter");
-    renderFilters("#line-filters", "activeLineFilter");
-    renderTables();
-    renderAccumulators();
+    if (!isEsportsPage) {
+      renderSportsList();
+      renderFilters("#live-filter-list", "activeLiveFilter");
+      renderFilters("#line-filters", "activeLineFilter");
+      renderTables();
+      renderAccumulators();
+    }
+    hydrateEsportsOdds();
     renderBetSlip();
     initHeaderDropdowns();
     initHeaderLang();
     initHeaderClock();
-    initSidebar();
+    if (!isEsportsPage) initSidebar();
     initToolbar();
     initTablesDelegation();
     initBetSlip();
     initRegistration();
     initRightBlock();
-    initCarousel();
-    initPromoSlider();
-    initPlayersOnlineCounter();
-    initMobileChrome();
-    initHomeReferral();
+    if (!isEsportsPage) {
+      initCarousel();
+      initPromoSlider();
+      initPlayersOnlineCounter();
+      initMobileChrome();
+      initHomeReferral();
+      initSportsPageChrome();
+    } else {
+      window.syncMobileBetCount = syncMobileBetCount;
+    }
     syncBetSlipAuthUi();
-    requestAnimationFrame(() => {
-      layoutLiveFilterOverflow();
-      renderMoreMenu("");
+    if (!isEsportsPage) {
+      requestAnimationFrame(() => {
+        layoutLiveFilterOverflow();
+        renderMoreMenu("");
+      });
+    }
+  }
+
+  function initSportsPageChrome() {
+    if (!isSportsPage) return;
+    document.querySelectorAll(".sp-league-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".sp-league-chip").forEach((c) => c.classList.remove("is-active"));
+        chip.classList.add("is-active");
+        const label = chip.textContent.trim();
+        showToast(label ? `Showing ${label}` : "Competition filter");
+      });
     });
   }
 

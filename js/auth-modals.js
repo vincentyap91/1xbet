@@ -1015,7 +1015,7 @@
     if (isCasinoChromePage(page, file)) return false;
     if (document.querySelector(".sportsbook-layout")) return true;
     const sportsFiles = [
-      "index.html", "national-team.html", "live-national-team.html", "big-tournaments.html",
+      "index.html", "sports.html", "national-team.html", "live-national-team.html", "big-tournaments.html",
       "long-term-bets.html", "multi-live.html", "marble-live.html", "esports.html",
       "wc2026.html", "msi.html", "favourites.html", "results.html", "fast-bet.html",
       "referral-invite.html", "rebate-invite.html", "membership-invite.html",
@@ -1141,7 +1141,7 @@
       '<a href="live-national-team.html" class="mobile-tab-flyout__item" role="menuitem">' +
       '<img class="mobile-tab-flyout__icon--live" src="mobile/assets/icons/tab-live.svg" alt="" width="22" height="22" />' +
       "<span>Live</span></a>" +
-      '<a href="index.html" class="mobile-tab-flyout__item" role="menuitem">' +
+      '<a href="sports.html" class="mobile-tab-flyout__item" role="menuitem">' +
       '<img src="mobile/assets/icons/tab-menu.svg" alt="" width="22" height="22" />' +
       "<span>Sports</span></a>" +
       '<button type="button" class="mobile-tab-flyout__close" data-mt-flyout-close aria-label="Close">' +
@@ -1312,19 +1312,63 @@
     if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
   }
 
+  function ensureSharedBetSlipScript() {
+    if (window.SharedBetSlip) return Promise.resolve(window.SharedBetSlip);
+    return new Promise((resolve) => {
+      const finish = () => resolve(window.SharedBetSlip || null);
+      const existing = document.querySelector('script[src*="shared-bet-slip.js"]');
+      if (existing) {
+        if (window.SharedBetSlip) {
+          finish();
+          return;
+        }
+        existing.addEventListener("load", finish, { once: true });
+        existing.addEventListener("error", finish, { once: true });
+        return;
+      }
+      const authScript = document.querySelector('script[src*="auth-modals.js"]');
+      let src = "js/shared-bet-slip.js";
+      try {
+        if (authScript && authScript.src) {
+          src = new URL("shared-bet-slip.js", authScript.src).href;
+        }
+      } catch (e) { /* keep relative */ }
+      const s = document.createElement("script");
+      s.src = src;
+      s.addEventListener("load", finish, { once: true });
+      s.addEventListener("error", finish, { once: true });
+      document.head.appendChild(s);
+    });
+  }
+
   function toggleSportsBetSlip() {
     if (!isMobileViewport()) return;
-    const right = document.getElementById("right-sidebar");
-    if (!right) return;
-    const open = right.classList.contains("is-open");
     closeSportsTabFlyout();
-    closeSportsMobileDrawers();
-    if (!open) {
-      right.classList.add("is-open");
-      document.getElementById("mobile-betslip-btn")?.setAttribute("aria-expanded", "true");
-      setSportsDrawerBackdrop(true);
-      if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
+
+    const applyToggle = (right) => {
+      if (!right) return;
+      const open = right.classList.contains("is-open");
+      closeSportsMobileDrawers();
+      if (!open) {
+        /* ≤900 sheet uses full slip chrome — clear desktop compact-rail collapse */
+        right.classList.remove("collapsed");
+        document.querySelector(".sportsbook-layout")?.classList.remove("right-collapsed");
+        right.classList.add("is-open");
+        document.getElementById("mobile-betslip-btn")?.setAttribute("aria-expanded", "true");
+        setSportsDrawerBackdrop(true);
+        if (typeof window.syncMobileBetCount === "function") window.syncMobileBetCount();
+      }
+    };
+
+    const existing = document.getElementById("right-sidebar");
+    if (existing) {
+      applyToggle(existing);
+      return;
     }
+
+    ensureSharedBetSlipScript()
+      .then((api) => (api && api.ensure ? api.ensure() : Promise.resolve(null)))
+      .then(applyToggle);
   }
 
   function initSportsTabFlyouts() {
@@ -1374,7 +1418,22 @@
     );
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeSportsTabFlyout();
+      if (e.key === "Escape") {
+        closeSportsTabFlyout();
+        if (document.getElementById("right-sidebar")?.classList.contains("is-open")) {
+          closeSportsMobileDrawers();
+        }
+      }
+    });
+
+    document.getElementById("right-drawer-close")?.addEventListener("click", () => {
+      closeSportsMobileDrawers();
+    });
+
+    document.getElementById("drawer-backdrop")?.addEventListener("click", () => {
+      if (!document.querySelector('.mobile-tabbar[data-sports-tabbar="1"]')) return;
+      closeSportsTabFlyout();
+      closeSportsMobileDrawers();
     });
   }
 
@@ -1431,6 +1490,165 @@
     initSportsTabFlyouts();
   }
 
+  /* ── Sports / Live ≤900 subcategory strip (header dropdown IA) ── */
+  /* Mirrors account .acc-subnav on withdraw; destinations from header Sports/Live menus. */
+  var SB_SUBNAV_GROUPS = {
+    sports: {
+      label: "Sports menu",
+      pages: ["sports", "national-team", "big-tournaments", "long-term-bets"],
+      items: [
+        {
+          key: "sports",
+          href: "sports.html",
+          label: "Sports",
+          icon: "mobile/assets/icons/tab-menu.svg",
+          tint: true,
+          pages: ["sports"],
+        },
+        {
+          key: "national-team",
+          href: "national-team.html",
+          label: "Bet on Your National Team",
+          icon: "assets/icons/flag-my.svg",
+          pages: ["national-team"],
+        },
+        {
+          key: "big-tournaments",
+          href: "big-tournaments.html",
+          label: "Bet on Big Tournaments",
+          icon: "assets/icons/icon-trophy.svg",
+          tint: true,
+          pages: ["big-tournaments"],
+        },
+        {
+          key: "long-term-bets",
+          href: "long-term-bets.html",
+          label: "Long-term bets",
+          icon: "assets/icons/icon-clock.svg",
+          tint: true,
+          pages: ["long-term-bets"],
+        },
+      ],
+    },
+    live: {
+      label: "Live menu",
+      pages: ["multi-live", "live-national-team", "marble-live", "fast-bet"],
+      items: [
+        {
+          key: "multi-live",
+          href: "multi-live.html",
+          label: "Multi-LIVE",
+          icon: "mobile/assets/icons/tab-live.svg",
+          tint: true,
+          pages: ["multi-live"],
+        },
+        {
+          key: "live-national-team",
+          href: "live-national-team.html",
+          label: "Bet on Your National Team",
+          icon: "assets/icons/flag-my.svg",
+          pages: ["live-national-team"],
+        },
+        {
+          key: "marble-live",
+          href: "marble-live.html",
+          label: "Marble-Live",
+          icon: "assets/icons/marble/sport-football.svg",
+          tint: true,
+          pages: ["marble-live"],
+        },
+        {
+          key: "fast-bet",
+          href: "fast-bet.html",
+          label: "Fast bet",
+          icon: "assets/icons/account-subnav/dice.svg",
+          pages: ["fast-bet"],
+        },
+      ],
+    },
+  };
+
+  function isMobileSitePath() {
+    return /\/mobile(\/|$)/i.test(window.location.pathname || "");
+  }
+
+  function sbSubnavGroupForPage(page) {
+    if (!page) return null;
+    if (SB_SUBNAV_GROUPS.sports.pages.indexOf(page) !== -1) return SB_SUBNAV_GROUPS.sports;
+    if (SB_SUBNAV_GROUPS.live.pages.indexOf(page) !== -1) return SB_SUBNAV_GROUPS.live;
+    return null;
+  }
+
+  function sbSubnavIconHtml(item) {
+    var tintCls = item.tint ? " sb-subnav-icon--tint" : "";
+    return (
+      '<span class="sb-subnav-icon' +
+      tintCls +
+      '" aria-hidden="true">' +
+      '<img src="' +
+      item.icon +
+      '" alt="" width="18" height="18" decoding="async" />' +
+      "</span>"
+    );
+  }
+
+  function initSbSubnav() {
+    if (isMobileSitePath()) return;
+    if (document.body.classList.contains("mh-page")) return;
+    if (document.querySelector(".sb-subnav")) return;
+
+    var page = document.body.getAttribute("data-page") || "";
+    var group = sbSubnavGroupForPage(page);
+    if (!group) return;
+
+    var main =
+      document.getElementById("main-content") ||
+      document.querySelector(".main-content");
+    if (!main) return;
+
+    var cards = group.items
+      .map(function (item) {
+        var active = item.pages && item.pages.indexOf(page) !== -1;
+        var cls = "sb-subnav-card" + (active ? " is-active" : "");
+        var current = active ? ' aria-current="page"' : "";
+        return (
+          '<a href="' +
+          item.href +
+          '" class="' +
+          cls +
+          '"' +
+          current +
+          ">" +
+          sbSubnavIconHtml(item) +
+          "<span>" +
+          item.label +
+          "</span>" +
+          "</a>"
+        );
+      })
+      .join("");
+
+    var nav = document.createElement("nav");
+    nav.className = "sb-subnav";
+    nav.setAttribute("aria-label", group.label);
+    nav.innerHTML = '<div class="sb-subnav-track">' + cards + "</div>";
+
+    var subbar = main.querySelector(".nt-mobile-subbar");
+    if (subbar && subbar.parentNode === main) {
+      if (subbar.nextSibling) main.insertBefore(nav, subbar.nextSibling);
+      else main.appendChild(nav);
+    } else {
+      main.insertBefore(nav, main.firstChild);
+    }
+
+    var activeCard = nav.querySelector(".sb-subnav-card.is-active");
+    if (activeCard && typeof activeCard.scrollIntoView === "function") {
+      setTimeout(function () {
+        activeCard.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      }, 50);
+    }
+  }
+
   function init() {
     ensureCss();
     ensureAccountCss();
@@ -1447,7 +1665,19 @@
     else setLoggedIn(false);
 
     initMobileTabbar();
+    initSbSubnav();
     ensureDesktopFullMenu();
+
+    /* Prefetch shared mobile bet slip on sports tabbar pages that lack #right-sidebar */
+    if (
+      document.querySelector('.mobile-tabbar[data-sports-tabbar="1"]') &&
+      !document.getElementById("right-sidebar") &&
+      !/\/mobile(\/|$)/i.test(window.location.pathname || "")
+    ) {
+      ensureSharedBetSlipScript().then((api) => {
+        if (api && typeof api.ensure === "function") api.ensure();
+      });
+    }
 
     window.AuthModals = {
       open: openPanel,

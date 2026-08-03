@@ -105,7 +105,6 @@ body.mh-page.mh-page--sports .mh-main {
 .mh-sp-section__head img {
   width: 16px;
   height: 16px;
-  filter: brightness(0) saturate(100%) invert(48%) sepia(70%) saturate(600%) hue-rotate(360deg) brightness(100%) contrast(95%);
 }
 
 .mh-sp-section__head h2 {

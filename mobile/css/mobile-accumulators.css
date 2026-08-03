@@ -1,0 +1,234 @@
+/* =========================================================
+   Mobile — Accumulators of the day
+   Scoped to body.mh-page.mh-page--accumulators
+   ========================================================= */
+
+body.mh-page.mh-page--accumulators {
+  --mh-subbar-h: 44px;
+  background: #eef2f6;
+  color: var(--text-primary);
+}
+
+body.mh-page.mh-page--accumulators .mh-main {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: #eef2f6;
+}
+
+/* ---------- Sports / Live tabs ---------- */
+.mh-acc-tabs {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  background: var(--surface-primary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mh-acc-tab {
+  flex: 1 1 50%;
+  position: relative;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: var(--header-action);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mh-acc-tab + .mh-acc-tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--border-light);
+}
+
+.mh-acc-tab.is-active {
+  color: var(--section-blue);
+}
+
+.mh-acc-tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--action-green);
+}
+
+/* ---------- Card list ---------- */
+.mh-acc-list {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 12px var(--mh-gutter) 16px;
+  box-sizing: border-box;
+}
+
+.mh-acc-list[hidden] {
+  display: none !important;
+}
+
+.mh-acc-card {
+  border-radius: 10px;
+  background: var(--surface-primary);
+  box-shadow: var(--mh-shadow-card, 0 1px 3px rgba(11, 29, 51, 0.06));
+  overflow: hidden;
+}
+
+.mh-acc-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 12px 10px;
+}
+
+.mh-acc-card__title {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--header-action);
+}
+
+.mh-acc-card__odds {
+  flex: 0 0 auto;
+  min-width: 64px;
+  min-height: 34px;
+  padding: 6px 12px;
+  border: 1px solid var(--accent-blue);
+  border-radius: 6px;
+  background: var(--odds-bg);
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.mh-acc-card__divider {
+  height: 1px;
+  margin: 0 12px;
+  background: var(--border-light);
+}
+
+.mh-acc-card__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: var(--header-action);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mh-acc-card__toggle img:first-child {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-acc-card__toggle span {
+  flex: 1 1 auto;
+}
+
+.mh-acc-card__chev {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: transform var(--mh-ease, 0.2s ease);
+  filter: brightness(0) saturate(100%) invert(39%) sepia(60%) saturate(900%) hue-rotate(185deg) brightness(95%) contrast(92%);
+}
+
+.mh-acc-card__toggle[aria-expanded="true"] .mh-acc-card__chev {
+  transform: rotate(180deg);
+}
+
+.mh-acc-card__panel {
+  padding: 0 12px 12px;
+}
+
+.mh-acc-card__panel[hidden] {
+  display: none !important;
+}
+
+.mh-acc-sel {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.mh-acc-sel__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--odds-bg);
+}
+
+.mh-acc-sel__meta {
+  min-width: 0;
+}
+
+.mh-acc-sel__match {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--section-blue);
+  line-height: 1.3;
+}
+
+.mh-acc-sel__pick {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.mh-acc-sel__odd {
+  align-self: center;
+  min-width: 48px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  color: var(--section-blue);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mh-acc-empty {
+  padding: 28px var(--mh-gutter);
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.mh-acc-empty[hidden] {
+  display: none !important;
+}

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bet on Your National Team Ã¢â‚¬â€ Malaysia</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="mobile/css/mobile-markets-filter.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="national-team">
@@ -67,10 +68,10 @@
               </div>
             </div>
             <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+              <a href="sports.html" class="nav-link active" aria-current="page" aria-haspopup="true" aria-expanded="false">
                 Sports
-                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
-              </button>
+                <span class="nav-dd-caret" aria-hidden="true"><img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" /></span>
+              </a>
               <div class="dropdown" role="menu">
                 <a href="national-team.html" role="menuitem" aria-current="page">Bet on Your National Team</a>
                 <a href="big-tournaments.html" role="menuitem">Bet on Big Tournaments</a>
@@ -276,6 +277,25 @@
 
       <!-- CENTER CONTENT -->
       <main class="main-content" id="main-content">
+        <!-- ≤900: page title (matches mobile/national-team-line.html) -->
+        <div class="nt-mobile-subbar" aria-label="Bet on Your National Team">
+          <a href="index.html" class="nt-mobile-subbar__back" aria-label="Back">
+            <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+          </a>
+          <h1 class="nt-mobile-subbar__title">Bet on Your National Team</h1>
+          <div class="nt-mobile-subbar__actions">
+            <a href="search.html" class="nt-mobile-subbar__btn" aria-label="Search">
+              <img src="mobile/assets/icons/sp-search.svg" alt="" width="16" height="16" />
+            </a>
+            <a href="favourites.html" class="nt-mobile-subbar__btn" aria-label="Favourites">
+              <img src="mobile/assets/icons/sp-star.svg" alt="" width="16" height="16" />
+            </a>
+            <button type="button" class="nt-mobile-subbar__btn" aria-label="Filter" data-mh-mf-open aria-haspopup="dialog" aria-controls="mh-mf" title="Filter">
+              <img src="mobile/assets/icons/sp-filter.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+        </div>
+
         <!-- National team events (same odds-table / toolbar components as homepage) -->
         <section class="events-section live-events-block" id="live-events" aria-labelledby="nt-title">
           <div class="te-stack">
@@ -658,6 +678,18 @@
 
   <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
 
+  <!-- ≤900: Live | Sports → live-national-team / national-team (like mobile mh-nt-mode) -->
+  <nav class="nt-mobile-mode" aria-label="Market type">
+    <div class="nt-mobile-mode__tabs">
+      <a href="live-national-team.html" class="nt-mobile-mode__tab">Live</a>
+      <a href="national-team.html" class="nt-mobile-mode__tab is-active" aria-current="page">Sports</a>
+    </div>
+    <button type="button" class="nt-mobile-mode__flag" aria-label="Country: Malaysia" data-toast="Country filter">
+      <img class="nt-mobile-mode__flag-img" src="assets/icons/flag-my.svg" alt="" width="18" height="18" />
+      <img class="nt-mobile-mode__flag-chev" src="mobile/assets/icons/icon-chevron-right.svg" alt="" width="12" height="12" />
+    </button>
+  </nav>
+
   <nav class="mobile-tabbar" aria-label="Mobile shortcuts">
     <button type="button" class="mobile-tab" id="mobile-sports-btn" aria-controls="left-sidebar" aria-expanded="false">
       <img src="assets/icons/te-football.svg" alt="" width="18" height="18" />
@@ -684,5 +716,6 @@
   <script src="js/bet-slip-generator.js"></script>
   <script src="js/script.js"></script>
   <script src="js/auth-modals.js"></script>
+  <script src="mobile/js/mobile-markets-filter.js"></script>
 </body>
 </html>

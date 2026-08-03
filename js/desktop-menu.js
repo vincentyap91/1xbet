@@ -131,7 +131,7 @@
       "</label>" +
       '<ul class="ds-menu__list" data-ds-menu-list>' +
       item("index.html", ICO + "icon-home.svg", "Main page") +
-      item("national-team.html", ICO + "tab-menu.svg", "Sports") +
+      item("sports.html", ICO + "tab-menu.svg", "Sports") +
       item("multi-live.html", ICO + "tab-live.svg", "Live") +
       item("national-team.html", ICO + "t20.svg", "T20 Blast", badge) +
       item("esports.html", ICO_MENU + "gamepad.svg", "Esports") +
@@ -139,7 +139,6 @@
       item("search.html", ICO + "sp-search.svg", "Search") +
       item("results.html", ICO + "icon-clock.svg", "Results") +
       item("results.html", ICO + "ei-stats.svg", "Statistics") +
-      item("big-tournaments.html", ICO + "bobt.svg", "Bet on Big Tournaments") +
       "</ul>" +
       '<h2 class="ds-menu__section-title">Casino</h2>' +
       '<ul class="ds-menu__list" data-ds-menu-list>' +

@@ -360,14 +360,45 @@ details[open] .bt-summary-chevron {
   border-radius: var(--radius-sm);
 }
 
+/* Desktop→mobile board host — filled from partials/bt-mobile-board.html */
+.bt-mobile-board-host,
+.bt-mobile-board {
+  display: none;
+}
+
 @media (max-width: 900px) {
+  /* Let sticky .nt-mobile-subbar sit under header (same as Long-term .lt-main) */
+  .bt-main {
+    overflow: visible;
+    border-radius: 0;
+    background: #eef2f6;
+  }
+
+  body[data-page="big-tournaments"] .sportsbook-layout {
+    padding: 0;
+    gap: 0;
+    background: #eef2f6;
+  }
+
   .bt-side-card {
     margin: 0;
   }
 
-  .bt-titlebar {
-    font-size: 12px;
-    padding: 0 10px;
-    min-height: 32px;
+  .bt-titlebar,
+  .bt-table-wrap {
+    display: none !important;
+  }
+
+  .bt-mobile-board-host,
+  .bt-mobile-board-host .bt-mobile-board,
+  .bt-mobile-board {
+    display: block;
+    width: 100%;
+  }
+
+  /* Page chrome under board (footer stays navy via site footer) */
+  body[data-page="big-tournaments"] .bt-mobile-board {
+    background: #eef2f6;
+    padding-bottom: 16px;
   }
 }

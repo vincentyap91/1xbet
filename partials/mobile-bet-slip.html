@@ -1,0 +1,59 @@
+<!--
+  Shared desktop→mobile (≤900) bet slip bottom sheet.
+  Canon UX: homepage #right-sidebar mobile chrome (DESIGN_SYSTEM § Mobile chrome).
+  Injected by js/shared-bet-slip.js when a page has no #right-sidebar.
+  Do not use on mobile/ site (uses #mh-qbs).
+-->
+<aside class="right-sidebar" id="right-sidebar" data-shared-bet-slip="1" aria-label="Bet slip">
+  <button type="button" class="mobile-drawer-close" id="right-drawer-close" aria-label="Close bet slip">
+    <span class="mobile-drawer-handle" aria-hidden="true"></span>
+    <span class="mobile-drawer-close-title">Bet slip</span>
+    <span class="mobile-drawer-close-action">Close</span>
+  </button>
+
+  <div class="bet-slip-panel">
+    <div class="bet-slip-tabs" role="tablist">
+      <button type="button" class="bet-tab active" role="tab" aria-selected="true" data-bet-tab="slip">Bet slip</button>
+      <button type="button" class="bet-tab" role="tab" aria-selected="false" data-bet-tab="mybets">My bets</button>
+    </div>
+    <div class="bet-slip-body" id="bet-slip-body">
+      <div class="bet-toolbar">
+        <span class="bet-toolbar-title">Your bets</span>
+        <button type="button" class="bet-icon-btn" aria-label="Share" title="Share">
+          <img src="assets/icons/rb-share.svg" alt="" width="12" height="12" />
+        </button>
+        <button type="button" class="bet-icon-btn" aria-label="Settings" title="Settings">
+          <img src="assets/icons/rb-settings.svg" alt="" width="12" height="12" />
+        </button>
+      </div>
+      <div class="bet-empty" id="bet-empty">
+        <p class="bet-empty-text">Add events to the bet slip or<br />enter a code to load events</p>
+      </div>
+      <div class="bet-list" id="bet-list" hidden></div>
+      <div class="bet-footer" id="bet-footer" hidden>
+        <label class="stake-label">
+          Stake
+          <input type="number" id="stake-input" min="1" step="1" value="10" />
+        </label>
+        <div class="bet-totals">
+          <div><span>Total odds</span><strong id="total-odds">1.00</strong></div>
+          <div><span>Potential return</span><strong id="potential-return">0.00</strong></div>
+        </div>
+        <div class="bet-actions">
+          <button type="button" class="btn-clear" id="clear-bets">Clear All</button>
+          <button type="button" class="btn-place" id="place-bet">Place Bet</button>
+        </div>
+      </div>
+      <a href="index.html#reg-form" class="btn-slip-reg" id="bet-reg-cta">Registration</a>
+      <button type="button" class="bet-save-link">Save/load events</button>
+    </div>
+    <div class="my-bets-body" id="my-bets-body" hidden>
+      <div class="mybets-guest" id="mybets-guest">
+        <div class="mybets-guest-card">
+          <p class="bet-empty-text">Please log in to your account or register</p>
+        </div>
+        <button type="button" class="btn-slip-reg mybets-guest-cta" data-auth-open="register">Registration</button>
+      </div>
+    </div>
+  </div>
+</aside>

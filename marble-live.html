@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marble-Live Ã¯Â¿Â½ 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="mobile/css/mobile-markets-filter.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="marble-live">
@@ -67,10 +68,10 @@
               </div>
             </div>
             <div class="nav-item has-dropdown">
-              <button type="button" class="nav-link" aria-expanded="false" aria-haspopup="true">
+              <a href="sports.html" class="nav-link" aria-haspopup="true" aria-expanded="false">
                 Sports
-                <img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" />
-              </button>
+                <span class="nav-dd-caret" aria-hidden="true"><img src="assets/icons/icon-chevron.svg" alt="" class="nav-chevron" width="10" height="6" /></span>
+              </a>
               <div class="dropdown" role="menu">
                 <a href="national-team.html" role="menuitem">Bet on Your National Team</a>
                 <a href="big-tournaments.html" role="menuitem">Bet on Big Tournaments</a>
@@ -276,6 +277,25 @@
 
       <!-- CENTER CONTENT -->
       <main class="main-content" id="main-content">
+        <!-- ≤900: title bar (same pattern as National Team) -->
+        <div class="nt-mobile-subbar" aria-label="Marble-Live">
+          <a href="index.html" class="nt-mobile-subbar__back" aria-label="Back">
+            <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+          </a>
+          <h1 class="nt-mobile-subbar__title">Marble-Live</h1>
+          <div class="nt-mobile-subbar__actions">
+            <a href="search.html" class="nt-mobile-subbar__btn" aria-label="Search">
+              <img src="mobile/assets/icons/sp-search.svg" alt="" width="16" height="16" />
+            </a>
+            <a href="favourites.html" class="nt-mobile-subbar__btn" aria-label="Favourites">
+              <img src="mobile/assets/icons/sp-star.svg" alt="" width="16" height="16" />
+            </a>
+            <button type="button" class="nt-mobile-subbar__btn" aria-label="Filter" data-mh-mf-open data-mh-mf-variant="live" aria-haspopup="dialog" aria-controls="mh-mf" title="Filter">
+              <img src="mobile/assets/icons/sp-filter.svg" alt="" width="16" height="16" />
+            </button>
+          </div>
+        </div>
+
         <!-- Marble-Live events (same odds-table / toolbar components as homepage) -->
         <section class="events-section live-events-block" id="live-events" aria-labelledby="ml-title">
           <div class="te-stack">
@@ -682,5 +702,6 @@
   <script src="js/bet-slip-generator.js"></script>
   <script src="js/script.js"></script>
   <script src="js/auth-modals.js"></script>
+  <script src="mobile/js/mobile-markets-filter.js"></script>
 </body>
 </html>

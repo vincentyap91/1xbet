@@ -50,20 +50,31 @@
     });
   }
 
-  /* ── Mobile drawer ───────────────────────────────────────── */
+  /* ── Mobile drawer (menu only; bet slip via auth-modals sports tabbar) ─ */
   function bindMobile() {
     const backdrop = $("#drawer-backdrop");
     const bottom = $("#header-bottom");
     const menuBtn = $("#mobile-menu-btn");
     const menuTab = $("#mobile-menu-tab");
 
-    function closeAll() {
+    function closeMenu() {
       if (window.DesktopFullMenu) window.DesktopFullMenu.close();
       bottom && bottom.classList.remove("is-open");
-      backdrop && (backdrop.hidden = true);
-      document.body.classList.remove("drawer-open");
       menuBtn && menuBtn.setAttribute("aria-expanded", "false");
       menuTab && menuTab.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("ds-menu-open");
+    }
+
+    function closeAllDrawers() {
+      closeMenu();
+      const rail = $("#right-sidebar");
+      rail && rail.classList.remove("is-open");
+      $("#mobile-betslip-btn")?.setAttribute("aria-expanded", "false");
+      if (backdrop) {
+        backdrop.hidden = true;
+        backdrop.classList.remove("is-visible");
+      }
+      document.body.classList.remove("drawer-open");
     }
 
     [menuBtn, menuTab].forEach((btn) => {
@@ -74,18 +85,22 @@
           return;
         }
         const open = bottom && bottom.classList.contains("is-open");
-        closeAll();
+        closeAllDrawers();
         if (!open) {
           bottom && bottom.classList.add("is-open");
-          backdrop && (backdrop.hidden = false);
+          if (backdrop) {
+            backdrop.hidden = false;
+            backdrop.classList.add("is-visible");
+          }
           document.body.classList.add("drawer-open");
           btn.setAttribute("aria-expanded", "true");
         }
       });
     });
 
-    backdrop && backdrop.addEventListener("click", closeAll);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(); });
+    backdrop && backdrop.addEventListener("click", closeAllDrawers);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAllDrawers(); });
+    $("#right-drawer-close")?.addEventListener("click", closeAllDrawers);
   }
 
   /* ── Sub-nav tabs ─────────────────────────────────────────── */
@@ -123,44 +138,15 @@
     });
   }
 
-  /* ── Odds buttons ─────────────────────────────────────────── */
-  function bindOdds() {
-    $$(".odd-btn, .es-odd").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const row = btn.closest(".event-row, .es-row");
-        const allInRow = row ? $$(".odd-btn, .es-odd", row) : [];
-        const wasSelected = btn.classList.contains("selected");
+  /* Odds → shared ticket slip via js/script.js ([data-odd] + initBetSlip) */
 
-        allInRow.forEach((b) => b.classList.remove("selected"));
-        if (!wasSelected) {
-          btn.classList.add("selected");
-          const market = btn.dataset.market || "selection";
-          const val = btn.dataset.val || "";
-          const teams = row
-            ? $$(".team-name, .es-team-name", row).map((t) => t.textContent)
-            : [];
-          const label = teams.length >= 2 ? `${teams[0]} vs ${teams[1]}` : "match";
-          toast(`Added to bet slip: ${label} — ${market} @ ${val}`);
-          updateBetSlipCount(1);
-        } else {
-          updateBetSlipCount(-1);
-        }
-      });
-    });
-
+  function bindFavs() {
     $$(".es-fav").forEach((btn) => {
       btn.addEventListener("click", () => {
         btn.classList.toggle("active");
         toast(btn.classList.contains("active") ? "Added to favorites" : "Removed from favorites");
       });
     });
-  }
-
-  let betCount = 0;
-  function updateBetSlipCount(delta) {
-    betCount = Math.max(0, betCount + delta);
-    const counter = $(".bet-tab-count");
-    if (counter) counter.textContent = betCount;
   }
 
   /* ── Section tabs ─────────────────────────────────────────── */
@@ -263,32 +249,79 @@
     });
   }
 
-  /* ── Right collapse block (bet slip / app / subscribe) ───── */
-  function bindRightRail() {
-    const rail = $(".es-right");
-    const collapse = $("#es-right-collapse");
-    if (collapse && rail) {
-      collapse.addEventListener("click", () => {
-        const collapsed = rail.classList.toggle("collapsed");
-        collapse.setAttribute("aria-expanded", collapsed ? "false" : "true");
-      });
+  /* ── Left + right collapse (match homepage sportsbook rails) ─ */
+  function isMobileViewport() {
+    return window.matchMedia("(max-width: 900px)").matches;
+  }
+
+  function bindSidebarCollapse() {
+    const layout = $(".sportsbook-layout");
+    const left = $(".left-sidebar");
+    const right = $(".right-sidebar");
+    if (!layout || !left || !right) return;
+
+    function setRightCollapsed(collapsed) {
+      right.classList.toggle("collapsed", collapsed);
+      layout.classList.toggle("right-collapsed", collapsed);
+      const btn = $("#right-collapse");
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
+      }
     }
 
-    $$(".es-bet-slip .bet-tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        const which = tab.getAttribute("data-bet-tab");
-        $$(".es-bet-slip .bet-tab").forEach((t) => {
-          const on = t === tab;
-          t.classList.toggle("active", on);
-          t.setAttribute("aria-selected", on ? "true" : "false");
-        });
-        const slipBody = $("#bet-slip-body");
-        const myBets = $("#my-bets-body");
-        if (slipBody) slipBody.hidden = which === "mybets";
-        if (myBets) myBets.hidden = which !== "mybets";
-      });
+    function setLeftCollapsed(collapsed) {
+      left.classList.toggle("collapsed", collapsed);
+      layout.classList.toggle("left-collapsed", collapsed);
+      const btn = $("#sidebar-collapse");
+      if (btn) {
+        btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+        btn.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
+      }
+    }
+
+    layout.classList.toggle("left-collapsed", left.classList.contains("collapsed"));
+    layout.classList.toggle("right-collapsed", right.classList.contains("collapsed"));
+
+    $("#sidebar-collapse")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setLeftCollapsed(!left.classList.contains("collapsed"));
     });
 
+    $("#right-collapse")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(!right.classList.contains("collapsed"));
+    });
+
+    $("#right-expand")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+    });
+
+    $("#rc-bet")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+    });
+
+    $("#rc-save")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+      document.querySelector(".bet-save-link")?.focus();
+    });
+
+    $("#rc-app")?.addEventListener("click", () => {
+      if (isMobileViewport()) return;
+      setRightCollapsed(false);
+      const appPanel = $("#es-app-panel");
+      if (appPanel) {
+        appPanel.hidden = false;
+        appPanel.scrollIntoView({ block: "nearest" });
+      }
+    });
+  }
+
+  /* ── Right rail panels (app / subscribe; bet slip via script.js) ─ */
+  function bindRightRail() {
     const appPanel = $("#es-app-panel");
     $("#es-app-close")?.addEventListener("click", () => {
       if (appPanel) appPanel.hidden = true;
@@ -306,48 +339,6 @@
         toast(os === "ios" ? "iOS app QR ready" : "Android app QR ready");
       });
     });
-
-    // Save/load expand UI handled by js/bet-save-load.js
-
-    $$(".es-bet-slip .bet-icon-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        toast(btn.getAttribute("aria-label") || "Bet slip action");
-      });
-    });
-  }
-
-  /* ── Mobile bet slip drawer ───────────────────────────────── */
-  function bindMobileBetSlip() {
-    const rail = $("#right-sidebar");
-    const backdrop = $("#drawer-backdrop");
-    const betBtn = $("#mobile-betslip-btn");
-    const closeBtn = $("#right-drawer-close");
-
-    function closeRail() {
-      rail && rail.classList.remove("is-open");
-      if (backdrop && !$("#header-bottom")?.classList.contains("is-open")) {
-        backdrop.hidden = true;
-        document.body.classList.remove("drawer-open");
-      }
-      betBtn && betBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function openRail() {
-      $("#header-bottom")?.classList.remove("is-open");
-      $("#mobile-menu-btn")?.setAttribute("aria-expanded", "false");
-      $("#mobile-menu-tab")?.setAttribute("aria-expanded", "false");
-      rail && rail.classList.add("is-open");
-      if (backdrop) backdrop.hidden = false;
-      document.body.classList.add("drawer-open");
-      betBtn && betBtn.setAttribute("aria-expanded", "true");
-    }
-
-    betBtn?.addEventListener("click", () => {
-      if (rail?.classList.contains("is-open")) closeRail();
-      else openRail();
-    });
-    closeBtn?.addEventListener("click", closeRail);
-    backdrop?.addEventListener("click", closeRail);
   }
 
   /* ── Init ─────────────────────────────────────────────────── */
@@ -356,12 +347,12 @@
     setInterval(tickClock, 30000);
     bindNav();
     bindMobile();
-    bindMobileBetSlip();
+    bindSidebarCollapse();
     bindRightRail();
     bindSubnavTabs();
     bindDisciplines();
     bindModeTabs();
-    bindOdds();
+    bindFavs();
     bindGameFilters();
     bindSectionTabs();
     bindDiscCards();

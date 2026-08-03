@@ -247,3 +247,80 @@
 body.mh-mf-open {
   overflow: hidden;
 }
+
+/* Live variant: stream toggle card */
+.mh-mf__card--stream {
+  padding: 12px;
+}
+
+.mh-mf__stream {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.mh-mf__stream-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mh-mf__stream-copy strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--section-blue);
+}
+
+.mh-mf__stream-copy span {
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--header-action, #276aa5);
+  font-weight: 500;
+}
+
+.mh-mf__switch {
+  flex: 0 0 auto;
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+.mh-mf__switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.mh-mf__switch-ui {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  background: #c5d3e0;
+  transition: background 0.15s ease;
+}
+
+.mh-mf__switch-ui::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(11, 29, 51, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.mh-mf__switch input:checked + .mh-mf__switch-ui {
+  background: var(--action-green);
+}
+
+.mh-mf__switch input:checked + .mh-mf__switch-ui::after {
+  transform: translateX(18px);
+}

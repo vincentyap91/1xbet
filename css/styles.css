@@ -388,6 +388,21 @@ a:focus-visible {
   opacity: 0.9;
 }
 
+/* Expand caret hit area so Sports menu opens without navigating */
+.nav-dd-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2px;
+  padding: 6px 2px 6px 4px;
+  margin-right: -2px;
+  cursor: pointer;
+}
+
+.nav-dd-caret .nav-chevron {
+  margin-left: 0;
+}
+
 .nav-dice {
   flex-shrink: 0;
   height: 32px;
@@ -953,6 +968,14 @@ a:focus-visible {
   min-width: 0;
   transition: width var(--sidebar-anim);
 }
+
+/* Injected shared slip (partials/mobile-bet-slip.html): mobile sheet only */
+@media (min-width: 901px) {
+  .right-sidebar[data-shared-bet-slip="1"] {
+    display: none !important;
+  }
+}
+
 .right-compact-rail {
   display: none;
 }
@@ -2748,6 +2771,51 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   font-size: 12px;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* National Team: sport chips scroll instead of hiding behind overflow */
+body[data-page="national-team"] .te-filter-list,
+body[data-page="live-national-team"] .te-filter-list,
+body[data-page="sports"] .te-filter-list {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+body[data-page="national-team"] .te-filter-list::-webkit-scrollbar,
+body[data-page="live-national-team"] .te-filter-list::-webkit-scrollbar,
+body[data-page="sports"] .te-filter-list::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+body[data-page="national-team"] .te-filter-list .filter-chip.is-overflow,
+body[data-page="live-national-team"] .te-filter-list .filter-chip.is-overflow,
+body[data-page="sports"] .te-filter-list .filter-chip.is-overflow {
+  display: inline-flex !important;
+}
+
+body[data-page="national-team"] .te-toolbar .section-tabs,
+body[data-page="live-national-team"] .te-toolbar .section-tabs,
+body[data-page="sports"] .te-toolbar .section-tabs {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+body[data-page="national-team"] .te-toolbar .section-tabs::-webkit-scrollbar,
+body[data-page="live-national-team"] .te-toolbar .section-tabs::-webkit-scrollbar,
+body[data-page="sports"] .te-toolbar .section-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+body[data-page="national-team"] .te-toolbar .section-tab,
+body[data-page="live-national-team"] .te-toolbar .section-tab,
+body[data-page="sports"] .te-toolbar .section-tab {
+  flex-shrink: 0;
 }
 
 #live-events .te-toolbar {
@@ -7840,6 +7908,11 @@ body.bsg-open {
     display: none !important;
   }
 
+  /* Collapsed desktop rail must still expose the mobile sheet chrome */
+  .right-sidebar.collapsed > .mobile-drawer-close {
+    display: grid !important;
+  }
+
   .right-sidebar.collapsed > .bet-slip-panel {
     display: flex !important;
   }
@@ -11030,5 +11103,514 @@ body.ds-event-info-open {
     font-size: 16px;
     line-height: 1;
     color: var(--text-muted);
+  }
+}
+
+/* =========================================================
+   Sportsbook mobile title bar (≤900)
+   Shared by home / Sports, National Team, Live NT
+   ========================================================= */
+.nt-mobile-subbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nt-mobile-subbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    background: var(--header-nav-bg);
+    color: var(--text-inverse);
+    position: sticky;
+    top: var(--header-h, 56px);
+    z-index: 40;
+    overflow: hidden;
+  }
+
+  .nt-mobile-subbar__back {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.14);
+    text-decoration: none;
+  }
+
+  .nt-mobile-subbar__back img {
+    width: 10px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+    display: block;
+  }
+
+  .nt-mobile-subbar__title {
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nt-mobile-subbar__actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nt-mobile-subbar__btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .nt-mobile-subbar__btn img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+    display: block;
+  }
+
+  body[data-page="national-team"] .te-crumbs,
+  body[data-page="live-national-team"] .te-crumbs,
+  body[data-page="live-national-team"] .te-toolbar,
+  body[data-page="live-national-team"] .te-stream-toggle,
+  body[data-page="live-national-team"] .te-country-filter,
+  body[data-page="marble-live"] .te-crumbs,
+  body[data-page="multi-live"] .ml-toolbar,
+  body[data-page="fast-bet"] .fb-toolbar,
+  body[data-page="fast-bet"] .fb-title {
+    display: none !important;
+  }
+
+  /* Markets filter overlay sits above tabbar / drawers on ≤900 */
+  body[data-page="sports"] .mh-mf,
+  body[data-page="national-team"] .mh-mf,
+  body[data-page="live-national-team"] .mh-mf,
+  body[data-page="long-term-bets"] .mh-mf,
+  body[data-page="multi-live"] .mh-mf,
+  body[data-page="marble-live"] .mh-mf,
+  body[data-page="fast-bet"] .mh-mf {
+    z-index: 240;
+  }
+
+  body[data-page="big-tournaments"] .bt-titlebar,
+  body[data-page="long-term-bets"] .lt-toolbar {
+    display: none !important;
+  }
+
+  /* Match Long-term: don’t clip sticky subbar (desktop card uses overflow:hidden) */
+  body[data-page="big-tournaments"] .bt-main {
+    overflow: visible;
+    border-radius: 0;
+  }
+
+  /* Full title; no action chips (matches mobile/big-tournaments.html) */
+  body[data-page="big-tournaments"] .nt-mobile-subbar {
+    gap: 8px;
+    padding: 6px 10px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  body[data-page="big-tournaments"] .nt-mobile-subbar__title {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Live | Sports mode bar above tabbar (national-team + live-national-team) */
+  :root {
+    --nt-mode-h: 44px;
+  }
+
+  body[data-page="national-team"],
+  body[data-page="live-national-team"] {
+    padding-bottom: calc(
+      var(--mobile-tabbar-h) + var(--nt-mode-h) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+
+  body[data-page="national-team"] .nt-mobile-mode,
+  body[data-page="live-national-team"] .nt-mobile-mode {
+    display: flex;
+    align-items: stretch;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--mobile-tabbar-h) + env(safe-area-inset-bottom, 0px));
+    z-index: 125;
+    height: var(--nt-mode-h);
+    background: var(--surface-primary);
+    border-top: 1px solid var(--border-light);
+    box-shadow: 0 -2px 8px rgba(11, 29, 51, 0.06);
+  }
+
+  body[data-page="national-team"] .right-sidebar.is-open,
+  body[data-page="live-national-team"] .right-sidebar.is-open {
+    bottom: calc(
+      var(--mobile-tabbar-h) + var(--nt-mode-h) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+}
+
+/* Mode bar hidden on desktop width */
+.nt-mobile-mode {
+  display: none;
+}
+
+.nt-mobile-mode__tabs {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-width: 0;
+}
+
+.nt-mobile-mode__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nt-mobile-mode__tab.is-active {
+  color: var(--text-primary);
+}
+
+.nt-mobile-mode__tab.is-active::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: 0;
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  background: var(--action-green);
+}
+
+.nt-mobile-mode__flag {
+  flex: 0 0 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  border-left: 1px solid var(--border-light);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nt-mobile-mode__flag-img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.nt-mobile-mode__flag-chev {
+  width: 12px;
+  height: 12px;
+  opacity: 0.55;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(12%) saturate(600%) hue-rotate(169deg);
+}
+
+.nt-mode-empty {
+  margin: 0;
+  padding: 48px 16px;
+  background: var(--surface-primary);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.nt-mode-empty__title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.nt-mode-empty__text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   Sports / Live header-dropdown tabs (≤900) — .sb-subnav
+   Mirrors account .acc-subnav (withdraw) card strip
+   ========================================================= */
+.sb-subnav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .sb-subnav {
+    display: block;
+    flex: 0 0 auto;
+    margin: 0 0 8px;
+    padding: 10px;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(11, 29, 51, 0.08);
+  }
+
+  .sb-subnav-track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+
+  .sb-subnav-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sb-subnav-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 0 0 auto;
+    width: 108px;
+    min-width: 100px;
+    min-height: 76px;
+    padding: 11px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    background: var(--surface-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.25;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    box-sizing: border-box;
+  }
+
+  .sb-subnav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .sb-subnav-icon img {
+    display: block;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+  }
+
+  .sb-subnav-icon--tint img {
+    /* Approximate --section-blue (#1a4f8a) on mono glyphs */
+    filter: brightness(0) saturate(100%) invert(24%) sepia(48%) saturate(1200%) hue-rotate(179deg) brightness(92%) contrast(92%);
+  }
+
+  .sb-subnav-card > span:not(.sb-subnav-icon) {
+    display: block;
+    max-width: 100%;
+  }
+
+  .sb-subnav-card.is-active {
+    color: var(--section-blue);
+    background: var(--odds-hover);
+    border-color: var(--section-blue);
+  }
+
+  .sb-subnav-card:hover {
+    border-color: var(--accent-blue-soft);
+    color: var(--section-blue);
+  }
+}
+
+@media (max-width: 600px) {
+  .sb-subnav {
+    margin: 0 0 6px;
+    padding: 8px;
+  }
+
+  .sb-subnav-card {
+    width: 96px;
+    min-width: 92px;
+    min-height: 72px;
+    font-size: 10px;
+    padding: 10px 8px;
+  }
+
+  .sb-subnav-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sb-subnav-icon img {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* =========================================================
+   Sports / Line page (sports.html) — featured rail + chips
+   ========================================================= */
+.sp-top-rail {
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.sp-top-rail__track {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  scrollbar-width: thin;
+}
+
+.sp-top-card {
+  flex: 0 0 min(220px, 72vw);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.sp-top-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sp-top-card__meta img {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.sp-top-card__meta time {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--section-blue);
+  white-space: nowrap;
+}
+
+.sp-top-card__teams {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.sp-top-card__odds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  gap: 6px;
+}
+
+.sp-top-card__odds .odd-btn {
+  min-height: 32px;
+}
+
+.sp-league-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 0 10px;
+  padding: 0 2px 4px;
+  scrollbar-width: thin;
+}
+
+.sp-league-chip {
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--header-nav-bg);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.sp-league-chip.is-active,
+.sp-league-chip:hover {
+  background: var(--accent-blue);
+}
+
+@media (max-width: 900px) {
+  body[data-page="sports"] .sp-top-rail,
+  body[data-page="sports"] .sp-league-chips {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  body[data-page="sports"] .te-crumbs {
+    display: none !important;
+  }
+
+  body[data-page="sports"] .mh-mf {
+    z-index: 240;
   }
 }

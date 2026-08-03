@@ -346,7 +346,8 @@ body.mh-page.mh-page--big-tournaments .mh-main {
   text-align: center;
 }
 
-body.mh-page.mh-page--big-tournaments .visually-hidden {
+body.mh-page.mh-page--big-tournaments .visually-hidden,
+body[data-page="big-tournaments"] .bt-mobile-board .visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;

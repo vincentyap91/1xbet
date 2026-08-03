@@ -1,0 +1,452 @@
+﻿<!-- Shared ≤900 Big Tournaments board (mirrors mobile/big-tournaments.html) -->
+<div class="bt-mobile-board" id="bt-mobile-board">
+<div class="mh-bt-hero" aria-hidden="true">
+      <img src="mobile/assets/banners/champs-banner.jpg" alt="" width="750" height="280" />
+    </div>
+
+    <div class="mh-bt-board">
+      <section class="mh-bt-sport" data-sport="football">
+        <button type="button" class="mh-bt-sport__head" aria-expanded="true">
+          <img class="mh-bt-sport__ico" src="mobile/assets/icons/sport-football.svg" alt="" width="18" height="18" />
+          <span>Football</span>
+          <span class="mh-bt-sport__chev" aria-hidden="true"></span>
+        </button>
+        <div class="mh-bt-sport__body">
+
+          <!-- World Cup 2026 â€” desktop outright data + country flags -->
+          <div class="mh-bt-league" data-league="wc2026">
+            <button type="button" class="mh-bt-league__head" aria-expanded="true">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-wc-winner.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">World Cup 2026. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <label class="visually-hidden" for="mh-bt-market-wc">Market</label>
+                <select id="mh-bt-market-wc" class="mh-bt-market__select" aria-label="Market">
+                  <option value="place13" selected>1-3RD PLACE</option>
+                  <option value="sf">To reach semi-finals</option>
+                  <option value="final">To reach final</option>
+                  <option value="third">3rd place</option>
+                  <option value="second">2nd place</option>
+                  <option value="winner">Winner</option>
+                </select>
+              </div>
+
+              <article class="mh-bt-row"
+                data-place13-yes="1.14" data-place13-no="5.7"
+                data-sf-yes="1.28" data-sf-no="3.55"
+                data-final-yes="1.55" data-final-no="2.35"
+                data-third-yes="8.5" data-third-no="1.05"
+                data-second-yes="4.2" data-second-no="1.2"
+                data-winner-yes="2.35" data-winner-no="1.55">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-fr.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">France</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.14"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.14</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="5.7"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">5.7</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="1.22" data-place13-no="4.1"
+                data-sf-yes="1.4" data-sf-no="2.85"
+                data-final-yes="1.85" data-final-no="1.9"
+                data-third-yes="9" data-third-no="1.04"
+                data-second-yes="5" data-second-no="1.14"
+                data-winner-yes="5" data-winner-no="1.14">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-arg.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Argentina</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.22"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.22</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="4.1"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">4.1</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="1.25" data-place13-no="3.8"
+                data-sf-yes="1.45" data-sf-no="2.7"
+                data-final-yes="1.9" data-final-no="1.85"
+                data-third-yes="9.5" data-third-no="1.03"
+                data-second-yes="5.25" data-second-no="1.13"
+                data-winner-yes="5.25" data-winner-no="1.13">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-esp.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Spain</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.25"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.25</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="3.8"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">3.8</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="1.28" data-place13-no="3.55"
+                data-sf-yes="1.5" data-sf-no="2.5"
+                data-final-yes="2" data-final-no="1.75"
+                data-third-yes="10" data-third-no="1.02"
+                data-second-yes="5.55" data-second-no="1.12"
+                data-winner-yes="5.55" data-winner-no="1.12">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">England</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.28"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.28</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="3.55"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">3.55</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="2.1" data-place13-no="1.7"
+                data-sf-yes="2.8" data-sf-no="1.4"
+                data-final-yes="4.5" data-final-no="1.18"
+                data-third-yes="12" data-third-no="1.01"
+                data-second-yes="15" data-second-no="1.02"
+                data-winner-yes="15" data-winner-no="1.02">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-nor.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Norway</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="2.1"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">2.1</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.7"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.7</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="3.2" data-place13-no="1.32"
+                data-sf-yes="4.5" data-sf-no="1.18"
+                data-final-yes="8" data-final-no="1.06"
+                data-third-yes="-" data-third-no="-"
+                data-second-yes="35" data-second-no="1.01"
+                data-winner-yes="35" data-winner-no="1.01">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-bel.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Belgium</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="3.2"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">3.2</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.32"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.32</span></button>
+                </div>
+              </article>
+
+              <article class="mh-bt-row"
+                data-place13-yes="4" data-place13-no="1.22"
+                data-sf-yes="6" data-sf-no="1.12"
+                data-final-yes="11" data-final-no="1.03"
+                data-third-yes="-" data-third-no="-"
+                data-second-yes="41" data-second-no="1.01"
+                data-winner-yes="41" data-winner-no="1.01">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-flag-sui.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Switzerland</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="4"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">4</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.22"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.22</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- England PL â€” collapsed; demo winner market (league flag reused) -->
+          <div class="mh-bt-league is-collapsed" data-league="eng">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-eng.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">England. Premier League. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="place12" selected>1-2ND PLACE</option>
+                  <option value="winner">Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-place12-yes="1.57" data-place12-no="2.4" data-winner-yes="2.1" data-winner-no="1.7">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Arsenal</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.57"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.57</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="2.4"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">2.4</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-place12-yes="2.4" data-place12-no="1.57" data-winner-yes="3.2" data-winner-no="1.32">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Manchester City</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="2.4"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">2.4</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.57"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.57</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-place12-yes="2.75" data-place12-no="1.45" data-winner-yes="4.5" data-winner-no="1.18">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Liverpool</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="2.75"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">2.75</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.45"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.45</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-place12-yes="6" data-place12-no="1.12" data-winner-yes="11" data-winner-no="1.03">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Chelsea</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="6"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">6</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.12"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.12</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-place12-yes="100" data-place12-no="-" data-winner-yes="150" data-winner-no="-">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-eng.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Leeds United</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="100"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">100</span></button>
+                  <button type="button" class="mh-bt-odd is-empty" data-side="no" disabled><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">â€”</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="mh-bt-league is-collapsed" data-league="fr">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-fr.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">France. Ligue 1. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="winner" selected>Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-winner-yes="1.55" data-winner-no="2.35">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-fr.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Paris Saint-Germain</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.55"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.55</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="2.35"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">2.35</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="6.5" data-winner-no="1.1">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-fr.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Monaco</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="6.5"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">6.5</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.1"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.1</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="9" data-winner-no="1.04">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-fr.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Marseille</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="9"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">9</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.04"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.04</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="mh-bt-league is-collapsed" data-league="de">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-de.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">Germany. Bundesliga. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="winner" selected>Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-winner-yes="1.45" data-winner-no="2.7">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-de.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Bayern Munich</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.45"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.45</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="2.7"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">2.7</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="4.2" data-winner-no="1.2">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-de.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Bayer Leverkusen</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="4.2"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">4.2</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.2"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.2</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="8" data-winner-no="1.06">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-de.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Dortmund</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="8"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">8</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.06"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.06</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="mh-bt-league is-collapsed" data-league="it">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-it.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">Italy. Serie A. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="winner" selected>Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-winner-yes="1.7" data-winner-no="2.1">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-it.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Inter</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.7"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.7</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="2.1"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">2.1</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="3.5" data-winner-no="1.28">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-it.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Napoli</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="3.5"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">3.5</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.28"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.28</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="5" data-winner-no="1.14">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-it.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Juventus</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="5"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">5</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.14"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.14</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="mh-bt-league is-collapsed" data-league="ru">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-ru.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">Russia. Premier League. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="winner" selected>Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-winner-yes="2.2" data-winner-no="1.65">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-ru.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Zenit</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="2.2"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">2.2</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.65"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.65</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="3.1" data-winner-no="1.35">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-ru.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Krasnodar</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="3.1"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">3.1</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.35"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.35</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="4.5" data-winner-no="1.18">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-ru.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Spartak Moscow</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="4.5"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">4.5</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.18"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.18</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div class="mh-bt-league is-collapsed" data-league="es">
+            <button type="button" class="mh-bt-league__head" aria-expanded="false">
+              <img class="mh-bt-league__flag" src="assets/icons/bt-league-es.png" alt="" width="18" height="18" />
+              <span class="mh-bt-league__name">Spain. La Liga. 2026/27. Winner</span>
+              <span class="mh-bt-league__chev" aria-hidden="true"></span>
+            </button>
+            <div class="mh-bt-league__body">
+              <div class="mh-bt-market">
+                <select class="mh-bt-market__select" aria-label="Market">
+                  <option value="winner" selected>Winner</option>
+                </select>
+              </div>
+              <article class="mh-bt-row" data-winner-yes="1.85" data-winner-no="1.9">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-es.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Real Madrid</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="1.85"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">1.85</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.9"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.9</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="2.5" data-winner-no="1.5">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-es.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Barcelona</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="2.5"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">2.5</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.5"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.5</span></button>
+                </div>
+              </article>
+              <article class="mh-bt-row" data-winner-yes="7" data-winner-no="1.08">
+                <div class="mh-bt-row__team">
+                  <img class="mh-bt-row__flag" src="assets/icons/bt-league-es.png" alt="" width="22" height="22" />
+                  <span class="mh-bt-row__name">Atletico Madrid</span>
+                </div>
+                <div class="mh-bt-row__odds">
+                  <button type="button" class="mh-bt-odd" data-side="yes" data-odd="7"><span class="mh-bt-odd__lab">Yes</span><span class="mh-bt-odd__val">7</span></button>
+                  <button type="button" class="mh-bt-odd" data-side="no" data-odd="1.08"><span class="mh-bt-odd__lab">No</span><span class="mh-bt-odd__val">1.08</span></button>
+                </div>
+              </article>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+</div>

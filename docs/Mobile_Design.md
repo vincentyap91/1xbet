@@ -8,6 +8,9 @@ Reusable layout, spacing, and class conventions for the mobile site (`mobile/`).
 **Canonical home:** `mobile/index.html` + `mobile/css/mobile-home.css` (scoped under `body.mh-page`)  
 Home can use a **floating player-online pill** anchored above the sticky tab bar. Keep it compact, right-aligned, linked to the LIVE section, and hide or fade it while the Quick bet slip is open.
 **Sports (Line):** `mobile/sports.html` + `mobile/css/mobile-sports.css` — [1xlite line](https://1xlite-46272.pro/en/line?platform_type=mobile)  
+**Live (sports):** `mobile/live.html` + `mobile/css/mobile-sports.css` + `mobile/css/mobile-live.css` — [1xlite live](https://1xlite-46272.pro/en/live?platform_type=mobile)  
+**Accumulators of the day:** `mobile/accumulators.html` + `mobile/css/mobile-accumulators.css` + `mobile/js/mobile-accumulators.js` — [1xlite dailyexpress](https://1xlite-46272.pro/en/dailyexpress?platform_type=mobile)  
+**Long-term bets:** `mobile/long-term-bets.html` + `mobile/css/mobile-long-term.css` + `mobile/js/mobile-long-term.js` (+ `mobile-sports.css` chips/accordion) — [1xlite long-term](https://1xlite-46272.pro/en/long-term?platform_type=mobile)  
 **Search / Events:** `mobile/search.html` + `mobile/css/mobile-search.css` + `mobile/js/mobile-search.js`  
 **Event info:** `mobile/event-info.html` + `mobile/css/mobile-event-info.css`  
 **Favorites:** `mobile/favourites.html` + `mobile/css/mobile-favourites.css` + `mobile/js/mobile-favourites.js`  
@@ -815,7 +818,8 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 - [ ] Line: sport chips (drag) + sport blocks + odds; Generate CTA — **full bleed**
 - [ ] Mode bar Live | Sports above tab bar (`--action-green` underline)
 - [ ] Wide viewport: content still `max-width: none` (not centered column)
-- [ ] Flyout: National Team → `national-team-line.html`, Live → `national-team-live.html`
+- [ ] Mode bar Live → `national-team-live.html` (keep NT Live separate)
+- [ ] Sports flyout **Live** → sports `live.html` (not NT Live)
 
 ### Quick bet slip
 
@@ -834,9 +838,18 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 - [ ] Sub-bar: back + Sports + search / star / filter
 - [ ] Sport pills rail (drag) + more menu
 - [ ] Top Sports cards (horizontal) with W1/DRAW/W2/HANDICAP
-- [ ] Accumulators / Long-term bets rows
+- [ ] Accumulators / Long-term bets rows → `accumulators.html` / `long-term-bets.html`
 - [ ] Tournament tiles rail
 - [ ] Football → league accordion → match rows; odds → Quick bet slip
+
+### Live (sports)
+
+- [ ] Sub-bar: back + **Live** + search / star / filter
+- [ ] Sport pills + Top Live cards (scores, stream play, live clock)
+- [ ] Live accumulators of the day row
+- [ ] Dark league chips rail (flag + sport + name)
+- [ ] Sport → league accordion with live scores + markets
+- [ ] Sports flyout / menu **Live** → `live.html`
 - [ ] Colors use tokens (not live chrome hex)
 - [ ] Flyout / MORE SPORTS → `sports.html`
 - [ ] Sports chips **list** button → `#mh-sf` filter modal (search / Popular / TOP / A–Z / Long term)
@@ -995,7 +1008,7 @@ Do **not** reintroduce `@media (min-width: 768px) { max-width: 720px; margin: 0 
 2. `.mh-sp-subbar` — back, title **Sports**, search / star / filter  
 3. `.mh-sp-chips` — horizontal sport pills (Football, Cricket, Esports, …) + **list** button opens Sports filter modal (`#mh-sf`)  
 4. **Top Sports** — fire icon + `.mh-sp-rail` of `.mh-sp-card` (league, teams+logos, W1/DRAW/W2/HANDICAP)  
-5. `.mh-sp-links` — Accumulators of the day / Long-term bets  
+5. `.mh-sp-links` — **Accumulators of the day** → `accumulators.html` · **Long-term bets** → `long-term-bets.html`  
 6. Tournament tiles — `.mh-sp-tourney` horizontal rail (dark chrome `--header-bg`): circular `.mh-sp-tourney__badge` (league logo / flag), white `.mh-sp-tourney__sport` top-right, truncated `.mh-sp-tourney__name`. Assets in `mobile/assets/tourneys/` + `mobile/assets/flags/` (live SPA champ CDN is not statically downloadable)  
 7. `.mh-sp-list` — sport accordion (Football) → league accordion (trophy + name) → `.mh-sp-match` rows  
 8. `#mh-sf` Sports filter modal (Popular + TOP + A–Z + Long term) — [live modal](https://1xlite-46272.pro/en/line?modal-id=dashboard-filter-sport-modal&betting-type=line)  
@@ -1037,6 +1050,120 @@ Sports tab flyout **Sports** → `sports.html`. Home **MORE SPORTS** → `sports
 
 ---
 
+## Live (sports) page
+
+**Live ref:** [live mobile](https://1xlite-46272.pro/en/live?platform_type=mobile)
+
+| Page | File | Body class |
+|------|------|------------|
+| Live (sportsbook) | `mobile/live.html` | `.mh-page--sports.mh-page--live` |
+| CSS | `mobile/css/mobile-sports.css` + `mobile/css/mobile-live.css` | |
+
+**Not** Live Casino (`live-casino.html`) and **not** National Team Live (`national-team-live.html`).
+
+Layout mirrors Sports (Line); live-only bits (scores, stream, league chips, copy) are in `mobile-live.css`. Colors use design-system tokens.
+
+### Structure (top → bottom)
+
+1. `.mh-header` — logo, MY flag, Log in, Registration  
+2. `.mh-sp-subbar` — back, title **Live**, search / star / filter  
+3. `.mh-sp-chips` — sport pills (Basketball, Football, Volleyball, Esports, …) + list → `#mh-sf`  
+4. **Top Live** — fire icon + `.mh-sp-rail` of `.mh-sp-card` with live clock, optional `.mh-sp-card__stream`, teams + `.mh-sp-card__score`, W1/DRAW/W2/HANDICAP  
+5. `.mh-sp-links` — **Live accumulators of the day (N)** → `accumulators.html?tab=live`  
+6. `.mh-lv-chip` rail — dark chrome chips (flag + sport icon + league name)  
+7. `.mh-sp-list` — sport accordion → league → `.mh-sp-match` with scores + markets (1 / 2 / TOTAL O/U)  
+8. `#mh-sf` Sports filter + markets filter (shared with Line)  
+9. Footer + tab bar + `#mh-qbs`
+
+### Key classes
+
+| Class | Role |
+|-------|------|
+| `.mh-page--live` | Live-only score / stream / chip styles |
+| `.mh-sp-card__stream` | Green-tinted stream play control |
+| `.mh-sp-card__score` / `.mh-sp-match__score` | Live score numerals |
+| `.mh-lv-chip` | Compact dark tournament / league chip |
+
+### Navigation
+
+Sports tab flyout **Live** → `live.html`. Menu sheet **Live** → `live.html`. Home **MORE LIVE** / Recommended Live → `live.html`.  
+National Team mode bar **Live** stays on `national-team-live.html`.
+
+---
+
+## Accumulators of the day
+
+**Live ref:** [dailyexpress mobile](https://1xlite-46272.pro/en/dailyexpress?platform_type=mobile)
+
+| Page | File | Body class |
+|------|------|------------|
+| Accumulators | `mobile/accumulators.html` | `.mh-page--sports.mh-page--accumulators` |
+| CSS | `mobile/css/mobile-accumulators.css` (+ shared `mobile-sports.css` for shell tokens) | |
+| JS | `mobile/js/mobile-accumulators.js` | Sports / Live tab panels; `?tab=live` opens Live |
+
+### Structure (top → bottom)
+
+1. `.mh-header` — logo, MY flag, Log in, Registration  
+2. `.mh-sp-subbar` — back → `sports.html`, title **Accumulators of the day**, favourites star  
+3. `.mh-acc-tabs` — **Sports (N)** | **Live (N)**; active underline `--action-green`  
+4. `.mh-acc-list` of `.mh-acc-card` — title (left, `--header-action`) + total odds box (right, `--odds-bg` + `--accent-blue` border) · divider · Selections toggle (`data-mh-acc`)  
+5. Expanded panel: `.mh-acc-sel` demo legs (match · pick · odd)  
+6. Footer + sports `.mh-tabbar` + `#mh-qbs`
+
+### Key classes
+
+| Class | Role |
+|-------|------|
+| `.mh-acc-tab` | Sports / Live switch; `data-mh-acc-tab` |
+| `.mh-acc-card` | White accumulator card |
+| `.mh-acc-card__odds` | Total odds chip |
+| `.mh-acc-card__toggle` | Selections accordion (`data-mh-acc`) |
+| `.mh-acc-sel__row` | Selection leg row |
+
+### Navigation
+
+Entry only via Sports/Live content rows (not tab flyout / menu sheet):
+Sports `.mh-sp-links` **Accumulators of the day** → `accumulators.html`.
+Live `.mh-sp-links` **Live accumulators…** → `accumulators.html?tab=live`.
+
+---
+
+## Long-term bets
+
+**Live ref:** [long-term mobile](https://1xlite-46272.pro/en/long-term?platform_type=mobile)
+
+| Page | File | Body class |
+|------|------|------------|
+| Long-term bets | `mobile/long-term-bets.html` | `.mh-page--sports.mh-page--long-term` |
+| CSS | `mobile/css/mobile-long-term.css` + `mobile/css/mobile-sports.css` | |
+| JS | `mobile/js/mobile-long-term.js` | Sport chip filter (`data-mh-lt-sport`) |
+
+### Structure (top → bottom)
+
+1. `.mh-header`  
+2. `.mh-sp-subbar` — back → `sports.html`, title **LONG-TERM BETS**, favourites star  
+3. `.mh-sp-chips` — Football / Cricket / **Basketball** (default) / Tennis / … + list (toast demo)  
+4. `.mh-sp-list` — sport accordion → league → `.mh-lt-event` (date, subject, **All events** CTA)  
+5. `.mh-lt-gen` — Generate bet slip promo card (green **Generate** → toast demo)  
+6. League **NBA. Results…** → `.mh-lt-market` with horizontally scrollable `.mh-lt-odd` outcomes (name + odds → Quick bet slip via `.mh-odds__btn`)  
+7. Footer + sports `.mh-tabbar` + `#mh-qbs`
+
+### Key classes
+
+| Class | Role |
+|-------|------|
+| `.mh-lt-event` | Special / subject event row + All events |
+| `.mh-lt-gen` | Generate promo card |
+| `.mh-lt-market` | Outright market block |
+| `.mh-lt-outcomes` / `.mh-lt-odd` | Horizontal outcome rail |
+
+### Navigation
+
+Entry only via Sports `.mh-sp-links` **Long-term bets** → `long-term-bets.html` (not tab flyout / menu sheet).
+Desktop `long-term-bets.html` unchanged.
+
+---
+
 ## Search / Events (`mobile/search.html`)
 
 | Page | File | Body class |
@@ -1074,7 +1201,7 @@ Sports / National Team sub-bar search → `search.html`. Home quicknav search �
 
 ## Event info (`mobile/event-info.html`)
 
-Opened from match **⋯** via `data-mh-event-info` + `data-mh-event` attributes (handled by `mobile-favourites.js`). Used on home LIVE/SPORTS cards, Sports line, and Favorites. Live modal parity: [event about](https://1xlite-46272.pro/en?modal-id=dashboard-event-about&game-id=738469896&betting-type=live).
+Opened from match **⋯** via `data-mh-event-info` + `data-mh-event` attributes (handled by `mobile-favourites.js`). Used on home LIVE/SPORTS cards, Sports line, Live, and Favorites. Live modal parity: [event about](https://1xlite-46272.pro/en?modal-id=dashboard-event-about&game-id=738469896&betting-type=live).
 
 1. `.mh-ei-subbar` — back + **Event info** (Escape also goes back)  
 2. White menu card — Notifications (filled `ei-bell.svg`), Add/Remove favorites (olive `ei-star.svg`), **1xZone** (`ei-zone.svg`), **Statistics** (`ei-stats.svg` → `statistics.html`)  

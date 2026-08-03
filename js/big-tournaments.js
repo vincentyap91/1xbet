@@ -57,13 +57,162 @@
   }
 
   function syncOddButtons() {
-    $$("[data-odd]").forEach((btn) => {
+    $$(".odd-btn[data-odd], .bt-odd[data-odd]").forEach((btn) => {
       const data = parseOdd(btn);
-      if (!data) return;
+      if (!data || typeof data !== "object") return;
       const selected = state.betSlip.some((item) => item.id === data.id);
       btn.classList.toggle("selected", selected);
       btn.setAttribute("aria-pressed", selected ? "true" : "false");
     });
+
+    $$(".mh-bt-odd").forEach((btn) => {
+      if (btn.classList.contains("is-empty") || btn.disabled) {
+        btn.classList.remove("is-selected", "selected");
+        return;
+      }
+      const data = parseMobileOdd(btn);
+      if (!data) return;
+      const selected = state.betSlip.some((item) => item.id === data.id);
+      btn.classList.toggle("is-selected", selected);
+      btn.classList.toggle("selected", selected);
+      btn.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+  }
+
+  function parseMobileOdd(btn) {
+    if (!btn || btn.disabled || btn.classList.contains("is-empty")) return null;
+    const raw = btn.getAttribute("data-odd");
+    const odds = Number(raw);
+    if (!Number.isFinite(odds) || odds <= 0) return null;
+    const row = btn.closest(".mh-bt-row");
+    const league = btn.closest(".mh-bt-league");
+    const select = league ? $(".mh-bt-market__select", league) : null;
+    const team = ($(".mh-bt-row__name", row)?.textContent || "").trim() || "Team";
+    const leagueName = ($(".mh-bt-league__name", league)?.textContent || "").trim() || "Big Tournaments";
+    const market = (select?.selectedOptions?.[0]?.textContent || select?.value || "Market").trim();
+    const side = (btn.getAttribute("data-side") || "yes").toLowerCase();
+    const selection = side === "no" ? "No" : "Yes";
+    const leagueKey = league?.getAttribute("data-league") || "bt";
+    const marketKey = select?.value || "mkt";
+    const id = `mh-bt-${leagueKey}-${team}-${marketKey}-${side}`.replace(/\s+/g, "-").toLowerCase();
+    return {
+      id,
+      league: leagueName,
+      match: team,
+      market,
+      selection,
+      odds,
+    };
+  }
+
+  function applyMobileMarket(league) {
+    const select = $(".mh-bt-market__select", league);
+    if (!select) return;
+    const key = select.value || "place13";
+    $$(".mh-bt-row", league).forEach((row) => {
+      const yesBtn = $('.mh-bt-odd[data-side="yes"]', row);
+      const noBtn = $('.mh-bt-odd[data-side="no"]', row);
+      const yesVal = row.getAttribute(`data-${key}-yes`);
+      const noVal = row.getAttribute(`data-${key}-no`);
+
+      function fill(btn, raw) {
+        if (!btn) return;
+        const valEl = $(".mh-bt-odd__val", btn);
+        if (raw == null || raw === "" || raw === "-") {
+          btn.classList.add("is-empty");
+          btn.disabled = true;
+          btn.removeAttribute("data-odd");
+          if (valEl) valEl.textContent = "—";
+          return;
+        }
+        btn.classList.remove("is-empty");
+        btn.disabled = false;
+        btn.setAttribute("data-odd", String(raw));
+        if (valEl) valEl.textContent = formatOdd(Number(raw));
+      }
+
+      fill(yesBtn, yesVal);
+      fill(noBtn, noVal);
+    });
+  }
+
+  function wireMobileBoard(root) {
+    const scope = root || document;
+    $$(".mh-bt-sport__head", scope).forEach((btn) => {
+      if (btn.dataset.btWired === "1") return;
+      btn.dataset.btWired = "1";
+      btn.addEventListener("click", () => {
+        const sport = btn.closest(".mh-bt-sport");
+        if (!sport) return;
+        const open = sport.classList.contains("is-collapsed");
+        sport.classList.toggle("is-collapsed", !open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+    $$(".mh-bt-league__head", scope).forEach((btn) => {
+      if (btn.dataset.btWired === "1") return;
+      btn.dataset.btWired = "1";
+      btn.addEventListener("click", () => {
+        const league = btn.closest(".mh-bt-league");
+        if (!league) return;
+        const open = league.classList.contains("is-collapsed");
+        league.classList.toggle("is-collapsed", !open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    });
+    $$(".mh-bt-league", scope).forEach((league) => {
+      applyMobileMarket(league);
+      const select = $(".mh-bt-market__select", league);
+      if (select && select.dataset.btWired !== "1") {
+        select.dataset.btWired = "1";
+        select.addEventListener("change", () => {
+          applyMobileMarket(league);
+          syncOddButtons();
+        });
+      }
+    });
+    syncOddButtons();
+  }
+
+  function mobileBoardUrl() {
+    const script =
+      document.currentScript ||
+      document.querySelector('script[src*="big-tournaments.js"]');
+    try {
+      if (script && script.src) {
+        return new URL("../partials/bt-mobile-board.html", script.src).href;
+      }
+    } catch (_) { /* fall through */ }
+    try {
+      return new URL("/partials/bt-mobile-board.html", window.location.origin).href;
+    } catch (_) {
+      return "partials/bt-mobile-board.html";
+    }
+  }
+
+  function initMobileBoard() {
+    const host = $("#bt-mobile-board-host");
+    if (!host) return Promise.resolve();
+
+    // Already inlined in HTML
+    if (host.querySelector(".mh-bt-hero, .mh-bt-board, .mh-bt-sport")) {
+      document.body.classList.add("bt-mobile-board-ready");
+      wireMobileBoard(host);
+      return Promise.resolve();
+    }
+
+    return fetch(mobileBoardUrl(), { cache: "no-cache" })
+      .then((res) => (res.ok ? res.text() : Promise.reject(new Error("board load failed"))))
+      .then((html) => {
+        host.innerHTML = html;
+        document.body.classList.add("bt-mobile-board-ready");
+        wireMobileBoard(host);
+      })
+      .catch((err) => {
+        console.warn("[big-tournaments] mobile board failed", err);
+        host.innerHTML = "";
+        document.body.classList.remove("bt-mobile-board-ready");
+      });
   }
 
   function updateTotals() {
@@ -229,11 +378,20 @@
 
   function initOdds() {
     document.addEventListener("click", (event) => {
-      const odd = event.target.closest("[data-odd]");
+      const mobileOdd = event.target.closest(".mh-bt-odd");
+      if (mobileOdd) {
+        if (mobileOdd.disabled || mobileOdd.classList.contains("is-empty")) return;
+        event.preventDefault();
+        const data = parseMobileOdd(mobileOdd);
+        if (data) toggleOdd(data);
+        return;
+      }
+
+      const odd = event.target.closest(".odd-btn[data-odd], .bt-odd[data-odd]");
       if (!odd) return;
       event.preventDefault();
       const data = parseOdd(odd);
-      if (data) toggleOdd(data);
+      if (data && typeof data === "object") toggleOdd(data);
     });
   }
 
@@ -477,6 +635,7 @@
     initRightBlock();
     initMobileChrome();
     initDemoLinks();
+    initMobileBoard();
   }
 
   if (document.readyState === "loading") {

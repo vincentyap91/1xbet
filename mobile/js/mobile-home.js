@@ -245,6 +245,12 @@
       if (name) return name;
     }
 
+    const ltMarket = btn.closest(".mh-lt-market");
+    if (ltMarket) {
+      const title = $(".mh-lt-market__title", ltMarket)?.textContent?.replace(/\s+/g, " ").trim();
+      if (title) return title;
+    }
+
     return "Event";
   }
 
