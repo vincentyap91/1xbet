@@ -281,18 +281,22 @@ Figma `20:169`. Left nav lists sports with counts; main feed is collapsible leag
 
 Icons: reuse `sport-*` / `te-*` / `nav-*`; league badges from Figma as `lt-*.png` under `assets/icons/`.
 
-#### Multi-LIVE empty board (`multi-live.html`)
+#### Multi-LIVE board (`multi-live.html`)
 
-Figma `21:2`. No left sidebar — layout `.sportsbook-layout.ml-layout` is `1fr | 260px`.
+Figma `21:2` empty state + live cascade (sport → game/league → match). No left sidebar — layout `.sportsbook-layout.ml-layout` is `1fr | 260px`. **Default:** empty board. User adds live events from the category strip; panels support simultaneous watch + bet (`data-odd` → shared ticket / `js/script.js`).
 
 | Layer | Class | Token / style |
 |-------|-------|----------------|
 | Toolbar / crumbs | `.ml-toolbar` | section-blue → section-blue-dark gradient |
 | Sport chips | `.ml-filters` / `.ml-chip` | same section-blue gradient; active underline `--action-green` |
-| Empty board | `.ml-board` | `--surface-secondary`; title `--text-primary`; copy `--text-secondary` |
+| Cascade menu | `.ml-flyout` / `.ml-flyout-item` / `.ml-match-card` | light `--surface-primary`; hover `--odds-hover`; preview on `--surface-secondary` |
+| Empty board | `.ml-board.is-empty` | `--surface-secondary`; title `--text-primary`; copy `--text-secondary` |
+| Filled board | `.ml-board-grid` / `.ml-panel` | light panels; head `--section-blue` gradient; score `--header-nav-bg`; odds `.odd-btn` on light |
 | Right rail | shared | same as homepage (reg / bet slip / generator) |
 
-Icons: reuse `te-*` / `sport-*` from Figma exports already in `assets/icons/`.
+**Interaction:** chip opens flyout (Esports: Games → Leagues → match card; other sports: Leagues → match). Click match → pin panel (max 6). Panel odds use homepage `.odd-btn` / ticket payloads. Remove via panel close.
+
+Icons: reuse `te-*` / `sport-*` / `esports/icon-*` from Figma exports already in `assets/icons/`.
 
 #### Promo category tabs (`promo.html`)
 

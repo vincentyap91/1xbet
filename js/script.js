@@ -3053,7 +3053,25 @@
     const layout = document.querySelector(".sportsbook-layout");
     const left = document.querySelector(".left-sidebar");
     const right = document.querySelector(".right-sidebar");
-    if (!left || !right || !layout) return;
+    /* Multi-LIVE has no left rail — still wire right collapse when present */
+    if (!right || !layout) return;
+    if (!left) {
+      $("#right-collapse")?.addEventListener("click", () => {
+        if (isMobileViewport()) {
+          closeAllMobileDrawers();
+          return;
+        }
+        const collapsed = !right.classList.contains("collapsed");
+        right.classList.toggle("collapsed", collapsed);
+        layout.classList.toggle("right-collapsed", collapsed);
+        const btn = $("#right-collapse");
+        if (btn) {
+          btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+          btn.setAttribute("aria-label", collapsed ? "Expand block" : "Collapse block");
+        }
+      });
+      return;
+    }
 
     function setRightCollapsed(collapsed) {
       right.classList.toggle("collapsed", collapsed);
