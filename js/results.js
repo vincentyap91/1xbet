@@ -38,9 +38,18 @@
 
   function filterSports(query) {
     var q = (query || "").trim().toLowerCase();
-    $$(".rs-sport-item").forEach(function (item) {
-      var name = (item.getAttribute("data-sport-name") || item.textContent || "").toLowerCase();
-      item.hidden = q !== "" && name.indexOf(q) === -1;
+    $$(".rs-sport-acc").forEach(function (acc) {
+      var sportName = (acc.getAttribute("data-sport-name") || "").toLowerCase();
+      var leagueHit = $$(".rs-league-item", acc).some(function (item) {
+        return (item.getAttribute("data-league") || item.textContent || "").toLowerCase().indexOf(q) !== -1;
+      });
+      var show = !q || sportName.indexOf(q) !== -1 || leagueHit;
+      acc.hidden = !show;
+      if (show && q && leagueHit && sportName.indexOf(q) === -1) {
+        acc.classList.add("is-open");
+        var head = acc.querySelector(".rs-sport-item");
+        if (head) head.setAttribute("aria-expanded", "true");
+      }
     });
   }
 
@@ -148,6 +157,20 @@
     initHeaderBasics();
     initSidebarToggle();
 
+    var isMobile = function () {
+      return window.matchMedia("(max-width: 900px)").matches;
+    };
+
+    /* Desktop: expand football with results by default */
+    if (!isMobile()) {
+      var football = document.querySelector('.rs-sport-block[data-sport="football"]');
+      if (football) {
+        football.classList.remove("is-collapsed");
+        var head = football.querySelector(".rs-sport-head");
+        if (head) head.setAttribute("aria-expanded", "true");
+      }
+    }
+
     $$("[data-rs-tab]").forEach(function (tab) {
       tab.addEventListener("click", function () {
         setTab(tab.getAttribute("data-rs-tab"));
@@ -161,36 +184,144 @@
       });
     }
 
+    function runMatchSearch(value) {
+      filterMatches(value);
+    }
+
     var matchSearch = $("#rs-match-search");
     if (matchSearch) {
       matchSearch.addEventListener("input", function () {
-        filterMatches(matchSearch.value);
+        runMatchSearch(matchSearch.value);
+      });
+    }
+
+    var mobileSearch = $("#rs-mobile-search");
+    if (mobileSearch) {
+      mobileSearch.addEventListener("input", function () {
+        runMatchSearch(mobileSearch.value);
       });
     }
 
     var emptyEl = $("#rs-sport-empty");
+    var activeSportFilter = isMobile() ? "all" : "football";
+
+    function selectSport(sport, opts) {
+      var name = (opts && opts.name) || sport;
+      activeSportFilter = sport;
+      var chips = $$("[data-rs-chip]");
+      chips.forEach(function (c) {
+        c.classList.toggle("is-active", c.getAttribute("data-rs-chip") === sport);
+      });
+
+      $$(".rs-sport-item").forEach(function (b) {
+        var itemSport = b.getAttribute("data-sport");
+        b.classList.toggle("is-active", sport === "all" ? itemSport === "football" : itemSport === sport);
+      });
+
+      var found = false;
+      $$(".rs-sport-block").forEach(function (block) {
+        var blockSport = block.getAttribute("data-sport");
+        var on = sport === "all" || blockSport === sport;
+        block.hidden = !on;
+        if (!on) return;
+        found = true;
+
+        /* Single sport: expand that category; All: keep collapsed list view */
+        if (sport === "all") {
+          block.classList.add("is-collapsed");
+          var allHead = block.querySelector(".rs-sport-head");
+          if (allHead) allHead.setAttribute("aria-expanded", "false");
+        } else {
+          block.classList.remove("is-collapsed");
+          var head = block.querySelector(".rs-sport-head");
+          if (head) head.setAttribute("aria-expanded", "true");
+        }
+      });
+
+      if (emptyEl) emptyEl.hidden = found;
+
+      /* Desktop: keep football expanded when it is the selected sport with data */
+      if (!isMobile() && sport === "football") {
+        var fb = document.querySelector('.rs-sport-block[data-sport="football"]');
+        if (fb) {
+          fb.classList.remove("is-collapsed");
+          var fbHead = fb.querySelector(".rs-sport-head");
+          if (fbHead) fbHead.setAttribute("aria-expanded", "true");
+        }
+      }
+
+      if (opts && opts.toast) toast(name + " selected");
+    }
+
+    $$("[data-rs-chip]").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var sport = chip.getAttribute("data-rs-chip") || "all";
+        selectSport(sport, {
+          name: chip.querySelector("span") ? chip.querySelector("span").textContent : sport,
+          toast: false,
+        });
+      });
+    });
 
     $$(".rs-sport-item").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        $$(".rs-sport-item").forEach(function (b) {
-          b.classList.toggle("is-active", b === btn);
-        });
         var sport = btn.getAttribute("data-sport") || "football";
-        var found = false;
-        $$(".rs-sport-block").forEach(function (block) {
-          var on = block.getAttribute("data-sport") === sport;
-          block.hidden = !on;
-          if (on) found = true;
+        var acc = btn.closest(".rs-sport-acc");
+
+        if (!isMobile() && acc) {
+          var opening = !acc.classList.contains("is-open");
+          $$(".rs-sport-acc.is-open").forEach(function (other) {
+            if (other === acc) return;
+            other.classList.remove("is-open");
+            var otherBtn = other.querySelector(".rs-sport-item");
+            if (otherBtn) otherBtn.setAttribute("aria-expanded", "false");
+          });
+          acc.classList.toggle("is-open", opening);
+          btn.setAttribute("aria-expanded", opening ? "true" : "false");
+        }
+
+        selectSport(sport, {
+          name: btn.getAttribute("data-sport-name") || "Sport",
+          toast: true,
         });
-        if (emptyEl) emptyEl.hidden = found;
-        toast((btn.getAttribute("data-sport-name") || "Sport") + " selected");
+        if (isMobile()) {
+          var sidebar = $("#left-sidebar");
+          var backdrop = $("#drawer-backdrop");
+          if (sidebar) sidebar.classList.remove("is-open");
+          if (backdrop) backdrop.hidden = true;
+        }
       });
     });
+
+    $$(".rs-league-item").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var league = btn.getAttribute("data-league") || "League";
+        var acc = btn.closest(".rs-sport-acc");
+        var sport = acc ? acc.getAttribute("data-sport") : null;
+        if (sport) {
+          selectSport(sport, {
+            name: acc.getAttribute("data-sport-name") || sport,
+            toast: false,
+          });
+        }
+        toast(league + " (demo)");
+      });
+    });
+
+    /* Mobile default: All categories visible */
+    if (isMobile()) {
+      selectSport("all");
+    } else {
+      selectSport("football");
+    }
 
     $$(".rs-sport-head").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var block = btn.closest(".rs-sport-block");
-        if (block) block.classList.toggle("is-collapsed");
+        if (!block) return;
+        var open = block.classList.contains("is-collapsed");
+        block.classList.toggle("is-collapsed", !open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
       });
     });
 
@@ -257,12 +388,202 @@
       });
     }
 
-    var dateBtn = $("#rs-date-btn");
-    if (dateBtn) {
-      dateBtn.addEventListener("click", function () {
+    function bindDate(btn) {
+      if (!btn) return;
+      btn.addEventListener("click", function () {
         toast("Date picker (demo)");
       });
     }
+    bindDate($("#rs-date-btn"));
+    bindDate($("#rs-date-btn-mobile"));
+
+    var hours = $("#rs-hours-btn");
+    if (hours) {
+      hours.addEventListener("click", function () {
+        hours.classList.toggle("is-active");
+        hours.setAttribute("aria-pressed", hours.classList.contains("is-active") ? "true" : "false");
+      });
+    }
+
+    var settings = $("#rs-settings-btn");
+    var mobileFilter = $("#rs-mobile-filter");
+    var filtersSheet = $("#rs-filters-sheet");
+    var filtersClose = $("#rs-filters-close");
+    var sportsSheet = $("#rs-sports-sheet");
+    var sportsClose = $("#rs-sports-close");
+
+    function syncMobileFiltersFromDesktop() {
+      $$("[data-rs-opt]").forEach(function (input) {
+        var desk = $("#" + input.getAttribute("data-rs-opt"));
+        if (desk) input.checked = desk.checked;
+      });
+    }
+
+    function openSheet(sheet, opener) {
+      if (!sheet || !isMobile()) return;
+      sheet.hidden = false;
+      requestAnimationFrame(function () {
+        sheet.classList.add("is-open");
+      });
+      document.body.classList.add("rs-filters-open");
+      if (opener) opener.setAttribute("aria-expanded", "true");
+    }
+
+    function closeSheet(sheet, opener) {
+      if (!sheet) return;
+      sheet.classList.remove("is-open");
+      if (opener) opener.setAttribute("aria-expanded", "false");
+      var anyOpen =
+        (filtersSheet && filtersSheet.classList.contains("is-open")) ||
+        (sportsSheet && sportsSheet.classList.contains("is-open"));
+      if (!anyOpen) document.body.classList.remove("rs-filters-open");
+      window.setTimeout(function () {
+        if (!sheet.classList.contains("is-open")) sheet.hidden = true;
+      }, 240);
+    }
+
+    function openFiltersSheet() {
+      syncMobileFiltersFromDesktop();
+      openSheet(filtersSheet, settings);
+    }
+
+    function closeFiltersSheet() {
+      closeSheet(filtersSheet, settings);
+    }
+
+    function syncSportsChecks(sport) {
+      $$("[data-rs-scat]").forEach(function (input) {
+        var key = input.getAttribute("data-rs-scat");
+        if (sport === "all") {
+          input.checked = key === "all";
+        } else if (Array.isArray(sport)) {
+          input.checked = sport.indexOf(key) !== -1;
+        } else {
+          input.checked = key === sport;
+        }
+      });
+    }
+
+    function openSportsSheet() {
+      syncSportsChecks(activeSportFilter);
+      openSheet(sportsSheet, mobileFilter);
+    }
+
+    function closeSportsSheet() {
+      closeSheet(sportsSheet, mobileFilter);
+    }
+
+    function applySportsCategoryFilter() {
+      var allInput = $('[data-rs-scat="all"]');
+      var picked = $$("[data-rs-scat]")
+        .filter(function (input) {
+          return input.getAttribute("data-rs-scat") !== "all" && input.checked;
+        })
+        .map(function (input) {
+          return input.getAttribute("data-rs-scat");
+        });
+
+      if ((allInput && allInput.checked) || picked.length === 0) {
+        if (allInput) allInput.checked = true;
+        $$("[data-rs-scat]").forEach(function (input) {
+          if (input.getAttribute("data-rs-scat") !== "all") input.checked = false;
+        });
+        activeSportFilter = "all";
+        selectSport("all");
+        return;
+      }
+
+      if (allInput) allInput.checked = false;
+
+      if (picked.length === 1) {
+        activeSportFilter = picked[0];
+        selectSport(picked[0], { name: picked[0] });
+        return;
+      }
+
+      activeSportFilter = picked;
+      $$("[data-rs-chip]").forEach(function (c) {
+        c.classList.toggle("is-active", c.getAttribute("data-rs-chip") === "all");
+      });
+      var found = false;
+      $$(".rs-sport-block").forEach(function (block) {
+        var on = picked.indexOf(block.getAttribute("data-sport")) !== -1;
+        block.hidden = !on;
+        if (!on) return;
+        found = true;
+        block.classList.add("is-collapsed");
+        var head = block.querySelector(".rs-sport-head");
+        if (head) head.setAttribute("aria-expanded", "false");
+      });
+      if (emptyEl) emptyEl.hidden = found;
+    }
+
+    $$("[data-rs-opt]").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var deskId = input.getAttribute("data-rs-opt");
+        var desk = deskId ? $("#" + deskId) : null;
+        if (desk) {
+          desk.checked = input.checked;
+          desk.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      });
+    });
+
+    $$("[data-rs-scat]").forEach(function (input) {
+      input.addEventListener("change", function () {
+        var key = input.getAttribute("data-rs-scat");
+        if (key === "all" && input.checked) {
+          $$("[data-rs-scat]").forEach(function (other) {
+            if (other !== input) other.checked = false;
+          });
+        } else if (key !== "all" && input.checked) {
+          var allBox = $('[data-rs-scat="all"]');
+          if (allBox) allBox.checked = false;
+        } else if (key !== "all" && !input.checked) {
+          var any = $$("[data-rs-scat]").some(function (other) {
+            return other.getAttribute("data-rs-scat") !== "all" && other.checked;
+          });
+          if (!any) {
+            var allOnly = $('[data-rs-scat="all"]');
+            if (allOnly) allOnly.checked = true;
+          }
+        }
+        applySportsCategoryFilter();
+      });
+    });
+
+    if (settings) {
+      settings.setAttribute("aria-haspopup", "dialog");
+      settings.setAttribute("aria-controls", "rs-filters-sheet");
+      settings.setAttribute("aria-expanded", "false");
+      settings.addEventListener("click", openFiltersSheet);
+    }
+
+    if (mobileFilter) {
+      mobileFilter.setAttribute("aria-haspopup", "dialog");
+      mobileFilter.setAttribute("aria-controls", "rs-sports-sheet");
+      mobileFilter.setAttribute("aria-expanded", "false");
+      mobileFilter.addEventListener("click", openSportsSheet);
+    }
+
+    if (filtersClose) {
+      filtersClose.addEventListener("click", closeFiltersSheet);
+    }
+
+    if (sportsClose) {
+      sportsClose.addEventListener("click", closeSportsSheet);
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      if (sportsSheet && sportsSheet.classList.contains("is-open")) {
+        closeSportsSheet();
+        return;
+      }
+      if (filtersSheet && filtersSheet.classList.contains("is-open")) {
+        closeFiltersSheet();
+      }
+    });
 
     setTab("sports");
   });

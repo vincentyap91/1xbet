@@ -116,7 +116,7 @@
   width: 12px;
   height: 12px;
   filter: brightness(0) invert(1);
-  opacity: 0.75;
+  opacity: 1;
 }
 
 /* Sport chips + cascade flyout */
@@ -189,46 +189,58 @@
   filter: brightness(0) invert(1);
 }
 
-/* Cascade menu: Games → Leagues → Match preview */
+/* Cascade menu: league list + match preview (live multi parity) */
 .ml-flyout {
   position: absolute;
   top: 100%;
   left: 0;
   display: flex;
-  align-items: stretch;
-  max-width: min(920px, 100%);
+  align-items: flex-start;
+  gap: 4px;
+  max-width: min(960px, 100%);
   margin-top: 0;
-  background: var(--surface-primary);
-  border: 1px solid var(--border-light);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  box-shadow: 0 10px 28px rgba(11, 29, 51, 0.28);
-  overflow: hidden;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.ml-flyout[hidden] {
+  display: none !important;
 }
 
 .ml-flyout-col {
-  min-width: 220px;
-  max-width: 280px;
-  max-height: min(420px, 60vh);
+  min-width: 260px;
+  max-width: 300px;
+  max-height: min(440px, 62vh);
   overflow-y: auto;
-  border-right: 1px solid var(--border-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
   background: var(--surface-primary);
+  box-shadow: 0 10px 28px rgba(11, 29, 51, 0.28);
 }
 
 .ml-flyout-col:last-child {
-  border-right: none;
+  border-right: 1px solid var(--border-light);
 }
 
 .ml-flyout-col--preview {
-  min-width: 240px;
-  max-width: 280px;
-  padding: 10px;
-  background: var(--surface-secondary);
+  min-width: 300px;
+  max-width: 340px;
+  padding: 0;
+  background: var(--surface-primary);
 }
 
 .ml-flyout-list {
   list-style: none;
   margin: 0;
-  padding: 4px 0;
+  padding: 0;
+}
+
+.ml-flyout-list > li + li {
+  border-top: 1px solid rgba(26, 48, 72, 0.08);
 }
 
 .ml-flyout-item {
@@ -237,25 +249,28 @@
   gap: 10px;
   width: 100%;
   min-height: 40px;
-  padding: 6px 12px;
+  padding: 8px 12px;
   border: none;
   background: transparent;
-  color: var(--text-primary);
+  color: var(--section-blue);
   font-size: 13px;
   font-weight: 600;
   text-align: left;
   cursor: pointer;
 }
 
-.ml-flyout-item img {
+.ml-flyout-ico {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--odds-bg);
 }
 
 .ml-flyout-item:hover,
 .ml-flyout-item.is-active {
-  background: var(--odds-hover);
+  background: var(--odds-bg);
 }
 
 .ml-flyout-label {
@@ -264,11 +279,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: var(--section-blue);
 }
 
 .ml-flyout-count {
   flex-shrink: 0;
-  color: var(--text-muted);
+  color: var(--text-muted, #8a9aab);
   font-size: 12px;
   font-weight: 600;
 }
@@ -286,66 +302,127 @@
   gap: 6px;
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  background: var(--surface-primary);
+  border: none;
+  border-radius: 0;
+  background: transparent;
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
 }
 
 .ml-match-card + .ml-match-card {
-  margin-top: 8px;
+  margin-top: 0;
+  border-top: 1px solid rgba(26, 48, 72, 0.1);
 }
 
 .ml-match-card:hover {
-  border-color: var(--accent-blue-soft);
-  box-shadow: 0 2px 8px rgba(43, 120, 214, 0.12);
+  background: rgba(232, 238, 245, 0.55);
 }
 
 .ml-match-card.is-pinned {
-  border-color: var(--cyan-accent);
+  background: color-mix(in srgb, var(--odds-hover) 70%, #fff);
 }
 
-.ml-match-card-top {
+.ml-match-card-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
 }
 
-.ml-match-card-score {
-  font-size: 16px;
+.ml-match-card-sport {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  /* te-* icons are light; remap to section-blue on white flyout */
+  filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(1200%) hue-rotate(182deg) brightness(0.95);
+  opacity: 1;
+}
+
+.ml-match-card-league {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
   color: var(--section-blue);
 }
 
 .ml-match-card-star {
-  color: var(--warning);
-  font-size: 12px;
+  flex-shrink: 0;
+  color: var(--action-green);
+  font-size: 14px;
+  line-height: 1;
   opacity: 0.85;
 }
 
-.ml-match-card-teams {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.ml-match-card-row {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto auto 14px;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ml-match-card-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--odds-bg);
+  color: var(--section-blue);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ml-match-card-team {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ml-match-card-pts {
   font-size: 13px;
   font-weight: 700;
-  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 }
 
-.ml-match-card-meta {
+.ml-match-card-sets {
   font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
-.ml-match-card-cta {
+.ml-match-card-serve {
+  width: 10px;
+  height: 10px;
+  filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(1200%) hue-rotate(182deg) brightness(0.95);
+  opacity: 0.9;
+}
+
+.ml-match-card-serve-spacer {
+  width: 10px;
+  height: 10px;
+}
+
+.ml-match-card-status {
   margin-top: 2px;
   font-size: 11px;
-  font-weight: 700;
-  color: var(--accent-blue);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--action-green);
 }
 
 /* Board — empty or filled panels */
@@ -361,6 +438,12 @@
   overflow: hidden;
 }
 
+.ml-board:not(.is-empty) {
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
 .ml-board.is-empty {
   align-items: center;
   justify-content: center;
@@ -374,6 +457,15 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+.ml-board-empty[hidden],
+.ml-board:not(.is-empty) .ml-board-empty {
+  display: none !important;
+}
+
+.ml-board-grid[hidden] {
+  display: none !important;
 }
 
 .ml-board-title {
@@ -394,20 +486,24 @@
 
 .ml-board-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 8px;
-  align-items: start;
-  padding: 8px;
+  /* Always 3 slots — 1 match stays ~⅓ width on the left (live multi parity) */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  align-items: stretch;
+  padding: 6px;
   overflow: auto;
   min-height: 0;
   flex: 1;
 }
 
-/* Event panel */
+/* Event panel — live multi column card */
 .ml-panel {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  max-height: calc(100vh - var(--header-h) - 120px);
   background: var(--surface-primary);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-light);
@@ -424,10 +520,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  min-height: 36px;
-  padding: 6px 8px 6px 10px;
+  min-height: 32px;
+  padding: 4px 6px 4px 10px;
   background: linear-gradient(180deg, var(--section-blue) 0%, var(--section-blue-dark) 100%);
   color: var(--text-inverse);
+  flex-shrink: 0;
 }
 
 .ml-panel-league {
@@ -436,14 +533,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .ml-panel-actions {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 0;
   flex-shrink: 0;
 }
 
@@ -451,8 +549,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border: none;
   border-radius: var(--radius-sm);
   background: transparent;
@@ -464,150 +562,335 @@
 }
 
 .ml-panel-ico img {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   filter: brightness(0) invert(1);
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-.ml-panel-score {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 10px 12px 8px;
-  background: var(--header-nav-bg);
-  color: var(--text-inverse);
-}
-
-.ml-score-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.ml-pts {
-  font-variant-numeric: tabular-nums;
-  font-size: 15px;
-}
-
-.ml-period {
-  margin-top: 2px;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
-}
-
+/* Summary / Statistics / Information — under header */
 .ml-panel-tabs {
   display: flex;
   gap: 0;
-  background: var(--surface-tertiary);
-  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
+  background: var(--header-nav-bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ml-ptab {
   flex: 1;
-  min-height: 34px;
-  padding: 0 6px;
+  min-height: 28px;
+  padding: 0 4px;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
+.ml-ptab:hover {
+  color: #fff;
+}
+
 .ml-ptab.active {
-  color: var(--section-blue);
-  background: var(--surface-primary);
+  color: #fff;
   box-shadow: inset 0 -2px 0 var(--action-green);
 }
 
+/* Horizontal scoreboard */
+.ml-panel-score {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 12px 10px 14px;
+  background: linear-gradient(180deg, #0f2744 0%, #0b1d33 100%);
+  color: var(--text-inverse);
+  flex-shrink: 0;
+}
+
+.ml-score-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+}
+
+.ml-team-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cyan-soft);
+}
+
+.ml-team {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.ml-score-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 72px;
+  padding: 0 4px;
+}
+
+.ml-score-main {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.ml-period {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--action-green);
+  white-space: nowrap;
+  text-align: center;
+}
+
 .ml-panel-body {
-  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 0;
   background: var(--surface-primary);
+  overflow: hidden;
+}
+
+.ml-panel-body[hidden] {
+  display: none !important;
 }
 
 .ml-pane-copy {
   margin: 0;
-  padding: 8px 4px;
+  padding: 12px 10px;
   font-size: 12px;
   line-height: 1.45;
   color: var(--text-secondary);
 }
 
+/* Market filter strip */
+.ml-market-bar {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  flex-shrink: 0;
+  min-height: 30px;
+  background: var(--odds-bg);
+  border-bottom: 1px solid var(--border-light);
+}
+
 .ml-market-chips {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ml-market-chips::-webkit-scrollbar {
+  display: none;
 }
 
 .ml-mchip {
-  min-height: 26px;
+  flex: 0 0 auto;
+  min-height: 30px;
   padding: 0 8px;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  background: var(--surface-secondary);
+  border: none;
+  border-right: 1px solid rgba(26, 79, 138, 0.12);
+  border-radius: 0;
+  background: transparent;
   color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.ml-mchip.active {
-  background: var(--odds-hover);
-  border-color: var(--accent-blue-soft);
+.ml-mchip:hover {
   color: var(--section-blue);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.ml-mchip.active {
+  color: var(--section-blue);
+  background: var(--surface-primary);
+  box-shadow: inset 0 -2px 0 var(--action-green);
+}
+
+.ml-market-tools {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-left: 1px solid rgba(26, 79, 138, 0.12);
+}
+
+.ml-market-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: var(--section-blue);
+  cursor: pointer;
+}
+
+.ml-market-tool:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.ml-market-tool img {
+  width: 12px;
+  height: 12px;
+  opacity: 0.85;
+}
+
+.ml-market-tool img[src*="te-search"] {
+  filter: brightness(0) saturate(100%);
+  opacity: 0.55;
 }
 
 .ml-markets {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--surface-secondary);
 }
 
 .ml-market {
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  background: var(--surface-secondary);
+  border: none;
+  border-bottom: 1px solid var(--border-light);
+  border-radius: 0;
+  background: var(--surface-primary);
   overflow: hidden;
+}
+
+.ml-market[hidden] {
+  display: none;
 }
 
 .ml-market summary {
   list-style: none;
   display: flex;
   align-items: center;
-  min-height: 32px;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
   padding: 0 10px;
   background: var(--league-header);
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
+  user-select: none;
 }
 
 .ml-market summary::-webkit-details-marker {
   display: none;
 }
 
+.ml-market-chevron {
+  width: 10px;
+  height: 6px;
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: transform 0.15s ease;
+}
+
+.ml-market:not([open]) .ml-market-chevron {
+  transform: rotate(-90deg);
+}
+
 .ml-odds {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-  gap: 4px;
-  padding: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  padding: 0;
+  background: var(--border-light);
+}
+
+.ml-odds--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ml-odds--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .ml-odds .odd-btn {
-  min-height: 36px;
+  min-height: 40px;
   width: 100%;
+  border-radius: 0;
+  border: none;
+  background: var(--surface-primary);
+  box-shadow: none;
+}
+
+.ml-odds .odd-btn--stack .odd-btn-lab {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-secondary);
+}
+
+.ml-odds .odd-btn--stack .odd-btn-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ml-odds .odd-btn:hover {
+  background: var(--odds-hover);
+}
+
+.ml-odds .odd-btn.selected {
+  background: var(--odds-selected);
+  color: #fff;
+}
+
+.ml-odds .odd-btn.selected .odd-btn-lab,
+.ml-odds .odd-btn.selected .odd-btn-val {
+  color: #fff;
 }
 
 @media (max-width: 1200px) {
   .sportsbook-layout.ml-layout {
     grid-template-columns: 1fr;
+  }
+
+  /* Keep 3-slot track so 1–2 panels stay left-aligned, not stretched */
+  .ml-board-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -629,6 +912,7 @@
     right: 0;
     max-width: none;
     flex-direction: column;
+    gap: 6px;
   }
 
   .ml-flyout-col,
@@ -636,8 +920,6 @@
     min-width: 0;
     max-width: none;
     max-height: 220px;
-    border-right: none;
-    border-bottom: 1px solid var(--border-light);
   }
 
   .ml-board.is-empty {
@@ -652,5 +934,13 @@
 
   .ml-board-grid {
     grid-template-columns: 1fr;
+  }
+
+  .ml-panel {
+    max-height: none;
+  }
+
+  .ml-score-main {
+    font-size: 20px;
   }
 }

@@ -148,7 +148,12 @@ body[data-page="favourites"] .page-shell {
   border: 1px solid var(--odds-bg, #e8eef5);
   border-radius: 6px;
   background: var(--surface-primary);
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
   cursor: pointer;
+  padding: 0;
+  font: inherit;
 }
 
 .fv-tabs__clock img {

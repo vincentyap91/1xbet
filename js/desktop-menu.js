@@ -132,7 +132,7 @@
       '<ul class="ds-menu__list" data-ds-menu-list>' +
       item("index.html", ICO + "icon-home.svg", "Main page") +
       item("sports.html", ICO + "tab-menu.svg", "Sports") +
-      item("multi-live.html", ICO + "tab-live.svg", "Live") +
+      item("live-national-team.html", ICO + "tab-live.svg", "Live") +
       item("national-team.html", ICO + "t20.svg", "T20 Blast", badge) +
       item("esports.html", ICO_MENU + "gamepad.svg", "Esports") +
       item("favourites.html", ICO + "star.svg", "Favorites") +

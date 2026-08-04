@@ -1124,6 +1124,10 @@
       btn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
+        if (window.matchMedia('(max-width: 900px)').matches) {
+          window.location.href = 'messages.html';
+          return;
+        }
         if (window.MessagesUI && typeof window.MessagesUI.toggle === 'function') {
           window.MessagesUI.toggle();
           return;

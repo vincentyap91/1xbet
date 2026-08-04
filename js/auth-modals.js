@@ -990,6 +990,50 @@
     return accountFiles.indexOf(file) !== -1;
   }
 
+  /* Desktop → mobile (≤900): no bottom tabbar on account / info / promo utility pages */
+  function shouldHideMobileTabbar(page, file) {
+    const pages = [
+      "deposit",
+      "withdraw",
+      "personal-profile",
+      "security",
+      "change-password",
+      "change-language",
+      "transaction-history",
+      "bet-history",
+      "promotion-record",
+      "referral-invite",
+      "membership-invite",
+      "rebate-invite",
+      "daily-checkin",
+      "promo",
+      "promo-detail",
+      "live-chat",
+      "information-center",
+      "about-us",
+      "terms",
+      "payments",
+      "partnership",
+      "messages",
+    ];
+    if (pages.indexOf(page) !== -1) return true;
+    return pages.some((p) => p + ".html" === file);
+  }
+
+  function hideMobileTabbar(tabbar) {
+    document.body.classList.add("hide-mobile-tabbar");
+    if (!tabbar) return;
+    tabbar.hidden = true;
+    tabbar.setAttribute("aria-hidden", "true");
+  }
+
+  function showMobileTabbar(tabbar) {
+    document.body.classList.remove("hide-mobile-tabbar");
+    if (!tabbar) return;
+    tabbar.hidden = false;
+    tabbar.removeAttribute("aria-hidden");
+  }
+
   function isCasinoChromePage(page, file) {
     const casinoFiles = [
       "casino.html",
@@ -1477,6 +1521,13 @@
     const page = document.body.dataset.page || "";
     const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
+    if (shouldHideMobileTabbar(page, file)) {
+      hideMobileTabbar(tabbar);
+      return;
+    }
+
+    showMobileTabbar(tabbar);
+
     /* Casino pages keep their own Categories / Providers / My Casino tabbar */
     if (tabbar.dataset.casinoTabbar === "1" || isCasinoChromePage(page, file)) {
       ensureCasinoTabbarMarkup(tabbar);
@@ -1532,16 +1583,8 @@
     },
     live: {
       label: "Live menu",
-      pages: ["multi-live", "live-national-team", "marble-live", "fast-bet"],
+      pages: ["live-national-team", "marble-live", "fast-bet"],
       items: [
-        {
-          key: "multi-live",
-          href: "multi-live.html",
-          label: "Multi-LIVE",
-          icon: "mobile/assets/icons/tab-live.svg",
-          tint: true,
-          pages: ["multi-live"],
-        },
         {
           key: "live-national-team",
           href: "live-national-team.html",

@@ -25,6 +25,7 @@
   const isMarbleLivePage = document.body?.dataset?.page === "marble-live";
   const isSportsPage = document.body?.dataset?.page === "sports";
   const isEsportsPage = document.body?.dataset?.page === "esports";
+  const isHomePage = document.body?.dataset?.page === "home";
   const isLiveNationalTeamPage =
     document.body?.dataset?.page === "live-national-team";
   const isNationalTeamPage =
@@ -58,6 +59,7 @@
     GB: "assets/icons/lnt/flag-england.svg",
     AR: "assets/icons/lnt/flag-argentina.svg",
     CH: "assets/icons/lnt/flag-switzerland.svg",
+    ID: "assets/icons/lnt/flag-id.svg",
     WC: "assets/icons/lnt/crumb-trophy.svg",
     RU: "assets/icons/lnt/crumb-trophy.svg",
     UA: "assets/icons/lnt/crumb-trophy.svg",
@@ -96,6 +98,75 @@
     { id: "lottery", name: "Lottery", count: 6, icon: "assets/icons/sport-lottery.svg" },
     { id: "mortalkombat", name: "Mortal Kombat", count: 25, icon: "assets/icons/sport-mortalkombat.svg" },
   ];
+
+  /* LIVE table Esports dropdown (ref: 1xlite desktop cyber sports menu) */
+  const ESPORTS_GLOBE = "assets/icons/nav-globe.svg";
+  const esportsMenuItems = [
+    {
+      id: "esports-ice-hockey",
+      name: "Esports Ice Hockey",
+      count: 9,
+      icon: "assets/icons/sport-hockey.svg",
+      leagues: [
+        { id: "nhl-3x3", name: "NHL 26. 3x3. Threes", count: 1 },
+        { id: "nhl-ones", name: "NHL 26. Ones", count: 3 },
+        { id: "nhl-penalties", name: "NHL 26. Penalty shootouts", count: 5 },
+      ],
+    },
+    {
+      id: "streetfighter",
+      name: "StreetFighter",
+      count: 1,
+      icon: "assets/icons/sport-mortalkombat.svg",
+      leagues: [{ id: "sf-main", name: "Street Fighter. Matches", count: 1 }],
+    },
+    {
+      id: "dota",
+      name: "Dota",
+      count: 7,
+      icon: "assets/icons/esports/icon-dota2.svg",
+      leagues: [
+        { id: "dota-pro", name: "Dota 2. Pro matches", count: 4 },
+        { id: "dota-asia", name: "Dota 2. Asia", count: 3 },
+      ],
+    },
+    {
+      id: "call-of-duty",
+      name: "Call Of Duty",
+      count: 2,
+      icon: "assets/icons/sport-esports.svg",
+      leagues: [
+        { id: "cod-mp", name: "Call of Duty. Multiplayer", count: 1 },
+        { id: "cod-warzone", name: "Call of Duty. Warzone", count: 1 },
+      ],
+    },
+    {
+      id: "world-of-tanks",
+      name: "World of tanks",
+      count: 2,
+      icon: "assets/icons/sport-esports.svg",
+      leagues: [{ id: "wot-battles", name: "World of Tanks. Battles", count: 2 }],
+    },
+    {
+      id: "pes",
+      name: "PES",
+      count: 2,
+      icon: "assets/icons/sport-fifa.svg",
+      leagues: [
+        { id: "pes-clubs", name: "eFootball. Clubs", count: 1 },
+        { id: "pes-nations", name: "eFootball. Nations", count: 1 },
+      ],
+    },
+    {
+      id: "tekken",
+      name: "Tekken",
+      count: 1,
+      icon: "assets/icons/sport-mortalkombat.svg",
+      leagues: [{ id: "tekken-main", name: "Tekken. Matches", count: 1 }],
+    },
+  ];
+
+  let esportsFlyoutId = esportsMenuItems[0]?.id || null;
 
   const nationalTopSports = [
     { id: "basketball", name: "Basketball", count: 1, icon: "assets/icons/sport-basketball.svg" },
@@ -264,6 +335,100 @@
   /** LIVE dashboard — from live site snapshot */
   const homeLiveLeagues = [
     {
+      id: "id-piala",
+      name: "Indonesia. Piala Presiden",
+      sport: "football",
+      icon: "ID",
+      events: [
+        {
+          id: "lv-id1",
+          time: "Live",
+          live: true,
+          clock: "04:17 / 1st half",
+          meta: "04:17 / 1st half / Round of 4",
+          stream: true,
+          tracker: true,
+          lineups: true,
+          stats: true,
+          social: true,
+          home: "Persib Bandung",
+          away: "Persija Jakarta",
+          homeLogo: "assets/images/mobile-home/teams/team-01.webp",
+          awayLogo: "assets/images/mobile-home/teams/team-02.webp",
+          scoreH: 0,
+          scoreA: 0,
+          o1: 2.208,
+          ox: 3.1,
+          o2: 3.405,
+          dc1x: 1.294,
+          dc12: 1.325,
+          dc2x: 1.59,
+          total: 2,
+          over: 1.735,
+          under: 2.11,
+          more: 588,
+          subGames: [
+            {
+              id: "h1",
+              name: "1st half",
+              o1: 3.12,
+              ox: 2.076,
+              o2: 3.94,
+              dc1x: 1.246,
+              dc12: 1.73,
+              dc2x: 1.28,
+              total: 0.5,
+              over: 1.55,
+              under: 2.376,
+              more: 170,
+            },
+            {
+              id: "h2",
+              name: "2nd half",
+              o1: 2.55,
+              ox: 2.35,
+              o2: 3.42,
+              dc1x: 1.22,
+              dc12: 1.46,
+              dc2x: 1.39,
+              total: 1,
+              over: 1.78,
+              under: 1.98,
+              more: 74,
+            },
+            {
+              id: "corners",
+              name: "Corners",
+              o1: null,
+              ox: null,
+              o2: null,
+              dc1x: null,
+              dc12: null,
+              dc2x: null,
+              total: 8,
+              over: 1.82,
+              under: 1.92,
+              more: 42,
+            },
+            {
+              id: "h1-corners",
+              name: "1st half Corners",
+              o1: null,
+              ox: null,
+              o2: null,
+              dc1x: null,
+              dc12: null,
+              dc2x: null,
+              total: 3.5,
+              over: 1.88,
+              under: 1.86,
+              more: 28,
+            },
+          ],
+        },
+      ],
+    },
+    {
       id: "usa-mls",
       name: "USA. MLS",
       sport: "football",
@@ -274,9 +439,14 @@
           time: "Live",
           live: true,
           clock: "22:48 / 1st half",
+          meta: "22:48 / 1st half",
           stream: true,
+          tracker: true,
+          stats: true,
           home: "CF Montreal",
           away: "Toronto",
+          homeLogo: "assets/images/mobile-home/teams/team-03.webp",
+          awayLogo: "assets/images/mobile-home/teams/team-04.webp",
           scoreH: 0,
           scoreA: 0,
           o1: 2.375,
@@ -289,6 +459,36 @@
           over: 2.21,
           under: 1.73,
           more: 637,
+          subGames: [
+            {
+              id: "h1",
+              name: "1st half",
+              o1: 2.9,
+              ox: 2.2,
+              o2: 3.5,
+              dc1x: 1.28,
+              dc12: 1.55,
+              dc2x: 1.35,
+              total: 1,
+              over: 1.9,
+              under: 1.85,
+              more: 120,
+            },
+            {
+              id: "h2",
+              name: "2nd half",
+              o1: 2.4,
+              ox: 2.5,
+              o2: 3.1,
+              dc1x: 1.24,
+              dc12: 1.35,
+              dc2x: 1.4,
+              total: 1.5,
+              over: 1.88,
+              under: 1.9,
+              more: 86,
+            },
+          ],
         },
       ],
     },
@@ -343,6 +543,7 @@
           time: "Live",
           live: true,
           clock: "67'",
+          meta: "67' / 2nd half",
           home: "West Coast Rangers (Women)",
           away: "Western Springs (Women)",
           scoreH: 1,
@@ -887,8 +1088,12 @@
     favorites: loadFavouriteIdSet(),
     pinnedMatches: loadPinnedMatches(),
     collapsedLeagues: new Set(),
+    /** Desktop event rows with sub-games panel open (closed by default) */
+    expandedEvents: new Set(),
     activeLiveFilter: null,
     activeLineFilter: null,
+    /** Main LIVE section tab: matches | recommended | favorites | upcoming | p1 | p2 */
+    liveView: "matches",
     /** National Team mode bar: "live" | "sports" — driven by page (links navigate) */
     ntMarketMode: isLiveNationalTeamPage ? "live" : "sports",
     streamOnly: false,
@@ -1290,12 +1495,18 @@
 
   /* ---------- Table rendering ---------- */
 
-  function oddButton(event, market, selection, value, leagueName, stackLab) {
+  function oddButton(event, market, selection, value, leagueName, stackLab, emptyMode) {
     const id = `${event.id}-${market}-${selection}`;
     const selected = state.betSlip.some((b) => b.id === id) ? " selected" : "";
     const title = oddTitle(market, selection);
     const stackClass = stackLab ? " odd-btn--stack" : "";
     if (value == null) {
+      if (emptyMode === "dash") {
+        const dashInner = stackLab
+          ? `<span class="odd-btn-lab">${stackLab}</span><span class="odd-btn-val">-</span>`
+          : "-";
+        return `<span class="odd-btn odd-btn-dash${stackClass}" aria-hidden="true">${dashInner}</span>`;
+      }
       const lockInner = stackLab
         ? `<span class="odd-btn-lab">${stackLab}</span><span class="odd-btn-val"><img src="assets/icons/lnt/icon-lock.svg" alt="" width="11" height="12" /></span>`
         : `<img src="assets/icons/lnt/icon-lock.svg" alt="" width="11" height="12" />`;
@@ -1316,20 +1527,27 @@
     return `<button type="button" class="odd-btn${stackClass}${selected}" data-odd="${payload}" title="${title}" aria-label="${title}" aria-pressed="${selected ? "true" : "false"}">${inner}</button>`;
   }
 
-  function renderEventOddsCells(event, leagueName, sport) {
+  function renderEventOddsCells(event, leagueName, sport, opts) {
+    const emptyMode = (opts && opts.emptyMode) || null;
+    const skipMobile = !!(opts && opts.skipMobile);
+    const dash = emptyMode;
+
     if (sportHasDoubleChance(sport)) {
       return `
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName)}</div>
-        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "2X", doubleChanceOdd(event, "2X"), leagueName)}</div>
-        <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
-        <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
-        <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
-        <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>
-        <div class="event-odds-mobile event-odds-mobile--card">
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName, null, dash)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName, null, dash)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName, null, dash)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "1X", doubleChanceOdd(event, "1X"), leagueName, null, dash)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName, null, dash)}</div>
+        <div class="odd-cell desktop-odds">${oddButton(event, "Double Chance", "2X", doubleChanceOdd(event, "2X"), leagueName, null, dash)}</div>
+        <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName, null, dash)}</div>
+        <div class="total-val desktop-odds">${event.total != null ? event.total : (dash === "dash" ? "-" : "—")}</div>
+        <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName, null, dash)}</div>
+        <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more != null ? event.more : 0}</a></div>
+        ${
+          skipMobile
+            ? ""
+            : `<div class="event-odds-mobile event-odds-mobile--card">
           <div class="mobile-odds-row mobile-odds-row--markets" role="group" aria-label="Main markets">
             ${oddButton(event, "1X2", "1", event.o1, leagueName, "W1")}
             ${oddButton(event, "1X2", "X", event.ox, leagueName, "DRAW")}
@@ -1338,28 +1556,33 @@
             ${oddButton(event, "Double Chance", "12", doubleChanceOdd(event, "12"), leagueName, "12")}
           </div>
           <a href="#" class="more-link">+${event.more}</a>
-        </div>`;
+        </div>`
+        }`;
     }
 
     return `
-      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName)}</div>
-      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName)}</div>
-      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName)}</div>
-      <div class="event-odds-mobile event-odds-mobile--card">
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "1", event.o1, leagueName, null, dash)}</div>
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "X", event.ox, leagueName, null, dash)}</div>
+      <div class="odd-cell desktop-odds">${oddButton(event, "1X2", "2", event.o2, leagueName, null, dash)}</div>
+      ${
+        skipMobile
+          ? ""
+          : `<div class="event-odds-mobile event-odds-mobile--card">
         <div class="mobile-odds-row mobile-odds-row--markets mobile-odds-row--markets-3" role="group" aria-label="Main markets">
           ${oddButton(event, "1X2", "1", event.o1, leagueName, "W1")}
           ${oddButton(event, "1X2", "X", event.ox, leagueName, "DRAW")}
           ${oddButton(event, "1X2", "2", event.o2, leagueName, "W2")}
         </div>
         <a href="#" class="more-link">+${event.more}</a>
-      </div>
-      <div class="total-val desktop-odds">${event.total != null ? event.total : "—"}</div>
-      <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName)}</div>
-      <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName)}</div>
-      <div class="handicap-val desktop-odds">${event.hcap != null ? event.hcap : "—"}</div>
-      <div class="desktop-odds">${oddButton(event, "Handicap", "1", event.h1, leagueName)}</div>
-      <div class="desktop-odds">${oddButton(event, "Handicap", "2", event.h2, leagueName)}</div>
-      <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more}</a></div>`;
+      </div>`
+      }
+      <div class="total-val desktop-odds">${event.total != null ? event.total : (dash === "dash" ? "-" : "—")}</div>
+      <div class="desktop-odds">${oddButton(event, "Total", "Over", event.over, leagueName, null, dash)}</div>
+      <div class="desktop-odds">${oddButton(event, "Total", "Under", event.under, leagueName, null, dash)}</div>
+      <div class="handicap-val desktop-odds">${event.hcap != null ? event.hcap : (dash === "dash" ? "-" : "—")}</div>
+      <div class="desktop-odds">${oddButton(event, "Handicap", "1", event.h1, leagueName, null, dash)}</div>
+      <div class="desktop-odds">${oddButton(event, "Handicap", "2", event.h2, leagueName, null, dash)}</div>
+      <div class="more-cell desktop-odds"><a href="#" class="more-link">+${event.more != null ? event.more : 0}</a></div>`;
   }
 
   function isEventPinned(eventId) {
@@ -1381,11 +1604,80 @@
     return `<button type="button" class="${cls}" data-pin="${eventId}" data-tooltip="${tip}" title="${tip}" aria-label="${tip}" aria-pressed="${pinned ? "true" : "false"}">${PIN_ICON_SVG}</button>`;
   }
 
+  const EVENT_META_ICONS = {
+    tracker: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 17h18M8 20h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="11" r="2.2" stroke="currentColor" stroke-width="1.5"/><path d="M7 11h2.5M14.5 11H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+    stream: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="15" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M17 9l5-2.5v11L17 15V9z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+    stats: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 20V10h3v10H4zm7 0V4h3v16h-3zm7 0v-7h3v7h-3z"/></svg>`,
+    lineups: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 7h13M8 12h13M8 17h13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="4" cy="7" r="1.4" fill="currentColor"/><circle cx="4" cy="12" r="1.4" fill="currentColor"/><circle cx="4" cy="17" r="1.4" fill="currentColor"/></svg>`,
+    social: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5M14 14.2c1.7-.3 3.4.5 4.5 2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  };
+
+  function eventMetaText(event) {
+    if (event.meta) return event.meta;
+    if (event.live) return event.clock || event.time || "Live";
+    return event.time || "";
+  }
+
+  function renderEventMetaActions(event) {
+    const actions = [];
+    if (event.tracker) {
+      actions.push({ key: "tracker", label: "Live tracker", icon: EVENT_META_ICONS.tracker });
+    }
+    if (event.stream) {
+      actions.push({ key: "stream", label: "Live stream", icon: EVENT_META_ICONS.stream });
+    }
+    if (event.stats) {
+      actions.push({ key: "stats", label: "Statistics", icon: EVENT_META_ICONS.stats });
+    }
+    if (event.lineups) {
+      actions.push({ key: "lineups", label: "Lineups", icon: EVENT_META_ICONS.lineups });
+    }
+    if (event.social) {
+      actions.push({ key: "social", label: "Popular", icon: EVENT_META_ICONS.social });
+    }
+    if (!actions.length) {
+      actions.push({ key: "stats", label: "Statistics", icon: EVENT_META_ICONS.stats });
+    }
+    return actions
+      .map(
+        (a) =>
+          `<button type="button" class="event-meta-btn" data-toast="${a.label}" title="${a.label}" aria-label="${a.label}">${a.icon}</button>`
+      )
+      .join("");
+  }
+
+  function renderSubGameRow(parentEvent, sub, leagueName, sport) {
+    const subEvent = {
+      id: `${parentEvent.id}::${sub.id || sub.name}`,
+      home: parentEvent.home,
+      away: parentEvent.away,
+      o1: sub.o1,
+      ox: sub.ox,
+      o2: sub.o2,
+      dc1x: sub.dc1x,
+      dc12: sub.dc12,
+      dc2x: sub.dc2x,
+      total: sub.total,
+      over: sub.over,
+      under: sub.under,
+      hcap: sub.hcap,
+      h1: sub.h1,
+      h2: sub.h2,
+      more: sub.more,
+    };
+    return `
+      <div class="event-row event-row--sub" data-parent-event="${parentEvent.id}">
+        <div class="event-sub-label">${sub.name}</div>
+        ${renderEventOddsCells(subEvent, leagueName, sport, { emptyMode: "dash", skipMobile: true })}
+      </div>`;
+  }
+
   function renderEventRow(event, leagueName, searchQuery, sport) {
     const fav = state.favorites.has(event.id) ? " active" : "";
     const pinned = isEventPinned(event.id);
     const timeClass = event.live ? "event-time live" : "event-time";
     const timeLabel = event.live ? (event.clock || event.time || "Live") : event.time;
+    const metaLabel = eventMetaText(event);
     const scoreH = event.scoreH != null ? event.scoreH : "";
     const scoreA = event.scoreA != null ? event.scoreA : "";
     const q = (searchQuery || "").toLowerCase();
@@ -1404,9 +1696,14 @@
       ? `<img class="event-stream-icon" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
       : "";
     const sportSrc = sportHeaderIconMap[sport] || `assets/icons/sport-${sport}.svg`;
+    const hasSubGames = Array.isArray(event.subGames) && event.subGames.length > 0;
+    const expanded = hasSubGames && state.expandedEvents.has(event.id);
+    const expandBtn = hasSubGames
+      ? `<button type="button" class="event-expand-btn${expanded ? " is-open" : ""}" data-expand-event="${event.id}" aria-expanded="${expanded ? "true" : "false"}" aria-label="${expanded ? "Hide sub games" : "Show sub games"}" title="${expanded ? "Hide sub games" : "Show sub games"}"><img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" /></button>`
+      : "";
 
-    return `
-      <div class="event-row${pinned ? " event-row--pinned" : ""}${hidden}" data-event-id="${event.id}">
+    const mainRow = `
+      <div class="event-row${pinned ? " event-row--pinned" : ""}${hasSubGames ? " event-row--has-subs" : ""}${expanded ? " is-expanded" : ""}${hidden}" data-event-id="${event.id}">
         <div class="event-card-top">
           <div class="event-card-status">
             <img class="event-sport-icon" src="${sportSrc}" alt="" width="16" height="16" />
@@ -1424,18 +1721,35 @@
           <div class="event-side-actions">
             ${pinButtonHtml(event.id, "pin--desktop")}
             <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
-            <button type="button" class="icon-tiny event-card-more event-card-more--desktop" data-event-info="${event.id}" aria-label="Event info" aria-haspopup="dialog">⋯</button>
           </div>
           <div class="event-teams">
             <div class="team-line">${homeLogo}<span>${event.home}</span><span class="score">${scoreH}</span></div>
             <div class="team-line">${awayLogo}<span>${event.away}</span><span class="score">${scoreA}</span></div>
-            <div class="${timeClass} event-time--desktop">${timeLabel}${streamIcon}</div>
+            <div class="event-meta event-meta--desktop">
+              <span class="event-meta-text${event.live ? " live" : ""}">${metaLabel}</span>
+              <div class="event-meta-actions" aria-label="Match tools">
+                ${renderEventMetaActions(event)}
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="stats-cell" title="Statistics">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 20V10h3v10H4zm7 0V4h3v16h-3zm7 0v-7h3v7h-3z"/></svg>
+          ${expandBtn ? `<div class="event-expand-wrap">${expandBtn}</div>` : ""}
         </div>
         ${renderEventOddsCells(event, leagueName, sport)}
+      </div>
+    `;
+
+    if (!hasSubGames) return mainRow;
+
+    const subRows = expanded
+      ? event.subGames.map((sub) => renderSubGameRow(event, sub, leagueName, sport)).join("")
+      : "";
+
+    return `
+      <div class="event-block${expanded ? " is-expanded" : ""}${hidden}" data-event-block="${event.id}">
+        ${mainRow}
+        <div class="event-subgames" ${expanded ? "" : "hidden"}>
+          ${subRows}
+        </div>
       </div>
     `;
   }
@@ -1448,8 +1762,9 @@
     const sportSrc = sportHeaderIconMap[league.sport] || `assets/icons/sport-${league.sport}.svg`;
     const flagSrc = flagIconMap[league.icon];
     const sport = `<img class="league-sport-icon" src="${sportSrc}" alt="" width="16" height="16" />`;
+    const isTrophy = flagSrc && flagSrc.indexOf("crumb-trophy") !== -1;
     const flag = flagSrc
-      ? `<img class="league-flag-icon" src="${flagSrc}" alt="" width="16" height="16" />`
+      ? `<img class="league-flag-icon${isTrophy ? " league-trophy-icon" : ""}" src="${flagSrc}" alt="" width="16" height="16" />`
       : `<span class="league-icon">${league.icon}</span>`;
     return `${sport}${flag}`;
   }
@@ -1457,7 +1772,6 @@
   function renderLeagueHeaders(sport) {
     if (sportHasDoubleChance(sport)) {
       return `
-          <div class="col-label">Stats</div>
           <div class="col-label" title="Team 1 to win">1</div>
           <div class="col-label col-label--tip" title="Draw">X</div>
           <div class="col-label" title="Team 2 to win">2</div>
@@ -1470,7 +1784,6 @@
           <div class="col-label">More</div>`;
     }
     return `
-          <div class="col-label">Stats</div>
           <div class="col-label">1</div>
           <div class="col-label" title="Draw">X</div>
           <div class="col-label">2</div>
@@ -1486,6 +1799,60 @@
   function leagueMatchesFilter(league, filterSport) {
     if (!filterSport || filterSport === "stream") return true;
     return league.sport === filterSport;
+  }
+
+  /** Curated recommended IDs — live+stream first, then other live (not Top Games carousel). */
+  function getRecommendedEventIds() {
+    const streamed = [];
+    const live = [];
+    liveLeagues.forEach((league) => {
+      (league.events || []).forEach((event) => {
+        if (!event.live) return;
+        if (event.stream) streamed.push(event.id);
+        else live.push(event.id);
+      });
+    });
+    return streamed.concat(live).slice(0, 8);
+  }
+
+  function eventMatchesLiveView(event) {
+    const view = state.liveView || "matches";
+    if (view === "matches") return true;
+    if (view === "favorites") return state.favorites.has(event.id);
+    if (view === "recommended") return getRecommendedEventIds().indexOf(event.id) !== -1;
+    if (view === "upcoming") return !event.live;
+    const clock = `${event.clock || ""} ${event.time || ""}`;
+    if (view === "p1") return event.live && /1st|first|1\s*half|q1|1st period/i.test(clock);
+    if (view === "p2") return event.live && /2nd|second|2\s*half|q2|q3|q4|2nd period/i.test(clock);
+    return true;
+  }
+
+  function setLiveView(view, opts) {
+    const next = view || "matches";
+    state.liveView = next;
+    const liveTabs = document.querySelector('#live-events .section-tabs[aria-label="Live views"]');
+    if (liveTabs) {
+      $$(".section-tab", liveTabs).forEach((tab) => {
+        const on = tab.getAttribute("data-tab") === next;
+        tab.classList.toggle("active", on);
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      /* Favorites is opened from sidebar — highlight Recommended/Matches only when those */
+      if (next === "favorites") {
+        $$(".section-tab", liveTabs).forEach((tab) => {
+          tab.classList.remove("active");
+          tab.setAttribute("aria-selected", "false");
+        });
+      }
+    }
+    renderTables();
+    renderSidebarInlinePanels();
+    if (opts && opts.scroll !== false) {
+      const target = $("#live-events");
+      if (target && typeof target.scrollIntoView === "function") {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
   }
 
   function renderLeague(league, filterSport, searchQuery, eventsOverride) {
@@ -1530,6 +1897,7 @@
           if (!!event.live !== wantLive) return;
         }
         if (state.streamOnly && !event.stream) return;
+        if (!isSportsPage && !eventMatchesLiveView(event)) return;
         eventIndex.set(event.id, { league, event });
       });
     });
@@ -1554,10 +1922,25 @@
           if (!!event.live !== wantLive) return false;
         }
         if (state.streamOnly && !event.stream) return false;
+        if (!isSportsPage && !eventMatchesLiveView(event)) return false;
         return true;
       });
       if (events.length) sections.push({ league, events });
     });
+
+    if (!sections.length && state.liveView === "favorites" && !isSportsPage && !isNationalTeamPage) {
+      return `<div class="nt-mode-empty" role="status">
+        <p class="nt-mode-empty__title">No favorite matches</p>
+        <p class="nt-mode-empty__text">Tap the star on a match to add it here</p>
+      </div>`;
+    }
+
+    if (!sections.length && state.liveView === "recommended" && !isSportsPage && !isNationalTeamPage) {
+      return `<div class="nt-mode-empty" role="status">
+        <p class="nt-mode-empty__title">No recommended matches</p>
+        <p class="nt-mode-empty__text">Recommended live events will appear here</p>
+      </div>`;
+    }
 
     if (!sections.length && isNationalTeamPage) {
       return `<div class="nt-mode-empty" role="status">
@@ -1717,6 +2100,8 @@
 
     // National Team / Sports: keep all chips visible and scroll horizontally
     if (isNationalTeamPage || isSportsPage) return;
+    // Homepage ≤900: scroll all LIVE sport chips instead of hiding behind More
+    if (isHomePage && isMobileViewport()) return;
 
     const available = list.clientWidth;
     if (available <= 0) return;
@@ -1783,8 +2168,111 @@
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     menu.hidden = !open;
     if (open) {
+      setEsportsMenuOpen(false);
       renderMoreMenu($("#te-more-search")?.value || "");
       $("#te-more-search")?.focus();
+    }
+  }
+
+  function esportsItemById(id) {
+    return esportsMenuItems.find((item) => item.id === id) || null;
+  }
+
+  function renderEsportsFlyout(itemId, anchorEl) {
+    const flyout = $("#te-esports-flyout");
+    const menu = $("#te-esports-menu");
+    if (!flyout || !menu) return;
+    const item = esportsItemById(itemId);
+    if (!item || !item.leagues?.length) {
+      flyout.hidden = true;
+      flyout.innerHTML = "";
+      return;
+    }
+    esportsFlyoutId = item.id;
+    flyout.innerHTML = item.leagues
+      .map(
+        (league) =>
+          `<button type="button" class="te-esports-flyout-item" role="menuitem" data-esports-league="${league.id}" data-esports-parent="${item.id}">` +
+          `<img src="${ESPORTS_GLOBE}" alt="" width="14" height="14" />` +
+          `<span>${league.name}</span>` +
+          `<span class="te-esports-count">${league.count}</span>` +
+          `</button>`
+      )
+      .join("");
+    flyout.hidden = false;
+
+    /* Align flyout with hovered/selected row */
+    const scroll = $("#te-esports-scroll");
+    const row = anchorEl || scroll?.querySelector(`.te-esports-item[data-esports-id="${item.id}"]`);
+    if (row && scroll) {
+      const menuRect = menu.getBoundingClientRect();
+      const rowRect = row.getBoundingClientRect();
+      const top = Math.max(8, rowRect.top - menuRect.top);
+      flyout.style.top = `${top}px`;
+    } else {
+      flyout.style.top = "44px";
+    }
+
+    $$(".te-esports-item").forEach((el) => {
+      el.classList.toggle("is-active", el.getAttribute("data-esports-id") === item.id);
+    });
+  }
+
+  function renderEsportsMenu(query) {
+    const scroll = $("#te-esports-scroll");
+    if (!scroll) return;
+    const q = (query || "").trim().toLowerCase();
+    const items = esportsMenuItems.filter((item) => {
+      if (!q) return true;
+      if (item.name.toLowerCase().includes(q)) return true;
+      return (item.leagues || []).some((league) => league.name.toLowerCase().includes(q));
+    });
+
+    if (!items.length) {
+      scroll.innerHTML = `<div class="te-esports-empty">No esports found</div>`;
+      const flyout = $("#te-esports-flyout");
+      if (flyout) {
+        flyout.hidden = true;
+        flyout.innerHTML = "";
+      }
+      return;
+    }
+
+    scroll.innerHTML = items
+      .map((item) => {
+        const active = item.id === esportsFlyoutId ? " is-active" : "";
+        return (
+          `<button type="button" class="te-esports-item${active}" role="menuitem" data-esports-id="${item.id}" aria-haspopup="menu">` +
+          `<img src="${item.icon}" alt="" width="16" height="16" />` +
+          `<span>${item.name}</span>` +
+          `<span class="te-esports-count">${item.count}</span>` +
+          `</button>`
+        );
+      })
+      .join("");
+
+    const activeId = items.some((i) => i.id === esportsFlyoutId) ? esportsFlyoutId : items[0].id;
+    renderEsportsFlyout(activeId);
+  }
+
+  function setEsportsMenuOpen(open) {
+    const wrap = $("#te-esports-wrap");
+    const btn = $("#te-esports-btn");
+    const menu = $("#te-esports-menu");
+    if (!wrap || !btn || !menu) return;
+    wrap.classList.toggle("open", open);
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    menu.hidden = !open;
+    if (open) {
+      setMoreMenuOpen(false);
+      renderEsportsMenu($("#te-esports-search")?.value || "");
+      $("#te-esports-search")?.focus();
+    } else {
+      const flyout = $("#te-esports-flyout");
+      if (flyout) {
+        flyout.hidden = true;
+        flyout.innerHTML = "";
+      }
     }
   }
 
@@ -2561,12 +3049,33 @@
     }
   }
 
+  function syncBetEmptyCopy() {
+    const text = $("#bet-empty .bet-empty-text");
+    if (!text) return;
+    if (!text.dataset.desktopEmptyCopy) {
+      text.dataset.desktopEmptyCopy = text.innerHTML;
+    }
+    /* Pages with bet-slip generator use .bet-empty-gen__alt on ≤900 */
+    if ($("#bet-empty .bet-empty-gen")) {
+      if (!isMobileViewport()) text.innerHTML = text.dataset.desktopEmptyCopy;
+      return;
+    }
+    if (!isMobileViewport()) {
+      text.innerHTML = text.dataset.desktopEmptyCopy;
+      return;
+    }
+    text.textContent = isBetSlipLoggedIn()
+      ? "Your bet slip is empty. Add an event to place a bet"
+      : "Register to place a bet";
+  }
+
   function syncBetSlipAuthUi() {
     const loggedIn = isBetSlipLoggedIn();
     const panel = $(".bet-slip-panel");
     if (panel) panel.classList.toggle("is-logged-in", loggedIn);
 
     syncBetTypeSelect();
+    syncBetEmptyCopy();
 
     const meta = $("#ticket-account-meta");
     if (meta) {
@@ -2598,6 +3107,16 @@
   }
 
   window.syncBetSlipAuthUi = syncBetSlipAuthUi;
+
+  if (typeof window.matchMedia === "function") {
+    const emptyCopyMq = window.matchMedia("(max-width: 900px)");
+    const onEmptyCopyViewport = () => syncBetEmptyCopy();
+    if (typeof emptyCopyMq.addEventListener === "function") {
+      emptyCopyMq.addEventListener("change", onEmptyCopyViewport);
+    } else if (typeof emptyCopyMq.addListener === "function") {
+      emptyCopyMq.addListener(onEmptyCopyViewport);
+    }
+  }
 
   function ticketScore(b) {
     if (b.score) return b.score;
@@ -2960,6 +3479,126 @@
     });
   }
 
+  function sidebarMatchCardHtml(league, event) {
+    const favOn = state.favorites.has(event.id);
+    const status = event.live
+      ? event.clock || event.time || "Event in progress"
+      : event.time || "";
+    const scoreH = event.scoreH != null ? event.scoreH : "";
+    const scoreA = event.scoreA != null ? event.scoreA : "";
+    const homeLogo = event.homeLogo || "assets/images/mobile-home/teams/team-01.webp";
+    const awayLogo = event.awayLogo || "assets/images/mobile-home/teams/team-02.webp";
+    const stream = event.stream
+      ? `<img class="sb-match-card__stream" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
+      : "";
+    const hasDraw = event.ox != null && event.ox !== 0;
+    const odds = [
+      { lab: "W1", val: event.o1, sel: "1" },
+      hasDraw ? { lab: "X", val: event.ox, sel: "X" } : null,
+      { lab: "W2", val: event.o2, sel: "2" },
+    ].filter(Boolean);
+
+    const oddsHtml = odds
+      .map((o) => {
+        const disabled = !o.val;
+        const data = JSON.stringify({
+          id: `${event.id}-${o.sel.toLowerCase()}`,
+          league: league.name,
+          match: `${event.home} vs ${event.away}`,
+          market: "1X2",
+          selection: o.sel,
+          odds: o.val || 0,
+        });
+        return `<button type="button" class="sb-match-card__odd tg-odd" data-odd='${data}' ${
+          disabled ? "disabled" : ""
+        }>${o.lab} <span>${o.val ? formatOdd(o.val) : "—"}</span></button>`;
+      })
+      .join("");
+
+    return `
+      <article class="sb-match-card" data-event-id="${event.id}">
+        <div class="sb-match-card__head">
+          <span class="sb-match-card__league">${league.name}</span>
+          <div class="sb-match-card__actions">
+            ${stream}
+            <button type="button" class="sb-match-card__fav${favOn ? " active" : ""}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${favOn ? "true" : "false"}" title="Favourite">★</button>
+          </div>
+        </div>
+        <div class="sb-match-card__status">${status}</div>
+        <div class="sb-match-card__teams">
+          <div class="sb-match-card__team-col">
+            <div class="sb-match-card__team"><img src="${homeLogo}" alt="" width="16" height="16" /><span>${event.home}</span></div>
+            <div class="sb-match-card__team"><img src="${awayLogo}" alt="" width="16" height="16" /><span>${event.away}</span></div>
+          </div>
+          <div class="sb-match-card__score"><span>${scoreH}</span><span>${scoreA}</span></div>
+        </div>
+        <button type="button" class="sb-match-card__detail" data-event-info="${event.id}">Detailed score</button>
+        <div class="sb-match-card__odds">${oddsHtml}</div>
+      </article>`;
+  }
+
+  function collectSidebarEvents(mode) {
+    const out = [];
+    const recIds = mode === "recommended" ? new Set(getRecommendedEventIds()) : null;
+    liveLeagues.forEach((league) => {
+      (league.events || []).forEach((event) => {
+        if (mode === "favorites") {
+          if (!state.favorites.has(event.id)) return;
+        } else if (mode === "recommended") {
+          if (!recIds.has(event.id)) return;
+        }
+        out.push({ league, event });
+      });
+    });
+    return out;
+  }
+
+  function renderSidebarInlinePanels() {
+    ["favorites", "recommended"].forEach((mode) => {
+      const body = document.querySelector(`[data-sb-panel-body="${mode}"]`);
+      if (!body || body.hidden) return;
+      const items = collectSidebarEvents(mode);
+      if (!items.length) {
+        body.innerHTML =
+          mode === "favorites"
+            ? `<p class="sb-inline-empty">No favorite matches</p>`
+            : `<p class="sb-inline-empty">No recommended matches</p>`;
+        return;
+      }
+      body.innerHTML = items.map(({ league, event }) => sidebarMatchCardHtml(league, event)).join("");
+    });
+  }
+
+  function setSidebarPanelOpen(mode, open) {
+    const wrap = document.querySelector(`.sidebar-row-wrap[data-sb-panel="${mode}"]`);
+    const body = document.querySelector(`[data-sb-panel-body="${mode}"]`);
+    const chevron = wrap && wrap.querySelector(`[data-sb-toggle="${mode}"]`);
+    if (!wrap || !body) return;
+    wrap.classList.toggle("is-expanded", open);
+    body.hidden = !open;
+    if (chevron) {
+      chevron.setAttribute("aria-expanded", open ? "true" : "false");
+      chevron.setAttribute(
+        "aria-label",
+        open
+          ? mode === "favorites"
+            ? "Collapse favorite matches"
+            : "Collapse recommended"
+          : mode === "favorites"
+            ? "Expand favorite matches"
+            : "Expand recommended"
+      );
+    }
+    if (open) {
+      /* Accordion: only one quick panel open */
+      ["favorites", "recommended"].forEach((other) => {
+        if (other === mode) return;
+        setSidebarPanelOpen(other, false);
+      });
+      renderSidebarInlinePanels();
+    }
+  }
+
   function initSidebar() {
     let tgIndex = 0;
     renderTopGame(tgIndex);
@@ -3022,6 +3661,56 @@
     const sfAll = document.querySelector(".sf-all span");
     if (liveCountEl && sfAll) {
       liveCountEl.textContent = sfAll.textContent.trim() || "700";
+    }
+
+    const quick = $(".sidebar-quick");
+    if (quick) {
+      quick.addEventListener("click", (e) => {
+        const toggle = e.target.closest("[data-sb-toggle]");
+        if (toggle) {
+          e.preventDefault();
+          const mode = toggle.getAttribute("data-sb-toggle");
+          const wrap = toggle.closest(".sidebar-row-wrap");
+          const willOpen = !wrap?.classList.contains("is-expanded");
+          setSidebarPanelOpen(mode, willOpen);
+          return;
+        }
+
+        const openBtn = e.target.closest("[data-sb-open]");
+        if (openBtn) {
+          e.preventDefault();
+          const mode = openBtn.getAttribute("data-sb-open");
+          if (mode === "favorites") {
+            if (isHomePage) {
+              setLiveView("favorites");
+              showToast("Favorite matches");
+            } else {
+              window.location.href = "favourites.html";
+            }
+          } else if (mode === "recommended") {
+            if (isHomePage) {
+              setLiveView("recommended");
+              showToast("Recommended");
+            } else {
+              const live = $("#live-events");
+              if (live) live.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+          }
+          return;
+        }
+
+        const oddBtn = e.target.closest(".sb-match-card__odd[data-odd], .tg-odd[data-odd]");
+        if (oddBtn && !oddBtn.disabled) {
+          e.preventDefault();
+          e.stopPropagation();
+          try {
+            const data = JSON.parse(oddBtn.getAttribute("data-odd"));
+            if (!data.odds) return;
+            toggleOdd(data);
+            renderSidebarInlinePanels();
+          } catch (_) {}
+        }
+      });
     }
 
     const tgOdds = $(".tg-odds");
@@ -3161,6 +3850,22 @@
       });
       tab.classList.add("active");
       tab.setAttribute("aria-selected", "true");
+
+      const view = tab.getAttribute("data-tab");
+      const isLiveTabs = group.getAttribute("aria-label") === "Live views";
+      if (isLiveTabs && view) {
+        const mapped =
+          view === "recommended"
+            ? "recommended"
+            : view === "upcoming"
+              ? "upcoming"
+              : view === "p1" || view === "p2"
+                ? view
+                : "matches";
+        setLiveView(mapped, { scroll: false });
+        return;
+      }
+
       showToast(`View: ${tab.textContent.trim()}`);
     });
 
@@ -3276,8 +3981,48 @@
         if (e.key === "Escape") setMoreMenuOpen(false);
       });
     }
+
+    const esportsBtn = $("#te-esports-btn");
+    const esportsMenu = $("#te-esports-menu");
+    const esportsSearch = $("#te-esports-search");
+    if (esportsBtn && esportsMenu) {
+      esportsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = esportsBtn.getAttribute("aria-expanded") !== "true";
+        setEsportsMenuOpen(open);
+      });
+      esportsMenu.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const league = e.target.closest("[data-esports-league]");
+        if (league) {
+          const name = league.querySelector("span")?.textContent || "Esports";
+          setEsportsMenuOpen(false);
+          showToast(name);
+          return;
+        }
+        const item = e.target.closest(".te-esports-item");
+        if (!item) return;
+        const id = item.getAttribute("data-esports-id");
+        renderEsportsFlyout(id, item);
+      });
+      esportsMenu.addEventListener("mouseover", (e) => {
+        if (window.matchMedia("(max-width: 900px)").matches) return;
+        const item = e.target.closest(".te-esports-item");
+        if (!item || !esportsMenu.contains(item)) return;
+        const id = item.getAttribute("data-esports-id");
+        if (id && id !== esportsFlyoutId) renderEsportsFlyout(id, item);
+      });
+    }
+    if (esportsSearch) {
+      esportsSearch.addEventListener("input", () => renderEsportsMenu(esportsSearch.value));
+      esportsSearch.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") setEsportsMenuOpen(false);
+      });
+    }
+
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".te-more-wrap")) setMoreMenuOpen(false);
+      if (!e.target.closest(".te-esports-wrap")) setEsportsMenuOpen(false);
     });
     window.addEventListener("resize", () => {
       layoutLiveFilterOverflow();
@@ -3377,6 +4122,8 @@
           btn.setAttribute("aria-pressed", adding ? "true" : "false");
         });
         syncEventInfoFavUi();
+        if (state.liveView === "favorites") renderTables();
+        renderSidebarInlinePanels();
         return;
       }
 
@@ -3389,20 +4136,34 @@
         return;
       }
 
-      if (e.target.closest("button, input, label, [data-odd], .stats-cell")) return;
+      const expandBtn = e.target.closest("[data-expand-event]");
+      if (expandBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = expandBtn.getAttribute("data-expand-event");
+        if (!id) return;
+        if (state.expandedEvents.has(id)) state.expandedEvents.delete(id);
+        else state.expandedEvents.add(id);
+        renderTables();
+        return;
+      }
+
+      if (e.target.closest("button, input, label, [data-odd], .stats-cell, .event-meta-actions, .event-expand-btn")) return;
 
       const moreLink = e.target.closest(".more-link");
       if (moreLink) {
         e.preventDefault();
-        const moreRow = moreLink.closest(".event-row[data-event-id]");
-        const moreId = moreRow && moreRow.getAttribute("data-event-id");
+        const moreRow = moreLink.closest(".event-row[data-event-id], .event-row[data-parent-event]");
+        const moreId =
+          (moreRow && moreRow.getAttribute("data-event-id")) ||
+          (moreRow && moreRow.getAttribute("data-parent-event"));
         if (moreId) openEventPage(moreId);
         return;
       }
 
       if (e.target.closest("a")) return;
       const row = e.target.closest(".event-row[data-event-id]");
-      if (row) {
+      if (row && !row.classList.contains("event-row--sub")) {
         const id = row.getAttribute("data-event-id");
         if (id) openEventPage(id);
       }
@@ -5178,6 +5939,7 @@
         else document.body.classList.remove("bss-open");
       }
       syncMobileBetCount();
+      syncBetEmptyCopy();
       layoutLiveFilterOverflow();
     });
 
@@ -5211,6 +5973,9 @@
   /* ---------- Init ---------- */
 
   function init() {
+    if (window.SbFavourites?.ensureDemo) window.SbFavourites.ensureDemo();
+    state.favorites = loadFavouriteIdSet();
+
     if (!isEsportsPage) {
       renderSportsList();
       renderFilters("#live-filter-list", "activeLiveFilter");
@@ -5269,4 +6034,6 @@
   window.syncOddButtons = syncOddButtons;
   window.openEventInfo = openEventInfo;
   window.closeEventInfo = closeEventInfo;
+  window.openBetHistoryPanel = openBetHistoryPanel;
+  window.closeBetHistoryPanel = closeBetHistoryPanel;
 })();

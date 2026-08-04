@@ -114,6 +114,9 @@ body.mh-page.mh-page--favourites .mh-main {
   border: 1px solid var(--odds-bg, #e8eef5);
   border-radius: 6px;
   background: var(--surface-primary);
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
   cursor: pointer;
 }
 

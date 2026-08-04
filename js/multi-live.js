@@ -56,7 +56,7 @@
               id: "cs2-ultras",
               name: "CS 2. Ultras League",
               matches: [
-                match("ml-cs2-apex", "CS 2. Ultras League", "Apex Five", "Ironclad", "0:1", "Map 2 · 04:15", {
+                match("ml-cs2-apex", "CS 2. European Pro League", "Passion Academy", "Phantom Academy", "0:1", "2 map", {
                   w1: 2.2,
                   w2: 1.62,
                   total: 20.5,
@@ -209,9 +209,9 @@
               "WKBL. Women",
               "Samsung Life Blueminx",
               "Victoria Select",
-              "17:20",
-              "2nd quarter · 05:12",
-              { w1: 1.95, w2: 1.8, total: 142.5, over: 1.88, under: 1.86, h1: 1.9, h2: 1.84, hLine: "+2.5" }
+              "33:32",
+              "1st half 28:43",
+              { w1: 1.95, w2: 1.8, total: 133.5, over: 1.88, under: 1.86, h1: 1.9, h2: 1.84, hLine: "+2.5" }
             ),
           ],
         },
@@ -260,6 +260,34 @@
       mode: "leagues",
       leagues: [
         {
+          id: "fb-piala",
+          name: "Indonesia. Piala Presiden",
+          matches: [
+            match(
+              "ml-fb-persib",
+              "Indonesia. Piala Presiden",
+              "Persib Bandung",
+              "Persija Jakarta",
+              "2:0",
+              "1st half 28:43",
+              {
+                w1: 1.48,
+                ox: 4.2,
+                w2: 6.1,
+                total: 2.5,
+                over: 1.82,
+                under: 1.92,
+                h1: 1.95,
+                h2: 1.8,
+                hLine: "-0.5",
+                dc1x: 1.12,
+                dc12: 1.22,
+                dcx2: 2.45,
+              }
+            ),
+          ],
+        },
+        {
           id: "fb-friendly",
           name: "Club Friendlies",
           matches: [
@@ -273,6 +301,9 @@
               h1: 1.85,
               h2: 1.9,
               hLine: "-0.5",
+              dc1x: 1.15,
+              dc12: 1.28,
+              dcx2: 2.2,
             }),
           ],
         },
@@ -281,21 +312,67 @@
     volleyball: {
       label: "Volleyball",
       mode: "leagues",
+      icon: "assets/icons/te-volleyball.svg",
       leagues: [
+        {
+          id: "vb-china-uni",
+          name: "China. University League",
+          icon: "assets/icons/nav-globe.svg",
+          matches: [
+            match(
+              "ml-vb-sjt",
+              "China. University League",
+              "Shanghai Jiao Tong University",
+              "Beijing Sport University",
+              "2:1",
+              "3rd set, Event in progress / Round of 4",
+              { w1: 1.72, w2: 2.05, total: 3.5, over: 1.88, under: 1.86, h1: 1.9, h2: 1.84, hLine: "-1.5" },
+              { homeSets: "25 25 10", awaySets: "20 18 8", serving: "home" }
+            ),
+            match(
+              "ml-vb-tsinghua",
+              "China. University League",
+              "Tsinghua University",
+              "Fudan University",
+              "1:1",
+              "3rd set, Event in progress / Round of 4",
+              { w1: 1.9, w2: 1.85, total: 3.5, over: 1.9, under: 1.84, h1: 1.88, h2: 1.86, hLine: "-1.5" },
+              { homeSets: "25 22 12", awaySets: "23 25 10", serving: "away" }
+            ),
+          ],
+        },
+        {
+          id: "vb-world",
+          name: "World. Club Friendly",
+          icon: "assets/icons/nav-globe.svg",
+          matches: [
+            match(
+              "ml-vb-world",
+              "World. Club Friendly",
+              "Zenit St. Petersburg",
+              "Lube Civitanova",
+              "0:0",
+              "1st set, Event in progress",
+              { w1: 1.95, w2: 1.8, total: 3.5, over: 1.87, under: 1.87, h1: 1.9, h2: 1.84, hLine: "-1.5" },
+              { homeSets: "8", awaySets: "6", serving: "home" }
+            ),
+          ],
+        },
         {
           id: "vb-pro",
           name: "Pro Volleyball League",
+          icon: "assets/icons/te-volleyball.svg",
           matches: [
-            match("ml-vb-pro", "Pro Volleyball League", "North Stars", "South Kings", "18:16", "Set 3", {
-              w1: 1.82,
-              w2: 1.92,
-              total: 3.5,
-              over: 1.88,
-              under: 1.86,
-              h1: 1.9,
-              h2: 1.84,
-              hLine: "-1.5",
-            }),
+            match(
+              "ml-vb-pro",
+              "Pro Volleyball League",
+              "North Stars",
+              "South Kings",
+              "2:1",
+              "3rd set, Event in progress",
+              { w1: 1.82, w2: 1.92, total: 3.5, over: 1.88, under: 1.86, h1: 1.9, h2: 1.84, hLine: "-1.5" },
+              { homeSets: "25 22 18", awaySets: "20 25 16", serving: "away" }
+            ),
           ],
         },
       ],
@@ -347,8 +424,8 @@
     },
   };
 
-  function match(id, league, home, away, score, period, odds) {
-    return { id, league, home, away, score, period, odds: odds || {} };
+  function match(id, league, home, away, score, period, odds, meta) {
+    return Object.assign({ id, league, home, away, score, period, odds: odds || {} }, meta || {});
   }
 
   function toast(msg) {
@@ -458,8 +535,28 @@
       return;
     }
 
+    /* Step 1 only: games (esports) or leagues — next columns open on hover/click */
     flyout.hidden = false;
     renderFlyout();
+  }
+
+  function sportIcon(sportId) {
+    const chip = document.querySelector(`.ml-chip[data-sport="${sportId}"] img`);
+    if (chip?.getAttribute("src")) return chip.getAttribute("src");
+    const data = sportData(sportId);
+    return data?.icon || "assets/icons/te-football.svg";
+  }
+
+  function leagueRowHtml(lg, active) {
+    const count = (lg.matches || []).length;
+    const ico = lg.icon || "assets/icons/nav-globe.svg";
+    return `<li>
+      <button type="button" class="ml-flyout-item${active ? " is-active" : ""}" data-ml-league="${lg.id}" role="menuitem">
+        <img class="ml-flyout-ico" src="${ico}" alt="" width="18" height="18" />
+        <span class="ml-flyout-label">${escapeHtml(lg.name)}</span>
+        <span class="ml-flyout-count">${count}</span>
+      </button>
+    </li>`;
   }
 
   function renderFlyout() {
@@ -478,7 +575,7 @@
               const active = g.id === state.gameId ? " is-active" : "";
               return `<li>
                 <button type="button" class="ml-flyout-item${active}" data-ml-game="${g.id}" role="menuitem">
-                  <img src="${g.icon}" alt="" width="18" height="18" />
+                  <img class="ml-flyout-ico" src="${g.icon}" alt="" width="18" height="18" />
                   <span class="ml-flyout-label">${escapeHtml(g.name)}</span>
                   <span class="ml-flyout-count">${gameCount(g)}</span>
                 </button>
@@ -492,68 +589,62 @@
       if (game) {
         parts.push(`<div class="ml-flyout-col" data-col="league">
           <ul class="ml-flyout-list" role="none">
-            ${(game.leagues || [])
-              .map((lg) => {
-                const active = lg.id === state.leagueId ? " is-active" : "";
-                return `<li>
-                  <button type="button" class="ml-flyout-item${active}" data-ml-league="${lg.id}" role="menuitem">
-                    <span class="ml-flyout-label">${escapeHtml(lg.name)}</span>
-                    <span class="ml-flyout-count">${(lg.matches || []).length}</span>
-                  </button>
-                </li>`;
-              })
-              .join("")}
+            ${(game.leagues || []).map((lg) => leagueRowHtml(lg, lg.id === state.leagueId)).join("")}
           </ul>
         </div>`);
 
         const league = (game.leagues || []).find((lg) => lg.id === state.leagueId);
-        if (league) parts.push(matchPreviewCol(league.matches || []));
+        if (league) parts.push(matchPreviewCol(league));
       }
     } else {
       const leagues = data.leagues || [];
       parts.push(`<div class="ml-flyout-col" data-col="league">
         <ul class="ml-flyout-list" role="none">
-          ${leagues
-            .map((lg) => {
-              const active = lg.id === state.leagueId ? " is-active" : "";
-              const count = (lg.matches || []).length;
-              return `<li>
-                <button type="button" class="ml-flyout-item${active}" data-ml-league="${lg.id}" role="menuitem">
-                  <span class="ml-flyout-label">${escapeHtml(lg.name)}</span>
-                  <span class="ml-flyout-count">${count}</span>
-                </button>
-              </li>`;
-            })
-            .join("")}
+          ${leagues.map((lg) => leagueRowHtml(lg, lg.id === state.leagueId)).join("")}
         </ul>
       </div>`);
 
       const league = leagues.find((lg) => lg.id === state.leagueId);
-      if (league) parts.push(matchPreviewCol(league.matches || []));
+      if (league) parts.push(matchPreviewCol(league));
     }
 
     flyout.innerHTML = parts.join("");
   }
 
-  function matchPreviewCol(matches) {
+  function matchPreviewCol(league) {
+    const matches = league?.matches || [];
     if (!matches.length) {
       return `<div class="ml-flyout-col ml-flyout-col--preview"><p class="ml-flyout-empty">No live matches</p></div>`;
     }
+    const ico = sportIcon(state.sportId);
     return `<div class="ml-flyout-col ml-flyout-col--preview" data-col="match">
       ${matches
         .map((m) => {
           const pinned = state.panels.some((p) => p.id === m.id);
+          const [hs, as] = String(m.score || "0:0").split(":");
+          const homeSets = m.homeSets || "";
+          const awaySets = m.awaySets || "";
           return `<button type="button" class="ml-match-card${pinned ? " is-pinned" : ""}" data-ml-match="${escapeHtml(m.id)}">
-            <div class="ml-match-card-top">
-              <span class="ml-match-card-score">${escapeHtml(m.score)}</span>
-              <span class="ml-match-card-star" aria-hidden="true">★</span>
+            <div class="ml-match-card-head">
+              <img class="ml-match-card-sport" src="${ico}" alt="" width="14" height="14" />
+              <span class="ml-match-card-league">${escapeHtml(m.league || league.name)}</span>
+              <span class="ml-match-card-star" aria-hidden="true" title="Favourite">☆</span>
             </div>
-            <div class="ml-match-card-teams">
-              <span>${escapeHtml(m.home)}</span>
-              <span>${escapeHtml(m.away)}</span>
+            <div class="ml-match-card-row">
+              <span class="ml-match-card-badge" aria-hidden="true">${escapeHtml(teamInitials(m.home))}</span>
+              <span class="ml-match-card-team">${escapeHtml(m.home)}</span>
+              <span class="ml-match-card-pts">${escapeHtml(hs || "0")}</span>
+              ${homeSets ? `<span class="ml-match-card-sets">${escapeHtml(homeSets)}</span>` : ""}
+              ${m.serving === "home" ? `<img class="ml-match-card-serve" src="${ico}" alt="" width="10" height="10" />` : `<span class="ml-match-card-serve-spacer"></span>`}
             </div>
-            <div class="ml-match-card-meta">${escapeHtml(m.period)}</div>
-            <span class="ml-match-card-cta">${pinned ? "On board" : "Watch & bet"}</span>
+            <div class="ml-match-card-row">
+              <span class="ml-match-card-badge" aria-hidden="true">${escapeHtml(teamInitials(m.away))}</span>
+              <span class="ml-match-card-team">${escapeHtml(m.away)}</span>
+              <span class="ml-match-card-pts">${escapeHtml(as || "0")}</span>
+              ${awaySets ? `<span class="ml-match-card-sets">${escapeHtml(awaySets)}</span>` : ""}
+              ${m.serving === "away" ? `<img class="ml-match-card-serve" src="${ico}" alt="" width="10" height="10" />` : `<span class="ml-match-card-serve-spacer"></span>`}
+            </div>
+            <div class="ml-match-card-status">${escapeHtml(m.period)}</div>
           </button>`;
         })
         .join("")}
@@ -611,42 +702,6 @@
     setTimeout(() => panel.classList.remove("is-flash"), 900);
   }
 
-  function marketsHtml(m) {
-    const o = m.odds || {};
-    const hasDraw = o.ox != null;
-    const oneX2 = hasDraw
-      ? `${oddBtn(m, "1X2", "1", o.w1, "1")}${oddBtn(m, "1X2", "X", o.ox, "X")}${oddBtn(m, "1X2", "2", o.w2, "2")}`
-      : `${oddBtn(m, "1X2", "W1", o.w1, "W1")}${oddBtn(m, "1X2", "W2", o.w2, "W2")}`;
-
-    return `
-      <div class="ml-market-chips" role="tablist" aria-label="Markets">
-        <button type="button" class="ml-mchip active" data-ml-filter="all">All markets</button>
-        <button type="button" class="ml-mchip" data-ml-filter="total">Total</button>
-        <button type="button" class="ml-mchip" data-ml-filter="handicap">Handicap</button>
-        <button type="button" class="ml-mchip" data-ml-filter="popular">Popular</button>
-      </div>
-      <div class="ml-markets">
-        <details class="ml-market" open data-ml-group="popular">
-          <summary>1X2</summary>
-          <div class="ml-odds">${oneX2}</div>
-        </details>
-        <details class="ml-market" open data-ml-group="total">
-          <summary>Total ${o.total != null ? escapeHtml(String(o.total)) : ""}</summary>
-          <div class="ml-odds">
-            ${oddBtn(m, "Total", "Over", o.over, `O ${o.total ?? ""}`)}
-            ${oddBtn(m, "Total", "Under", o.under, `U ${o.total ?? ""}`)}
-          </div>
-        </details>
-        <details class="ml-market" open data-ml-group="handicap">
-          <summary>Handicap ${o.hLine ? escapeHtml(o.hLine) : ""}</summary>
-          <div class="ml-odds">
-            ${oddBtn(m, "Handicap", "1", o.h1, `1 ${o.hLine || ""}`)}
-            ${oddBtn(m, "Handicap", "2", o.h2, `2 ${o.hLine ? invertLine(o.hLine) : ""}`)}
-          </div>
-        </details>
-      </div>`;
-  }
-
   function invertLine(line) {
     const n = parseFloat(String(line).replace("+", ""));
     if (!Number.isFinite(n)) return line;
@@ -654,52 +709,141 @@
     return (inv > 0 ? "+" : "") + inv;
   }
 
+  function teamInitials(name) {
+    const parts = String(name)
+      .split(/\s+/)
+      .filter(Boolean);
+    if (!parts.length) return "?";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function marketsHtml(m) {
+    const o = m.odds || {};
+    const hasDraw = o.ox != null;
+    const oneX2 = hasDraw
+      ? `${oddBtn(m, "1X2", "1", o.w1, "1")}${oddBtn(m, "1X2", "X", o.ox, "X")}${oddBtn(m, "1X2", "2", o.w2, "2")}`
+      : `${oddBtn(m, "1X2", "W1", o.w1, "W1")}${oddBtn(m, "1X2", "W2", o.w2, "W2")}`;
+
+    const dc =
+      o.dc1x != null
+        ? `<details class="ml-market" open data-ml-group="popular">
+          <summary><span>Double Chance</span><img src="assets/icons/te-chevron-down.svg" alt="" class="ml-market-chevron" width="10" height="6" /></summary>
+          <div class="ml-odds ml-odds--3">
+            ${oddBtn(m, "Double Chance", "1X", o.dc1x, "1X")}
+            ${oddBtn(m, "Double Chance", "12", o.dc12, "12")}
+            ${oddBtn(m, "Double Chance", "X2", o.dcx2, "X2")}
+          </div>
+        </details>`
+        : "";
+
+    const totalLabel = o.total != null ? escapeHtml(String(o.total)) : "";
+    const hHome = o.hLine || "";
+    const hAway = o.hLine ? invertLine(o.hLine) : "";
+
+    const marketBlocks = `
+      <details class="ml-market" open data-ml-group="popular">
+        <summary><span>1X2</span><img src="assets/icons/te-chevron-down.svg" alt="" class="ml-market-chevron" width="10" height="6" /></summary>
+        <div class="ml-odds ${hasDraw ? "ml-odds--3" : "ml-odds--2"}">${oneX2}</div>
+      </details>
+      ${dc}
+      <details class="ml-market" open data-ml-group="total">
+        <summary><span>Total ${totalLabel}</span><img src="assets/icons/te-chevron-down.svg" alt="" class="ml-market-chevron" width="10" height="6" /></summary>
+        <div class="ml-odds ml-odds--2">
+          ${oddBtn(m, "Total", "Over", o.over, `Over ${o.total ?? ""}`)}
+          ${oddBtn(m, "Total", "Under", o.under, `Under ${o.total ?? ""}`)}
+        </div>
+      </details>
+      <details class="ml-market" open data-ml-group="handicap">
+        <summary><span>Handicap</span><img src="assets/icons/te-chevron-down.svg" alt="" class="ml-market-chevron" width="10" height="6" /></summary>
+        <div class="ml-odds ml-odds--2">
+          ${oddBtn(m, "Handicap", "1", o.h1, `${m.home.split(" ")[0]} ${hHome}`)}
+          ${oddBtn(m, "Handicap", "2", o.h2, `${m.away.split(" ")[0]} ${hAway}`)}
+        </div>
+      </details>`;
+
+    const counts = {
+      all: hasDraw ? (o.dc1x != null ? 4 : 3) : 3,
+      total: 1,
+      handicap: 1,
+      popular: hasDraw ? (o.dc1x != null ? 2 : 1) : 1,
+    };
+
+    return `
+      <div class="ml-market-bar">
+        <div class="ml-market-chips" role="tablist" aria-label="Markets">
+          <button type="button" class="ml-mchip active" data-ml-filter="all">All markets (${counts.all})</button>
+          <button type="button" class="ml-mchip" data-ml-filter="total">Total (${counts.total})</button>
+          <button type="button" class="ml-mchip" data-ml-filter="handicap">Handicap (${counts.handicap})</button>
+          <button type="button" class="ml-mchip" data-ml-filter="popular">Popular (${counts.popular})</button>
+        </div>
+        <div class="ml-market-tools">
+          <button type="button" class="ml-market-tool" data-ml-market-search aria-label="Search markets" title="Search markets">
+            <img src="assets/icons/te-search.svg" alt="" width="12" height="12" />
+          </button>
+          <button type="button" class="ml-market-tool" data-ml-market-filter aria-label="Filter markets" title="Filter markets">
+            <img src="mobile/assets/icons/sp-filter.svg" alt="" width="12" height="12" />
+          </button>
+        </div>
+      </div>
+      <div class="ml-markets">${marketBlocks}</div>`;
+  }
+
   function panelHtml(m) {
-    const [sHome, sAway] = String(m.score).split(":");
+    const score = String(m.score || "0:0");
     return `<article class="ml-panel" data-match-id="${escapeHtml(m.id)}">
       <header class="ml-panel-head">
-        <span class="ml-panel-league">${escapeHtml(m.league)}</span>
+        <span class="ml-panel-league">${escapeHtml(m.league)}. ${escapeHtml(m.home)} - ${escapeHtml(m.away)}</span>
         <div class="ml-panel-actions">
           <button type="button" class="ml-panel-ico" aria-label="Live stream" title="Live stream">
             <img src="assets/icons/nav-stream.svg" alt="" width="14" height="14" />
           </button>
-          <button type="button" class="ml-panel-ico" aria-label="Statistics" title="Statistics">
-            <img src="mobile/assets/icons/ei-stats.svg" alt="" width="14" height="14" />
-          </button>
-          <button type="button" class="ml-panel-ico" aria-label="Favourite" title="Favourite">
-            <img src="assets/icons/nav-star.svg" alt="" width="14" height="14" />
+          <button type="button" class="ml-panel-ico" aria-label="Information" title="Information">
+            <img src="assets/icons/account-subnav/info-circle.svg" alt="" width="14" height="14" />
           </button>
           <button type="button" class="ml-panel-ico ml-panel-close" data-ml-remove="${escapeHtml(m.id)}" aria-label="Remove event" title="Remove">
             <img src="assets/icons/rb-close.svg" alt="" width="12" height="12" />
           </button>
         </div>
       </header>
-      <div class="ml-panel-score">
-        <div class="ml-score-row">
-          <span class="ml-team">${escapeHtml(m.home)}</span>
-          <span class="ml-pts">${escapeHtml(sHome || "0")}</span>
-        </div>
-        <div class="ml-score-row">
-          <span class="ml-team">${escapeHtml(m.away)}</span>
-          <span class="ml-pts">${escapeHtml(sAway || "0")}</span>
-        </div>
-        <div class="ml-period">${escapeHtml(m.period)}</div>
-      </div>
       <div class="ml-panel-tabs" role="tablist">
         <button type="button" class="ml-ptab active" data-ml-tab="summary" role="tab" aria-selected="true">Summary</button>
-        <button type="button" class="ml-ptab" data-ml-tab="info" role="tab" aria-selected="false">Information</button>
         <button type="button" class="ml-ptab" data-ml-tab="stats" role="tab" aria-selected="false">Statistics</button>
+        <button type="button" class="ml-ptab" data-ml-tab="info" role="tab" aria-selected="false">Information</button>
+      </div>
+      <div class="ml-panel-score">
+        <div class="ml-score-side ml-score-side--home">
+          <span class="ml-team-badge" aria-hidden="true">${escapeHtml(teamInitials(m.home))}</span>
+          <span class="ml-team">${escapeHtml(m.home)}</span>
+        </div>
+        <div class="ml-score-center">
+          <div class="ml-score-main">${escapeHtml(score)}</div>
+          <div class="ml-period">${escapeHtml(m.period)}</div>
+        </div>
+        <div class="ml-score-side ml-score-side--away">
+          <span class="ml-team-badge" aria-hidden="true">${escapeHtml(teamInitials(m.away))}</span>
+          <span class="ml-team">${escapeHtml(m.away)}</span>
+        </div>
       </div>
       <div class="ml-panel-body" data-ml-pane="summary">
         ${marketsHtml(m)}
       </div>
-      <div class="ml-panel-body" data-ml-pane="info" hidden>
-        <p class="ml-pane-copy">${escapeHtml(m.league)} · ${escapeHtml(m.home)} vs ${escapeHtml(m.away)}. Live markets update as the event progresses.</p>
-      </div>
       <div class="ml-panel-body" data-ml-pane="stats" hidden>
         <p class="ml-pane-copy">Live statistics for this event will appear here.</p>
       </div>
+      <div class="ml-panel-body" data-ml-pane="info" hidden>
+        <p class="ml-pane-copy">${escapeHtml(m.league)} · ${escapeHtml(m.home)} vs ${escapeHtml(m.away)}. Live markets update as the event progresses.</p>
+      </div>
     </article>`;
+  }
+
+  function seedDemoPanels() {
+    /* One panel by default — left ⅓ column (live multi / screenshot parity) */
+    const ids = ["ml-cs2-apex"];
+    ids.forEach((id) => {
+      const m = findMatchById(id);
+      if (m && !state.panels.some((p) => p.id === id)) state.panels.push(m);
+    });
   }
 
   function renderBoard() {
@@ -712,6 +856,7 @@
     board.classList.toggle("is-empty", !has);
     empty.hidden = has;
     grid.hidden = !has;
+    grid.dataset.count = String(state.panels.length);
     grid.innerHTML = state.panels.map(panelHtml).join("");
 
     if (typeof window.syncOddButtons === "function") {
@@ -735,17 +880,16 @@
 
       const gameBtn = e.target.closest("[data-ml-game]");
       if (gameBtn) {
+        /* Step 2: pick game → show leagues (do not auto-open matches) */
         state.gameId = gameBtn.getAttribute("data-ml-game");
         state.leagueId = null;
-        const data = sportData(state.sportId);
-        const game = data?.games?.find((g) => g.id === state.gameId);
-        if (game?.leagues?.length === 1) state.leagueId = game.leagues[0].id;
         renderFlyout();
         return;
       }
 
       const leagueBtn = e.target.closest("[data-ml-league]");
       if (leagueBtn) {
+        /* Step 3: pick league → show match cards */
         state.leagueId = leagueBtn.getAttribute("data-ml-league");
         renderFlyout();
         return;
@@ -762,7 +906,7 @@
       }
     });
 
-    /* Hover opens next column (desktop parity with live cascade) */
+    /* Hover advances one step at a time (same cascade as click) */
     document.addEventListener("pointerover", (e) => {
       const gameBtn = e.target.closest("[data-ml-game]");
       if (gameBtn && state.sportId) {
@@ -770,9 +914,6 @@
         if (id !== state.gameId) {
           state.gameId = id;
           state.leagueId = null;
-          const data = sportData(state.sportId);
-          const game = data?.games?.find((g) => g.id === id);
-          if (game?.leagues?.length === 1) state.leagueId = game.leagues[0].id;
           renderFlyout();
         }
         return;
@@ -822,12 +963,25 @@
         const filter = chip.dataset.mlFilter;
         $$(".ml-mchip", panel).forEach((c) => c.classList.toggle("active", c === chip));
         $$(".ml-market", panel).forEach((mk) => {
-          if (filter === "all" || filter === "popular") {
+          if (filter === "all") {
             mk.hidden = false;
+            return;
+          }
+          if (filter === "popular") {
+            mk.hidden = mk.dataset.mlGroup !== "popular";
             return;
           }
           mk.hidden = mk.dataset.mlGroup !== filter;
         });
+        return;
+      }
+
+      if (e.target.closest("[data-ml-market-search]")) {
+        toast("Market search — demo only");
+        return;
+      }
+      if (e.target.closest("[data-ml-market-filter]")) {
+        toast("Market filter — demo only");
       }
     });
   }
@@ -865,6 +1019,7 @@
     bindFlyout();
     bindBoard();
     bindSearch();
+    seedDemoPanels();
     renderBoard();
   });
 })();

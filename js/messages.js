@@ -1,5 +1,6 @@
 /**
  * Desktop Messages dropdown — injects under .header-msg-btn (logged-in header).
+ * ≤900: navigates to messages.html (full page, same pattern as search.html).
  * Depends on js/messages-data.js (loaded first by ensureMessagesFromAuth).
  */
 (function (global) {
@@ -88,6 +89,18 @@
       badge.setAttribute("aria-label", n + " unread");
       badge.textContent = String(n);
     });
+  }
+
+  function isMobileViewport() {
+    return typeof window.matchMedia === "function" && window.matchMedia("(max-width: 900px)").matches;
+  }
+
+  function messagesPageHref() {
+    return (assetBase || "") + "messages.html";
+  }
+
+  function goMessagesPage() {
+    window.location.href = messagesPageHref();
   }
 
   function closeAll(except) {
@@ -283,6 +296,10 @@
     btn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
+      if (isMobileViewport()) {
+        goMessagesPage();
+        return;
+      }
       var willOpen = !wrap.classList.contains("is-open");
       if (willOpen) openWrap(wrap);
       else closeAll();
@@ -297,6 +314,10 @@
 
   function openWrap(wrap) {
     if (!wrap) return;
+    if (isMobileViewport()) {
+      goMessagesPage();
+      return;
+    }
     var btn = $(".header-msg-btn", wrap);
     var panel = $(".msg-dropdown", wrap);
     if (!panel) return;
@@ -310,6 +331,10 @@
   }
 
   function open() {
+    if (isMobileViewport()) {
+      goMessagesPage();
+      return;
+    }
     ensureReady();
     var wrap = $(".header-msg-wrap");
     if (!wrap) {
@@ -328,6 +353,10 @@
   }
 
   function toggle() {
+    if (isMobileViewport()) {
+      goMessagesPage();
+      return;
+    }
     var wrap = $(".header-msg-wrap");
     if (wrap && wrap.classList.contains("is-open")) close();
     else open();

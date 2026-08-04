@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sportsbook ï¿½ Live &amp; Line</title>
+  <title>Sportsbook � Live &amp; Line</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/home-social.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
@@ -142,7 +142,7 @@
                 <a href="partnership.html" role="menuitem">Partnership</a>
                 <a href="#" role="menuitem">Toto</a>
                 <a href="results.html" role="menuitem">Results</a>
-                <a href="#" role="menuitem">Statistics</a>
+                <a href="statistics.html" role="menuitem">Statistics</a>
                 <a href="#" role="menuitem">Poker</a>
                 <a href="#" role="menuitem">TV Games</a>
                 <a href="#" role="menuitem">Virtual sports</a>
@@ -175,24 +175,26 @@
         </button>
 
         <div class="sidebar-quick">
-          <div class="sidebar-row-wrap">
-            <a href="favourites.html" class="sidebar-row">
+          <div class="sidebar-row-wrap" data-sb-panel="favorites">
+            <button type="button" class="sidebar-row" data-sb-open="favorites">
               <img src="assets/icons/nav-star.svg" alt="" class="row-icon" width="16" height="16" />
               <span class="row-label">Favorite matches</span>
-            </a>
-            <button type="button" class="sidebar-row-chevron" aria-label="Expand favorite matches">
+            </button>
+            <button type="button" class="sidebar-row-chevron" data-sb-toggle="favorites" aria-label="Expand favorite matches" aria-expanded="false">
               <img src="assets/icons/nav-chevron-down.svg" alt="" width="10" height="6" />
             </button>
           </div>
-          <div class="sidebar-row-wrap">
-            <a href="#live-events" class="sidebar-row">
+          <div class="sidebar-inline-panel" data-sb-panel-body="favorites" hidden></div>
+          <div class="sidebar-row-wrap" data-sb-panel="recommended">
+            <button type="button" class="sidebar-row" data-sb-open="recommended">
               <img src="assets/icons/nav-thumbs.svg" alt="" class="row-icon" width="16" height="16" />
               <span class="row-label">Recommended</span>
-            </a>
-            <button type="button" class="sidebar-row-chevron" aria-label="Expand recommended">
+            </button>
+            <button type="button" class="sidebar-row-chevron" data-sb-toggle="recommended" aria-label="Expand recommended" aria-expanded="false">
               <img src="assets/icons/nav-chevron-down.svg" alt="" width="10" height="6" />
             </button>
           </div>
+          <div class="sidebar-inline-panel" data-sb-panel-body="recommended" hidden></div>
 
           <div class="top-games" id="top-games">
             <div class="top-games-head">
@@ -309,7 +311,7 @@
             <article class="promo-slide promo-slide-photo" data-slide="3" style="background-image:url('assets/images/hero-banner-3.webp')">
               <div class="promo-copy">
                 <h2 class="promo-title">Featured match</h2>
-                <p class="promo-text">World Cup 2026 line ï¿½ place your 1X2 bet now.</p>
+                <p class="promo-text">World Cup 2026 line � place your 1X2 bet now.</p>
                 <button type="button" class="btn-promo">Bet now</button>
               </div>
             </article>
@@ -365,6 +367,22 @@
 
         <!-- TOP-EVENTS + LIVE toolbar (Figma 6:2) -->
         <section class="events-section live-events-block" id="live-events" aria-labelledby="live-title">
+          <nav class="home-quicknav" aria-label="Quick navigation">
+            <a href="live-national-team.html" class="home-quicknav__btn" data-home-quick="live">
+              <img class="home-quicknav__ico home-quicknav__ico--live" src="mobile/assets/icons/signal-stream.svg" alt="" width="15" height="15" />
+              <span>Live</span>
+            </a>
+            <a href="sports.html" class="home-quicknav__btn" data-home-quick="sports">
+              <span>Sports</span>
+            </a>
+            <a href="favourites.html" class="home-quicknav__btn home-quicknav__btn--icon" data-home-quick="fav" aria-label="Favourites">
+              <img class="home-quicknav__ico home-quicknav__ico--fav" src="mobile/assets/icons/star.svg" alt="" width="18" height="18" />
+            </a>
+            <a href="search.html" class="home-quicknav__btn home-quicknav__btn--icon" data-home-quick="search" aria-label="Search">
+              <img class="home-quicknav__ico home-quicknav__ico--search" src="mobile/assets/icons/search.svg" alt="" width="18" height="18" />
+            </a>
+          </nav>
+
           <div class="top-events-banner">
             <a href="#live-events" class="top-events-label" id="live-title">TOP-EVENTS</a>
             <div class="top-events-cards">
@@ -441,10 +459,30 @@
                   <div class="te-more-scroll" id="te-more-scroll"></div>
                 </div>
               </div>
-              <button type="button" class="te-more-btn" aria-label="Esports menu" title="Esports">
-                <img src="assets/icons/te-esports-dd.svg" alt="" width="16" height="16" />
-                <img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
-              </button>
+              <div class="te-esports-wrap" id="te-esports-wrap">
+                <button
+                  type="button"
+                  class="te-more-btn te-esports-btn"
+                  id="te-esports-btn"
+                  aria-label="Esports menu"
+                  title="Esports"
+                  aria-expanded="false"
+                  aria-controls="te-esports-menu"
+                  aria-haspopup="menu"
+                >
+                  <img src="assets/icons/te-esports-dd.svg" alt="" width="16" height="16" />
+                  <img class="te-esports-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+                </button>
+                <div class="te-esports-menu" id="te-esports-menu" role="menu" aria-label="Esports" hidden>
+                  <label class="te-esports-search">
+                    <span class="visually-hidden">Search esports</span>
+                    <input type="search" id="te-esports-search" placeholder="Search" autocomplete="off" />
+                    <img src="assets/icons/te-search.svg" alt="" width="12" height="12" />
+                  </label>
+                  <div class="te-esports-scroll" id="te-esports-scroll"></div>
+                  <div class="te-esports-flyout" id="te-esports-flyout" role="menu" aria-label="Esports leagues" hidden></div>
+                </div>
+              </div>
             </div>
           </div>
           </div>
@@ -482,7 +520,7 @@
           <article class="acc-block" data-acc="1x2">
             <header class="acc-header">
               <h3 class="acc-title">Accumulator Of The Day</h3>
-              <span class="acc-bonus">Bonus from 1xBet Â· 1.1</span>
+              <span class="acc-bonus">Bonus from 1xBet · 1.1</span>
             </header>
             <div class="acc-table">
               <ul class="acc-list" id="acc-list-1"></ul>
@@ -498,7 +536,7 @@
           <article class="acc-block" data-acc="live">
             <header class="acc-header">
               <h3 class="acc-title">Live Accumulator Of The Day</h3>
-              <span class="acc-bonus">Bonus from 1xBet Â· 1.08</span>
+              <span class="acc-bonus">Bonus from 1xBet · 1.08</span>
             </header>
             <div class="acc-table">
               <ul class="acc-list" id="acc-list-2"></ul>
@@ -634,7 +672,7 @@
                   <img class="home-big-wins__thumb" src="assets/games/big-wins/age-of-the-gods.png" alt="" width="64" height="64" loading="lazy" />
                   <div class="home-big-wins__body">
                     <p class="home-big-wins__provider">Provider: PlayTech</p>
-                    <p class="home-big-wins__line"><strong>cc****</strong> in <strong class="home-big-wins__game">Age of the Gods - God of Stormsâ„¢</strong> won</p>
+                    <p class="home-big-wins__line"><strong>cc****</strong> in <strong class="home-big-wins__game">Age of the Gods - God of Storms™</strong> won</p>
                     <p class="home-big-wins__amount">$782.33</p>
                   </div>
                   <span class="home-big-wins__play" aria-hidden="true">
@@ -772,7 +810,7 @@
         </div>
       </main>
 
-      <!-- RIGHT SIDEBAR (Figma 3:16034) ï¿½ colors: modified-color tokens -->
+      <!-- RIGHT SIDEBAR (Figma 3:16034) � colors: modified-color tokens -->
       <aside class="right-sidebar" id="right-sidebar" aria-label="Account tools">
         <div class="right-compact-rail" aria-label="Collapsed account tools">
           <button type="button" class="rc-expand" id="right-expand" aria-label="Expand block">
@@ -849,7 +887,7 @@
               <a href="terms.html">Terms and Conditions</a> and
               <a href="#">Privacy Policy</a> of the company and confirm that you are of legal age
             </p>
-            <p class="demo-msg" id="reg-demo" hidden>Demo only ï¿½ no account created.</p>
+            <p class="demo-msg" id="reg-demo" hidden>Demo only � no account created.</p>
           </form>
           <a href="#reg-form" class="reg-bonus-bar">100% bonus on your 1st deposit</a>
         </div>
@@ -956,7 +994,7 @@
         </div>
         <div class="footer-col">
           <h3>Statistics</h3>
-          <a href="#">Statistics</a>
+          <a href="statistics.html">Statistics</a>
           <a href="results.html">Results</a>
         </div>
         <div class="footer-col">
@@ -1051,7 +1089,7 @@
 
       <div class="footer-meta">
         <div class="footer-meta-card footer-legal">
-          <p>Copyright ï¿½ 2024 ï¿½1xBetï¿½ .</p>
+          <p>Copyright � 2024 �1xBet� .</p>
           <p>
             1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet.
             <a href="#">Find out more</a>

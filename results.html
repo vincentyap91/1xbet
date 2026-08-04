@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Results — 1xBet</title>
+  <title>Results � 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/results.css" />
 </head>
@@ -138,7 +138,7 @@
                 <a href="partnership.html" role="menuitem">Partnership</a>
                 <a href="#" role="menuitem">Toto</a>
                 <a href="results.html" role="menuitem" aria-current="page">Results</a>
-                <a href="#" role="menuitem">Statistics</a>
+                <a href="statistics.html" role="menuitem">Statistics</a>
                 <a href="#" role="menuitem">Poker</a>
                 <a href="#" role="menuitem">TV Games</a>
                 <a href="#" role="menuitem">Virtual sports</a>
@@ -154,12 +154,20 @@
       </div>
     </header>
 
+    <div class="rs-mobile-subbar" aria-label="Results">
+      <a href="javascript:history.back()" class="rs-mobile-subbar__back" aria-label="Back">
+        <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </a>
+      <h1 class="rs-mobile-subbar__title">Results</h1>
+      <div class="rs-mobile-subbar__actions">
+        <button type="button" class="rs-mobile-subbar__btn" id="rs-mobile-filter" aria-label="Sports filter" aria-haspopup="dialog" aria-controls="rs-sports-sheet" aria-expanded="false">
+          <img src="mobile/assets/icons/sp-filter.svg" alt="" width="16" height="16" />
+        </button>
+      </div>
+    </div>
+
     <div class="sportsbook-layout rs-layout">
       <aside class="left-sidebar rs-sidebar" id="left-sidebar" aria-label="Results sports">
-        <button type="button" class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse block">
-          <img src="assets/icons/nav-collapse.svg" alt="" width="9" height="10" />
-          <span>Collapse block</span>
-        </button>
         <button type="button" class="mobile-drawer-close" id="left-drawer-close" aria-label="Close sports navigation">Close</button>
 
         <div class="rs-side-card">
@@ -169,172 +177,178 @@
             <input type="search" id="rs-sport-search" placeholder="Search by sport" autocomplete="off" />
           </label>
           <ul class="rs-sport-list" aria-label="Sports">
-              <li>
-                <button type="button" class="rs-sport-item is-active" data-sport="football" data-sport-name="Football">
-                  <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Football</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="hockey" data-sport-name="Ice Hockey">
-                  <img src="assets/icons/te-hockey.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Ice Hockey</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="basketball" data-sport-name="Basketball">
-                  <img src="assets/icons/te-basketball.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Basketball</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="tennis" data-sport-name="Tennis">
-                  <img src="assets/icons/te-tennis.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Tennis</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="baseball" data-sport-name="Baseball">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Baseball</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="volleyball" data-sport-name="Volleyball">
-                  <img src="assets/icons/te-volleyball.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Volleyball</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="rugby" data-sport-name="Rugby">
-                  <img src="assets/icons/te-americanfootball.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Rugby</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="handball" data-sport-name="Handball">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Handball</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="boxing" data-sport-name="Boxing">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Boxing</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="tabletennis" data-sport-name="Table Tennis">
-                  <img src="assets/icons/te-tabletennis.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Table Tennis</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="chess" data-sport-name="Chess">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Chess</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="americanfootball" data-sport-name="American Football">
-                  <img src="assets/icons/te-americanfootball.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">American Football</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="futsal" data-sport-name="Futsal">
-                  <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Futsal</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="badminton" data-sport-name="Badminton">
-                  <img src="assets/icons/te-badminton.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Badminton</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="motorsport" data-sport-name="Motorsport">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Motorsport</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="darts" data-sport-name="Darts">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Darts</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="beachsoccer" data-sport-name="Beach Soccer">
-                  <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Beach Soccer</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="formula1" data-sport-name="Formula 1">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Formula 1</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="fieldhockey" data-sport-name="Field Hockey">
-                  <img src="assets/icons/te-hockey.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Field Hockey</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="aussierules" data-sport-name="Australian Rules">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Australian Rules</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="beachvolleyball" data-sport-name="Beach Volleyball">
-                  <img src="assets/icons/te-volleyball.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Beach Volleyball</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="snooker" data-sport-name="Snooker">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Snooker</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
-              <li>
-                <button type="button" class="rs-sport-item" data-sport="motorbikes" data-sport-name="Motorbikes">
-                  <img src="assets/icons/te-athletics.svg" alt="" width="16" height="16" />
-                  <span class="rs-sport-name">Motorbikes</span>
-                  <img class="rs-sport-chevron" src="assets/icons/te-chevron.svg" alt="" width="6" height="10" />
-                </button>
-              </li>
+            <li class="rs-sport-acc has-results" data-sport="football" data-sport-name="Football">
+              <button type="button" class="rs-sport-item is-active" data-sport="football" data-sport-name="Football" aria-expanded="false">
+                <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Football</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="World Cup 2026"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">World Cup 2026</span><span class="rs-league-count">(12)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Russian Championship. League 1"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Russian Championship. League 1</span><span class="rs-league-count">(24)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="South Korea. K League 1"><img src="assets/images/account/flags/lang-en.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">South Korea. K League 1</span><span class="rs-league-count">(8)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Serbia. SuperLiga"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Serbia. SuperLiga</span><span class="rs-league-count">(6)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Romania. Liga 1"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Romania. Liga 1</span><span class="rs-league-count">(10)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc has-results is-open" data-sport="hockey" data-sport-name="Ice Hockey">
+              <button type="button" class="rs-sport-item" data-sport="hockey" data-sport-name="Ice Hockey" aria-expanded="true">
+                <img src="assets/icons/te-hockey.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Ice Hockey</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="3HL League"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">3HL League</span><span class="rs-league-count">(50)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Russia. MHL"><img src="assets/images/account/flags/lang-en.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Russia. MHL</span><span class="rs-league-count">(80)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Russia. VHL"><img src="assets/images/account/flags/lang-en.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Russia. VHL</span><span class="rs-league-count">(24)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Russia. WHL"><img src="assets/images/account/flags/lang-en.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Russia. WHL</span><span class="rs-league-count">(6)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Czechia. Extraleague"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Czechia. Extraleague</span><span class="rs-league-count">(1)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Finland. Liiga"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Finland. Liiga</span><span class="rs-league-count">(1)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="International Friendly Games"><img src="assets/icons/te-home.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">International Friendly Games</span><span class="rs-league-count">(2)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Kazakhstan. Pro League"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Kazakhstan. Pro League</span><span class="rs-league-count">(1)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Club Friendlies"><img src="assets/icons/te-home.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Club Friendlies</span><span class="rs-league-count">(2)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="eSportsBattle"><img src="assets/icons/te-esports.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">eSportsBattle</span><span class="rs-league-count">(29)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc has-results" data-sport="basketball" data-sport-name="Basketball">
+              <button type="button" class="rs-sport-item" data-sport="basketball" data-sport-name="Basketball" aria-expanded="false">
+                <img src="assets/icons/te-basketball.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Basketball</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="NBA"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">NBA</span><span class="rs-league-count">(18)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Euroleague"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Euroleague</span><span class="rs-league-count">(12)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="Spain. ACB"><img src="assets/images/account/flags/lang-es.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Spain. ACB</span><span class="rs-league-count">(8)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="tennis" data-sport-name="Tennis">
+              <button type="button" class="rs-sport-item" data-sport="tennis" data-sport-name="Tennis" aria-expanded="false">
+                <img src="assets/icons/te-tennis.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Tennis</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="ATP"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">ATP</span><span class="rs-league-count">(4)</span></button></li>
+                <li><button type="button" class="rs-league-item" data-league="WTA"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">WTA</span><span class="rs-league-count">(3)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="baseball" data-sport-name="Baseball">
+              <button type="button" class="rs-sport-item" data-sport="baseball" data-sport-name="Baseball" aria-expanded="false">
+                <img src="assets/icons/sport-baseball.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Baseball</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="MLB"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">MLB</span><span class="rs-league-count">(9)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="volleyball" data-sport-name="Volleyball">
+              <button type="button" class="rs-sport-item" data-sport="volleyball" data-sport-name="Volleyball" aria-expanded="false">
+                <img src="assets/icons/te-volleyball.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Volleyball</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="Nations League"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">Nations League</span><span class="rs-league-count">(5)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="handball" data-sport-name="Handball">
+              <button type="button" class="rs-sport-item" data-sport="handball" data-sport-name="Handball" aria-expanded="false">
+                <img src="assets/icons/sport-handball.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Handball</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="EHF Champions League"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">EHF Champions League</span><span class="rs-league-count">(2)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="tabletennis" data-sport-name="Table Tennis">
+              <button type="button" class="rs-sport-item" data-sport="tabletennis" data-sport-name="Table Tennis" aria-expanded="false">
+                <img src="assets/icons/te-tabletennis.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Table Tennis</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="WTT"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">WTT</span><span class="rs-league-count">(4)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="chess" data-sport-name="Chess">
+              <button type="button" class="rs-sport-item" data-sport="chess" data-sport-name="Chess" aria-expanded="false">
+                <img src="mobile/assets/icons/sport-chess.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Chess</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="FIDE"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">FIDE</span><span class="rs-league-count">(1)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="americanfootball" data-sport-name="American Football">
+              <button type="button" class="rs-sport-item" data-sport="americanfootball" data-sport-name="American Football" aria-expanded="false">
+                <img src="assets/icons/te-americanfootball.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">American Football</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="NFL"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">NFL</span><span class="rs-league-count">(3)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="futsal" data-sport-name="Futsal">
+              <button type="button" class="rs-sport-item" data-sport="futsal" data-sport-name="Futsal" aria-expanded="false">
+                <img src="assets/icons/sport-futsal.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Futsal</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="FIFA Futsal"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">FIFA Futsal</span><span class="rs-league-count">(2)</span></button></li>
+              </ul>
+            </li>
+            <li class="rs-sport-acc" data-sport="badminton" data-sport-name="Badminton">
+              <button type="button" class="rs-sport-item" data-sport="badminton" data-sport-name="Badminton" aria-expanded="false">
+                <img src="assets/icons/te-badminton.svg" alt="" width="16" height="16" />
+                <span class="rs-sport-name">Badminton</span>
+                <img class="rs-sport-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" />
+              </button>
+              <ul class="rs-sport-subs">
+                <li><button type="button" class="rs-league-item" data-league="BWF"><img src="assets/icons/te-trophy.svg" alt="" width="14" height="14" /><span class="rs-league-item__name">BWF World Tour</span><span class="rs-league-count">(2)</span></button></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </aside>
 
       <main class="main-content rs-main" id="main-content">
+        <nav class="rs-sports-ribbon" aria-label="Sports categories" data-rs-scroll>
+          <button type="button" class="rs-sport-chip is-active" data-rs-chip="all">
+            <img src="mobile/assets/icons/tab-menu.svg" alt="" width="22" height="22" />
+            <span>All</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="football">
+            <img src="assets/icons/sport-football.svg" alt="" width="22" height="22" />
+            <span>Football</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="hockey">
+            <img src="assets/icons/sport-hockey.svg" alt="" width="22" height="22" />
+            <span>Ice Hockey</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="basketball">
+            <img src="assets/icons/sport-basketball.svg" alt="" width="22" height="22" />
+            <span>Basketball</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="tennis">
+            <img src="assets/icons/sport-tennis.svg" alt="" width="22" height="22" />
+            <span>Tennis</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="baseball">
+            <img src="assets/icons/sport-baseball.svg" alt="" width="22" height="22" />
+            <span>Baseball</span>
+          </button>
+          <button type="button" class="rs-sport-chip" data-rs-chip="volleyball">
+            <img src="assets/icons/sport-volleyball.svg" alt="" width="22" height="22" />
+            <span>Volleyball</span>
+          </button>
+        </nav>
+
         <div class="rs-titlebar">
           <span class="rs-titlebar-label">Results</span>
           <label class="rs-title-search">
@@ -350,9 +364,9 @@
             <button type="button" class="rs-tab" role="tab" aria-selected="false" data-rs-tab="zone">1xZone</button>
           </div>
 
-          <div class="rs-filters">
+          <div class="rs-filters rs-filters--desktop">
             <button type="button" class="rs-date" id="rs-date-btn" aria-label="Select date">
-              <span id="rs-date-label">20.07.2026</span>
+              <span id="rs-date-label">04.08.2026</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <rect x="3" y="5" width="18" height="16" rx="2"/>
                 <path d="M8 3v4M16 3v4M3 11h18"/>
@@ -368,16 +382,34 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
               </button>
               <button type="button" class="rs-icon-btn" id="rs-collapse-all" aria-label="Collapse or expand all">
-                <img src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
               </button>
             </div>
+          </div>
+
+          <div class="rs-filters rs-filters--mobile">
+            <button type="button" class="rs-date" id="rs-date-btn-mobile" aria-label="Select date">
+              <span id="rs-date-label-mobile">04.08.2026</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="16" rx="2"/>
+                <path d="M8 3v4M16 3v4M3 11h18"/>
+              </svg>
+            </button>
+            <button type="button" class="rs-hours is-active" id="rs-hours-btn" aria-pressed="true">24 HOURS</button>
+            <label class="rs-mobile-search">
+              <span class="visually-hidden">Search</span>
+              <input type="search" id="rs-mobile-search" placeholder="Search" autocomplete="off" />
+            </label>
+            <button type="button" class="rs-settings-btn" id="rs-settings-btn" aria-label="Filters" aria-haspopup="dialog" aria-controls="rs-filters-sheet" aria-expanded="false">
+              <img src="assets/icons/icon-settings.svg" alt="" width="16" height="16" />
+            </button>
           </div>
 
           <div class="rs-panel" data-rs-panel="sports">
             <div class="rs-list">
               <p class="rs-empty" id="rs-sport-empty" hidden>No results for this sport on the selected date (demo).</p>
-              <div class="rs-sport-block" data-sport="football">
-                <button type="button" class="rs-sport-head">
+              <div class="rs-sport-block is-collapsed" data-sport="football">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
                   <img src="assets/icons/te-football.svg" alt="" width="16" height="16" />
                   <span>Football</span>
                   <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
@@ -544,6 +576,71 @@
 
                 </div>
               </div>
+
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="hockey">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-hockey.svg" alt="" width="16" height="16" />
+                  <span>Ice Hockey</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="basketball">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-basketball.svg" alt="" width="16" height="16" />
+                  <span>Basketball</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="tennis">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-tennis.svg" alt="" width="16" height="16" />
+                  <span>Tennis</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="baseball">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-baseball.svg" alt="" width="16" height="16" />
+                  <span>Baseball</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="volleyball">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-volleyball.svg" alt="" width="16" height="16" />
+                  <span>Volleyball</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="handball">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-handball.svg" alt="" width="16" height="16" />
+                  <span>Handball</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="tabletennis">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="assets/icons/sport-tabletennis.svg" alt="" width="16" height="16" />
+                  <span>Table Tennis</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
+              <div class="rs-sport-block is-collapsed rs-sport-block--shell" data-sport="chess">
+                <button type="button" class="rs-sport-head" aria-expanded="false">
+                  <img src="mobile/assets/icons/sport-chess.svg" alt="" width="16" height="16" />
+                  <span>Chess</span>
+                  <img class="rs-chevron" src="assets/icons/te-chevron-down.svg" alt="" width="12" height="8" />
+                </button>
+                <div class="rs-sport-body"></div>
+              </div>
             </div>
           </div>
 
@@ -585,7 +682,7 @@
         </div>
         <div class="footer-col">
           <h3>Statistics</h3>
-          <a href="#">Statistics</a>
+          <a href="statistics.html">Statistics</a>
           <a href="results.html" aria-current="page">Results</a>
         </div>
         <div class="footer-col">
@@ -671,6 +768,161 @@
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Mobile Results FILTERS (=900) � gear next to search -->
+  <div class="rs-filters-sheet" id="rs-filters-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="rs-filters-title">
+    <div class="rs-filters-sheet__head">
+      <button type="button" class="rs-filters-sheet__back" id="rs-filters-close" aria-label="Back">
+        <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="rs-filters-sheet__title" id="rs-filters-title">Filters</h2>
+      <span class="rs-filters-sheet__spacer" aria-hidden="true"></span>
+    </div>
+    <div class="rs-filters-sheet__body">
+      <div class="rs-filters-sheet__card">
+        <label class="rs-filters-row">
+          <span>Show sports only</span>
+          <span class="rs-switch">
+            <input type="checkbox" id="rs-m-opt-sports-only" data-rs-opt="rs-opt-sports-only" />
+            <span class="rs-switch-ui" aria-hidden="true"></span>
+          </span>
+        </label>
+        <label class="rs-filters-row">
+          <span>Show with video</span>
+          <span class="rs-switch">
+            <input type="checkbox" id="rs-m-opt-video" data-rs-opt="rs-opt-video" />
+            <span class="rs-switch-ui" aria-hidden="true"></span>
+          </span>
+        </label>
+        <label class="rs-filters-row">
+          <span>Show marked only</span>
+          <span class="rs-switch">
+            <input type="checkbox" id="rs-m-opt-marked" data-rs-opt="rs-opt-marked" />
+            <span class="rs-switch-ui" aria-hidden="true"></span>
+          </span>
+        </label>
+        <label class="rs-filters-row">
+          <span>Show team logos</span>
+          <span class="rs-switch">
+            <input type="checkbox" id="rs-m-opt-logos" data-rs-opt="rs-opt-logos" />
+            <span class="rs-switch-ui" aria-hidden="true"></span>
+          </span>
+        </label>
+        <label class="rs-filters-row">
+          <span>Detailed score</span>
+          <span class="rs-switch">
+            <input type="checkbox" id="rs-m-opt-detail" data-rs-opt="rs-opt-detail" />
+            <span class="rs-switch-ui" aria-hidden="true"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Results SPORTS category filter (=900) � top funnel -->
+  <div class="rs-filters-sheet rs-sports-sheet" id="rs-sports-sheet" hidden role="dialog" aria-modal="true" aria-labelledby="rs-sports-title">
+    <div class="rs-filters-sheet__head rs-sports-sheet__head">
+      <button type="button" class="rs-filters-sheet__back" id="rs-sports-close" aria-label="Back">
+        <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="rs-filters-sheet__title rs-sports-sheet__title" id="rs-sports-title">Sports</h2>
+    </div>
+    <div class="rs-filters-sheet__body rs-sports-sheet__body">
+      <div class="rs-sports-sheet__card">
+        <label class="rs-scat-row">
+          <img src="mobile/assets/icons/tab-menu.svg" alt="" width="20" height="20" />
+          <span>All</span>
+          <input type="checkbox" data-rs-scat="all" checked />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-football.svg" alt="" width="20" height="20" />
+          <span>Football</span>
+          <input type="checkbox" data-rs-scat="football" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-hockey.svg" alt="" width="20" height="20" />
+          <span>Ice Hockey</span>
+          <input type="checkbox" data-rs-scat="hockey" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-basketball.svg" alt="" width="20" height="20" />
+          <span>Basketball</span>
+          <input type="checkbox" data-rs-scat="basketball" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-tennis.svg" alt="" width="20" height="20" />
+          <span>Tennis</span>
+          <input type="checkbox" data-rs-scat="tennis" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-baseball.svg" alt="" width="20" height="20" />
+          <span>Baseball</span>
+          <input type="checkbox" data-rs-scat="baseball" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-volleyball.svg" alt="" width="20" height="20" />
+          <span>Volleyball</span>
+          <input type="checkbox" data-rs-scat="volleyball" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-handball.svg" alt="" width="20" height="20" />
+          <span>Handball</span>
+          <input type="checkbox" data-rs-scat="handball" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-tabletennis.svg" alt="" width="20" height="20" />
+          <span>Table Tennis</span>
+          <input type="checkbox" data-rs-scat="tabletennis" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="mobile/assets/icons/sport-chess.svg" alt="" width="20" height="20" />
+          <span>Chess</span>
+          <input type="checkbox" data-rs-scat="chess" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/marble/sport-billiards.svg" alt="" width="20" height="20" />
+          <span>Billiards</span>
+          <input type="checkbox" data-rs-scat="billiards" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-americanfootball.svg" alt="" width="20" height="20" />
+          <span>American Football</span>
+          <input type="checkbox" data-rs-scat="americanfootball" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-futsal.svg" alt="" width="20" height="20" />
+          <span>Futsal</span>
+          <input type="checkbox" data-rs-scat="futsal" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-badminton.svg" alt="" width="20" height="20" />
+          <span>Badminton</span>
+          <input type="checkbox" data-rs-scat="badminton" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+        <label class="rs-scat-row">
+          <img src="assets/icons/sport-volleyball.svg" alt="" width="20" height="20" />
+          <span>Water Polo</span>
+          <input type="checkbox" data-rs-scat="waterpolo" />
+          <span class="rs-scat-box" aria-hidden="true"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
   <script src="js/results.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

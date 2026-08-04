@@ -93,6 +93,17 @@
     });
 
     document.addEventListener("click", (e) => {
+      const historyBtn = e.target.closest("[data-fv-bet-history]");
+      if (historyBtn) {
+        e.preventDefault();
+        if (typeof window.openBetHistoryPanel === "function") {
+          window.openBetHistoryPanel();
+        } else {
+          window.location.href = "bet-history.html";
+        }
+        return;
+      }
+
       const toastBtn = e.target.closest("[data-toast]");
       if (toastBtn) {
         e.preventDefault();
