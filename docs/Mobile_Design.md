@@ -264,7 +264,7 @@ Nested Type options (Commission / Rebate / Check In) toast demo (pages not porte
 
 Opened from profile **My bets** / **Bet history** (`data-mh-bets`). Title **Bet record**.
 
-The responsive Bet History overlay opened from the sportsbook uses four equal-width category tabs: **All · Sports · Esports · Casino**. Esports is a distinct category (`data-bh-cat="esports"`) and renders esports-only history cards with the shared card/status/date filters.
+The responsive Bet History overlay opened from the sportsbook uses four equal-width category tabs: **All · Sports · Esports · Casino**. Esports is a distinct category (`data-bh-cat="esports"`) and renders esports-only history cards with the shared card/status/date filters. On `esports.html` (≤900), **View Bet History** opens the overlay with the **Esports** tab pre-selected (`openBetHistoryPanel({ category: "esports" })`).
 
 | Filter | Options (desktop) |
 |--------|-------------------|

@@ -5027,12 +5027,15 @@ body.tsp-open {
 }
 
 .mybets-open-controls {
+  position: relative;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   gap: 6px;
   padding: 8px;
   background: var(--surface-secondary);
   border-bottom: 1px solid var(--border-light);
+  overflow: visible;
 }
 
 .mybets-open-controls[hidden] {
@@ -5074,18 +5077,99 @@ body.tsp-open {
 }
 
 .mybets-info {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   width: 14px;
   height: 14px;
+  padding: 0;
   font-size: 9px;
   font-style: italic;
   font-weight: 700;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-light);
+  font-family: var(--font);
+  line-height: 1;
+  color: #fff;
+  background: var(--section-blue);
+  border: none;
   border-radius: 50%;
+  cursor: help;
+}
+
+.mybets-tip {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: max-content;
+  max-width: min(200px, 72vw);
+  padding: 8px 10px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  color: #fff;
+  background: #1a1f26;
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(11, 29, 51, 0.28);
+  transform: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
+}
+
+.mybets-tip::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom-color: #1a1f26;
+  transform: none;
+}
+
+.mybets-info:hover .mybets-tip,
+.mybets-info:focus-visible .mybets-tip,
+.mybets-info.is-open .mybets-tip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Near right edge of narrow bet-slip: grow tip leftward so it isn't clipped */
+.mybets-info--accept .mybets-tip {
+  left: auto;
+  right: 0;
+}
+
+.mybets-info--accept .mybets-tip::before {
+  left: auto;
+  right: 8px;
+}
+
+@media (min-width: 901px) {
+  .mybets-tip {
+    max-width: 168px;
+  }
+
+  /* Allow tips to paint over cards without being clipped by the panel shell */
+  .bet-slip-panel:has(.mybets-info:hover),
+  .bet-slip-panel:has(.mybets-info:focus-visible),
+  .bet-slip-panel:has(.mybets-info.is-open) {
+    overflow: visible;
+  }
+
+  .my-bets-body:has(.mybets-info:hover),
+  .my-bets-body:has(.mybets-info:focus-visible),
+  .my-bets-body:has(.mybets-info.is-open) {
+    overflow: visible;
+  }
 }
 
 .mybets-refresh {
@@ -7017,7 +7101,7 @@ body.bh-desktop-open {
   }
 
   .mybets-app {
-    overflow: hidden;
+    overflow: visible;
   }
 
   .mybets-content {
@@ -9021,6 +9105,40 @@ body.bsg-open {
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* My bets: keep Cash Out card from covering View All */
+  .right-sidebar .mybets-app {
+    overflow: visible;
+    min-height: 0;
+  }
+
+  .right-sidebar .mybets-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .right-sidebar .mybets-cards {
+    padding-bottom: 12px;
+  }
+
+  .right-sidebar .mybets-subtabs,
+  .right-sidebar .mybets-open-controls,
+  .right-sidebar .mybets-view-all,
+  .right-sidebar .mybets-footer-note {
+    flex-shrink: 0;
+  }
+
+  .right-sidebar .mybets-view-all {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - 16px);
+    margin: 8px 8px 4px;
+    min-height: 40px;
+    background: var(--surface-primary);
   }
 
   .right-sidebar .bet-toolbar {

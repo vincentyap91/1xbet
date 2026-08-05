@@ -5720,10 +5720,17 @@
     if (open) setBetHistoryRangeMenu(false);
   }
 
-  function openBetHistoryPanel() {
+  /**
+   * @param {{ category?: 'all'|'sports'|'esports'|'casino' }} [opts]
+   */
+  function openBetHistoryPanel(opts) {
     ensureBetHistoryPanel();
     const backdrop = $("#bh-desktop-backdrop");
     if (!backdrop) return;
+    const cat = opts && opts.category;
+    if (cat === "all" || cat === "sports" || cat === "esports" || cat === "casino") {
+      state.betHistoryCategory = cat;
+    }
     backdrop.hidden = false;
     document.body.classList.add("bh-desktop-open");
     syncBetHistoryControls();
@@ -5933,7 +5940,10 @@
             `<label class="mybets-check">` +
               `<input type="checkbox" class="mybets-check-input" id="mybets-cashout-toggle" />` +
               `<span class="mybets-check-label">Cash Out</span>` +
-              `<span class="mybets-info" title="Enable cash out for eligible bets" tabindex="0" role="img" aria-label="Cash Out information">i</span>` +
+              `<button type="button" class="mybets-info" data-mybets-tip aria-expanded="false" aria-label="Cash Out information">` +
+                `i` +
+                `<span class="mybets-tip" role="tooltip">Cash Out Value Includes Stake.</span>` +
+              `</button>` +
             `</label>` +
             `<button type="button" class="mybets-refresh" aria-label="Refresh bets">` +
               `<span class="mybets-refresh-icon" aria-hidden="true">↻</span> 98` +
@@ -5942,7 +5952,10 @@
           `<label class="mybets-check mybets-check--full">` +
             `<input type="checkbox" class="mybets-check-input" id="mybets-accept-cashout" />` +
             `<span class="mybets-check-label">Accept Any Cash Out Value</span>` +
-            `<span class="mybets-info" title="Accept any offered cash out amount" tabindex="0" role="img" aria-label="Accept any cash out value information">i</span>` +
+            `<button type="button" class="mybets-info mybets-info--accept" data-mybets-tip aria-expanded="false" aria-label="Accept any cash out value information">` +
+              `i` +
+              `<span class="mybets-tip" role="tooltip">Cash Out on the value offered at that time. It helps you to Cash Out faster.</span>` +
+            `</button>` +
           `</label>` +
         `</div>` +
         `<div class="mybets-content" id="mybets-content"></div>` +
@@ -5951,6 +5964,27 @@
       `</div>`;
 
     body.addEventListener("click", (e) => {
+      const tipBtn = e.target.closest("[data-mybets-tip]");
+      if (tipBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const open = tipBtn.classList.contains("is-open");
+        $$("[data-mybets-tip]", body).forEach((btn) => {
+          btn.classList.remove("is-open");
+          btn.setAttribute("aria-expanded", "false");
+        });
+        if (!open) {
+          tipBtn.classList.add("is-open");
+          tipBtn.setAttribute("aria-expanded", "true");
+        }
+        return;
+      }
+
+      $$("[data-mybets-tip]", body).forEach((btn) => {
+        btn.classList.remove("is-open");
+        btn.setAttribute("aria-expanded", "false");
+      });
+
       const subtab = e.target.closest("[data-mybets-tab]");
       if (subtab) {
         setMyBetsTab(subtab.getAttribute("data-mybets-tab"));
@@ -5964,7 +5998,8 @@
       }
       if (e.target.closest(".mybets-view-history") || e.target.closest("#mybets-view-history")) {
         if (isMobileViewport()) {
-          openBetHistoryPanel();
+          /* Esports page → land on Esports category tab */
+          openBetHistoryPanel(isEsportsPage ? { category: "esports" } : undefined);
         } else {
           window.location.href = "bet-history.html";
         }
