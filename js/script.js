@@ -1411,6 +1411,38 @@
         placedAt: fmtPlaced(d0, "16:42"),
       },
       {
+        id: "123456811",
+        category: "esports",
+        sport: "Esports",
+        icon: "assets/icons/sport-esports.svg",
+        league: "Counter-Strike 2. ESL Pro League",
+        match: "Team Spirit vs NAVI",
+        betType: "Single",
+        odds: "1.82",
+        stake: "35.00",
+        winnings: "63.70",
+        status: "Won",
+        dateKey: fmtKey(d0),
+        dateLabel: fmtLabel(d0),
+        placedAt: fmtPlaced(d0, "13:24"),
+      },
+      {
+        id: "123456812",
+        category: "esports",
+        sport: "Esports",
+        icon: "assets/icons/sport-esports.svg",
+        league: "Dota 2. The International",
+        match: "Team Liquid vs Gaimin Gladiators",
+        betType: "Single",
+        odds: "2.05",
+        stake: "20.00",
+        winnings: "0.00",
+        status: "Open",
+        dateKey: fmtKey(d1),
+        dateLabel: fmtLabel(d1),
+        placedAt: fmtPlaced(d1, "20:15"),
+      },
+      {
         id: "123456815",
         category: "sports",
         sport: "Football",
@@ -5728,6 +5760,7 @@
           `<div class="bh-desktop-cats" role="tablist" aria-label="Bet category">` +
             `<button type="button" class="bh-desktop-cat is-active" role="tab" aria-selected="true" data-bh-cat="all">All</button>` +
             `<button type="button" class="bh-desktop-cat" role="tab" aria-selected="false" data-bh-cat="sports">Sports</button>` +
+            `<button type="button" class="bh-desktop-cat" role="tab" aria-selected="false" data-bh-cat="esports">Esports</button>` +
             `<button type="button" class="bh-desktop-cat" role="tab" aria-selected="false" data-bh-cat="casino">Casino</button>` +
           `</div>` +
           `<div class="bh-desktop-filter-row">` +
