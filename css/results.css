@@ -834,8 +834,19 @@ body:not(.rs-show-detail) .rs-match-meta {
     width: 22px;
     height: 22px;
     display: block;
-    filter: brightness(0) saturate(100%) invert(28%) sepia(40%) saturate(900%) hue-rotate(175deg) brightness(95%) contrast(90%);
     pointer-events: none;
+  }
+
+  .rs-sport-chip img.rs-sport-chip__art {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    object-fit: cover;
+    filter: none;
+  }
+
+  .rs-sport-chip img.rs-sport-chip__icon--mono {
+    filter: brightness(0) saturate(100%) invert(28%) sepia(40%) saturate(900%) hue-rotate(175deg) brightness(95%) contrast(90%);
   }
 
   .rs-sport-chip.is-active {
@@ -843,8 +854,12 @@ body:not(.rs-show-detail) .rs-match-meta {
     background: var(--header-action);
   }
 
-  .rs-sport-chip.is-active img {
+  .rs-sport-chip.is-active img.rs-sport-chip__icon--mono {
     filter: brightness(0) invert(1);
+  }
+
+  .rs-sport-chip.is-active img.rs-sport-chip__art {
+    filter: none;
   }
 
   .rs-board {
@@ -1255,6 +1270,17 @@ body:not(.rs-show-detail) .rs-match-meta {
     height: 20px;
     flex-shrink: 0;
     object-fit: contain;
+  }
+
+  .rs-scat-row img.rs-scat-art {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    object-fit: cover;
+    filter: none;
+  }
+
+  .rs-scat-row img.rs-scat-icon--mono {
     filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
   }
 

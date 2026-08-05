@@ -8,8 +8,38 @@
     const input = document.getElementById("mh-sf-input");
     const rows = Array.from(modal.querySelectorAll(".mh-sf__row"));
     const popular = modal.querySelector(".mh-sf__popular");
+    const isHomeDrawer = modal.classList.contains("home-sports-filter");
+    let pendingSports = new Set();
+
+    function syncSelection() {
+      const activeHomeSports = isHomeDrawer
+        ? pendingSports
+        : new Set(
+            Array.from(
+              document.querySelectorAll(
+                ".home-sport-card.is-active[data-home-sport]"
+              )
+            ).map((card) => card.getAttribute("data-home-sport"))
+          );
+      rows.forEach((row) => {
+        const key = row.getAttribute("data-mh-sf-pick");
+        const selected =
+          key === "all" ? activeHomeSports.size === 0 : activeHomeSports.has(key);
+        row.classList.toggle("is-selected", selected);
+        row.setAttribute("aria-pressed", selected ? "true" : "false");
+        row.setAttribute("aria-checked", selected ? "true" : "false");
+      });
+    }
 
     function open() {
+      if (isHomeDrawer) {
+        const selected =
+          typeof window.getHomeSportFilters === "function"
+            ? window.getHomeSportFilters()
+            : [];
+        pendingSports = new Set(selected);
+      }
+      syncSelection();
       modal.hidden = false;
       requestAnimationFrame(() => modal.classList.add("is-open"));
       document.body.classList.add("mh-sf-open");
@@ -53,15 +83,44 @@
     input?.addEventListener("input", () => filterList(input.value));
 
     modal.addEventListener("click", (e) => {
+      const apply = e.target.closest("[data-mh-sf-apply]");
+      if (apply && isHomeDrawer) {
+        if (typeof window.applyHomeSportFilters === "function") {
+          window.applyHomeSportFilters(Array.from(pendingSports));
+        }
+        close();
+        return;
+      }
+
       const pick = e.target.closest("[data-mh-sf-pick]");
       if (!pick) return;
       const key = pick.getAttribute("data-mh-sf-pick");
       const label = pick.getAttribute("data-mh-sf-label") || key;
+
+      if (isHomeDrawer) {
+        if (key === "all") {
+          pendingSports.clear();
+        } else if (pendingSports.has(key)) {
+          pendingSports.delete(key);
+        } else {
+          pendingSports.add(key);
+        }
+        syncSelection();
+        return;
+      }
+
       const chip = document.querySelector(`[data-mh-sp-chip="${key}"]`);
+      const homeCard = document.querySelector(
+        `.home-sport-card[data-home-sport="${key}"]`
+      );
       if (chip) {
         chip.click();
+      } else if (homeCard) {
+        homeCard.click();
+      } else if (typeof window.selectHomeSportFilter === "function") {
+        window.selectHomeSportFilter(key);
       } else if (typeof window.showToast === "function") {
-        /* fall through */
+        window.showToast(`${label} selected`);
       }
       const toast = document.getElementById("mh-toast");
       if (toast) {

@@ -108,12 +108,16 @@ Reference for designing **new pages** in this project. Preserve desktop visual i
 .live-events-block (or equivalent section)
   .te-toolbar / .section-toolbar     ← dark section chrome
   .odds-table-wrap                   ← light table shell
-    .league-block
-      .league-header                 ← column / league bar
-      .league-body
-        .event-row                   ← data row
-          .odd-btn                   ← odds chip
+    .match-table-section--live       ← Live (top; Matches tab)
+    .match-table-section--upcoming   ← Upcoming (below; Matches tab)
+      .league-block
+        .league-header               ← column / league bar
+        .league-body
+          .event-row                 ← data row (data-match-status)
+            .odd-btn                 ← odds chip
 ```
+
+**Match event fields** (`js/script.js` `normalizeMatchEvent`): `status` (`'live'|'upcoming'`), `hasLiveStream`, `elapsedTime`, `startTime`, `score: { home, away }`. Legacy mirrors kept: `live`, `stream`, `clock`/`time`, `scoreH`/`scoreA`. Live rows show `.live-badge` + scores + stream icon; upcoming rows show `startTime` only (no scores/stream). Homepage / marble-live `#live-table` stacks Live then Upcoming on the Matches tab; National Team / Sports Line keep a single list.
 
 Outright / custom tables (e.g. Big Tournaments) may use semantic `<table>` markup, but **must paint the same layers** with the same tokens (see map below). Prefer mirroring `.bt-*` → homepage tokens already documented in `css/big-tournaments.css`.
 
@@ -123,6 +127,9 @@ Outright / custom tables (e.g. Big Tournaments) may use semantic `<table>` marku
 |-------|--------------------|------------|----------------|-----------------|
 | **Section title bar** | `.te-toolbar-main`, `.te-crumbs`, `.section-toolbar`, `.acc-header` | `linear-gradient(180deg, var(--section-blue) → var(--section-blue-dark))` | `--text-inverse` / `#fff`; muted tabs `rgba(255,255,255,.65)` | — |
 | **Active tab underline** | `.te-toolbar .section-tab.active::after` | `--action-green` (2px) | — | — |
+| **Active sport chip underline** | `.te-filter-list .filter-chip.active::after` | `--action-green` (2px; same as tabs) | — | — |
+| **LIVE badge** | `.live-badge` | `--danger` | `#fff` 9px uppercase | — |
+| **LIVE / Upcoming section** | `.match-table-section__title` | `--surface-primary` | Live title `--danger`; Upcoming `--text-secondary` | — |
 | **LIVE dot** | `.live-dot` | `--danger` | — | pulse glow |
 | **Table wrap** | `.live-events-block .odds-table-wrap`, `.acc-card` | `--surface-primary` | — | `1px solid var(--border-dark)`; `box-shadow: 0 2px 10px rgba(0,0,0,.18)`; bottom radius `--radius-md` |
 | **League / column header** | `.league-header` | `--league-header` | Title `--text-primary`; col labels `.col-label` → `--text-secondary` | Separators via grid gap; league block bottom `--border-light` |
@@ -150,7 +157,7 @@ At `max-width: 900px`, LIVE/LINE events switch from dense table rows to **self-c
 ```
 .event-row                          ← white card shell
   .event-card-top                   ← status + actions
-    .event-card-status              ← sport icon · time/clock · stream
+    .event-card-status              ← sport icon · LIVE badge · time/clock · stream
     .event-card-actions             ← favourite · more
   .event-card-league                ← league name (in-card)
   .event-main / .event-teams        ← team lines + scores (right)
@@ -408,7 +415,7 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 | Membership | **Standalone** Multi-LIVE page (`membership-invite.html` / `css/membership.css`): full VIP club board for all users. Account **Extra → Membership** links out. Legacy `membership.html` redirects here. |
 | Rebate | **Standalone** Multi-LIVE page (`rebate-invite.html`): guest login gate + **Rebate Benefit** tab; **logged-in** users see full account `.rb-*` dashboard (Unclaim, History, Rebate Benefit). Account **Extra → Rebate** links out. Legacy `rebate.html` redirects here. |
 | Partnership | Info page (`partnership.html` / `css/partnership.css`) like About us: light `--surface-secondary` main; titles `--section-blue`; subtitle / footnote `--brand-blue`; banner `--surface-primary` + `--accent-blue-soft` border; highlight values `--warning`; Verified pill + Visit CTA `--section-blue` (hover Visit `--brand-blue`); logos `assets/images/partnership/12win.png` + `lucky878.png` (black keyed out) on white logo strip. Visit: [12WIN](https://12winkh.vip/en/), [Lucky878](https://lucky878.riocity9.com/en/). Footer: **Useful links → Partnership** |
-| Results | Sportsbook page (`results.html` / `css/results.css`): entry **More → Results**. Dark left sport list (`--sidebar-bg` / active `--accent-blue`); light results board (`--surface-primary`, league `--league-header`, zebra `--row-alternate`); section tabs use `--action-green` underline; WIN label `--action-green`. Do not copy screenshot greys/purples. |
+| Results | Sportsbook page (`results.html` / `css/results.css`): entry **More → Results**. Dark left sport list (`--sidebar-bg` / active `--accent-blue`); light results board (`--surface-primary`, league `--league-header`, zebra `--row-alternate`); section tabs use `--action-green` underline; WIN label `--action-green`. ≤900 top sport chips + Sports sheet rows use `assets/games/sports/*.png` (desktop art, not line SVGs). Do not copy screenshot greys/purples. |
 | Daily Check-In | Account Extra (`daily-checkin.html`): `.pq-panel` board — section-blue loyalty header (`coin.svg` only); body on `--surface-secondary`; day cards white + `--odds-bg` icon wells (`diamond.svg` / `coin.svg`); claimable uses `--odds-hover` / `--accent-blue-soft` (green only on Claim CTA); claimed check `--section-blue`; values `--brand-blue`; T&C panel with `--action-green` underline. After Claim: auth confirm chrome (`.auth-backdrop` + `.auth-dialog--confirm`) with `claimed.svg`, brand-blue title, `--action-green` OK. History → `checkin-record.html`. |
 
 ---
@@ -508,6 +515,7 @@ CSS: `mobile/css/mobile-profile.css`. JS: `mobile/js/mobile-profile.js` + sessio
 
 - Dark toolbars: gradient `--section-blue` → `--section-blue-dark`
 - Active tab underline on LIVE: `--action-green` (2px)
+- Active sport category chip underline (`.te-filter-list .filter-chip.active`): `--action-green` (2px)
 - HOT badge: `--action-green`
 - Light tables sit on `--surface-primary` with `--border-dark` / `--border-light`
 
@@ -548,6 +556,7 @@ Reuse Figma-exported assets under `assets/icons/` with prefixes:
 | `icon-*`, `logo-*`, `flag-*` | Header |
 | `nav-*`, `sport-*` | Left sidebar (expanded) |
 | `collapse/*` | Left/right collapsed xxs rails (live SVG paths) |
+| `games/sports/*` | Homepage ≤900 Popular Sports + Sports filter drawer photo art (`assets/games/sports/*.png` — desktop only, not under `mobile/`) |
 | `te-*` | TOP-EVENTS / LIVE toolbar |
 | `rb-*` | Right block (expanded) |
 | `ft-*` | Footer |
@@ -563,15 +572,16 @@ Use as a checklist when cloning patterns onto new pages:
 
 1. **Header** — brand, actions, primary nav  
 2. **Left nav** — Favorite / Recommended / Top Games / LIVE–SPORTS / A–Z  
-3. **Promo slider** — full-bleed photo slides, green CTA  
+3. **Promo slider** — full-bleed photo slides, green CTA. **≤900:** left-aligned copy + CTA; side chevrons vertically centered; dots bottom-right (clear of button); left scrim for readability  
    Desktop home may include a **player-online utility pill** pinned to the hero's top-right. Keep it inside the banner chrome, use `--action-green` for the pill, white text, a live dot, and compact pill geometry. Treat it as a shortcut into LIVE content, not a second CTA.
 4. **Game strip** — horizontal cards  
 5. **TOP-EVENTS + LIVE toolbar** — banner, crumbs, tabs, search, stream toggle, sport chips + more menu  
 6. **Odds tables** — league blocks, light rows (**§2.1 canon**)  
 7. **LINE section** — same table language as LIVE  
 8. **Accumulators** — dual cards (same wrap/header/odds emphasis as §2.1)  
-9. **Right block** — registration, bet slip, generator, app  
-10. **Footer** — link columns, partners strip, legal / support / social  
+9. **Home social** (`css/home-social.css`) — Live Transactions / Recent Big Wins / **Recent Payout** (`.home-payout__viewport` + cloned `.home-payout__group`; CSS `home-payout-marquee` infinite scroll left; pause on hover; `prefers-reduced-motion` → static scroll) / Referral Hub  
+10. **Right block** — registration, bet slip, generator, app  
+11. **Footer** — link columns, partners strip, legal / support / social  
 
 New pages should reuse these modules’ classes and tokens rather than inventing parallel UI. Any new odds/data table = copy §2.1.
 

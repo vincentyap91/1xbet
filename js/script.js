@@ -570,6 +570,100 @@
         { id: "lv10", time: "Live", live: true, home: "Albuquerque Isotopes", away: "Sugar Land Space Cowboys", scoreH: 6, scoreA: 4, o1: 1.70, ox: null, o2: 2.15, total: 9.5, over: 1.88, under: 1.91, hcap: "-1.5", h1: 1.92, h2: 1.86, more: 97 },
       ],
     },
+    {
+      id: "atp-cincinnati",
+      name: "ATP Cincinnati",
+      sport: "tennis",
+      icon: "US",
+      events: [
+        {
+          id: "lv-atp1",
+          status: "live",
+          elapsedTime: "2nd set",
+          hasLiveStream: true,
+          home: "Sinner J.",
+          away: "Alcaraz C.",
+          score: { home: 1, away: 0 },
+          o1: 1.72,
+          ox: null,
+          o2: 2.10,
+          total: 22.5,
+          over: 1.88,
+          under: 1.90,
+          hcap: "-2.5",
+          h1: 1.86,
+          h2: 1.92,
+          more: 214,
+        },
+        {
+          id: "lv-atp2",
+          status: "upcoming",
+          startTime: "18:00",
+          hasLiveStream: false,
+          home: "Medvedev D.",
+          away: "Zverev A.",
+          score: { home: null, away: null },
+          o1: 1.95,
+          ox: null,
+          o2: 1.85,
+          total: 23.5,
+          over: 1.87,
+          under: 1.91,
+          hcap: "-1.5",
+          h1: 1.90,
+          h2: 1.88,
+          more: 186,
+        },
+        {
+          id: "lv-atp3",
+          status: "upcoming",
+          startTime: "20:30",
+          hasLiveStream: false,
+          home: "Tsitsipas S.",
+          away: "Rublev A.",
+          score: { home: null, away: null },
+          o1: 2.05,
+          ox: null,
+          o2: 1.78,
+          total: 22.5,
+          over: 1.90,
+          under: 1.88,
+          hcap: "+1.5",
+          h1: 1.89,
+          h2: 1.89,
+          more: 172,
+        },
+      ],
+    },
+    {
+      id: "epl-upcoming",
+      name: "England. Premier League",
+      sport: "football",
+      icon: "GB",
+      events: [
+        {
+          id: "lv-epl1",
+          status: "upcoming",
+          startTime: "22:00",
+          hasLiveStream: false,
+          home: "Arsenal",
+          away: "Chelsea",
+          score: { home: null, away: null },
+          homeLogo: "assets/images/mobile-home/teams/team-01.webp",
+          awayLogo: "assets/images/mobile-home/teams/team-02.webp",
+          o1: 2.15,
+          ox: 3.40,
+          o2: 3.25,
+          dc1x: 1.32,
+          dc12: 1.28,
+          dc2x: 1.66,
+          total: 2.5,
+          over: 1.92,
+          under: 1.87,
+          more: 842,
+        },
+      ],
+    },
   ];
 
   /** National team page — Malaysia-focused leagues (same table component) */
@@ -1028,28 +1122,32 @@
     if (typeof lineLeagues !== "undefined") pools.push(...lineLeagues);
     for (const league of pools) {
       const event = (league.events || []).find((e) => e.id === id);
-      if (event) return { league, event };
+      if (event) return { league, event: normalizeMatchEvent(event) };
     }
     return null;
   }
 
   function eventToFavouriteRecord(league, event) {
+    const e = normalizeMatchEvent(event);
     const sport = league.sport || "football";
     return {
-      id: event.id,
+      id: e.id,
       sport,
       sportIcon: sportIconMap[sport] || `assets/icons/sport-${sport}.svg`,
-      time: event.live ? event.clock || event.time || "Event in progress" : event.time || "",
+      time:
+        e.status === "live"
+          ? e.elapsedTime || e.clock || e.time || "Event in progress"
+          : e.startTime || e.time || "",
       league: league.name || "",
-      home: event.home || "",
-      homeLogo: event.homeLogo || "assets/images/mobile-home/teams/team-01.webp",
-      away: event.away || "",
-      awayLogo: event.awayLogo || "assets/images/mobile-home/teams/team-02.webp",
-      homeScore: event.scoreH != null ? event.scoreH : null,
-      awayScore: event.scoreA != null ? event.scoreA : null,
-      note: event.note || "",
-      scope: event.live ? "live" : "sports",
-      hasStream: Boolean(event.stream) || Boolean(event.live),
+      home: e.home || "",
+      homeLogo: e.homeLogo || "assets/images/mobile-home/teams/team-01.webp",
+      away: e.away || "",
+      awayLogo: e.awayLogo || "assets/images/mobile-home/teams/team-02.webp",
+      homeScore: e.score.home != null ? e.score.home : null,
+      awayScore: e.score.away != null ? e.score.away : null,
+      note: e.note || "",
+      scope: e.status === "live" ? "live" : "sports",
+      hasStream: Boolean(e.hasLiveStream),
       odds: [],
     };
   }
@@ -1091,6 +1189,8 @@
     /** Desktop event rows with sub-games panel open (closed by default) */
     expandedEvents: new Set(),
     activeLiveFilter: null,
+    /** Homepage mobile Sports drawer supports several selected sports; empty = All. */
+    activeHomeSports: new Set(),
     activeLineFilter: null,
     /** Main LIVE section tab: matches | recommended | favorites | upcoming | p1 | p2 */
     liveView: "matches",
@@ -1423,6 +1523,20 @@
     });
   }
 
+  /** Duplicate payout card group so CSS translateX(-50%) loops seamlessly left. */
+  function initHomePayoutMarquee() {
+    const viewport = document.querySelector("[data-home-payout-marquee]");
+    if (!viewport) return;
+    const track = viewport.querySelector(".home-payout__track");
+    const group = track?.querySelector(".home-payout__group");
+    if (!track || !group) return;
+    if (track.querySelectorAll(".home-payout__group").length > 1) return;
+    const clone = group.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+    track.appendChild(clone);
+  }
+
   function formatOdd(v) {
     if (v == null || Number.isNaN(v)) return "—";
     return Number(v).toFixed(2);
@@ -1494,6 +1608,69 @@
   }
 
   /* ---------- Table rendering ---------- */
+
+  /**
+   * @typedef {'live'|'upcoming'} MatchStatus
+   * @typedef {{ home: number|string|null, away: number|string|null }} MatchScore
+   * @typedef {Object} MatchEvent
+   * @property {string} id
+   * @property {MatchStatus} status
+   * @property {boolean} hasLiveStream
+   * @property {string|null} elapsedTime
+   * @property {string|null} startTime
+   * @property {MatchScore} score
+   * @property {boolean} [live] Legacy mirror of status === 'live'
+   * @property {boolean} [stream] Legacy mirror of hasLiveStream
+   * @property {string} [clock]
+   * @property {string} [time]
+   * @property {number|string|null} [scoreH]
+   * @property {number|string|null} [scoreA]
+   */
+
+  /** Normalize match fields; mirrors legacy live/stream/scoreH/scoreA for existing filters. */
+  function normalizeMatchEvent(raw) {
+    if (!raw || typeof raw !== "object") return raw;
+    const status =
+      raw.status === "live" || raw.status === "upcoming"
+        ? raw.status
+        : raw.live
+          ? "live"
+          : "upcoming";
+    const isLive = status === "live";
+    const hasLiveStream =
+      raw.hasLiveStream != null ? !!raw.hasLiveStream : !!raw.stream;
+    const score =
+      raw.score && typeof raw.score === "object"
+        ? {
+            home: raw.score.home != null ? raw.score.home : null,
+            away: raw.score.away != null ? raw.score.away : null,
+          }
+        : {
+            home: raw.scoreH != null ? raw.scoreH : null,
+            away: raw.scoreA != null ? raw.scoreA : null,
+          };
+    const elapsedTime = isLive
+      ? raw.elapsedTime || raw.clock || raw.time || null
+      : null;
+    const startTime = !isLive ? raw.startTime || raw.time || null : null;
+
+    raw.status = status;
+    raw.live = isLive;
+    raw.hasLiveStream = hasLiveStream;
+    raw.stream = hasLiveStream;
+    raw.score = score;
+    raw.scoreH = score.home;
+    raw.scoreA = score.away;
+    raw.elapsedTime = elapsedTime;
+    raw.startTime = startTime;
+    if (isLive && elapsedTime) raw.clock = raw.clock || elapsedTime;
+    if (!isLive && startTime) raw.time = startTime;
+    return raw;
+  }
+
+  function isMatchLive(event) {
+    return normalizeMatchEvent(event).status === "live";
+  }
 
   function oddButton(event, market, selection, value, leagueName, stackLab, emptyMode) {
     const id = `${event.id}-${market}-${selection}`;
@@ -1613,26 +1790,28 @@
   };
 
   function eventMetaText(event) {
-    if (event.meta) return event.meta;
-    if (event.live) return event.clock || event.time || "Live";
-    return event.time || "";
+    const e = normalizeMatchEvent(event);
+    if (e.meta) return e.meta;
+    if (e.status === "live") return e.elapsedTime || e.clock || e.time || "Live";
+    return e.startTime || e.time || "";
   }
 
   function renderEventMetaActions(event) {
+    const e = normalizeMatchEvent(event);
     const actions = [];
-    if (event.tracker) {
+    if (e.tracker) {
       actions.push({ key: "tracker", label: "Live tracker", icon: EVENT_META_ICONS.tracker });
     }
-    if (event.stream) {
+    if (e.hasLiveStream) {
       actions.push({ key: "stream", label: "Live stream", icon: EVENT_META_ICONS.stream });
     }
-    if (event.stats) {
+    if (e.stats) {
       actions.push({ key: "stats", label: "Statistics", icon: EVENT_META_ICONS.stats });
     }
-    if (event.lineups) {
+    if (e.lineups) {
       actions.push({ key: "lineups", label: "Lineups", icon: EVENT_META_ICONS.lineups });
     }
-    if (event.social) {
+    if (e.social) {
       actions.push({ key: "social", label: "Popular", icon: EVENT_META_ICONS.social });
     }
     if (!actions.length) {
@@ -1673,79 +1852,89 @@
   }
 
   function renderEventRow(event, leagueName, searchQuery, sport) {
-    const fav = state.favorites.has(event.id) ? " active" : "";
-    const pinned = isEventPinned(event.id);
-    const timeClass = event.live ? "event-time live" : "event-time";
-    const timeLabel = event.live ? (event.clock || event.time || "Live") : event.time;
-    const metaLabel = eventMetaText(event);
-    const scoreH = event.scoreH != null ? event.scoreH : "";
-    const scoreA = event.scoreA != null ? event.scoreA : "";
+    const e = normalizeMatchEvent(event);
+    const isLive = e.status === "live";
+    const fav = state.favorites.has(e.id) ? " active" : "";
+    const pinned = isEventPinned(e.id);
+    const timeClass = isLive ? "event-time live" : "event-time";
+    const timeLabel = isLive
+      ? e.elapsedTime || e.clock || e.time || "Live"
+      : e.startTime || e.time || "";
+    const liveBadge = isLive
+      ? `<span class="live-badge" aria-label="Live">LIVE</span>`
+      : "";
+    const metaLabel = eventMetaText(e);
+    const scoreH = isLive && e.score.home != null ? e.score.home : "";
+    const scoreA = isLive && e.score.away != null ? e.score.away : "";
     const q = (searchQuery || "").toLowerCase();
     const hidden =
       q &&
-      !`${event.home} ${event.away} ${leagueName}`.toLowerCase().includes(q)
+      !`${e.home} ${e.away} ${leagueName}`.toLowerCase().includes(q)
         ? " hidden-event"
         : "";
-    const homeLogo = event.homeLogo
-      ? `<img class="team-logo" src="${event.homeLogo}" alt="" width="18" height="18" />`
+    const homeLogo = e.homeLogo
+      ? `<img class="team-logo" src="${e.homeLogo}" alt="" width="18" height="18" />`
       : "";
-    const awayLogo = event.awayLogo
-      ? `<img class="team-logo" src="${event.awayLogo}" alt="" width="18" height="18" />`
+    const awayLogo = e.awayLogo
+      ? `<img class="team-logo" src="${e.awayLogo}" alt="" width="18" height="18" />`
       : "";
-    const streamIcon = event.stream
-      ? `<img class="event-stream-icon" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
-      : "";
+    const streamIcon =
+      isLive && e.hasLiveStream
+        ? `<img class="event-stream-icon" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
+        : "";
     const sportSrc = sportHeaderIconMap[sport] || `assets/icons/sport-${sport}.svg`;
-    const hasSubGames = Array.isArray(event.subGames) && event.subGames.length > 0;
-    const expanded = hasSubGames && state.expandedEvents.has(event.id);
+    const hasSubGames = Array.isArray(e.subGames) && e.subGames.length > 0;
+    const expanded = hasSubGames && state.expandedEvents.has(e.id);
     const expandBtn = hasSubGames
-      ? `<button type="button" class="event-expand-btn${expanded ? " is-open" : ""}" data-expand-event="${event.id}" aria-expanded="${expanded ? "true" : "false"}" aria-label="${expanded ? "Hide sub games" : "Show sub games"}" title="${expanded ? "Hide sub games" : "Show sub games"}"><img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" /></button>`
+      ? `<button type="button" class="event-expand-btn${expanded ? " is-open" : ""}" data-expand-event="${e.id}" aria-expanded="${expanded ? "true" : "false"}" aria-label="${expanded ? "Hide sub games" : "Show sub games"}" title="${expanded ? "Hide sub games" : "Show sub games"}"><img src="assets/icons/te-chevron-down.svg" alt="" width="10" height="6" /></button>`
       : "";
 
     const mainRow = `
-      <div class="event-row${pinned ? " event-row--pinned" : ""}${hasSubGames ? " event-row--has-subs" : ""}${expanded ? " is-expanded" : ""}${hidden}" data-event-id="${event.id}">
+      <div class="event-row${pinned ? " event-row--pinned" : ""}${hasSubGames ? " event-row--has-subs" : ""}${expanded ? " is-expanded" : ""}${isLive ? " event-row--live" : " event-row--upcoming"}${hidden}" data-event-id="${e.id}" data-match-status="${e.status}">
         <div class="event-card-top">
           <div class="event-card-status">
             <img class="event-sport-icon" src="${sportSrc}" alt="" width="16" height="16" />
+            ${liveBadge}
             <div class="${timeClass}">${timeLabel}</div>
             ${streamIcon}
           </div>
           <div class="event-card-actions">
-            ${pinButtonHtml(event.id)}
-            <button type="button" class="icon-tiny fav${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
-            <button type="button" class="icon-tiny event-card-more" data-event-info="${event.id}" aria-label="Event info" aria-haspopup="dialog">⋯</button>
+            ${pinButtonHtml(e.id)}
+            <button type="button" class="icon-tiny fav${fav}" data-fav="${e.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+            <button type="button" class="icon-tiny event-card-more" data-event-info="${e.id}" aria-label="Event info" aria-haspopup="dialog">⋯</button>
           </div>
         </div>
         <div class="event-card-league">${leagueName}</div>
         <div class="event-main">
           <div class="event-side-actions">
-            ${pinButtonHtml(event.id, "pin--desktop")}
-            <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
+            ${pinButtonHtml(e.id, "pin--desktop")}
+            <button type="button" class="icon-tiny fav fav--desktop${fav}" data-fav="${e.id}" aria-label="Favourite" aria-pressed="${fav ? "true" : "false"}">★</button>
           </div>
           <div class="event-teams">
-            <div class="team-line">${homeLogo}<span>${event.home}</span><span class="score">${scoreH}</span></div>
-            <div class="team-line">${awayLogo}<span>${event.away}</span><span class="score">${scoreA}</span></div>
+            <div class="team-line">${homeLogo}<span>${e.home}</span><span class="score">${scoreH}</span></div>
+            <div class="team-line">${awayLogo}<span>${e.away}</span><span class="score">${scoreA}</span></div>
             <div class="event-meta event-meta--desktop">
-              <span class="event-meta-text${event.live ? " live" : ""}">${metaLabel}</span>
+              ${liveBadge}
+              <span class="event-meta-text${isLive ? " live" : ""}">${metaLabel}</span>
               <div class="event-meta-actions" aria-label="Match tools">
-                ${renderEventMetaActions(event)}
+                ${renderEventMetaActions(e)}
               </div>
             </div>
           </div>
           ${expandBtn ? `<div class="event-expand-wrap">${expandBtn}</div>` : ""}
         </div>
-        ${renderEventOddsCells(event, leagueName, sport)}
+        ${renderEventOddsCells(e, leagueName, sport)}
       </div>
     `;
 
     if (!hasSubGames) return mainRow;
 
     const subRows = expanded
-      ? event.subGames.map((sub) => renderSubGameRow(event, sub, leagueName, sport)).join("")
+      ? e.subGames.map((sub) => renderSubGameRow(e, sub, leagueName, sport)).join("")
       : "";
 
     return `
-      <div class="event-block${expanded ? " is-expanded" : ""}${hidden}" data-event-block="${event.id}">
+      <div class="event-block${expanded ? " is-expanded" : ""}${hidden}" data-event-block="${e.id}">
         ${mainRow}
         <div class="event-subgames" ${expanded ? "" : "hidden"}>
           ${subRows}
@@ -1798,6 +1987,12 @@
 
   function leagueMatchesFilter(league, filterSport) {
     if (!filterSport || filterSport === "stream") return true;
+    if (filterSport instanceof Set) {
+      return filterSport.size === 0 || filterSport.has(league.sport);
+    }
+    if (Array.isArray(filterSport)) {
+      return filterSport.length === 0 || filterSport.includes(league.sport);
+    }
     return league.sport === filterSport;
   }
 
@@ -1806,9 +2001,10 @@
     const streamed = [];
     const live = [];
     liveLeagues.forEach((league) => {
-      (league.events || []).forEach((event) => {
-        if (!event.live) return;
-        if (event.stream) streamed.push(event.id);
+      (league.events || []).forEach((raw) => {
+        const event = normalizeMatchEvent(raw);
+        if (event.status !== "live") return;
+        if (event.hasLiveStream) streamed.push(event.id);
         else live.push(event.id);
       });
     });
@@ -1816,14 +2012,28 @@
   }
 
   function eventMatchesLiveView(event) {
+    const e = normalizeMatchEvent(event);
     const view = state.liveView || "matches";
     if (view === "matches") return true;
-    if (view === "favorites") return state.favorites.has(event.id);
-    if (view === "recommended") return getRecommendedEventIds().indexOf(event.id) !== -1;
-    if (view === "upcoming") return !event.live;
-    const clock = `${event.clock || ""} ${event.time || ""}`;
-    if (view === "p1") return event.live && /1st|first|1\s*half|q1|1st period/i.test(clock);
-    if (view === "p2") return event.live && /2nd|second|2\s*half|q2|q3|q4|2nd period/i.test(clock);
+    if (view === "favorites") return state.favorites.has(e.id);
+    if (view === "recommended") return getRecommendedEventIds().indexOf(e.id) !== -1;
+    if (view === "upcoming") return e.status === "upcoming";
+    const clock = `${e.elapsedTime || e.clock || ""} ${e.time || ""}`;
+    if (view === "p1") return e.status === "live" && /1st|first|1\s*half|q1|1st period/i.test(clock);
+    if (view === "p2") return e.status === "live" && /2nd|second|2\s*half|q2|q3|q4|2nd period/i.test(clock);
+    return true;
+  }
+
+  function eventPassesLeagueFilters(event, statusFilter) {
+    const e = normalizeMatchEvent(event);
+    if (isNationalTeamPage) {
+      const wantLive = state.ntMarketMode === "live";
+      if (isMatchLive(e) !== wantLive) return false;
+    }
+    if (state.streamOnly && !e.hasLiveStream) return false;
+    if (!isSportsPage && !eventMatchesLiveView(e)) return false;
+    if (statusFilter === "live" && e.status !== "live") return false;
+    if (statusFilter === "upcoming" && e.status !== "upcoming") return false;
     return true;
   }
 
@@ -1856,7 +2066,10 @@
   }
 
   function renderLeague(league, filterSport, searchQuery, eventsOverride) {
-    if (eventsOverride == null && filterSport && filterSport !== "stream" && league.sport !== filterSport) {
+    if (
+      eventsOverride == null &&
+      !leagueMatchesFilter(league, filterSport)
+    ) {
       return "";
     }
     const events = eventsOverride || league.events;
@@ -1886,18 +2099,20 @@
     `;
   }
 
-  /** Pinned matches first (pin order), then remaining leagues in default API order. */
-  function renderOrderedLeagues(leagues, filterSport, searchQuery) {
+  /** Pinned matches first (pin order), then remaining leagues in default API order.
+   *  @param {object} [opts]
+   *  @param {'live'|'upcoming'|null} [opts.statusFilter]
+   *  @param {boolean} [opts.skipEmptyMessages]
+   */
+  function renderOrderedLeagues(leagues, filterSport, searchQuery, opts) {
+    const statusFilter = (opts && opts.statusFilter) || null;
+    const skipEmptyMessages = !!(opts && opts.skipEmptyMessages);
     const eventIndex = new Map();
     leagues.forEach((league) => {
       if (!leagueMatchesFilter(league, filterSport)) return;
-      league.events.forEach((event) => {
-        if (isNationalTeamPage) {
-          const wantLive = state.ntMarketMode === "live";
-          if (!!event.live !== wantLive) return;
-        }
-        if (state.streamOnly && !event.stream) return;
-        if (!isSportsPage && !eventMatchesLiveView(event)) return;
+      league.events.forEach((raw) => {
+        const event = normalizeMatchEvent(raw);
+        if (!eventPassesLeagueFilters(event, statusFilter)) return;
         eventIndex.set(event.id, { league, event });
       });
     });
@@ -1915,43 +2130,103 @@
 
     leagues.forEach((league) => {
       if (!leagueMatchesFilter(league, filterSport)) return;
-      const events = league.events.filter((event) => {
-        if (pinnedSet.has(event.id)) return false;
-        if (isNationalTeamPage) {
-          const wantLive = state.ntMarketMode === "live";
-          if (!!event.live !== wantLive) return false;
-        }
-        if (state.streamOnly && !event.stream) return false;
-        if (!isSportsPage && !eventMatchesLiveView(event)) return false;
-        return true;
-      });
+      const events = league.events
+        .map((raw) => normalizeMatchEvent(raw))
+        .filter((event) => {
+          if (pinnedSet.has(event.id)) return false;
+          return eventPassesLeagueFilters(event, statusFilter);
+        });
       if (events.length) sections.push({ league, events });
     });
 
-    if (!sections.length && state.liveView === "favorites" && !isSportsPage && !isNationalTeamPage) {
-      return `<div class="nt-mode-empty" role="status">
+    if (!sections.length) {
+      if (skipEmptyMessages) return "";
+      if (state.liveView === "favorites" && !isSportsPage && !isNationalTeamPage) {
+        return `<div class="nt-mode-empty" role="status">
         <p class="nt-mode-empty__title">No favorite matches</p>
         <p class="nt-mode-empty__text">Tap the star on a match to add it here</p>
       </div>`;
-    }
+      }
 
-    if (!sections.length && state.liveView === "recommended" && !isSportsPage && !isNationalTeamPage) {
-      return `<div class="nt-mode-empty" role="status">
+      if (state.liveView === "recommended" && !isSportsPage && !isNationalTeamPage) {
+        return `<div class="nt-mode-empty" role="status">
         <p class="nt-mode-empty__title">No recommended matches</p>
         <p class="nt-mode-empty__text">Recommended live events will appear here</p>
       </div>`;
-    }
+      }
 
-    if (!sections.length && isNationalTeamPage) {
-      return `<div class="nt-mode-empty" role="status">
+      if (isNationalTeamPage) {
+        return `<div class="nt-mode-empty" role="status">
         <p class="nt-mode-empty__title">${state.ntMarketMode === "live" ? "No live matches" : "No championships"}</p>
         <p class="nt-mode-empty__text">Information will be displayed here soon</p>
       </div>`;
+      }
+
+      return "";
     }
 
     return sections
       .map(({ league, events }) => renderLeague(league, null, searchQuery, events))
       .join("");
+  }
+
+  function wrapMatchTableSection(status, title, innerHtml) {
+    if (!innerHtml) return "";
+    return `<div class="match-table-section match-table-section--${status}" data-match-status="${status}">
+      <h3 class="match-table-section__title">${title}</h3>
+      ${innerHtml}
+    </div>`;
+  }
+
+  /** Homepage / shared LIVE chrome: Live block on top, Upcoming below (Matches tab). */
+  function renderSplitLiveUpcoming(leagues, filterSport, searchQuery) {
+    const view = state.liveView || "matches";
+
+    if (view === "matches" || view === "favorites") {
+      const liveHtml = renderOrderedLeagues(leagues, filterSport, searchQuery, {
+        statusFilter: "live",
+        skipEmptyMessages: true,
+      });
+      const upHtml = renderOrderedLeagues(leagues, filterSport, searchQuery, {
+        statusFilter: "upcoming",
+        skipEmptyMessages: true,
+      });
+      const html =
+        wrapMatchTableSection("live", "Live", liveHtml) +
+        wrapMatchTableSection("upcoming", "Upcoming", upHtml);
+      if (html) return html;
+      if (view === "favorites") {
+        return `<div class="nt-mode-empty" role="status">
+          <p class="nt-mode-empty__title">No favorite matches</p>
+          <p class="nt-mode-empty__text">Tap the star on a match to add it here</p>
+        </div>`;
+      }
+      return `<div class="nt-mode-empty" role="status">
+          <p class="nt-mode-empty__title">No matches</p>
+          <p class="nt-mode-empty__text">Try another sport or clear filters</p>
+        </div>`;
+    }
+
+    if (view === "upcoming") {
+      const upHtml = renderOrderedLeagues(leagues, filterSport, searchQuery, {
+        statusFilter: "upcoming",
+        skipEmptyMessages: true,
+      });
+      return (
+        wrapMatchTableSection("upcoming", "Upcoming", upHtml) ||
+        `<div class="nt-mode-empty" role="status">
+          <p class="nt-mode-empty__title">No upcoming events</p>
+          <p class="nt-mode-empty__text">Upcoming matches will appear here</p>
+        </div>`
+      );
+    }
+
+    const html = renderOrderedLeagues(leagues, filterSport, searchQuery, {
+      skipEmptyMessages: false,
+    });
+    if (!html) return html;
+    if (html.indexOf("nt-mode-empty") !== -1) return html;
+    return wrapMatchTableSection("live", "Live", html);
   }
 
   function renderTables() {
@@ -1960,11 +2235,14 @@
     if (liveEl) {
       /* Sports page: Line (pre-match) data in the national-team table chrome */
       const leagues = isSportsPage ? lineLeagues : liveLeagues;
-      liveEl.innerHTML = renderOrderedLeagues(
-        leagues,
-        state.activeLiveFilter,
-        state.liveSearch
-      );
+      const homeSportsFilter =
+        isHomePage && state.activeHomeSports.size
+          ? state.activeHomeSports
+          : state.activeLiveFilter;
+      const splitLiveUpcoming = !isSportsPage && !isNationalTeamPage;
+      liveEl.innerHTML = splitLiveUpcoming
+        ? renderSplitLiveUpcoming(leagues, homeSportsFilter, state.liveSearch)
+        : renderOrderedLeagues(leagues, homeSportsFilter, state.liveSearch);
     }
     if (lineEl) {
       lineEl.innerHTML = renderOrderedLeagues(
@@ -2082,8 +2360,12 @@
     if (!el) return;
     el.innerHTML = liveSportFilters
       .map((f) => {
-        const active = state.activeLiveFilter === f.id ? " active" : "";
-        return `<button type="button" class="filter-chip${active}" data-filter="${f.id}" data-group="${f.group}" aria-pressed="${active ? "true" : "false"}">
+        const active =
+          isHomePage && state.activeHomeSports.size
+            ? state.activeHomeSports.has(f.id)
+            : state.activeLiveFilter === f.id;
+        const activeClass = active ? " active" : "";
+        return `<button type="button" class="filter-chip${activeClass}" data-filter="${f.id}" data-group="${f.group}" aria-pressed="${active ? "true" : "false"}">
           <img class="chip-icon" src="${f.icon}" alt="" width="16" height="16" />${f.label}
         </button>`;
       })
@@ -2276,13 +2558,82 @@
     }
   }
 
+  function syncHomePopularSports() {
+    $$(".home-sport-card[data-home-sport]").forEach((card) => {
+      const id = card.getAttribute("data-home-sport");
+      const active = state.activeHomeSports.size
+        ? state.activeHomeSports.has(id)
+        : id === state.activeLiveFilter;
+      card.classList.toggle("is-active", active);
+      card.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
   function selectLiveSportFilter(id) {
+    state.activeHomeSports.clear();
     state.activeLiveFilter = state.activeLiveFilter === id ? null : id;
     const liveStreamToggle = $("#live-stream-toggle");
     if (liveStreamToggle) liveStreamToggle.checked = false;
     renderLiveFilterBar();
     renderTables();
+    syncHomePopularSports();
   }
+
+  /** Horizontally center a LIVE sport chip in the scrollable filter strip. */
+  function scrollLiveFilterChipIntoView(id) {
+    if (!id) return;
+    const list = $("#live-filter-list");
+    if (!list) return;
+    const chip = list.querySelector(
+      `.filter-chip[data-filter="${CSS.escape(String(id))}"]`
+    );
+    if (!chip || chip.classList.contains("is-overflow")) return;
+
+    const listRect = list.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const delta =
+      chipRect.left -
+      listRect.left -
+      (listRect.width - chipRect.width) / 2;
+    const maxLeft = Math.max(0, list.scrollWidth - list.clientWidth);
+    const nextLeft = Math.min(maxLeft, Math.max(0, list.scrollLeft + delta));
+    if (Math.abs(nextLeft - list.scrollLeft) < 2) return;
+    list.scrollTo({ left: nextLeft, behavior: "smooth" });
+  }
+
+  function revealLiveTableSport(id) {
+    $("#live-events")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Wait a frame so chips are laid out after re-render, then scroll strip.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => scrollLiveFilterChipIntoView(id));
+    });
+  }
+
+  window.selectHomeSportFilter = (id) => {
+    selectLiveSportFilter(id);
+    revealLiveTableSport(state.activeLiveFilter || id);
+  };
+
+  window.getHomeSportFilters = () =>
+    state.activeHomeSports.size
+      ? Array.from(state.activeHomeSports)
+      : state.activeLiveFilter
+        ? [state.activeLiveFilter]
+        : [];
+
+  window.applyHomeSportFilters = (ids) => {
+    const next = Array.from(
+      new Set((Array.isArray(ids) ? ids : []).filter(Boolean))
+    );
+    state.activeHomeSports = new Set(next);
+    state.activeLiveFilter = next.length === 1 ? next[0] : null;
+    const liveStreamToggle = $("#live-stream-toggle");
+    if (liveStreamToggle) liveStreamToggle.checked = false;
+    renderLiveFilterBar();
+    renderTables();
+    syncHomePopularSports();
+    revealLiveTableSport(next[0] || state.activeLiveFilter);
+  };
 
   function renderAccumulators() {
     if (window.SbAccumulators && typeof window.SbAccumulators.render === "function") {
@@ -3136,14 +3487,18 @@
         (ev) => ev.id === sourceEventId || (source.id && source.id.startsWith(`${ev.id}-`))
       );
       if (!event) continue;
-      const score = event.scoreH != null || event.scoreA != null ? `[ ${event.scoreH ?? 0}:${event.scoreA ?? 0} ]` : "";
+      const e = normalizeMatchEvent(event);
+      const score =
+        e.status === "live" && (e.score.home != null || e.score.away != null)
+          ? `[ ${e.score.home ?? 0}:${e.score.away ?? 0} ]`
+          : "";
       return {
         ...source,
-        eventId: event.id,
+        eventId: e.id,
         league: source.league || league.name,
-        live: Boolean(event.live),
+        live: e.status === "live",
         score,
-        match: source.match || `${event.home} - ${event.away}`,
+        match: source.match || `${e.home} - ${e.away}`,
         sportIcon: sportHeaderIconMap[league.sport] || `assets/icons/sport-${league.sport}.svg`,
       };
     }
@@ -3480,31 +3835,34 @@
   }
 
   function sidebarMatchCardHtml(league, event) {
-    const favOn = state.favorites.has(event.id);
-    const status = event.live
-      ? event.clock || event.time || "Event in progress"
-      : event.time || "";
-    const scoreH = event.scoreH != null ? event.scoreH : "";
-    const scoreA = event.scoreA != null ? event.scoreA : "";
-    const homeLogo = event.homeLogo || "assets/images/mobile-home/teams/team-01.webp";
-    const awayLogo = event.awayLogo || "assets/images/mobile-home/teams/team-02.webp";
-    const stream = event.stream
-      ? `<img class="sb-match-card__stream" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
-      : "";
-    const hasDraw = event.ox != null && event.ox !== 0;
+    const e = normalizeMatchEvent(event);
+    const favOn = state.favorites.has(e.id);
+    const status =
+      e.status === "live"
+        ? e.elapsedTime || e.clock || e.time || "Event in progress"
+        : e.startTime || e.time || "";
+    const scoreH = e.status === "live" && e.score.home != null ? e.score.home : "";
+    const scoreA = e.status === "live" && e.score.away != null ? e.score.away : "";
+    const homeLogo = e.homeLogo || "assets/images/mobile-home/teams/team-01.webp";
+    const awayLogo = e.awayLogo || "assets/images/mobile-home/teams/team-02.webp";
+    const stream =
+      e.status === "live" && e.hasLiveStream
+        ? `<img class="sb-match-card__stream" src="assets/icons/lnt/icon-stream.svg" alt="" width="14" height="13" title="Live stream" />`
+        : "";
+    const hasDraw = e.ox != null && e.ox !== 0;
     const odds = [
-      { lab: "W1", val: event.o1, sel: "1" },
-      hasDraw ? { lab: "X", val: event.ox, sel: "X" } : null,
-      { lab: "W2", val: event.o2, sel: "2" },
+      { lab: "W1", val: e.o1, sel: "1" },
+      hasDraw ? { lab: "X", val: e.ox, sel: "X" } : null,
+      { lab: "W2", val: e.o2, sel: "2" },
     ].filter(Boolean);
 
     const oddsHtml = odds
       .map((o) => {
         const disabled = !o.val;
         const data = JSON.stringify({
-          id: `${event.id}-${o.sel.toLowerCase()}`,
+          id: `${e.id}-${o.sel.toLowerCase()}`,
           league: league.name,
-          match: `${event.home} vs ${event.away}`,
+          match: `${e.home} vs ${e.away}`,
           market: "1X2",
           selection: o.sel,
           odds: o.val || 0,
@@ -3516,23 +3874,23 @@
       .join("");
 
     return `
-      <article class="sb-match-card" data-event-id="${event.id}">
+      <article class="sb-match-card" data-event-id="${e.id}">
         <div class="sb-match-card__head">
           <span class="sb-match-card__league">${league.name}</span>
           <div class="sb-match-card__actions">
             ${stream}
-            <button type="button" class="sb-match-card__fav${favOn ? " active" : ""}" data-fav="${event.id}" aria-label="Favourite" aria-pressed="${favOn ? "true" : "false"}" title="Favourite">★</button>
+            <button type="button" class="sb-match-card__fav${favOn ? " active" : ""}" data-fav="${e.id}" aria-label="Favourite" aria-pressed="${favOn ? "true" : "false"}" title="Favourite">★</button>
           </div>
         </div>
         <div class="sb-match-card__status">${status}</div>
         <div class="sb-match-card__teams">
           <div class="sb-match-card__team-col">
-            <div class="sb-match-card__team"><img src="${homeLogo}" alt="" width="16" height="16" /><span>${event.home}</span></div>
-            <div class="sb-match-card__team"><img src="${awayLogo}" alt="" width="16" height="16" /><span>${event.away}</span></div>
+            <div class="sb-match-card__team"><img src="${homeLogo}" alt="" width="16" height="16" /><span>${e.home}</span></div>
+            <div class="sb-match-card__team"><img src="${awayLogo}" alt="" width="16" height="16" /><span>${e.away}</span></div>
           </div>
           <div class="sb-match-card__score"><span>${scoreH}</span><span>${scoreA}</span></div>
         </div>
-        <button type="button" class="sb-match-card__detail" data-event-info="${event.id}">Detailed score</button>
+        <button type="button" class="sb-match-card__detail" data-event-info="${e.id}">Detailed score</button>
         <div class="sb-match-card__odds">${oddsHtml}</div>
       </article>`;
   }
@@ -3930,6 +4288,15 @@
 
     const liveStreamToggle = $("#live-stream-toggle");
     const liveFilterList = $("#live-filter-list");
+    const homePopularSports = $(".home-popular-sports");
+    if (homePopularSports) {
+      homePopularSports.addEventListener("click", (e) => {
+        const card = e.target.closest(".home-sport-card[data-home-sport]");
+        if (!card) return;
+        window.selectHomeSportFilter(card.getAttribute("data-home-sport"));
+      });
+    }
+
     if (liveFilterList) {
       liveFilterList.addEventListener("click", (e) => {
         const chip = e.target.closest(".filter-chip");
@@ -6000,6 +6367,7 @@
       initPlayersOnlineCounter();
       initMobileChrome();
       initHomeReferral();
+      initHomePayoutMarquee();
       initSportsPageChrome();
     } else {
       window.syncMobileBetCount = syncMobileBetCount;

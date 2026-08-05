@@ -6,6 +6,7 @@
   <title>Sportsbook � Live &amp; Line</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/home-social.css" />
+  <link rel="stylesheet" href="mobile/css/mobile-sports-filter.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
 <body data-page="home">
@@ -325,8 +326,62 @@
           <div class="promo-dots" id="promo-dots" role="tablist" aria-label="Promo slides"></div>
         </section>
 
+        <!-- MOBILE POPULAR SPORTS (≤900 only) -->
+        <section class="home-popular-sports" aria-labelledby="home-popular-sports-title">
+          <header class="home-rail-head">
+            <h2 id="home-popular-sports-title">Popular Sports</h2>
+            <button type="button" data-mh-sf-open aria-controls="mh-sf" aria-expanded="false">See All</button>
+          </header>
+          <div class="home-sports-rail" role="list" aria-label="Popular sports">
+            <button type="button" class="home-sport-card" data-home-sport="football" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/football.png" alt="" width="40" height="40" /></span>
+              <strong>Football</strong>
+              <span>324 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="basketball" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/basketball.png" alt="" width="40" height="40" /></span>
+              <strong>Basketball</strong>
+              <span>81 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="tennis" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/tennis.png" alt="" width="40" height="40" /></span>
+              <strong>Tennis</strong>
+              <span>55 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="esports" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/esports.png" alt="" width="40" height="40" /></span>
+              <strong>Esports</strong>
+              <span>48 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="cricket" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/cricket.png" alt="" width="40" height="40" /></span>
+              <strong>Cricket</strong>
+              <span>28 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="baseball" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/baseball.png" alt="" width="40" height="40" /></span>
+              <strong>Baseball</strong>
+              <span>12 Live</span>
+            </button>
+            <button type="button" class="home-sport-card" data-home-sport="volleyball" role="listitem" aria-pressed="false">
+              <span class="home-sport-card__icon"><img src="assets/games/sports/volleyball.png" alt="" width="40" height="40" /></span>
+              <strong>Volleyball</strong>
+              <span>6 Live</span>
+            </button>
+            <button type="button" class="home-sport-card home-sport-card--more" role="listitem" data-mh-sf-open aria-controls="mh-sf" aria-expanded="false">
+              <span class="home-sport-card__icon"><img src="assets/icons/te-menu.svg" alt="" width="28" height="28" /></span>
+              <strong>More</strong>
+              <span>All sports</span>
+            </button>
+          </div>
+        </section>
+
         <!-- GAME STRIP -->
         <section class="game-strip" id="games" aria-label="1xGames">
+          <header class="home-rail-head game-strip__head">
+            <h2>Popular Games</h2>
+            <a href="casino.html">See All</a>
+          </header>
           <button type="button" class="carousel-btn prev" id="games-prev" aria-label="Previous games">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
           </button>
@@ -714,55 +769,59 @@
                   <span class="home-payout__title-payout">PAYOUT</span>
                 </h2>
               </div>
-              <div class="home-payout__row">
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/three-little-pig.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Three Little Pig</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/panda-dragon-boat.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Panda Dragon Boat</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/bubble-pop.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Bubble Pop</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/age-of-the-gods.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Age of the Gods...</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/three-little-pig.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Three Little Pig</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/panda-dragon-boat.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Panda Dragon Boat</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/bubble-pop.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Bubble Pop</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
-                <article class="home-payout-card">
-                  <img class="home-payout-card__thumb" src="assets/games/payouts/age-of-the-gods.png" alt="" width="64" height="64" loading="lazy" />
-                  <p class="home-payout-card__game">Age of the Gods...</p>
-                  <p class="home-payout-card__user">ab****65</p>
-                  <p class="home-payout-card__amount">$870.20</p>
-                </article>
+              <div class="home-payout__viewport" data-home-payout-marquee>
+                <div class="home-payout__track">
+                  <div class="home-payout__group">
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/three-little-pig.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Three Little Pig</p>
+                      <p class="home-payout-card__user">ab****65</p>
+                      <p class="home-payout-card__amount">$870.20</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/panda-dragon-boat.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Panda Dragon Boat</p>
+                      <p class="home-payout-card__user">ab****65</p>
+                      <p class="home-payout-card__amount">$870.20</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/bubble-pop.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Bubble Pop</p>
+                      <p class="home-payout-card__user">ab****65</p>
+                      <p class="home-payout-card__amount">$870.20</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/age-of-the-gods.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Age of the Gods...</p>
+                      <p class="home-payout-card__user">ab****65</p>
+                      <p class="home-payout-card__amount">$870.20</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/three-little-pig.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Three Little Pig</p>
+                      <p class="home-payout-card__user">cd****12</p>
+                      <p class="home-payout-card__amount">$1,240.00</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/panda-dragon-boat.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Panda Dragon Boat</p>
+                      <p class="home-payout-card__user">xy****88</p>
+                      <p class="home-payout-card__amount">$642.50</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/bubble-pop.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Bubble Pop</p>
+                      <p class="home-payout-card__user">mk****03</p>
+                      <p class="home-payout-card__amount">$2,105.80</p>
+                    </article>
+                    <article class="home-payout-card">
+                      <img class="home-payout-card__thumb" src="assets/games/payouts/age-of-the-gods.png" alt="" width="64" height="64" loading="lazy" />
+                      <p class="home-payout-card__game">Age of the Gods...</p>
+                      <p class="home-payout-card__user">jq****41</p>
+                      <p class="home-payout-card__amount">$955.10</p>
+                    </article>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -1207,6 +1266,139 @@
     </button>
   </nav>
 
+  <div class="mh-sf home-sports-filter" id="mh-sf" role="dialog" aria-modal="true" aria-labelledby="mh-sf-title" hidden>
+    <header class="mh-sf__head">
+      <button type="button" class="mh-sf__back" data-mh-sf-close aria-label="Close sports filter">
+        <img src="mobile/assets/icons/sp-back.svg" alt="" width="10" height="16" />
+      </button>
+      <h2 class="mh-sf__title" id="mh-sf-title">Sports</h2>
+    </header>
+    <label class="mh-sf__search home-sports-filter__search">
+      <img src="mobile/assets/icons/sp-search.svg" alt="" width="18" height="18" />
+      <input id="mh-sf-input" type="search" placeholder="Search sports" autocomplete="off" enterkeyhint="search" />
+    </label>
+    <div class="mh-sf__body home-sports-filter__body">
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="all" data-mh-sf-label="All" role="checkbox" aria-checked="true">
+        <img class="mh-sf__row-icon--mono" src="mobile/assets/icons/sp-list.svg" alt="" />
+        <span class="mh-sf__row-name">All</span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="football" data-mh-sf-label="Football" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/football.png" alt="" />
+        <span class="mh-sf__row-name">Football <span class="mh-sf__row-count">(11)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="hockey" data-mh-sf-label="Ice Hockey" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/ice-hockey.png" alt="" />
+        <span class="mh-sf__row-name">Ice Hockey <span class="mh-sf__row-count">(2)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="basketball" data-mh-sf-label="Basketball" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/basketball.png" alt="" />
+        <span class="mh-sf__row-name">Basketball <span class="mh-sf__row-count">(12)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="tennis" data-mh-sf-label="Tennis" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/tennis.png" alt="" />
+        <span class="mh-sf__row-name">Tennis <span class="mh-sf__row-count">(3)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="baseball" data-mh-sf-label="Baseball" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/baseball.png" alt="" />
+        <span class="mh-sf__row-name">Baseball <span class="mh-sf__row-count">(12)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="volleyball" data-mh-sf-label="Volleyball" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/volleyball.png" alt="" />
+        <span class="mh-sf__row-name">Volleyball <span class="mh-sf__row-count">(6)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="handball" data-mh-sf-label="Handball" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/handball.png" alt="" />
+        <span class="mh-sf__row-name">Handball <span class="mh-sf__row-count">(1)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="tabletennis" data-mh-sf-label="Table Tennis" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/table-tennis.png" alt="" />
+        <span class="mh-sf__row-name">Table Tennis <span class="mh-sf__row-count">(20)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="cricket" data-mh-sf-label="Cricket" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/cricket.png" alt="" />
+        <span class="mh-sf__row-name">Cricket <span class="mh-sf__row-count">(14)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="esports" data-mh-sf-label="Esports" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/esports.png" alt="" />
+        <span class="mh-sf__row-name">Esports <span class="mh-sf__row-count">(7)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="americanfootball" data-mh-sf-label="American Football" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/american-football.png" alt="" />
+        <span class="mh-sf__row-name">American Football <span class="mh-sf__row-count">(1)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="athletics" data-mh-sf-label="Athletics" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/athletics.png" alt="" />
+        <span class="mh-sf__row-name">Athletics <span class="mh-sf__row-count">(6)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="badminton" data-mh-sf-label="Badminton" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/badminton.png" alt="" />
+        <span class="mh-sf__row-name">Badminton <span class="mh-sf__row-count">(4)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="beachvolleyball" data-mh-sf-label="Beach Volleyball" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/beach-volleyball.png" alt="" />
+        <span class="mh-sf__row-name">Beach Volleyball <span class="mh-sf__row-count">(2)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="boatracing" data-mh-sf-label="Boat Racing" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/boat-racing.png" alt="" />
+        <span class="mh-sf__row-name">Boat Racing <span class="mh-sf__row-count">(8)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="boxing" data-mh-sf-label="Boxing" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/boxing.png" alt="" />
+        <span class="mh-sf__row-name">Boxing <span class="mh-sf__row-count">(1)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="fifa" data-mh-sf-label="FIFA" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/fifa.png" alt="" />
+        <span class="mh-sf__row-name">FIFA <span class="mh-sf__row-count">(70)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="futsal" data-mh-sf-label="Futsal" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/futsal.png" alt="" />
+        <span class="mh-sf__row-name">Futsal <span class="mh-sf__row-count">(1)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="greyhound" data-mh-sf-label="Greyhound Racing" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/greyhound-racing.png" alt="" />
+        <span class="mh-sf__row-name">Greyhound Racing <span class="mh-sf__row-count">(14)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="horseracing" data-mh-sf-label="Horse Racing" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/horse-racing.png" alt="" />
+        <span class="mh-sf__row-name">Horse Racing <span class="mh-sf__row-count">(5)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="lottery" data-mh-sf-label="Lottery" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/lottery.png" alt="" />
+        <span class="mh-sf__row-name">Lottery <span class="mh-sf__row-count">(6)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="mh-sf__row" data-mh-sf-pick="mortalkombat" data-mh-sf-label="Mortal Kombat" role="checkbox" aria-checked="false">
+        <img class="mh-sf__sport-art" src="assets/games/sports/mortal-Kombat.png" alt="" />
+        <span class="mh-sf__row-name">Mortal Kombat <span class="mh-sf__row-count">(25)</span></span>
+        <span class="home-sports-filter__check" aria-hidden="true"></span>
+      </button>
+    </div>
+    <footer class="home-sports-filter__foot">
+      <button type="button" class="home-sports-filter__apply" data-mh-sf-apply>Apply</button>
+    </footer>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
   <script src="js/favourites-store.js"></script>
   <script src="js/accumulators.js"></script>
@@ -1215,5 +1407,6 @@
   <script src="js/bet-slip-generator.js"></script>
   <script src="js/script.js"></script>
   <script src="js/auth-modals.js"></script>
+  <script src="mobile/js/mobile-sports-filter.js"></script>
 </body>
 </html>

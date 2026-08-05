@@ -111,6 +111,21 @@ Apply **`data-mh-scroll` + `data-mh-drag-scroll`** together on any rail that sho
 
 ---
 
+## Root homepage mobile hierarchy (`index.html`, ≤900)
+
+The responsive desktop homepage keeps its existing theme and match logic, but prioritizes sport discovery on mobile:
+
+1. Promo hero
+2. **Popular Sports** (`.home-popular-sports`) — horizontal `.home-sports-rail` of rounded `.home-sport-card` buttons; sport art from desktop `assets/games/sports/*.png` (not under `mobile/`); first/last card use `12px` side margin (matches `.home-rail-head`) so the lead card is not flush to the panel edge
+3. Live / Sports quick navigation
+4. TOP-EVENTS and live match table (`#live-table` stacks **Live** then **Upcoming** sections on Matches; cards honor `status` / `hasLiveStream` / scores vs `startTime`)
+5. **Popular Games** (`.game-strip`, moved after the live table with mobile-only flex order)
+6. Remaining homepage sections
+
+Popular Sport cards use `data-home-sport`; `js/script.js` forwards selection to the existing LIVE filter and synchronizes `.is-active` / `aria-pressed`. Selecting a card scrolls `#live-events` into view and horizontally centers the matching `.te-filter-list` chip so the green selected underline is visible (e.g. Tennis). **See All** and **More** open the full-height `#mh-sf` Sports drawer: sticky header, search, vertically scrolling rows with art from desktop `assets/games/sports/*.png` (`.mh-sf__sport-art`; **All** keeps list SVG), checkbox multi-select, **All** first (empty selection = all sports), and a safe-area-aware **Apply** footer. Apply forwards the selected IDs to the same homepage LIVE table and uses the same reveal scroll for the first selected chip; direct Popular Sport cards remain a fast single-select path. More retains the same card/icon treatment as the other sport cards. The block, drawer entry points, and reordering stay hidden outside ≤900, so desktop order is unchanged.
+
+---
+
 ## Logged-in chrome (after auth)
 
 **Session:** `localStorage` key `mh-logged-in-v1` (`"1"`). Set on login/register/social submit in `mobile-auth.js`, then redirect to `index.html`. Preview: `index.html?loggedIn=1` (clear with `?loggedIn=0`).
