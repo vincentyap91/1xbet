@@ -5899,6 +5899,38 @@
     });
   }
 
+  function resetMyBetsTipShift(btn) {
+    const tip = btn && btn.querySelector(".mybets-tip");
+    if (!tip) return;
+    tip.style.removeProperty("--tip-shift");
+    tip.style.removeProperty("--tip-arrow-shift");
+  }
+
+  /** Keep tip fully inside the bet-slip panel / viewport (esp. mobile left clip). */
+  function clampMyBetsTip(btn) {
+    const tip = btn && btn.querySelector(".mybets-tip");
+    if (!tip) return;
+    resetMyBetsTipShift(btn);
+    requestAnimationFrame(() => {
+      const tipRect = tip.getBoundingClientRect();
+      const panel =
+        btn.closest(".bet-slip-panel") ||
+        btn.closest(".right-sidebar") ||
+        btn.closest(".mybets-open-controls");
+      const bounds = (panel || document.body).getBoundingClientRect();
+      const pad = 12;
+      let shift = 0;
+      if (tipRect.left < bounds.left + pad) {
+        shift = bounds.left + pad - tipRect.left;
+      } else if (tipRect.right > bounds.right - pad) {
+        shift = bounds.right - pad - tipRect.right;
+      }
+      if (!shift) return;
+      tip.style.setProperty("--tip-shift", `${shift}px`);
+      tip.style.setProperty("--tip-arrow-shift", `${-shift}px`);
+    });
+  }
+
   function syncMyBetsAuthUi() {
     const body = $("#my-bets-body");
     if (!body || !body.dataset.initialized) return;
@@ -5972,10 +6004,12 @@
         $$("[data-mybets-tip]", body).forEach((btn) => {
           btn.classList.remove("is-open");
           btn.setAttribute("aria-expanded", "false");
+          resetMyBetsTipShift(btn);
         });
         if (!open) {
           tipBtn.classList.add("is-open");
           tipBtn.setAttribute("aria-expanded", "true");
+          clampMyBetsTip(tipBtn);
         }
         return;
       }
@@ -5983,6 +6017,7 @@
       $$("[data-mybets-tip]", body).forEach((btn) => {
         btn.classList.remove("is-open");
         btn.setAttribute("aria-expanded", "false");
+        resetMyBetsTipShift(btn);
       });
 
       const subtab = e.target.closest("[data-mybets-tab]");

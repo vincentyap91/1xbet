@@ -5116,7 +5116,7 @@ body.tsp-open {
   background: #1a1f26;
   border-radius: 6px;
   box-shadow: 0 6px 16px rgba(11, 29, 51, 0.28);
-  transform: none;
+  transform: translateX(var(--tip-shift, 0px));
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -5126,7 +5126,7 @@ body.tsp-open {
 .mybets-tip::before {
   content: "";
   position: absolute;
-  left: 8px;
+  left: calc(8px + var(--tip-arrow-shift, 0px));
   bottom: 100%;
   width: 0;
   height: 0;
@@ -5142,20 +5142,20 @@ body.tsp-open {
   visibility: visible;
 }
 
-/* Near right edge of narrow bet-slip: grow tip leftward so it isn't clipped */
-.mybets-info--accept .mybets-tip {
-  left: auto;
-  right: 0;
-}
-
-.mybets-info--accept .mybets-tip::before {
-  left: auto;
-  right: 8px;
-}
-
+/* Desktop narrow rail: accept tip grows left from the icon */
 @media (min-width: 901px) {
   .mybets-tip {
     max-width: 168px;
+  }
+
+  .mybets-info--accept .mybets-tip {
+    left: auto;
+    right: 0;
+  }
+
+  .mybets-info--accept .mybets-tip::before {
+    left: auto;
+    right: calc(8px - var(--tip-arrow-shift, 0px));
   }
 
   /* Allow tips to paint over cards without being clipped by the panel shell */
@@ -5168,6 +5168,31 @@ body.tsp-open {
   .my-bets-body:has(.mybets-info:hover),
   .my-bets-body:has(.mybets-info:focus-visible),
   .my-bets-body:has(.mybets-info.is-open) {
+    overflow: visible;
+  }
+}
+
+/* Mobile sheet: center under icon; JS clamps if near edges */
+@media (max-width: 900px) {
+  .mybets-tip,
+  .mybets-info--accept .mybets-tip {
+    left: 50%;
+    right: auto;
+    width: max-content;
+    max-width: min(260px, calc(100vw - 40px));
+    transform: translateX(calc(-50% + var(--tip-shift, 0px)));
+  }
+
+  .mybets-tip::before,
+  .mybets-info--accept .mybets-tip::before {
+    left: calc(50% + var(--tip-arrow-shift, 0px));
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .right-sidebar .bet-slip-panel:has(.mybets-info.is-open),
+  .right-sidebar .my-bets-body:has(.mybets-info.is-open),
+  .right-sidebar .mybets-app:has(.mybets-info.is-open) {
     overflow: visible;
   }
 }
