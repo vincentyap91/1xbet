@@ -60,6 +60,9 @@
     AR: "assets/icons/lnt/flag-argentina.svg",
     CH: "assets/icons/lnt/flag-switzerland.svg",
     ID: "assets/icons/lnt/flag-id.svg",
+    PL: "assets/icons/lnt/flag-poland.svg",
+    BR: "mobile/assets/flags/flag-br.svg",
+    AU: "assets/icons/lnt/flag-au.svg",
     WC: "assets/icons/lnt/crumb-trophy.svg",
     RU: "assets/icons/lnt/crumb-trophy.svg",
     UA: "assets/icons/lnt/crumb-trophy.svg",
@@ -976,6 +979,204 @@
     },
   ];
 
+  /**
+   * Desktop Sports competition navigation.
+   * Card order mirrors the reference Line rail; each card targets one table league.
+   * `group` stays as metadata (Country / League / Club) even though the rail renders flat.
+   */
+  const SPORTS_COMPETITIONS = [
+    {
+      id: "uefa-el",
+      name: "UEFA Europa League",
+      group: "League",
+      icon: "assets/icons/sp-competition/trophy.svg",
+      leagueId: "sp-uefa-el",
+      sport: "football",
+      country: "WC",
+      teams: ["Roma", "Real Betis"],
+    },
+    {
+      id: "north-american",
+      name: "North American Championship",
+      group: "League",
+      icon: "assets/icons/sp-competition/globe.svg",
+      leagueId: "sp-north-american",
+      sport: "football",
+      country: "WC",
+      teams: ["Monterrey", "Los Angeles FC"],
+    },
+    {
+      id: "wnba",
+      name: "WNBA",
+      group: "League",
+      icon: "assets/icons/lnt/flag-us.svg",
+      leagueId: "wnba-line",
+      sport: "basketball",
+    },
+    {
+      id: "uefa-conference",
+      name: "UEFA Conference League",
+      group: "League",
+      icon: "mobile/assets/flags/flag-eu.svg",
+      leagueId: "sp-uefa-conference",
+      sport: "football",
+      country: "WC",
+      teams: ["Fiorentina", "AZ Alkmaar"],
+    },
+    {
+      id: "usa-mlb",
+      name: "USA. MLB",
+      group: "Country",
+      icon: "assets/icons/lnt/flag-us.svg",
+      leagueId: "sp-usa-mlb",
+      sport: "baseball",
+      country: "US",
+      teams: ["Seattle Mariners", "Detroit Tigers"],
+    },
+    {
+      id: "colombia-categoria",
+      name: "Colombia. Categoría Primera A",
+      group: "Country",
+      icon: "assets/icons/lnt/flag-co.svg",
+      leagueId: "sp-colombia",
+      sport: "football",
+      country: "CO",
+      teams: ["Atlético Nacional", "Millonarios"],
+    },
+    {
+      id: "concacaf-central",
+      name: "CONCACAF Central American Cup",
+      group: "League",
+      icon: "assets/icons/sp-competition/globe.svg",
+      leagueId: "sp-concacaf",
+      sport: "football",
+      country: "WC",
+      teams: ["Alajuelense", "Real Estelí"],
+    },
+    {
+      id: "club-friendlies",
+      name: "Club Friendlies",
+      group: "Club",
+      icon: "assets/icons/sp-competition/globe.svg",
+      leagueId: "sp-club-friendlies",
+      sport: "football",
+      country: "WC",
+      teams: ["Santos Laguna", "América de Cali"],
+    },
+    {
+      id: "atp-montreal",
+      name: "ATP. Montreal",
+      group: "League",
+      icon: "assets/icons/lnt/flag-ca.svg",
+      leagueId: "atp-mtl",
+      sport: "tennis",
+    },
+    {
+      id: "wta-warsaw",
+      name: "WTA. Warsaw",
+      group: "League",
+      icon: "assets/icons/lnt/flag-poland.svg",
+      leagueId: "sp-wta-warsaw",
+      sport: "tennis",
+      country: "PL",
+      teams: ["Iga Swiatek", "Magda Linette"],
+    },
+    {
+      id: "wta-toronto",
+      name: "WTA. Toronto",
+      group: "League",
+      icon: "assets/icons/lnt/flag-ca.svg",
+      leagueId: "sp-wta-toronto",
+      sport: "tennis",
+      country: "CA",
+      teams: ["Coco Gauff", "Jessica Pegula"],
+    },
+    {
+      id: "brazil-copa",
+      name: "Brazil. Copa do Brasil",
+      group: "Country",
+      icon: "mobile/assets/flags/flag-br.svg",
+      leagueId: "sp-brazil-copa",
+      sport: "football",
+      country: "BR",
+      teams: ["Flamengo", "Palmeiras"],
+    },
+    {
+      id: "england-league-cup",
+      name: "England. League Cup",
+      group: "Country",
+      icon: "assets/icons/lnt/flag-england.svg",
+      leagueId: "sp-england-cup",
+      sport: "football",
+      country: "GB",
+      teams: ["Newcastle United", "Aston Villa"],
+    },
+    {
+      id: "japan-npb",
+      name: "Japan. NPB",
+      group: "Country",
+      icon: "assets/icons/lnt/flag-jp.svg",
+      leagueId: "japan-npb",
+      sport: "baseball",
+    },
+    {
+      id: "australian-football",
+      name: "Australian Football",
+      group: "Country",
+      icon: "assets/icons/lnt/flag-au.svg",
+      leagueId: "sp-australian-football",
+      sport: "americanfootball",
+      country: "AU",
+      teams: ["Sydney Swans", "Brisbane Lions"],
+    },
+  ];
+
+  function makeSportsCompetitionLeague(comp, index) {
+    const sport = comp.sport || "football";
+    const drawSport = sport === "football";
+    return {
+      id: comp.leagueId,
+      name: comp.name,
+      sport,
+      icon: comp.country || "WC",
+      events: [
+        {
+          id: `sp-comp-${index + 1}`,
+          status: "upcoming",
+          startTime: `${String(8 + (index % 12)).padStart(2, "0")}:${
+            index % 2 ? "30" : "00"
+          }`,
+          live: false,
+          home: comp.teams[0],
+          away: comp.teams[1],
+          scoreH: null,
+          scoreA: null,
+          o1: Number((1.62 + (index % 5) * 0.13).toFixed(2)),
+          ox: drawSport ? Number((3.1 + (index % 3) * 0.15).toFixed(2)) : null,
+          o2: Number((2.05 + (index % 4) * 0.18).toFixed(2)),
+          dc1x: drawSport ? 1.28 : null,
+          dc12: drawSport ? 1.32 : null,
+          dc2x: drawSport ? 1.58 : null,
+          total: drawSport ? 2.5 : sport === "basketball" ? 164.5 : 8.5,
+          over: 1.9,
+          under: 1.88,
+          hcap: drawSport ? null : "-1.5",
+          h1: drawSport ? null : 1.86,
+          h2: drawSport ? null : 1.92,
+          more: 120 + index * 17,
+        },
+      ],
+    };
+  }
+
+  const existingLineLeagueIds = new Set(lineLeagues.map((league) => league.id));
+  SPORTS_COMPETITIONS.forEach((comp, index) => {
+    if (!existingLineLeagueIds.has(comp.leagueId) && comp.teams) {
+      lineLeagues.push(makeSportsCompetitionLeague(comp, index));
+      existingLineLeagueIds.add(comp.leagueId);
+    }
+  });
+
   const homeAccumulators =
     (window.SbAccumulators && window.SbAccumulators.HOME_DATA) || {
       1: [],
@@ -1181,6 +1382,19 @@
     writeStoredFavourites(list);
   }
 
+  const SPORTS_COMPETITION_STORAGE_KEY = "1xbet-sports-competition";
+
+  function clearSportsCompetitionSelection() {
+    try {
+      sessionStorage.removeItem(SPORTS_COMPETITION_STORAGE_KEY);
+    } catch (_) {
+      /* storage unavailable */
+    }
+  }
+
+  /* Wipe legacy persisted picks so Sports always opens on the full Line list */
+  if (isSportsPage) clearSportsCompetitionSelection();
+
   const state = {
     betSlip: [],
     favorites: loadFavouriteIdSet(),
@@ -1202,6 +1416,8 @@
     liveSearch: "",
     lineSearch: "",
     lineType: isSportsPage ? "sports" : "live",
+    /** Desktop Sports competition card selection — never defaulted; null = show all Line matches */
+    sportsCompetition: null,
     promoIndex: 0,
     myBetsTab: "open",
     betHistoryCategory: "all",
@@ -1575,7 +1791,11 @@
   }
 
   function productOdds(items) {
-    return items.reduce((acc, b) => acc * Number(b.odds), 1);
+    const active = (items || []).filter(
+      (b) => b && b.status !== "closed" && Number(b.odds) > 0
+    );
+    if (!active.length) return 0;
+    return active.reduce((acc, b) => acc * Number(b.odds), 1);
   }
 
   /** Sports that offer Draw (X) + Double Chance columns (live-site football table). */
@@ -2266,7 +2486,15 @@
     const lineEl = $("#line-table");
     if (liveEl) {
       /* Sports page: Line (pre-match) data in the national-team table chrome */
-      const leagues = isSportsPage ? lineLeagues : liveLeagues;
+      let leagues = isSportsPage ? lineLeagues : liveLeagues;
+      if (isSportsPage && state.sportsCompetition) {
+        const competition = SPORTS_COMPETITIONS.find(
+          (item) => item.id === state.sportsCompetition
+        );
+        if (competition) {
+          leagues = leagues.filter((league) => league.id === competition.leagueId);
+        }
+      }
       const homeSportsFilter =
         isHomePage && state.activeHomeSports.size
           ? state.activeHomeSports
@@ -2929,6 +3157,7 @@
 
   function openBetSlipSettings() {
     closeTicketPopovers();
+    closeBetSlipShare();
     const overlay = ensureBetSlipSettingsModal();
     if (!overlay) return;
     mountBetSlipSettingsHost(overlay);
@@ -2949,6 +3178,443 @@
     const label = (btn.getAttribute("aria-label") || btn.getAttribute("title") || "").toLowerCase();
     return label === "settings";
   }
+
+  /* ---------- Bet Slip Share (coupon + URL) ---------- */
+
+  const COUPON_STORE_KEY = "1xbet-shared-coupons";
+  const COUPON_ALPHABET = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const COUPON_MAX_ENTRIES = 50;
+  let activeShareSession = null;
+
+  function loadCouponStore() {
+    try {
+      const raw = localStorage.getItem(COUPON_STORE_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (_) {
+      return {};
+    }
+  }
+
+  function saveCouponStore(store) {
+    try {
+      localStorage.setItem(COUPON_STORE_KEY, JSON.stringify(store));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function generateCouponCode() {
+    const store = loadCouponStore();
+    for (let attempt = 0; attempt < 40; attempt++) {
+      let code = "";
+      for (let i = 0; i < 5; i++) {
+        code += COUPON_ALPHABET[Math.floor(Math.random() * COUPON_ALPHABET.length)];
+      }
+      if (!store[code]) return code;
+    }
+    return String(Date.now()).slice(-5).toUpperCase();
+  }
+
+  function serializeBetSlipForShare(items) {
+    return (items || []).map((b) => ({
+      id: b.id,
+      eventId: betEventId(b),
+      league: b.league || "",
+      match: b.match || "",
+      market: b.market || "",
+      selection: b.selection || "",
+      odds: Number(b.odds),
+    }));
+  }
+
+  function saveSharedCoupon(code, items) {
+    const store = loadCouponStore();
+    store[code] = {
+      v: 1,
+      createdAt: Date.now(),
+      items: serializeBetSlipForShare(items),
+    };
+    const keys = Object.keys(store);
+    if (keys.length > COUPON_MAX_ENTRIES) {
+      keys
+        .map((k) => ({ k, t: store[k]?.createdAt || 0 }))
+        .sort((a, b) => a.t - b.t)
+        .slice(0, keys.length - COUPON_MAX_ENTRIES)
+        .forEach((entry) => {
+          delete store[entry.k];
+        });
+    }
+    saveCouponStore(store);
+    return store[code];
+  }
+
+  function loadSharedCoupon(code) {
+    if (!code) return null;
+    const key = String(code).trim().toUpperCase();
+    const store = loadCouponStore();
+    return store[key] || null;
+  }
+
+  function buildCouponShareUrl(code) {
+    const url = new URL(window.location.href);
+    url.search = "";
+    url.hash = "";
+    const key = String(code).toUpperCase();
+    url.searchParams.set("coupon-code", key);
+    const payload = loadSharedCoupon(key);
+    if (payload && Array.isArray(payload.items) && payload.items.length) {
+      try {
+        const packed = btoa(unescape(encodeURIComponent(JSON.stringify(payload.items))))
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/g, "");
+        if (packed.length < 1800) url.searchParams.set("slip", packed);
+      } catch (_) {
+        /* ignore — coupon-code + local store still works */
+      }
+    }
+    return url.toString();
+  }
+
+  function decodeSlipParam(raw) {
+    if (!raw) return null;
+    try {
+      let b64 = String(raw).replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4) b64 += "=";
+      const json = decodeURIComponent(escape(atob(b64)));
+      const items = JSON.parse(json);
+      return Array.isArray(items) ? items : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function copyTextToClipboard(text) {
+    const value = String(text || "");
+    if (!value) return Promise.reject(new Error("empty"));
+    if (navigator.clipboard?.writeText) {
+      return navigator.clipboard.writeText(value);
+    }
+    return new Promise((resolve, reject) => {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = value;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (ok) resolve();
+        else reject(new Error("copy failed"));
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  function readSelectionOdds(event, market, selection) {
+    if (!event) return null;
+    const m = market || "";
+    const s = selection || "";
+    if (m === "1X2" || m === "Winner") {
+      if (s === "1" || s === "W1") return event.o1;
+      if (s === "X") return event.ox;
+      if (s === "2" || s === "W2") return event.o2;
+    }
+    if (m === "Double Chance") {
+      if (s === "1X") return event.dc1x;
+      if (s === "12") return event.dc12;
+      if (s === "2X") return event.dc2x;
+    }
+    if (m === "Total") {
+      if (s === "Over") return event.over;
+      if (s === "Under") return event.under;
+    }
+    if (m === "Handicap") {
+      if (s === "1" || s === "W1") return event.h1;
+      if (s === "2" || s === "W2") return event.h2;
+    }
+    return undefined;
+  }
+
+  function reconcileSharedBet(bet) {
+    const hydrated = hydrateTicketData(bet);
+    const sharedOdds = Number(bet.odds);
+    const eventId = betEventId(hydrated);
+    const found = findEventInLeagues(eventId);
+
+    if (!found) {
+      return {
+        ...hydrated,
+        status: "closed",
+        statusMsg: "Event blocked",
+        sharedOdds,
+        previousOdds: sharedOdds,
+        odds: sharedOdds,
+      };
+    }
+
+    const e = found.event;
+    if (e.closed || e.status === "finished") {
+      return {
+        ...hydrated,
+        status: "closed",
+        statusMsg: "Event blocked",
+        sharedOdds,
+        previousOdds: sharedOdds,
+        odds: sharedOdds,
+      };
+    }
+
+    const liveOdds = readSelectionOdds(e, bet.market, bet.selection);
+    if (liveOdds == null) {
+      return {
+        ...hydrated,
+        status: "closed",
+        statusMsg: "Event blocked",
+        sharedOdds,
+        previousOdds: sharedOdds,
+        odds: sharedOdds,
+      };
+    }
+
+    const live = Number(liveOdds);
+    if (Number.isFinite(sharedOdds) && Math.abs(sharedOdds - live) > 0.0005) {
+      return {
+        ...hydrated,
+        status: "changed",
+        statusMsg: "Odds updated",
+        sharedOdds,
+        previousOdds: sharedOdds,
+        odds: live,
+      };
+    }
+
+    return {
+      ...hydrated,
+      status: "ok",
+      statusMsg: "",
+      sharedOdds: Number.isFinite(sharedOdds) ? sharedOdds : live,
+      odds: live,
+    };
+  }
+
+  function applyImportedCoupon(payload, opts) {
+    const options = opts || {};
+    const items = Array.isArray(payload?.items) ? payload.items : [];
+    if (!items.length) {
+      if (!options.silent) showToast("Coupon has no selections");
+      return false;
+    }
+    state.betSlip = items.map((item) => reconcileSharedBet(item));
+    renderBetSlip();
+    if (!options.silent) showToast("Bet Slip imported");
+    return true;
+  }
+
+  function importCouponCode(code, opts) {
+    const payload = loadSharedCoupon(code);
+    if (!payload) {
+      if (!(opts && opts.silent)) showToast("Coupon not found");
+      return false;
+    }
+    return applyImportedCoupon(payload, opts);
+  }
+
+  function clearCouponCodeFromUrl() {
+    try {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has("coupon-code") && !url.searchParams.has("slip")) return;
+      url.searchParams.delete("coupon-code");
+      url.searchParams.delete("slip");
+      const next = url.pathname + (url.search || "") + (url.hash || "");
+      window.history.replaceState({}, "", next);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function importCouponFromQuery() {
+    let code = "";
+    let slipRaw = "";
+    try {
+      const url = new URL(window.location.href);
+      code = url.searchParams.get("coupon-code") || "";
+      slipRaw = url.searchParams.get("slip") || "";
+    } catch (_) {
+      code = "";
+      slipRaw = "";
+    }
+    code = String(code).trim().toUpperCase();
+    const slipItems = decodeSlipParam(slipRaw);
+    let ok = false;
+    if (slipItems && slipItems.length) {
+      if (code) saveSharedCoupon(code, slipItems);
+      ok = applyImportedCoupon({ items: slipItems }, { silent: false });
+    } else if (code) {
+      ok = importCouponCode(code, { silent: false });
+    }
+    if (code || slipRaw) clearCouponCodeFromUrl();
+    return ok;
+  }
+
+  function qrImageUrl(data) {
+    return (
+      "https://api.qrserver.com/v1/create-qr-code/?size=168x168&margin=8&data=" +
+      encodeURIComponent(data)
+    );
+  }
+
+  function syncShareModalContent(overlay) {
+    if (!overlay || !activeShareSession) return;
+    const { code, url } = activeShareSession;
+    const codeEl = overlay.querySelector("[data-bsh-code]");
+    const urlEl = overlay.querySelector("[data-bsh-url]");
+    const qr = overlay.querySelector("[data-bsh-qr]");
+    const qrWrap = overlay.querySelector("[data-bsh-qr-wrap]");
+    const nativeBtn = overlay.querySelector("[data-bsh-native]");
+    if (codeEl) codeEl.textContent = code;
+    if (urlEl) urlEl.value = url;
+    if (qr) {
+      qr.src = qrImageUrl(url);
+      qr.alt = "QR code for coupon " + code;
+    }
+    if (qrWrap) qrWrap.hidden = isMobileViewport();
+    if (nativeBtn) {
+      nativeBtn.hidden = !(typeof navigator.share === "function" && isMobileViewport());
+    }
+  }
+
+  function ensureBetSlipShareModal() {
+    let overlay = $("#bsh-overlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.className = "bss-backdrop bsh-backdrop";
+    overlay.id = "bsh-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<div class="bss-panel bsh-panel" role="dialog" aria-modal="true" aria-labelledby="bsh-title">` +
+        `<div class="bss-head">` +
+          `<h2 class="bss-title" id="bsh-title">Share Bet Slip</h2>` +
+          `<button type="button" class="bss-close" id="bsh-close" aria-label="Close share">&times;</button>` +
+        `</div>` +
+        `<div class="bss-body bsh-body">` +
+          `<div class="bsh-coupon">` +
+            `<span class="bsh-coupon-label">Coupon</span>` +
+            `<span class="bsh-coupon-code" data-bsh-code>—</span>` +
+          `</div>` +
+          `<label class="bsh-url-field">` +
+            `<span class="visually-hidden">Share link</span>` +
+            `<input type="text" class="bsh-url-input" data-bsh-url readonly spellcheck="false" />` +
+          `</label>` +
+          `<div class="bsh-actions">` +
+            `<button type="button" class="bsh-btn bsh-btn--primary" data-bsh-copy-link>Copy Link</button>` +
+            `<button type="button" class="bsh-btn" data-bsh-copy-coupon>Copy Coupon</button>` +
+            `<button type="button" class="bsh-btn" data-bsh-native hidden>Share</button>` +
+          `</div>` +
+          `<div class="bsh-qr-wrap" data-bsh-qr-wrap hidden>` +
+            `<p class="bsh-qr-label">QR Code</p>` +
+            `<img class="bsh-qr" data-bsh-qr src="" alt="" width="168" height="168" />` +
+          `</div>` +
+        `</div>` +
+      `</div>`;
+
+    const host = $(".bet-slip-panel") || document.body;
+    host.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeBetSlipShare();
+    });
+    $("#bsh-close", overlay)?.addEventListener("click", closeBetSlipShare);
+
+    overlay.querySelector("[data-bsh-copy-link]")?.addEventListener("click", () => {
+      const text = activeShareSession?.url || overlay.querySelector("[data-bsh-url]")?.value || "";
+      copyTextToClipboard(text).then(
+        () => showToast("Link copied"),
+        () => showToast("Could not copy link")
+      );
+    });
+    overlay.querySelector("[data-bsh-copy-coupon]")?.addEventListener("click", () => {
+      const text = activeShareSession?.code || overlay.querySelector("[data-bsh-code]")?.textContent || "";
+      copyTextToClipboard(text).then(
+        () => showToast("Coupon copied"),
+        () => showToast("Could not copy coupon")
+      );
+    });
+    overlay.querySelector("[data-bsh-native]")?.addEventListener("click", async () => {
+      if (!activeShareSession || typeof navigator.share !== "function") return;
+      try {
+        await navigator.share({
+          title: "Bet Slip",
+          text: "Coupon " + activeShareSession.code,
+          url: activeShareSession.url,
+        });
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+        showToast("Share cancelled");
+      }
+    });
+
+    return overlay;
+  }
+
+  function mountBetSlipShareHost(overlay) {
+    if (!overlay) return;
+    const panel = $(".bet-slip-panel");
+    const mobile = isMobileViewport();
+    const target = mobile ? document.body : panel || document.body;
+    if (overlay.parentElement !== target) target.appendChild(overlay);
+  }
+
+  function closeBetSlipShare() {
+    const overlay = $("#bsh-overlay");
+    if (!overlay) return;
+    overlay.hidden = true;
+    document.body.classList.remove("bss-open");
+  }
+
+  function openBetSlipShare() {
+    closeBetSlipSettings();
+    closeTicketPopovers();
+    if (!state.betSlip.length) {
+      showToast("Add events to the bet slip before sharing");
+      return;
+    }
+    const code = generateCouponCode();
+    saveSharedCoupon(code, state.betSlip);
+    activeShareSession = { code, url: buildCouponShareUrl(code) };
+
+    const overlay = ensureBetSlipShareModal();
+    if (!overlay) return;
+    mountBetSlipShareHost(overlay);
+    syncShareModalContent(overlay);
+    overlay.hidden = false;
+    if (isMobileViewport()) document.body.classList.add("bss-open");
+    else document.body.classList.remove("bss-open");
+    $("#bsh-close", overlay)?.focus();
+  }
+
+  function isBetSlipShareTrigger(el) {
+    if (!el) return false;
+    if (el.closest("[data-ticket-popover]")) return false;
+    if (el.closest(".ticket-settings")) return false;
+    const btn = el.closest(".bet-icon-btn");
+    if (!btn) return false;
+    const label = (btn.getAttribute("aria-label") || btn.getAttribute("title") || "").toLowerCase();
+    return label === "share";
+  }
+
+  window.BetSlipShare = {
+    open: openBetSlipShare,
+    close: closeBetSlipShare,
+    importCode: importCouponCode,
+    fromQuery: importCouponFromQuery,
+  };
 
   function loadBaselineOdds() {
     try {
@@ -3544,24 +4210,42 @@
 
   function renderTicketCards(items) {
     return items
-      .map(
-        (b) => `
-      <article class="bet-item ticket-card" data-bet-id="${b.id}">
+      .map((b) => {
+        const closed = b.status === "closed";
+        const changed = b.status === "changed";
+        const statusClass = closed ? " is-closed" : changed ? " is-odds-changed" : "";
+        const oddsClass = changed ? " ticket-odds-pill is-updated" : " ticket-odds-pill";
+        const oddsHtml = changed
+          ? `<span class="${oddsClass.trim()}">${formatOdd(b.odds)}</span><span class="ticket-odds-prev">${formatOdd(b.previousOdds)}</span>`
+          : `<span class="${oddsClass.trim()}">${formatOdd(closed && b.previousOdds != null ? b.previousOdds : b.odds)}</span>`;
+        const changedMsg =
+          changed && b.statusMsg
+            ? `<p class="ticket-status-msg ticket-status-msg--odds">${b.statusMsg}</p>`
+            : "";
+        const blockedOverlay = closed
+          ? `<div class="ticket-blocked-overlay" aria-hidden="true"><span class="ticket-blocked-label">Event blocked</span></div>`
+          : "";
+        return `
+      <article class="bet-item ticket-card${statusClass}" data-bet-id="${b.id}"${closed ? ' aria-disabled="true"' : ""}>
         <button type="button" class="bet-remove" data-remove="${b.id}" aria-label="Remove selection">×</button>
-        <div class="ticket-meta-line">
-          ${b.live ? '<span class="ticket-live-badge">LIVE</span>' : ""}
-          ${ticketSportIcon(b)}
-          <span class="ticket-event-id">${b.eventId || b.id}</span>
-          <span class="bet-item-league">${b.league || "Top Events"}</span>
+        ${blockedOverlay}
+        <div class="ticket-card-body">
+          <div class="ticket-meta-line">
+            ${b.live ? '<span class="ticket-live-badge">LIVE</span>' : ""}
+            ${ticketSportIcon(b)}
+            <span class="ticket-event-id">${b.eventId || b.id}</span>
+            <span class="bet-item-league">${b.league || "Top Events"}</span>
+          </div>
+          <div class="bet-item-match">${b.match}</div>
+          ${ticketScore(b) ? `<div class="ticket-score">${ticketScore(b)}</div>` : ""}
+          <div class="ticket-selection-row">
+            ${oddsHtml}
+            <span class="ticket-market">${formatTicketMarket(b)}</span>
+          </div>
+          ${changedMsg}
         </div>
-        <div class="bet-item-match">${b.match}</div>
-        ${ticketScore(b) ? `<div class="ticket-score">${ticketScore(b)}</div>` : ""}
-        <div class="ticket-selection-row">
-          <span class="ticket-odds-pill">${formatOdd(b.odds)}</span>
-          <span class="ticket-market">${formatTicketMarket(b)}</span>
-        </div>
-      </article>`
-      )
+      </article>`;
+      })
       .join("");
   }
 
@@ -5183,6 +5867,7 @@
         $("#my-bets-body").hidden = which !== "mybets";
         if (which !== "slip") {
           closeBetSlipSettings();
+          closeBetSlipShare();
           closeTicketPopovers();
           closeBetTypeMenu();
           closeOddsChangeMenu();
@@ -5259,6 +5944,11 @@
         return;
       }
 
+      if (isBetSlipShareTrigger(e.target)) {
+        openBetSlipShare();
+        return;
+      }
+
       if (isBetSlipSettingsTrigger(e.target)) {
         openBetSlipSettings();
         return;
@@ -5311,6 +6001,11 @@
           window.location.href = "deposit.html";
           return;
         }
+        /* Shared coupons never auto-place — demo CTA only */
+        if (state.betSlip.some((b) => b.status === "closed")) {
+          showToast("Remove closed markets before placing");
+          return;
+        }
         showToast("Demo only — bet not placed");
       }
 
@@ -5331,6 +6026,11 @@
       if (e.key !== "Escape") return;
       if (window.DsBetSlipGenerator?.isOpen?.()) {
         window.DsBetSlipGenerator.close();
+        return;
+      }
+      const shareOverlay = $("#bsh-overlay");
+      if (shareOverlay && !shareOverlay.hidden) {
+        closeBetSlipShare();
         return;
       }
       const overlay = $("#bss-overlay");
@@ -6482,17 +7182,284 @@
         renderMoreMenu("");
       });
     }
+    importCouponFromQuery();
+  }
+
+  function bindSpHScroll(viewport, root) {
+    if (!viewport || !root) return () => {};
+    const bar = $("[data-sp-hscroll]", root);
+    const barTrack = $("[data-sp-hscroll-track]", root);
+    const thumb = $("[data-sp-hscroll-thumb]", root);
+    const DRAG_THRESHOLD = 5;
+    let suppressClick = false;
+    let railDrag = null;
+    let thumbDrag = null;
+
+    function hasOverflow() {
+      return viewport.scrollWidth > viewport.clientWidth + 2;
+    }
+
+    function syncBar() {
+      const overflow = hasOverflow();
+      root.classList.toggle("has-overflow", overflow);
+      viewport.classList.toggle("has-overflow", overflow);
+      if (bar) bar.hidden = !overflow;
+      if (!overflow || !bar || !barTrack || !thumb) return;
+      const trackW = barTrack.clientWidth || 1;
+      const ratio = viewport.clientWidth / viewport.scrollWidth;
+      const thumbW = Math.max(36, Math.round(trackW * ratio));
+      const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+      const maxThumb = Math.max(0, trackW - thumbW);
+      const left = (viewport.scrollLeft / maxScroll) * maxThumb;
+      thumb.style.width = `${thumbW}px`;
+      thumb.style.transform = `translate(${left}px, -50%)`;
+    }
+
+    function onWheel(e) {
+      if (!hasOverflow()) return;
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      viewport.scrollLeft += e.deltaY;
+    }
+
+    function onRailPointerDown(e) {
+      if (e.button !== 0 || !hasOverflow()) return;
+      if (
+        e.target.closest(
+          "a:not(.sp-top-card__link):not(.sp-top-card__more), .odd-btn, .sp-top-card__fav, .sp-hscroll, input, select, textarea"
+        )
+      ) {
+        return;
+      }
+      /* Do not capture yet — capturing on pointerdown steals the click from
+         competition cards / interactive children and blocks selection. */
+      railDrag = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startScroll: viewport.scrollLeft,
+        moved: false,
+      };
+      suppressClick = false;
+    }
+
+    function onRailPointerMove(e) {
+      if (!railDrag || e.pointerId !== railDrag.pointerId) return;
+      const dx = e.clientX - railDrag.startX;
+      if (!railDrag.moved) {
+        if (Math.abs(dx) < DRAG_THRESHOLD) return;
+        railDrag.moved = true;
+        suppressClick = true;
+        viewport.classList.add("is-dragging");
+        try {
+          viewport.setPointerCapture?.(railDrag.pointerId);
+        } catch (_) {
+          /* capture unsupported */
+        }
+      }
+      viewport.scrollLeft = railDrag.startScroll - (e.clientX - railDrag.startX);
+    }
+
+    function endRailDrag(e) {
+      if (!railDrag || (e && e.pointerId !== railDrag.pointerId)) return;
+      const moved = railDrag.moved;
+      if (moved) {
+        suppressClick = true;
+        window.setTimeout(() => {
+          suppressClick = false;
+        }, 80);
+      }
+      try {
+        if (moved) viewport.releasePointerCapture?.(railDrag.pointerId);
+      } catch (_) {
+        /* already released */
+      }
+      railDrag = null;
+      viewport.classList.remove("is-dragging");
+    }
+
+    function onThumbPointerDown(e) {
+      if (!thumb || !barTrack || e.button !== 0 || !hasOverflow()) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const trackW = barTrack.clientWidth || 1;
+      const thumbW = thumb.offsetWidth || 36;
+      thumbDrag = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startScroll: viewport.scrollLeft,
+        trackW,
+        thumbW,
+      };
+      bar?.classList.add("is-dragging");
+      thumb.setPointerCapture?.(e.pointerId);
+    }
+
+    function onThumbPointerMove(e) {
+      if (!thumbDrag || e.pointerId !== thumbDrag.pointerId) return;
+      const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+      const maxThumb = Math.max(1, thumbDrag.trackW - thumbDrag.thumbW);
+      const dx = e.clientX - thumbDrag.startX;
+      viewport.scrollLeft = thumbDrag.startScroll + (dx / maxThumb) * maxScroll;
+    }
+
+    function endThumbDrag(e) {
+      if (!thumbDrag || (e && e.pointerId !== thumbDrag.pointerId)) return;
+      thumbDrag = null;
+      bar?.classList.remove("is-dragging");
+    }
+
+    function onBarTrackPointerDown(e) {
+      if (!barTrack || !thumb || e.button !== 0 || !hasOverflow()) return;
+      if (e.target.closest("[data-sp-hscroll-thumb]")) return;
+      const rect = barTrack.getBoundingClientRect();
+      const thumbW = thumb.offsetWidth || 36;
+      const maxScroll = Math.max(1, viewport.scrollWidth - viewport.clientWidth);
+      const maxThumb = Math.max(1, rect.width - thumbW);
+      const x = e.clientX - rect.left - thumbW / 2;
+      viewport.scrollLeft = (Math.min(maxThumb, Math.max(0, x)) / maxThumb) * maxScroll;
+    }
+
+    viewport.addEventListener("scroll", syncBar, { passive: true });
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    viewport.addEventListener("pointerdown", onRailPointerDown);
+    viewport.addEventListener("pointermove", onRailPointerMove);
+    viewport.addEventListener("pointerup", endRailDrag);
+    viewport.addEventListener("pointercancel", endRailDrag);
+    thumb?.addEventListener("pointerdown", onThumbPointerDown);
+    thumb?.addEventListener("pointermove", onThumbPointerMove);
+    thumb?.addEventListener("pointerup", endThumbDrag);
+    thumb?.addEventListener("pointercancel", endThumbDrag);
+    barTrack?.addEventListener("pointerdown", onBarTrackPointerDown);
+    window.addEventListener("resize", syncBar);
+    requestAnimationFrame(syncBar);
+
+    return {
+      sync: syncBar,
+      shouldSuppressClick: () => suppressClick,
+      clearSuppressClick: () => {
+        suppressClick = false;
+      },
+    };
   }
 
   function initSportsPageChrome() {
     if (!isSportsPage) return;
-    document.querySelectorAll(".sp-league-chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        document.querySelectorAll(".sp-league-chip").forEach((c) => c.classList.remove("is-active"));
-        chip.classList.add("is-active");
-        const label = chip.textContent.trim();
-        showToast(label ? `Showing ${label}` : "Competition filter");
+    const nav = $("[data-sp-competition-nav]");
+    const viewport = $("[data-sp-competition-viewport]", nav);
+    const track = $("[data-sp-competition-track]", nav);
+    const topRail = $("[data-sp-top-rail]");
+    const topTrack = $("[data-sp-top-track]", topRail);
+    if (!nav || !viewport || !track) return;
+
+    track.innerHTML = SPORTS_COMPETITIONS.map((comp) => {
+      const sportIcon = `assets/icons/sport-${comp.sport || "football"}.svg`;
+      return (
+        `<button type="button" class="sp-competition-card" data-sp-competition="${escapeHtml(comp.id)}" data-group="${escapeHtml(comp.group)}" aria-pressed="false" title="${escapeHtml(comp.name)}">` +
+          `<img class="sp-competition-card__sport" src="${escapeHtml(sportIcon)}" alt="" width="10" height="10" />` +
+          `<span class="sp-competition-card__icon"><img src="${escapeHtml(comp.icon)}" alt="" width="26" height="26" /></span>` +
+          `<span class="sp-competition-card__name">${escapeHtml(comp.name)}</span>` +
+        `</button>`
+      );
+    }).join("");
+
+    function syncCompetitionCards() {
+      $$("[data-sp-competition]", track).forEach((card) => {
+        const active =
+          card.getAttribute("data-sp-competition") === state.sportsCompetition;
+        card.classList.toggle("is-active", active);
+        card.setAttribute("aria-pressed", active ? "true" : "false");
       });
+    }
+
+    const competitionScroll = bindSpHScroll(viewport, nav);
+    const topScroll = topTrack && topRail ? bindSpHScroll(topTrack, topRail) : null;
+
+    function openSportsTopCard(card) {
+      const eventId = card.getAttribute("data-event-id");
+      if (!eventId) return;
+      const teams = Array.from(card.querySelectorAll(".sp-top-card__team > span")).map(
+        (el) => el.textContent.trim()
+      );
+      const logos = Array.from(card.querySelectorAll(".sp-top-card__team .team-logo")).map(
+        (img) => img.getAttribute("src") || ""
+      );
+      const sport = card.getAttribute("data-sport") || "football";
+      const league =
+        card.querySelector(".sp-top-card__league")?.textContent.trim() || "";
+      const clock = card.querySelector("time")?.textContent.trim() || "";
+      stashEventPending({
+        id: eventId,
+        home: teams[0] || "",
+        away: teams[1] || "",
+        league,
+        sport,
+        sportIcon:
+          (typeof sportHeaderIconMap !== "undefined" && sportHeaderIconMap[sport]) ||
+          `assets/icons/sport-${sport}.svg`,
+        homeLogo: logos[0] || "",
+        awayLogo: logos[1] || "",
+        live: false,
+        clock,
+        tabs: ["Main", "1st Quarter", "2nd Quarter", "3rd Quarter", "4th Quarter"],
+      });
+      window.location.href = `event.html?id=${encodeURIComponent(eventId)}`;
+    }
+
+    if (topTrack) {
+      topTrack.addEventListener(
+        "click",
+        (e) => {
+          if (topScroll?.shouldSuppressClick()) {
+            e.preventDefault();
+            e.stopPropagation();
+            topScroll.clearSuppressClick();
+            return;
+          }
+          if (e.target.closest(".odd-btn, .sp-top-card__fav, .sp-hscroll")) return;
+          const link = e.target.closest(".sp-top-card__link, .sp-top-card__more");
+          const card = (link && link.closest(".sp-top-card")) || e.target.closest(".sp-top-card");
+          if (!card || !topTrack.contains(card)) return;
+          if (link || card.querySelector(".sp-top-card__link")) {
+            e.preventDefault();
+            openSportsTopCard(card);
+          }
+        },
+        true
+      );
+    }
+
+    viewport.addEventListener(
+      "click",
+      (e) => {
+        if (competitionScroll?.shouldSuppressClick()) {
+          e.preventDefault();
+          e.stopPropagation();
+          competitionScroll.clearSuppressClick();
+          return;
+        }
+        const card = e.target.closest("[data-sp-competition]");
+        if (!card || !viewport.contains(card)) return;
+        const id = card.getAttribute("data-sp-competition");
+        if (!SPORTS_COMPETITIONS.some((comp) => comp.id === id)) return;
+        /* Click active again → clear filter and show all matches */
+        state.sportsCompetition = state.sportsCompetition === id ? null : id;
+        clearSportsCompetitionSelection();
+        syncCompetitionCards();
+        renderTables();
+        card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        competitionScroll?.sync();
+      },
+      true
+    );
+
+    /* Always open with no competition selected (ignore any stale storage) */
+    state.sportsCompetition = null;
+    clearSportsCompetitionSelection();
+    syncCompetitionCards();
+    renderTables();
+    requestAnimationFrame(() => {
+      competitionScroll?.sync();
+      topScroll?.sync();
     });
   }
 

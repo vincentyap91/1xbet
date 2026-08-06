@@ -118,6 +118,10 @@
             toast("Add events to the bet slip before saving");
             return;
           }
+          if (window.BetSlipShare && typeof window.BetSlipShare.open === "function") {
+            window.BetSlipShare.open();
+            return;
+          }
           const code = "XB" + String(Date.now()).slice(-8);
           if (input) {
             input.value = code;
@@ -131,6 +135,11 @@
         loadBtn.addEventListener("click", function () {
           const code = (input && input.value ? input.value : "").trim();
           if (!code) return;
+          if (window.BetSlipShare && typeof window.BetSlipShare.importCode === "function") {
+            const ok = window.BetSlipShare.importCode(code);
+            if (ok) setOpen(false);
+            return;
+          }
           toast('Loaded code "' + code + '" — demo only');
         });
       }

@@ -3812,7 +3812,7 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
 
 .event-expand-wrap {
   position: absolute;
-  right: 0;
+  right: 20px;
   bottom: 4px;
   display: flex;
   align-items: center;
@@ -4621,6 +4621,132 @@ body.bss-open {
 
 .bss-save:active {
   background: var(--action-green-active);
+}
+
+/* Bet Slip Share modal (toolbar Share) */
+.bsh-body {
+  padding: 4px 14px 14px;
+  gap: 10px;
+}
+
+.bsh-coupon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--odds-hover);
+  border-radius: var(--radius-sm);
+}
+
+.bsh-coupon-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.bsh-coupon-code {
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--section-blue);
+  font-variant-numeric: tabular-nums;
+}
+
+.bsh-url-field {
+  display: block;
+  margin: 0;
+}
+
+.bsh-url-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  font-family: var(--font);
+  font-size: 11px;
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+
+.bsh-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bsh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--section-blue);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.bsh-btn:hover,
+.bsh-btn:focus-visible {
+  background: var(--odds-hover);
+  outline: none;
+}
+
+.bsh-btn--primary {
+  color: #fff;
+  background: var(--action-green);
+  border-color: var(--action-green);
+}
+
+.bsh-btn--primary:hover,
+.bsh-btn--primary:focus-visible {
+  filter: brightness(1.05);
+  background: var(--action-green);
+}
+
+.bsh-qr-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.bsh-qr-wrap[hidden] {
+  display: none !important;
+}
+
+.bsh-qr-label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.bsh-qr {
+  display: block;
+  width: 168px;
+  height: 168px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+
+.bss-panel.bsh-panel {
+  width: min(280px, 100%);
+  max-height: min(92%, 520px);
 }
 
 .bet-slip-panel.bss-hide-balance [data-ticket-meta="balance"],
@@ -6515,6 +6641,86 @@ body.bh-desktop-open {
   border-radius: 999px;
   text-align: center;
   font-variant-numeric: tabular-nums;
+}
+
+.ticket-odds-pill.is-updated {
+  color: #fff;
+  background: var(--action-green);
+}
+
+.ticket-odds-pill.is-locked {
+  color: var(--text-secondary);
+  background: var(--surface-secondary);
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+
+.ticket-odds-prev {
+  min-width: 0;
+  padding: 0 2px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-decoration: line-through;
+}
+
+.ticket-status-msg {
+  margin: 4px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+
+.ticket-status-msg--odds {
+  color: var(--action-green);
+}
+
+.ticket-card.is-closed {
+  overflow: hidden;
+}
+
+.ticket-card.is-closed .ticket-card-body {
+  /* Content stays readable under the blocked veil */
+  filter: saturate(0.85);
+}
+
+.ticket-blocked-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 28px 8px 12px;
+  background: rgba(30, 52, 74, 0.72);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.ticket-blocked-label {
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(11, 29, 51, 0.35);
+}
+
+.ticket-card.is-closed .bet-remove {
+  z-index: 3;
+  color: #fff;
+}
+
+.ticket-card.is-closed .bet-remove:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.ticket-card.is-odds-changed .ticket-selection-row {
+  flex-wrap: wrap;
 }
 
 .ticket-market {
@@ -12902,106 +13108,419 @@ body.ds-event-info-open {
    Sports / Line page (sports.html) — featured rail + chips
    ========================================================= */
 .sp-top-rail {
-  margin: 0 0 10px;
+  margin: 0 0 16px;
   padding: 0;
 }
 
 .sp-top-rail__track {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  padding: 2px 2px 6px;
-  scrollbar-width: thin;
+  padding: 0;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sp-top-rail__track::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-top-rail.has-overflow .sp-top-rail__track,
+.sp-competition-nav.has-overflow .sp-competition-viewport {
+  cursor: pointer;
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%);
+}
+
+.sp-top-rail__track.is-dragging,
+.sp-competition-viewport.is-dragging {
+  cursor: pointer;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+.sp-top-rail__track.is-dragging *,
+.sp-competition-viewport.is-dragging * {
+  cursor: pointer;
 }
 
 .sp-top-card {
-  flex: 0 0 min(220px, 72vw);
+  position: relative;
+  flex: 0 0 min(248px, 78vw);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 10px 12px;
+  overflow: hidden;
   background: var(--surface-primary);
   border: 1px solid var(--border-light);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   box-sizing: border-box;
+  cursor: pointer;
 }
 
+.sp-top-card__link {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.sp-top-card__head,
+.sp-top-card__teams,
 .sp-top-card__meta {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sp-top-card__fav,
+.sp-top-card__odds {
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.sp-top-card__head {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  padding: 5px 8px;
+  overflow: hidden;
+  background: var(--odds-hover);
 }
 
-.sp-top-card__meta img {
+/* Sport watermark mirrors the reference card art without a new asset */
+.sp-top-card__head::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 58px;
+  height: 58px;
+  opacity: 0.22;
+  background: no-repeat center / contain;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.sp-top-card[data-sport="basketball"] .sp-top-card__head::after {
+  background-image: url("../assets/icons/sport-basketball.svg");
+}
+
+.sp-top-card[data-sport="baseball"] .sp-top-card__head::after {
+  background-image: url("../assets/icons/sport-baseball.svg");
+}
+
+.sp-top-card[data-sport="football"] .sp-top-card__head::after {
+  background-image: url("../assets/icons/sport-football.svg");
+}
+
+.sp-top-card__sport {
   width: 14px;
   height: 14px;
   flex-shrink: 0;
 }
 
-.sp-top-card__meta time {
-  margin-left: auto;
-  font-weight: 700;
+.sp-top-card__league {
+  overflow: hidden;
   color: var(--section-blue);
+  font-size: 11px;
+  font-weight: 700;
   white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sp-top-card__fav {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: auto;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.65;
+  transition: opacity 0.15s ease;
+}
+
+.sp-top-card__fav:hover,
+.sp-top-card__fav[aria-pressed="true"] {
+  opacity: 1;
 }
 
 .sp-top-card__teams {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 700;
+  gap: 3px;
+  padding: 7px 8px 0;
+}
+
+.sp-top-card__team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
   color: var(--text-primary);
-  line-height: 1.25;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.sp-top-card__team > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.sp-top-card__meta {
+  margin: 6px 0 0;
+  padding: 0 8px;
+  color: var(--action-green);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .sp-top-card__odds {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  grid-template-columns: 1fr 1fr auto;
+  align-items: center;
   gap: 6px;
+  margin-top: 7px;
+  padding: 6px 8px 7px;
+  border-top: 1px solid var(--border-light);
 }
 
-.sp-top-card__odds .odd-btn {
-  min-height: 32px;
+.sp-top-card__odd {
+  justify-content: space-between;
+  height: 26px;
+  padding: 0 7px;
 }
 
-.sp-league-chips {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  margin: 0 0 10px;
-  padding: 0 2px 4px;
-  scrollbar-width: thin;
+.sp-top-card__odd-lab {
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
-.sp-league-chip {
-  flex: 0 0 auto;
-  min-height: 32px;
-  padding: 0 12px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: var(--header-nav-bg);
-  color: #fff;
-  font-family: var(--font);
-  font-size: 12px;
+.sp-top-card__odd.selected .sp-top-card__odd-lab {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.sp-top-card__more {
+  padding: 0 4px;
+  color: var(--section-blue);
+  font-size: 11px;
   font-weight: 700;
-  cursor: pointer;
+  text-decoration: underline;
   white-space: nowrap;
 }
 
-.sp-league-chip.is-active,
-.sp-league-chip:hover {
+.sp-top-card__more:hover {
+  color: var(--accent-blue);
+}
+
+.sp-hscroll {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin: 6px 0 0;
+  padding: 2px 0 0;
+  box-sizing: border-box;
+}
+
+.sp-hscroll[hidden] {
+  display: none !important;
+}
+
+.sp-hscroll__track {
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: color-mix(in srgb, var(--border-dark) 70%, var(--section-blue));
+  border-radius: 999px;
+}
+
+.sp-hscroll__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 40%;
+  height: 6px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sidebar-muted) 55%, var(--surface-primary));
+  box-shadow: 0 0 0 1px rgba(11, 29, 51, 0.25);
+  transform: translateY(-50%);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.sp-hscroll__thumb:hover,
+.sp-hscroll__thumb:focus-visible {
+  background: color-mix(in srgb, var(--sidebar-muted) 30%, var(--surface-primary));
+}
+
+.sp-hscroll__thumb:active,
+.sp-hscroll.is-dragging .sp-hscroll__thumb {
+  cursor: pointer;
+  background: var(--text-muted);
+}
+
+.sp-competition-nav {
+  position: relative;
+  min-width: 0;
+  margin: 0 0 12px;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.sp-competition-viewport {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  container-type: inline-size;
+  container-name: sp-competition;
+}
+
+.sp-competition-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.sp-competition-viewport:focus-visible {
+  outline: 2px solid var(--cyan-soft);
+  outline-offset: 2px;
+}
+
+.sp-competition-track {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.sp-competition-card {
+  position: relative;
+  display: flex;
+  flex: 0 0 74px;
+  width: 74px;
+  min-height: 68px;
+  padding: 7px 5px 6px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  color: var(--text-inverse);
+  font-family: var(--font);
+  background: var(--section-blue);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.sp-competition-card:hover {
   background: var(--accent-blue);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sp-competition-card:focus-visible {
+  outline: 2px solid var(--cyan-soft);
+  outline-offset: 1px;
+}
+
+.sp-competition-card.is-active {
+  background: var(--accent-blue);
+  border-color: var(--action-green);
+}
+
+.sp-competition-card__sport {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  opacity: 0.65;
+  filter: brightness(0) invert(1);
+  pointer-events: none;
+}
+
+.sp-competition-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  padding: 2px;
+  overflow: hidden;
+  background: var(--surface-primary);
+  border-radius: 50%;
+}
+
+.sp-competition-card__icon img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.sp-competition-card__name {
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+  color: inherit;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 11px;
+  text-align: center;
+  text-overflow: ellipsis;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.sp-competition-nav.has-overflow .sp-competition-card {
+  cursor: pointer;
 }
 
 @media (max-width: 900px) {
-  body[data-page="sports"] .sp-top-rail,
-  body[data-page="sports"] .sp-league-chips {
+  body[data-page="sports"] .sp-top-rail {
     padding-left: 8px;
     padding-right: 8px;
+  }
+
+  body[data-page="sports"] .sp-competition-nav {
+    display: block;
+    margin: 0 0 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* 4 cards per viewport: % of track is wrong (max-content), use container query */
+  body[data-page="sports"] .sp-competition-card {
+    flex: 0 0 calc((100cqi - 24px) / 4);
+    width: calc((100cqi - 24px) / 4);
+    min-width: calc((100cqi - 24px) / 4);
+    min-height: 72px;
   }
 
   body[data-page="sports"] .te-crumbs {

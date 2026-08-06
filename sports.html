@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sports � Line � 1xBet</title>
+  <title>Sports — Line · 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="mobile/css/mobile-markets-filter.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
@@ -302,82 +302,140 @@
         </div>
 
         <!-- Featured line matches (desktop Line) -->
-        <section class="sp-top-rail" aria-label="Top matches">
-          <div class="sp-top-rail__track" data-sp-top-track>
-            <article class="sp-top-card">
-              <div class="sp-top-card__meta">
-                <img src="assets/icons/sport-basketball.svg" alt="" width="14" height="14" />
-                <span>WNBA</span>
-                <time datetime="2026-08-03T02:00">02:00</time>
-              </div>
+        <section class="sp-top-rail" aria-label="Top matches" data-sp-top-rail>
+          <div class="sp-top-rail__track" data-sp-top-track tabindex="0" aria-label="Top matches; scroll horizontally">
+            <article class="sp-top-card" data-sport="basketball" data-event-id="sp-top-wnba-1">
+              <a class="sp-top-card__link" href="event.html?id=sp-top-wnba-1" aria-label="Chicago Sky (Women) vs Los Angeles Sparks (Women)"></a>
+              <header class="sp-top-card__head">
+                <img class="sp-top-card__sport" src="assets/icons/sport-basketball.svg" alt="" width="14" height="14" />
+                <span class="sp-top-card__league">WNBA</span>
+                <button type="button" class="sp-top-card__fav" aria-label="Add Chicago Sky vs Los Angeles Sparks to favourites" aria-pressed="false">
+                  <img src="assets/icons/nav-fav-outline.svg" alt="" width="12" height="12" />
+                </button>
+              </header>
               <div class="sp-top-card__teams">
-                <span>Atlanta Dream</span>
-                <span>Las Vegas Aces</span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-05.webp" alt="" width="16" height="16" />
+                  <span>Chicago Sky (Women)</span>
+                </span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-06.webp" alt="" width="16" height="16" />
+                  <span>Los Angeles Sparks (Women)</span>
+                </span>
               </div>
+              <p class="sp-top-card__meta">
+                <time datetime="2026-08-06T09:00">06/08/2026 / 09:00</time> / Pre-match bets
+              </p>
               <div class="sp-top-card__odds">
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-1","league":"WNBA","match":"Atlanta Dream vs Las Vegas Aces","market":"Winner","selection":"W1","odds":4.12}'>W1 <strong>4.12</strong></button>
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-2","league":"WNBA","match":"Atlanta Dream vs Las Vegas Aces","market":"Winner","selection":"W2","odds":1.25}'>W2 <strong>1.25</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-wnba-1","league":"WNBA","match":"Chicago Sky (Women) vs Los Angeles Sparks (Women)","market":"Winner","selection":"W1","odds":1.683}'><span class="sp-top-card__odd-lab">W1</span><strong>1.683</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-wnba-2","league":"WNBA","match":"Chicago Sky (Women) vs Los Angeles Sparks (Women)","market":"Winner","selection":"W2","odds":2.234}'><span class="sp-top-card__odd-lab">W2</span><strong>2.234</strong></button>
+                <a class="sp-top-card__more" href="event.html?id=sp-top-wnba-1">+444</a>
               </div>
             </article>
-            <article class="sp-top-card">
-              <div class="sp-top-card__meta">
-                <img src="assets/icons/sport-basketball.svg" alt="" width="14" height="14" />
-                <span>WNBA</span>
-                <time datetime="2026-08-03">Tomorrow 07:00</time>
-              </div>
+            <article class="sp-top-card" data-sport="baseball" data-event-id="sp-top-mlb-1">
+              <a class="sp-top-card__link" href="event.html?id=sp-top-mlb-1" aria-label="Arizona Diamondbacks vs San Diego Padres"></a>
+              <header class="sp-top-card__head">
+                <img class="sp-top-card__sport" src="assets/icons/sport-baseball.svg" alt="" width="14" height="14" />
+                <span class="sp-top-card__league">USA. MLB</span>
+                <button type="button" class="sp-top-card__fav" aria-label="Add Arizona Diamondbacks vs San Diego Padres to favourites" aria-pressed="false">
+                  <img src="assets/icons/nav-fav-outline.svg" alt="" width="12" height="12" />
+                </button>
+              </header>
               <div class="sp-top-card__teams">
-                <span>Connecticut Sun</span>
-                <span>Indiana Fever</span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-07.webp" alt="" width="16" height="16" />
+                  <span>Arizona Diamondbacks</span>
+                </span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-08.webp" alt="" width="16" height="16" />
+                  <span>San Diego Padres</span>
+                </span>
               </div>
+              <p class="sp-top-card__meta">
+                <time datetime="2026-08-06T09:40">06/08/2026 / 09:40</time> / Pre-match bets
+              </p>
               <div class="sp-top-card__odds">
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-3","league":"WNBA","match":"Connecticut Sun vs Indiana Fever","market":"Winner","selection":"W1","odds":2.58}'>W1 <strong>2.58</strong></button>
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-4","league":"WNBA","match":"Connecticut Sun vs Indiana Fever","market":"Winner","selection":"W2","odds":1.52}'>W2 <strong>1.52</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-mlb-1","league":"USA. MLB","match":"Arizona Diamondbacks vs San Diego Padres","market":"Winner","selection":"W1","odds":2.238}'><span class="sp-top-card__odd-lab">W1</span><strong>2.238</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-mlb-2","league":"USA. MLB","match":"Arizona Diamondbacks vs San Diego Padres","market":"Winner","selection":"W2","odds":1.743}'><span class="sp-top-card__odd-lab">W2</span><strong>1.743</strong></button>
+                <a class="sp-top-card__more" href="event.html?id=sp-top-mlb-1">+153</a>
               </div>
             </article>
-            <article class="sp-top-card">
-              <div class="sp-top-card__meta">
-                <img src="assets/icons/sport-basketball.svg" alt="" width="14" height="14" />
-                <span>WNBA</span>
-                <time datetime="2026-08-03">Tomorrow 07:00</time>
-              </div>
+            <article class="sp-top-card" data-sport="baseball" data-event-id="sp-top-mlb-2">
+              <a class="sp-top-card__link" href="event.html?id=sp-top-mlb-2" aria-label="Seattle Mariners vs Detroit Tigers"></a>
+              <header class="sp-top-card__head">
+                <img class="sp-top-card__sport" src="assets/icons/sport-baseball.svg" alt="" width="14" height="14" />
+                <span class="sp-top-card__league">USA. MLB</span>
+                <button type="button" class="sp-top-card__fav" aria-label="Add Seattle Mariners vs Detroit Tigers to favourites" aria-pressed="false">
+                  <img src="assets/icons/nav-fav-outline.svg" alt="" width="12" height="12" />
+                </button>
+              </header>
               <div class="sp-top-card__teams">
-                <span>New York Liberty</span>
-                <span>Minnesota Lynx</span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-09.webp" alt="" width="16" height="16" />
+                  <span>Seattle Mariners</span>
+                </span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-10.webp" alt="" width="16" height="16" />
+                  <span>Detroit Tigers</span>
+                </span>
               </div>
+              <p class="sp-top-card__meta">
+                <time datetime="2026-08-06T09:40">06/08/2026 / 09:40</time> / Pre-match bets
+              </p>
               <div class="sp-top-card__odds">
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-5","league":"WNBA","match":"New York Liberty vs Minnesota Lynx","market":"Winner","selection":"W1","odds":2.38}'>W1 <strong>2.38</strong></button>
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-wnba-6","league":"WNBA","match":"New York Liberty vs Minnesota Lynx","market":"Winner","selection":"W2","odds":1.60}'>W2 <strong>1.60</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-mlb-3","league":"USA. MLB","match":"Seattle Mariners vs Detroit Tigers","market":"Winner","selection":"W1","odds":1.691}'><span class="sp-top-card__odd-lab">W1</span><strong>1.691</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-mlb-4","league":"USA. MLB","match":"Seattle Mariners vs Detroit Tigers","market":"Winner","selection":"W2","odds":2.33}'><span class="sp-top-card__odd-lab">W2</span><strong>2.33</strong></button>
+                <a class="sp-top-card__more" href="event.html?id=sp-top-mlb-2">+151</a>
               </div>
             </article>
-            <article class="sp-top-card">
-              <div class="sp-top-card__meta">
-                <img src="assets/icons/sport-football.svg" alt="" width="14" height="14" />
-                <span>Russia. League 1</span>
-                <time datetime="2026-08-03">03 Aug 22:00</time>
-              </div>
+            <article class="sp-top-card" data-sport="basketball" data-event-id="sp-top-wnba-2">
+              <a class="sp-top-card__link" href="event.html?id=sp-top-wnba-2" aria-label="Indiana Fever (Women) vs Las Vegas Aces (Women)"></a>
+              <header class="sp-top-card__head">
+                <img class="sp-top-card__sport" src="assets/icons/sport-basketball.svg" alt="" width="14" height="14" />
+                <span class="sp-top-card__league">WNBA</span>
+                <button type="button" class="sp-top-card__fav" aria-label="Add Indiana Fever vs Las Vegas Aces to favourites" aria-pressed="false">
+                  <img src="assets/icons/nav-fav-outline.svg" alt="" width="12" height="12" />
+                </button>
+              </header>
               <div class="sp-top-card__teams">
-                <span>Ufa</span>
-                <span>KAMAZ</span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-11.webp" alt="" width="16" height="16" />
+                  <span>Indiana Fever (Women)</span>
+                </span>
+                <span class="sp-top-card__team">
+                  <img class="team-logo" src="assets/images/mobile-home/teams/team-12.webp" alt="" width="16" height="16" />
+                  <span>Las Vegas Aces (Women)</span>
+                </span>
               </div>
+              <p class="sp-top-card__meta">
+                <time datetime="2026-08-07T07:00">07/08/2026 / 07:00</time> / Pre-match bets
+              </p>
               <div class="sp-top-card__odds">
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-ru-1","league":"Russian Championship. League 1","match":"Ufa vs KAMAZ","market":"1X2","selection":"1","odds":2.45}'>1 <strong>2.45</strong></button>
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-ru-x","league":"Russian Championship. League 1","match":"Ufa vs KAMAZ","market":"1X2","selection":"X","odds":3.10}'>X <strong>3.10</strong></button>
-                <button type="button" class="odd-btn" data-odd='{"id":"sp-ru-2","league":"Russian Championship. League 1","match":"Ufa vs KAMAZ","market":"1X2","selection":"2","odds":2.90}'>2 <strong>2.90</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-wnba-3","league":"WNBA","match":"Indiana Fever (Women) vs Las Vegas Aces (Women)","market":"Winner","selection":"W1","odds":1.862}'><span class="sp-top-card__odd-lab">W1</span><strong>1.862</strong></button>
+                <button type="button" class="odd-btn sp-top-card__odd" data-odd='{"id":"sp-wnba-4","league":"WNBA","match":"Indiana Fever (Women) vs Las Vegas Aces (Women)","market":"Winner","selection":"W2","odds":1.982}'><span class="sp-top-card__odd-lab">W2</span><strong>1.982</strong></button>
+                <a class="sp-top-card__more" href="event.html?id=sp-top-wnba-2">+418</a>
               </div>
             </article>
           </div>
+          <div class="sp-hscroll" data-sp-hscroll hidden>
+            <div class="sp-hscroll__track" data-sp-hscroll-track>
+              <button type="button" class="sp-hscroll__thumb" data-sp-hscroll-thumb aria-label="Scroll top matches"></button>
+            </div>
+          </div>
         </section>
 
-        <nav class="sp-league-chips" aria-label="Popular competitions">
-          <button type="button" class="sp-league-chip is-active" data-sp-league="ru-l1">Russian Championship</button>
-          <button type="button" class="sp-league-chip" data-sp-league="atp">ATP Montreal</button>
-          <button type="button" class="sp-league-chip" data-sp-league="asean">ASEAN Cup</button>
-          <button type="button" class="sp-league-chip" data-sp-league="wnba">WNBA</button>
-          <button type="button" class="sp-league-chip" data-sp-league="wta">WTA Toronto</button>
-          <button type="button" class="sp-league-chip" data-sp-league="ua">Ukraine. Premier League</button>
-        </nav>
+        <section class="sp-competition-nav" aria-label="Competition navigation" data-sp-competition-nav>
+          <div class="sp-competition-viewport" data-sp-competition-viewport tabindex="0" aria-label="Competitions; scroll horizontally">
+            <div class="sp-competition-track" data-sp-competition-track></div>
+          </div>
+          <div class="sp-hscroll" data-sp-hscroll hidden>
+            <div class="sp-hscroll__track" data-sp-hscroll-track>
+              <button type="button" class="sp-hscroll__thumb" data-sp-hscroll-thumb aria-label="Scroll competitions"></button>
+            </div>
+          </div>
+        </section>
 
-        <!-- Sports events � same odds-table / toolbar as national-team.html -->
+        <!-- Sports events � same odds-table / toolbar as national-team.html -->
         <section class="events-section live-events-block" id="live-events" aria-labelledby="sp-title">
           <div class="te-stack">
             <div class="te-toolbar">
@@ -441,7 +499,7 @@
           <article class="acc-block" data-acc="1x2">
             <header class="acc-header">
               <h3 class="acc-title">Accumulator Of The Day</h3>
-              <span class="acc-bonus">Bonus from 1xBet · 1.1</span>
+              <span class="acc-bonus">Bonus from 1xBet � 1.1</span>
             </header>
             <div class="acc-table">
               <ul class="acc-list" id="acc-list-1"></ul>
@@ -457,7 +515,7 @@
           <article class="acc-block" data-acc="live">
             <header class="acc-header">
               <h3 class="acc-title">Live Accumulator Of The Day</h3>
-              <span class="acc-bonus">Bonus from 1xBet · 1.08</span>
+              <span class="acc-bonus">Bonus from 1xBet � 1.08</span>
             </header>
             <div class="acc-table">
               <ul class="acc-list" id="acc-list-2"></ul>
@@ -474,7 +532,7 @@
 
       </main>
 
-      <!-- RIGHT SIDEBAR (Figma 3:16034) � colors: modified-color tokens -->
+      <!-- RIGHT SIDEBAR (Figma 3:16034) ï¿½ colors: modified-color tokens -->
       <aside class="right-sidebar" id="right-sidebar" aria-label="Account tools">
         <div class="right-compact-rail" aria-label="Collapsed account tools">
           <button type="button" class="rc-expand" id="right-expand" aria-label="Expand block">
@@ -551,7 +609,7 @@
               <a href="terms.html">Terms and Conditions</a> and
               <a href="#">Privacy Policy</a> of the company and confirm that you are of legal age
             </p>
-            <p class="demo-msg" id="reg-demo" hidden>Demo only � no account created.</p>
+            <p class="demo-msg" id="reg-demo" hidden>Demo only ï¿½ no account created.</p>
           </form>
           <a href="#reg-form" class="reg-bonus-bar">100% bonus on your 1st deposit</a>
         </div>
@@ -564,7 +622,7 @@
           <div class="bet-slip-body" id="bet-slip-body">
             <div class="bet-toolbar">
               <span class="bet-toolbar-title">Your bets</span>
-              <button type="button" class="bet-icon-btn" aria-label="Share" title="Share">
+              <button type="button" class="bet-icon-btn" aria-label="Share">
                 <img src="assets/icons/rb-share.svg" alt="" width="12" height="12" />
               </button>
               <button type="button" class="bet-icon-btn" aria-label="Settings" title="Settings">
@@ -753,7 +811,7 @@
 
       <div class="footer-meta">
         <div class="footer-meta-card footer-legal">
-          <p>Copyright � 2024 �1xBet� .</p>
+          <p>Copyright ï¿½ 2024 ï¿½1xBetï¿½ .</p>
           <p>
             1xBet uses cookies to ensure the best user experience. By remaining on the website, you consent to the use of your cookie files on 1xBet.
             <a href="#">Find out more</a>
