@@ -454,10 +454,15 @@
   function renderSummary(method) {
     var limits = getActiveLimits(method);
     var balanceText = '0.00';
-    var headerBal = document.querySelector('.header-balance-row span:last-child');
-    if (headerBal) {
-      balanceText = headerBal.textContent.trim();
-      if (balanceText && balanceText.indexOf('.') === -1) balanceText = balanceText + '.00';
+    if (window.DsWallet) {
+      balanceText = window.DsWallet.format(window.DsWallet.get());
+      if (balanceText.indexOf('.') === -1) balanceText = balanceText + '.00';
+    } else {
+      var headerBal = document.querySelector('.header-balance-row span:last-child');
+      if (headerBal) {
+        balanceText = headerBal.textContent.trim();
+        if (balanceText && balanceText.indexOf('.') === -1) balanceText = balanceText + '.00';
+      }
     }
     return (
       '<div class="dep-summary" aria-label="Deposit summary">' +
@@ -958,7 +963,12 @@
       setSubmitting(false);
       startCooldown();
       showStep('success');
-      toast('Deposit submitted — demo only. No real transaction has been made.');
+      if (window.DsWallet && state.amount > 0) {
+        window.DsWallet.credit(state.amount);
+        toast('Deposit credited — ' + window.DsWallet.format(state.amount) + ' MYR added to Main account');
+      } else {
+        toast('Deposit submitted — demo only. No real transaction has been made.');
+      }
     }, SUBMIT_MS);
   }
 

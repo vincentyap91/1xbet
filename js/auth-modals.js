@@ -33,6 +33,112 @@
   /* Demo TAC — any other 6-digit code shows error */
   const DEMO_TAC = "123456";
 
+  /* ---------- Main account wallet (MYR) ---------- */
+  const WALLET_KEY = "1xbet-main-balance";
+  const STARTING_BALANCE = 1000;
+
+  function formatWalletAmount(n) {
+    const v = Math.max(0, Number(n) || 0);
+    if (!Number.isFinite(v)) return "0";
+    return Number.isInteger(v) ? String(v) : v.toFixed(2);
+  }
+
+  function getMainBalance() {
+    try {
+      const raw = localStorage.getItem(WALLET_KEY);
+      if (raw == null || raw === "") return null;
+      const n = Number(raw);
+      return Number.isFinite(n) ? Math.max(0, n) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function setMainBalance(amount) {
+    const next = Math.max(0, Math.round((Number(amount) || 0) * 100) / 100);
+    try {
+      localStorage.setItem(WALLET_KEY, String(next));
+    } catch (_) {
+      /* ignore */
+    }
+    syncWalletUi();
+    return next;
+  }
+
+  /** First login / first visit: grant RM1000 once (persists until spent / deposited). */
+  function ensureStartingBalance() {
+    const existing = getMainBalance();
+    if (existing != null) return existing;
+    return setMainBalance(STARTING_BALANCE);
+  }
+
+  function creditMainBalance(amount) {
+    const add = Number(amount);
+    if (!Number.isFinite(add) || add <= 0) return getMainBalance() ?? 0;
+    return setMainBalance((getMainBalance() ?? 0) + add);
+  }
+
+  function debitMainBalance(amount) {
+    const stake = Number(amount);
+    const cur = getMainBalance() ?? 0;
+    if (!Number.isFinite(stake) || stake <= 0) {
+      return { ok: false, reason: "invalid", balance: cur };
+    }
+    if (stake > cur + 1e-9) {
+      return { ok: false, reason: "insufficient", balance: cur };
+    }
+    return { ok: true, balance: setMainBalance(cur - stake) };
+  }
+
+  function syncWalletUi() {
+    const bal = getMainBalance();
+    const display = formatWalletAmount(bal == null ? 0 : bal);
+
+    document.querySelectorAll("[data-wallet-main]").forEach((el) => {
+      el.textContent = display;
+    });
+
+    document.querySelectorAll(".header-balance-chip .header-balance-row").forEach((row, index) => {
+      if (index !== 0) return;
+      const val = row.querySelector("span:last-child");
+      if (val && !val.hasAttribute("data-wallet-main")) val.textContent = display;
+    });
+
+    document.querySelectorAll(".acc-menu-balance-row").forEach((row) => {
+      const label = row.querySelector(".acc-menu-balance-label");
+      if (!label || !/Main account/i.test(label.textContent || "")) return;
+      const val = row.querySelector(".acc-menu-balance-value");
+      if (val) {
+        val.setAttribute("data-wallet-main", "");
+        val.textContent = display;
+      }
+    });
+
+    const slipBal = document.querySelector('[data-ticket-meta="balance"] strong');
+    if (slipBal) slipBal.textContent = display + " MYR";
+
+    document.querySelectorAll("[data-wallet-max], .max-stake-link strong").forEach((el) => {
+      if (document.body.classList.contains("is-logged-in")) {
+        el.textContent = display + " MYR";
+      }
+    });
+
+    if (typeof window.syncBetSlipAuthUi === "function") {
+      window.syncBetSlipAuthUi();
+    }
+  }
+
+  window.DsWallet = {
+    STARTING_BALANCE,
+    get: () => getMainBalance() ?? 0,
+    set: setMainBalance,
+    credit: creditMainBalance,
+    debit: debitMainBalance,
+    ensureStarting: ensureStartingBalance,
+    sync: syncWalletUi,
+    format: formatWalletAmount,
+  };
+
   function clearOtpError() {
     const err = $("#auth-otp-error");
     if (err) {
@@ -367,7 +473,7 @@
       '<div class="acc-menu-balances">' +
       '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Main account (MYR) ' +
       chevron +
-      '</span><span class="acc-menu-balance-value">0</span></div>' +
+      '</span><span class="acc-menu-balance-value" data-wallet-main>0</span></div>' +
       '<div class="acc-menu-balance-row"><span class="acc-menu-balance-label">Game wallet ' +
       chevron +
       '</span><span class="acc-menu-balance-value">0</span></div>' +
@@ -438,6 +544,7 @@
     if (!menu) {
       wrap.insertAdjacentHTML("beforeend", accountMenuHtml(menuId));
       menu = $(".acc-menu", wrap);
+      syncWalletUi();
     }
 
     btn.setAttribute("aria-haspopup", "menu");
@@ -486,7 +593,7 @@
       "</div>" +
       '<div class="header-balance-chip">' +
       '<div class="header-balance-rows">' +
-      '<div class="header-balance-row"><span>MYR</span><span>0</span></div>' +
+      '<div class="header-balance-row"><span>MYR</span><span data-wallet-main>0</span></div>' +
       '<div class="header-balance-row"><span>Game wallet</span><span>0</span></div>' +
       "</div>" +
       '<button type="button" class="header-balance-refresh" aria-label="Update balance">' +
@@ -697,8 +804,11 @@
     syncMobileNavLogout(!!on);
 
     if (on) {
+      ensureStartingBalance();
       initAccountDropdowns();
       ensureMessagesUI();
+      syncWalletUi();
+      bindWalletRefresh();
     } else {
       closeAccountMenus();
       if (window.MessagesUI && typeof window.MessagesUI.destroy === "function") {
@@ -720,6 +830,19 @@
     if (typeof window.syncBetSlipAuthUi === "function") {
       window.syncBetSlipAuthUi();
     }
+  }
+
+  function bindWalletRefresh() {
+    document.querySelectorAll(".header-balance-refresh").forEach((btn) => {
+      if (btn.dataset.walletRefreshBound === "1") return;
+      btn.dataset.walletRefreshBound = "1";
+      btn.addEventListener("click", () => {
+        syncWalletUi();
+        if (typeof window.showToast === "function") {
+          window.showToast("Balance updated");
+        }
+      });
+    });
   }
 
   function isLoggedIn() {

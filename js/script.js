@@ -1420,6 +1420,8 @@
     sportsCompetition: null,
     promoIndex: 0,
     myBetsTab: "open",
+    /** When true, My bets Open shows the full bet list (View All expanded) */
+    myBetsViewAll: false,
     betHistoryCategory: "all",
     betHistoryStatus: "all",
     betHistoryRange: "7d",
@@ -1493,7 +1495,7 @@
   const PIN_ICON_SVG =
     '<svg class="pin-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg>';
 
-  const MOCK_RUNNING_BETS = [
+  let MOCK_RUNNING_BETS = [
     {
       id: "487030422",
       placedDate: "07/12/2026",
@@ -1513,6 +1515,30 @@
       cashOut: false,
     },
   ];
+
+  const OPEN_BETS_STORAGE_KEY = "1xbet-open-bets";
+  const MYBETS_OPEN_PREVIEW = 1;
+
+  function loadPersistedOpenBets() {
+    try {
+      const raw = localStorage.getItem(OPEN_BETS_STORAGE_KEY);
+      if (!raw) return;
+      const list = JSON.parse(raw);
+      if (Array.isArray(list) && list.length) MOCK_RUNNING_BETS = list;
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function persistOpenBets() {
+    try {
+      localStorage.setItem(OPEN_BETS_STORAGE_KEY, JSON.stringify(MOCK_RUNNING_BETS));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  loadPersistedOpenBets();
 
   /* Last-session settled bets (empty → show View Bet History CTA) */
   const MOCK_SETTLED_BETS = [];
@@ -3056,7 +3082,8 @@
     if (opts && opts.applyAutomaxStake && s.automax) {
       const stakeInput = $("#stake-input");
       if (stakeInput) {
-        stakeInput.value = "31400";
+        const bal = window.DsWallet ? Math.max(1, Math.floor(Number(window.DsWallet.get()) || 0)) : 50;
+        stakeInput.value = String(bal > 0 ? bal : 50);
         updateTotals();
       }
     }
@@ -3900,11 +3927,11 @@
       <div class="ticket-account-meta" id="ticket-account-meta">
         <button type="button" class="max-stake-link">
           <span>Maximum stake</span>
-          <strong>31400 MYR</strong>
+          <strong data-wallet-max>0 MYR</strong>
         </button>
         <button type="button" class="ticket-meta-link" data-ticket-meta="balance">
           <span>Balance</span>
-          <strong>0 MYR</strong>
+          <strong data-wallet-main>0 MYR</strong>
         </button>
         <button type="button" class="ticket-meta-link" data-ticket-meta="advancebet">
           <span>Available Advancebet</span>
@@ -4126,13 +4153,23 @@
     syncBetTypeSelect();
     syncBetEmptyCopy();
 
+    const wallet = window.DsWallet;
+    const balance = loggedIn && wallet ? Number(wallet.get()) || 0 : 0;
+    const balLabel = wallet ? wallet.format(balance) : "0";
+
     const meta = $("#ticket-account-meta");
     if (meta) {
       meta.classList.toggle("is-guest", !loggedIn);
       const balanceRow = meta.querySelector('[data-ticket-meta="balance"]');
       const advRow = meta.querySelector('[data-ticket-meta="advancebet"]');
-      if (balanceRow) balanceRow.hidden = !loggedIn;
+      if (balanceRow) {
+        balanceRow.hidden = !loggedIn;
+        const strong = balanceRow.querySelector("strong");
+        if (strong) strong.textContent = balLabel + " MYR";
+      }
       if (advRow) advRow.hidden = !loggedIn;
+      const maxStrong = meta.querySelector(".max-stake-link strong");
+      if (maxStrong && loggedIn) maxStrong.textContent = balLabel + " MYR";
     }
 
     const place = $("#place-bet");
@@ -4140,9 +4177,12 @@
       if (!loggedIn) {
         place.textContent = "Registration";
         place.dataset.cta = "register";
-      } else {
+      } else if (balance <= 0) {
         place.textContent = "Deposit";
         place.dataset.cta = "deposit";
+      } else {
+        place.textContent = "Place Bet";
+        place.dataset.cta = "place";
       }
     }
 
@@ -5865,6 +5905,10 @@
         const which = tab.getAttribute("data-bet-tab");
         $("#bet-slip-body").hidden = which !== "slip";
         $("#my-bets-body").hidden = which !== "mybets";
+        if (which !== "mybets" && state.myBetsViewAll) {
+          state.myBetsViewAll = false;
+          syncMyBetsViewAllChrome();
+        }
         if (which !== "slip") {
           closeBetSlipSettings();
           closeBetSlipShare();
@@ -5961,8 +6005,10 @@
       const stakeInput = $("#stake-input");
 
       if (e.target.closest(".max-stake-link") && stakeInput) {
-        stakeInput.value = "31400";
+        const bal = window.DsWallet ? Math.max(0, Math.floor(Number(window.DsWallet.get()) || 0)) : 0;
+        stakeInput.value = String(bal > 0 ? bal : 1);
         updateTotals();
+        syncBetSlipAuthUi();
         return;
       }
 
@@ -5970,12 +6016,14 @@
         const next = Math.max(1, (Number(stakeInput.value) || 0) + Number(step.getAttribute("data-stake-step")));
         stakeInput.value = String(next);
         updateTotals();
+        syncBetSlipAuthUi();
         return;
       }
 
       if (quick && stakeInput) {
         stakeInput.value = String((Number(stakeInput.value) || 0) + Number(quick.getAttribute("data-quick-stake")));
         updateTotals();
+        syncBetSlipAuthUi();
         return;
       }
 
@@ -6001,12 +6049,44 @@
           window.location.href = "deposit.html";
           return;
         }
-        /* Shared coupons never auto-place — demo CTA only */
         if (state.betSlip.some((b) => b.status === "closed")) {
           showToast("Remove closed markets before placing");
           return;
         }
-        showToast("Demo only — bet not placed");
+        if (!state.betSlip.length) {
+          showToast("Add events to the bet slip");
+          return;
+        }
+        const stake = Number(stakeInput?.value) || 0;
+        if (!Number.isFinite(stake) || stake <= 0) {
+          showToast("Enter a valid stake");
+          return;
+        }
+        const wallet = window.DsWallet;
+        if (!wallet) {
+          showToast("Login required to place bets");
+          return;
+        }
+        const result = wallet.debit(stake);
+        if (!result.ok) {
+          showToast(
+            result.reason === "insufficient"
+              ? "Insufficient balance — please deposit"
+              : "Could not place bet"
+          );
+          syncBetSlipAuthUi();
+          return;
+        }
+        const slipSnapshot = state.betSlip.slice();
+        const openBet = buildOpenBetFromSlip(slipSnapshot, stake);
+        MOCK_RUNNING_BETS.unshift(openBet);
+        persistOpenBets();
+        showToast(`Bet placed — ${wallet.format(stake)} MYR`);
+        state.betSlip = [];
+        renderBetSlip();
+        wallet.sync();
+        showMyBetsOpenPanel();
+        return;
       }
 
       if (e.target.closest('[data-ticket-meta="balance"]')) {
@@ -6019,13 +6099,20 @@
     });
 
     $("#bet-slip-body")?.addEventListener("input", (e) => {
-      if (e.target.closest("#stake-input")) updateTotals();
+      if (e.target.closest("#stake-input")) {
+        updateTotals();
+        syncBetSlipAuthUi();
+      }
     });
 
     document.addEventListener("keydown", (e) => {
       if (e.key !== "Escape") return;
       if (window.DsBetSlipGenerator?.isOpen?.()) {
         window.DsBetSlipGenerator.close();
+        return;
+      }
+      if (state.myBetsViewAll) {
+        setMyBetsViewAll(false);
         return;
       }
       const shareOverlay = $("#bsh-overlay");
@@ -6256,8 +6343,12 @@
       return;
     }
 
+    const showAll = tab === "open" && state.myBetsViewAll;
+    const visible =
+      tab === "open" && !showAll ? bets.slice(0, MYBETS_OPEN_PREVIEW) : bets;
+
     container.innerHTML =
-      `<div class="mybets-cards">${bets.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>`;
+      `<div class="mybets-cards">${visible.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>`;
   }
 
   function updateMyBetsBadges() {
@@ -6269,18 +6360,124 @@
     if (historyBadge) historyBadge.textContent = String(historyCount);
   }
 
+  function syncMyBetsViewAllChrome() {
+    const app = $("#mybets-app");
+    if (!app) return;
+    const expanded = !!state.myBetsViewAll && state.myBetsTab === "open";
+    app.classList.toggle("is-view-all", expanded);
+
+    const subtabs = app.querySelector(".mybets-subtabs");
+    const controls = $("#mybets-open-controls");
+    const viewAllBtn = $("#mybets-view-all");
+    const hasMore = MOCK_RUNNING_BETS.length > MYBETS_OPEN_PREVIEW;
+
+    if (subtabs) subtabs.hidden = false;
+    if (controls) controls.hidden = state.myBetsTab !== "open";
+    /* View All only when Open has hidden cards; hide once expanded */
+    if (viewAllBtn) {
+      viewAllBtn.hidden =
+        state.myBetsTab !== "open" || !hasMore || expanded;
+    }
+    updateMyBetsBadges();
+  }
+
+  function setMyBetsViewAll(on) {
+    state.myBetsViewAll = !!on;
+    if (state.myBetsViewAll) state.myBetsTab = "open";
+    const legacy = $("#mba-overlay");
+    if (legacy) {
+      legacy.remove();
+      document.body.classList.remove("mba-open");
+    }
+    syncMyBetsViewAllChrome();
+    renderMyBetsContent();
+    if (state.myBetsViewAll) {
+      $("#mybets-content")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
   function setMyBetsTab(tab) {
     state.myBetsTab = tab;
+    if (tab !== "open") state.myBetsViewAll = false;
     $$(".mybets-subtab").forEach((btn) => {
       const isActive = btn.getAttribute("data-mybets-tab") === tab;
       btn.classList.toggle("active", isActive);
       btn.setAttribute("aria-selected", isActive ? "true" : "false");
     });
-    const controls = $("#mybets-open-controls");
-    const viewAll = $("#mybets-view-all");
-    if (controls) controls.hidden = tab !== "open";
-    if (viewAll) viewAll.hidden = tab !== "open";
+    syncMyBetsViewAllChrome();
     renderMyBetsContent();
+    updateMyBetsBadges();
+  }
+
+  function showMyBetsOpenPanel() {
+    $$(".bet-tab").forEach((t) => {
+      const isMyBets = t.getAttribute("data-bet-tab") === "mybets";
+      t.classList.toggle("active", isMyBets);
+      t.setAttribute("aria-selected", isMyBets ? "true" : "false");
+    });
+    const slipBody = $("#bet-slip-body");
+    const myBetsBody = $("#my-bets-body");
+    if (slipBody) slipBody.hidden = true;
+    if (myBetsBody) myBetsBody.hidden = false;
+    closeBetSlipSettings();
+    closeBetSlipShare();
+    closeTicketPopovers();
+    closeBetTypeMenu();
+    closeOddsChangeMenu();
+    state.myBetsViewAll = false;
+    syncMyBetsAuthUi();
+    setMyBetsTab("open");
+  }
+
+  function buildOpenBetFromSlip(items, stake) {
+    const active = (items || []).filter((b) => b && b.status !== "closed");
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const placedDate = `${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()}`;
+    const placedTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    const id = String(480000000 + Math.floor(Math.random() * 19999999));
+    const oddsVal = productOdds(active);
+    const maxPayout = (Number(stake) * oddsVal).toFixed(2);
+    const oddsStr = formatOdd(oddsVal);
+
+    if (active.length === 1) {
+      const b = active[0];
+      return {
+        id,
+        placedDate,
+        placedTime,
+        sport: "Sports",
+        market: b.market || "1X2",
+        pick: formatTicketMarket(b) || b.selection,
+        match: String(b.match || "").replace(" - ", " -vs- "),
+        eventName: b.league || "",
+        eventDate: "",
+        maxPayout,
+        odds: oddsStr,
+        oddsTag: "",
+        stake: formatMyBetsStake(stake),
+        status: "Running",
+        cashOut: true,
+      };
+    }
+
+    return {
+      id,
+      placedDate,
+      placedTime,
+      sport: "Sports",
+      market: active.length > 1 ? "Accumulator" : "Single",
+      pick: active.map((b) => b.selection || formatTicketMarket(b)).join(" · "),
+      match: active.map((b) => String(b.match || "").replace(" - ", " -vs- ")).join(" | "),
+      eventName: active.length ? `${active.length} events` : "",
+      eventDate: "",
+      maxPayout,
+      odds: oddsStr,
+      oddsTag: "",
+      stake: formatMyBetsStake(stake),
+      status: "Running",
+      cashOut: true,
+    };
   }
 
   function renderBetHistoryCard(bet) {
@@ -6729,7 +6926,8 @@
         showToast("Bets refreshed (demo)");
       }
       if (e.target.closest(".mybets-view-all")) {
-        showToast("View all bets — demo only");
+        setMyBetsViewAll(true);
+        return;
       }
       if (e.target.closest(".mybets-view-history") || e.target.closest("#mybets-view-history")) {
         if (isMobileViewport()) {

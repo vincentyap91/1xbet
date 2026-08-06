@@ -4147,6 +4147,11 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   overflow: hidden;
 }
 
+/* Logged-in: hide right-rail registration (Collapse block + bet slip stay) */
+body.is-logged-in .right-sidebar > .reg-panel {
+  display: none !important;
+}
+
 .reg-title {
   margin: 0;
   padding: 12px 8px 0;
@@ -5634,6 +5639,18 @@ body.tsp-open {
   color: var(--text-secondary);
   background: var(--surface-secondary);
   border-top: 1px solid var(--border-light);
+}
+
+/* My bets → View All: expand remaining cards in Open (no title bar) */
+.mybets-app.is-view-all .mybets-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mybets-app.is-view-all .mybets-cards {
+  padding-bottom: 12px;
 }
 
 .mybets-empty--history {

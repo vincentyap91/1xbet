@@ -213,7 +213,7 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 
 | Layer | Classes | Colors |
 |-------|---------|--------|
-| Panel shell | `.reg-panel`, `.bet-slip-panel`, `.generator-panel`, `.app-panel` | bg `--surface-tertiary`; text `--text-primary`; radius `8px` |
+| Panel shell | `.reg-panel`, `.bet-slip-panel`, `.generator-panel`, `.app-panel` | bg `--surface-tertiary`; text `--text-primary`; radius `8px`. **Logged-in:** hide `.reg-panel` (`body.is-logged-in`); Collapse block + bet slip remain. **Wallet:** Main account starts at **1000 MYR** (`localStorage` `1xbet-main-balance` via `window.DsWallet`); Place Bet debits stake; balance **0** → Deposit CTA; deposit success credits |
 | Bet tabs bar | `.bet-slip-tabs`, `.bet-tab` | bg `--header-nav-bg`; muted `--sidebar-muted`; active bg `--section-blue` + `#fff` |
 | Bet / my-bets body | `.bet-slip-body`, `.my-bets-body` | `--surface-tertiary` |
 | Empty / bet card | `.bet-empty`, `.bet-item` | `#fff`; border `--border-light`; text primary/secondary/muted |
@@ -225,6 +225,7 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Primary CTA | `.btn-reg`, `.btn-slip-reg` | `--action-green` / hover `--action-green-hover` |
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
 | My bets History empty | `.mybets-empty--history` + `.mybets-view-history` | clipboard empty + `--action-green` **View Bet History** CTA |
+| My bets Open → View All | `#mybets-view-all` | Open previews 1 card; **View All** expands remaining cards below — same Open chrome (subtabs / Cash Out controls), no extra title bar |
 | Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | overlay dialog from My Bets → History; cats All/Sports/Casino; date range presets + custom; date-grouped `.bh-desk-card` rows (wide grid: type/odds/stake/winnings/id) |
 | Bet slip settings (toolbar gear) | `.bss-backdrop` / `.bss-panel` | Automax / Balance / Potential winnings / Select account; Save → `localStorage` (`1xbet-bet-slip-settings`) |
 | Bet slip share (toolbar Share) | `.bsh-backdrop` / `.bsh-panel` (`#bsh-overlay`) | Generates 5-char coupon (e.g. `441FC`) + URL `?coupon-code=441FC` (optional compact `slip=` payload for cross-browser restore); Copy Link / Copy Coupon; Native Share on mobile (`navigator.share`); QR on desktop. Snapshot also in `localStorage` (`1xbet-shared-coupons`). Opening the URL restores the slip, toasts **Bet Slip imported**, reconciles live odds (`.is-odds-changed` / `.is-closed`), never auto-places |
