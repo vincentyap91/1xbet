@@ -12,8 +12,9 @@
     let pendingSports = new Set();
 
     function syncSelection() {
+      /* The homepage drawer is a single sport filter, like a radio group. */
       const activeHomeSports = isHomeDrawer
-        ? pendingSports
+        ? new Set(Array.from(pendingSports).slice(0, 1))
         : new Set(
             Array.from(
               document.querySelectorAll(
@@ -26,6 +27,7 @@
         const selected =
           key === "all" ? activeHomeSports.size === 0 : activeHomeSports.has(key);
         row.classList.toggle("is-selected", selected);
+        if (isHomeDrawer) row.setAttribute("role", "radio");
         row.setAttribute("aria-pressed", selected ? "true" : "false");
         row.setAttribute("aria-checked", selected ? "true" : "false");
       });
@@ -37,7 +39,7 @@
           typeof window.getHomeSportFilters === "function"
             ? window.getHomeSportFilters()
             : [];
-        pendingSports = new Set(selected);
+        pendingSports = new Set(selected.slice(0, 1));
       }
       syncSelection();
       modal.hidden = false;
@@ -98,10 +100,9 @@
       const label = pick.getAttribute("data-mh-sf-label") || key;
 
       if (isHomeDrawer) {
+        /* A radio choice always replaces the current choice. All means no filter. */
+        pendingSports.clear();
         if (key === "all") {
-          pendingSports.clear();
-        } else if (pendingSports.has(key)) {
-          pendingSports.delete(key);
         } else {
           pendingSports.add(key);
         }

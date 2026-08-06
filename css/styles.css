@@ -10381,7 +10381,7 @@ body.bsg-open {
     width: 26px;
     height: 26px;
     border: 2px solid var(--section-blue);
-    border-radius: 5px;
+    border-radius: 50%;
     box-sizing: border-box;
     background: var(--surface-primary);
   }
@@ -10394,13 +10394,9 @@ body.bsg-open {
   .home-sports-filter .mh-sf__row.is-selected .home-sports-filter__check::after {
     content: "";
     position: absolute;
-    left: 7px;
-    top: 3px;
-    width: 7px;
-    height: 13px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+    inset: 6px;
+    border-radius: 50%;
+    background: #fff;
   }
 
   .home-sports-filter__foot {
