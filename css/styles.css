@@ -10522,9 +10522,16 @@ body.bsg-open {
     object-fit: contain;
   }
 
-  .home-quicknav__ico--live,
-  .home-quicknav__ico--fav {
+  .home-quicknav__ico--live {
     filter: brightness(0) saturate(100%) invert(62%) sepia(52%) saturate(520%) hue-rotate(42deg) brightness(96%) contrast(88%);
+  }
+
+  .home-quicknav__ico--fav {
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: #f1b630;
   }
 
   .home-quicknav__ico--search {
