@@ -82,6 +82,11 @@
     // Scroll content back to top
     const content = document.getElementById('terms-content');
     if (content) content.scrollTop = 0;
+    // Mobile rail: keep the active pill in view
+    const active = document.querySelector('.terms-toc-item.active');
+    if (active && window.matchMedia('(max-width: 900px)').matches) {
+      active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
   }
 
   tocItems.forEach(function (item) {

@@ -315,8 +315,28 @@
     white-space: nowrap;
   }
   .payments-crumbs::-webkit-scrollbar { display: none; }
+
+  /* Method filters: single-row horizontal scroll (no wrap) */
+  .payments-categories {
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 0 0 16px;
+    padding: 0 0 4px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: pan-x;
+  }
+
+  .payments-categories::-webkit-scrollbar {
+    display: none;
+  }
+
+  .payments-cat-btn {
+    flex: 0 0 auto;
+  }
 }
 
-@media (max-width: 480px) {
-  .payments-grid { grid-template-columns: 1fr; }
-}

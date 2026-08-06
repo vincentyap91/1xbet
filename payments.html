@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment Methods ó 1xBet</title>
+  <title>Payment Methods ù 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/info-pages.css" />
   <link rel="stylesheet" href="css/payments.css" />
@@ -173,6 +173,16 @@
       <!-- -- Info Sidebar ---------------------------------- -->
       <aside class="info-sidebar" aria-label="Information menu">
         <div class="info-sidebar-title">Information</div>
+        <div class="info-nav-select-wrap">
+          <label class="visually-hidden" for="info-nav-select">Information pages</label>
+          <select class="info-nav-select" id="info-nav-select" data-info-nav-select>
+            <option value="about-us.html">About us</option>
+            <option value="#">Our awards</option>
+            <option value="terms.html">Terms and Conditions</option>
+            <option value="payments.html" selected>Payments</option>
+            <option value="#">How to place a bet</option>
+          </select>
+        </div>
         <ul class="info-nav" role="list">
           <li class="info-nav-item">
             <a href="about-us.html" class="info-nav-link">
@@ -625,6 +635,7 @@
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/info-pages.js"></script>
   <script src="js/payments.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

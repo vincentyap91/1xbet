@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms and Conditions ó 1xBet</title>
+  <title>Terms and Conditions ù 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/info-pages.css" />
   <link rel="stylesheet" href="css/terms.css" />
@@ -173,6 +173,16 @@
       <!-- -- Info Sidebar ---------------------------------- -->
       <aside class="info-sidebar" aria-label="Information menu">
         <div class="info-sidebar-title">Information</div>
+        <div class="info-nav-select-wrap">
+          <label class="visually-hidden" for="info-nav-select">Information pages</label>
+          <select class="info-nav-select" id="info-nav-select" data-info-nav-select>
+            <option value="about-us.html">About us</option>
+            <option value="#">Our awards</option>
+            <option value="terms.html" selected>Terms and Conditions</option>
+            <option value="payments.html">Payments</option>
+            <option value="#">How to place a bet</option>
+          </select>
+        </div>
         <ul class="info-nav" role="list">
           <li class="info-nav-item">
             <a href="about-us.html" class="info-nav-link">
@@ -245,15 +255,16 @@
                   type="search"
                   class="terms-search-input"
                   id="terms-search"
-                  placeholder="Search sectionsÖ"
+                  placeholder="Search sections"
                   aria-label="Search terms sections"
                 />
                 <img src="assets/icons/te-search.svg" alt="" class="terms-search-icon" />
               </div>
 
-              <button type="button" class="terms-toc-showall" id="terms-show-all">SHOW ALL</button>
+              <div class="terms-toc-rail">
+                <button type="button" class="terms-toc-showall" id="terms-show-all">SHOW ALL</button>
 
-              <ol class="terms-toc-list" id="terms-toc-list">
+                <ol class="terms-toc-list" id="terms-toc-list">
                 <li class="terms-toc-item active" data-section="1">
                   <button type="button"><span class="terms-toc-num">1.</span> General Terms and Definitions</button>
                 </li>
@@ -290,7 +301,8 @@
                 <li class="terms-toc-item" data-section="12">
                   <button type="button"><span class="terms-toc-num">12.</span> Amendments and Termination</button>
                 </li>
-              </ol>
+                </ol>
+              </div>
             </nav>
 
             <!-- Content column -->
@@ -354,7 +366,7 @@
                     </tr>
                     <tr>
                       <td>KYC</td>
-                      <td>Know Your Customer ó the identity verification process required to confirm a Customer's identity before enabling withdrawals or certain account features.</td>
+                      <td>Know Your Customer ù the identity verification process required to confirm a Customer's identity before enabling withdrawals or certain account features.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -585,7 +597,7 @@
                 </p>
 
                 <p class="terms-text">
-                  These Rules shall be governed by and construed in accordance with the laws of CuraÁao. Any dispute arising hereunder shall be subject to the exclusive jurisdiction of the courts of CuraÁao, unless otherwise required by mandatory local law.
+                  These Rules shall be governed by and construed in accordance with the laws of Curaùao. Any dispute arising hereunder shall be subject to the exclusive jurisdiction of the courts of Curaùao, unless otherwise required by mandatory local law.
                 </p>
 
                 <p class="terms-text">
@@ -706,6 +718,7 @@
   </nav>
 
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script src="js/info-pages.js"></script>
   <script src="js/terms.js"></script>
   <script src="js/auth-modals.js"></script>
 </body>

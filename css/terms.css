@@ -115,6 +115,13 @@
   pointer-events: none;
 }
 
+.terms-toc-rail {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .terms-toc-showall {
   display: block;
   padding: 9px 12px;
@@ -276,8 +283,79 @@
   .terms-layout { flex-direction: column; }
   .terms-main { padding: 8px; }
   .terms-card-body { flex-direction: column; }
-  .terms-toc { width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid var(--border-light); }
-  .terms-toc-list { max-height: 200px; }
+  .terms-toc {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  /* SHOW ALL + sections: single-row horizontal scroll (like payments categories) */
+  .terms-toc-rail {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    padding: 8px 10px 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: pan-x;
+  }
+
+  .terms-toc-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  .terms-toc-showall {
+    display: none;
+  }
+
+  .terms-toc-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .terms-toc-item {
+    flex: 0 0 auto;
+  }
+
+  .terms-toc-item[hidden] {
+    display: none !important;
+  }
+
+  .terms-toc-item button {
+    width: auto;
+    min-height: 32px;
+    padding: 6px 12px;
+    border: 1px solid var(--border-light, #c9d7e4);
+    border-radius: 20px;
+    border-bottom: 1px solid var(--border-light, #c9d7e4);
+    background: var(--surface-primary);
+    white-space: nowrap;
+  }
+
+  .terms-toc-item button:hover {
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+    background: var(--surface-primary);
+  }
+
+  .terms-toc-item.active button {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #fff;
+  }
+
   .terms-content { padding: 16px; }
   .terms-crumbs-bar { padding: 0 10px; }
   .terms-crumbs {
