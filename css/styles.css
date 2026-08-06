@@ -13145,8 +13145,14 @@ body.ds-event-info-open {
 
 .sp-top-rail.has-overflow .sp-top-rail__track,
 .sp-competition-nav.has-overflow .sp-competition-viewport {
-  cursor: pointer;
   mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .sp-top-rail.has-overflow .sp-top-rail__track,
+  .sp-competition-nav.has-overflow .sp-competition-viewport {
+    cursor: grab;
+  }
 }
 
 .sp-top-rail__track.is-dragging,
@@ -13399,6 +13405,7 @@ body.ds-event-info-open {
   border: none;
   border-radius: 0;
   box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sp-competition-viewport {
@@ -13412,15 +13419,12 @@ body.ds-event-info-open {
   -webkit-overflow-scrolling: touch;
   container-type: inline-size;
   container-name: sp-competition;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-x;
 }
 
 .sp-competition-viewport::-webkit-scrollbar {
   display: none;
-}
-
-.sp-competition-viewport:focus-visible {
-  outline: 2px solid var(--cyan-soft);
-  outline-offset: 2px;
 }
 
 .sp-competition-track {
@@ -13429,6 +13433,9 @@ body.ds-event-info-open {
   gap: 8px;
   width: max-content;
   min-width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .sp-competition-card {
@@ -13444,19 +13451,29 @@ body.ds-event-info-open {
   gap: 5px;
   color: var(--text-inverse);
   font-family: var(--font);
+  appearance: none;
+  -webkit-appearance: none;
   background: var(--section-blue);
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   scroll-snap-align: start;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  outline: none;
   transition:
     background 0.15s ease,
     border-color 0.15s ease;
 }
 
-.sp-competition-card:hover {
-  background: var(--accent-blue);
-  border-color: rgba(255, 255, 255, 0.3);
+/* Avoid sticky :hover flash on touch / mobile device emulation */
+@media (hover: hover) and (pointer: fine) {
+  .sp-competition-card:hover {
+    background: var(--accent-blue);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
 }
 
 .sp-competition-card:focus-visible {

@@ -7424,7 +7424,7 @@
       if (e.button !== 0 || !hasOverflow()) return;
       if (
         e.target.closest(
-          "a:not(.sp-top-card__link):not(.sp-top-card__more), .odd-btn, .sp-top-card__fav, .sp-hscroll, input, select, textarea"
+          "button, a:not(.sp-top-card__link):not(.sp-top-card__more), .odd-btn, .sp-top-card__fav, .sp-hscroll, input, select, textarea"
         )
       ) {
         return;
@@ -7644,6 +7644,10 @@
         clearSportsCompetitionSelection();
         syncCompetitionCards();
         renderTables();
+        /* Mobile / device-emulation: drop sticky focus so the rail doesn’t flash */
+        if (window.matchMedia("(hover: none), (pointer: coarse)").matches) {
+          card.blur();
+        }
         card.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
         competitionScroll?.sync();
       },

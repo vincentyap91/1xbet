@@ -579,11 +579,37 @@
       mobileBoardHtml(ev, scoreH, scoreA);
   }
 
-  function renderTopbar(ev) {
-    var sportIcon = ev.sportIcon || "assets/icons/te-football.svg";
-    if (/sport-/.test(sportIcon)) {
-      sportIcon = sportIcon.replace("/sport-", "/te-");
+  function resolveCrumbSportIcon(ev) {
+    var sport = String((ev && ev.sport) || "")
+      .toLowerCase()
+      .replace(/[\s_-]+/g, "");
+    var teBySport = {
+      football: "assets/icons/te-football.svg",
+      soccer: "assets/icons/te-football.svg",
+      basketball: "assets/icons/te-basketball.svg",
+      tennis: "assets/icons/te-tennis.svg",
+      hockey: "assets/icons/te-hockey.svg",
+      icehockey: "assets/icons/te-hockey.svg",
+      volleyball: "assets/icons/te-volleyball.svg",
+      tabletennis: "assets/icons/te-tabletennis.svg",
+      badminton: "assets/icons/te-badminton.svg",
+      athletics: "assets/icons/te-athletics.svg",
+      americanfootball: "assets/icons/te-americanfootball.svg",
+      esports: "assets/icons/te-esports.svg",
+    };
+    if (teBySport[sport]) return teBySport[sport];
+
+    var icon = String((ev && ev.sportIcon) || "");
+    /* Only rewrite root sport-* icons → te-* (never lnt/sport-* etc.) */
+    if (/assets\/icons\/sport-[^/]+\.svg$/i.test(icon)) {
+      return icon.replace("/icons/sport-", "/icons/te-");
     }
+    if (/assets\/icons\/te-[^/]+\.svg$/i.test(icon)) return icon;
+    return "assets/icons/te-football.svg";
+  }
+
+  function renderTopbar(ev) {
+    var sportIcon = resolveCrumbSportIcon(ev);
     var host = $("#ev-topbar");
     if (!host) return;
     host.innerHTML =
