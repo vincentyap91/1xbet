@@ -6006,7 +6006,7 @@ body.bh-desktop-open {
 
 .bh-desktop-custom {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: end;
   gap: 12px;
   padding: 12px 16px;
@@ -6023,24 +6023,51 @@ body.bh-desktop-open {
   flex-direction: column;
   gap: 4px;
   min-width: 0;
+  max-width: 100%;
   width: 100%;
+  overflow: hidden;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-secondary);
 }
 
 .bh-desktop-date-input {
+  display: block;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+  height: 34px;
   min-height: 34px;
   padding: 6px 10px;
   font-size: 13px;
+  line-height: 1.25;
   font-family: var(--font);
   color: var(--text-primary);
   background: #fff;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   box-sizing: border-box;
+  /* Real iOS Safari ignores most sizing on default date widgets */
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.bh-desktop-date-input::-webkit-date-and-time-value {
+  min-height: 1.25em;
+  text-align: left;
+}
+
+.bh-desktop-date-input::-webkit-datetime-edit,
+.bh-desktop-date-input::-webkit-datetime-edit-fields-wrapper {
+  min-width: 0;
+  padding: 0;
+}
+
+.bh-desktop-date-input::-webkit-calendar-picker-indicator {
+  margin: 0 0 0 4px;
+  padding: 0;
+  opacity: 0.55;
+  cursor: pointer;
 }
 
 .bh-desktop-apply {
@@ -6253,6 +6280,26 @@ body.bh-desktop-open {
 
   .bh-desktop-status-btn {
     min-width: 108px;
+  }
+
+  /* iOS date inputs need 16px text + fixed height or they collapse / overflow */
+  .bh-desktop-custom {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .bh-desktop-date-input {
+    height: 44px;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .bh-desktop-apply {
+    min-height: 40px;
+    width: 100%;
+    justify-self: stretch;
   }
 
   .bh-desk-card-grid {
