@@ -309,7 +309,7 @@ Icons: reuse `te-*` / `sport-*` / `esports/icon-*` from Figma exports already in
 
 #### Promo category tabs (`promo.html`)
 
-Structure/labels from live [bonus/rules](https://1xlite-46272.pro/en/bonus/rules) (`.bonus-navigation-tabs` + `.bonuses-navigation__search`). **Remap fills to tokens** — do not ship live cyber HSL hex.
+Structure/labels from live [bonus/rules](https://1xlite-46272.pro/en/bonus/rules) (`.bonus-navigation-tabs` + `.bonuses-navigation__search`). **Remap fills to tokens** — do not ship live cyber HSL hex. Card footers show `.promo-card-end` — **Promotion End Date: 31/12/2031 11:59PM** (same string on `promo-detail.html` `.pd-end-date`).
 
 **Layout:** split row — tabs strip on the left, search pill on the right (`justify-content: space-between`). Search is **not** nested inside the tab shell.
 
