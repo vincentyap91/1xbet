@@ -365,8 +365,29 @@ Do not introduce unrelated display/serif fonts or a third type system. Prefer `v
 | `--radius-lg` | `10px` |
 | `--radius-xl` | `12px` |
 | `--header-h` | `96px` desktop; `56px` mobile |
+| `--scrollbar-size` | `4px` |
+| `--scrollbar-thumb` | `rgba(158, 184, 212, 0.55)` |
+| `--scrollbar-thumb-hover` | `rgba(190, 214, 236, 0.8)` |
+| `--scrollbar-track` | `transparent` |
 
 Prefer `8px` rhythm. Panels use `--radius-md`. Avoid large “marketing” radii unless matching an existing component.
+
+### 4.0 Scrollbars (site-wide)
+
+Thin, low-contrast scrollbars are **global chrome** — apply to the page and every scrollable block (left/right sticky rails, panels, tables, drawers).
+
+| Rule | Value |
+|------|--------|
+| Width / height | `--scrollbar-size` (`4px`) |
+| Thumb | `--scrollbar-thumb` (soft blue-grey) |
+| Thumb hover | `--scrollbar-thumb-hover` |
+| Track | `--scrollbar-track` (transparent) |
+| Firefox | `scrollbar-width: thin` + `scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track)` |
+| WebKit | `*::-webkit-scrollbar` / `-thumb` / `-track` in `css/styles.css` base |
+
+**Do not** invent thicker OS-default scrollbars on new pages. Exceptions that intentionally hide overflow chrome (`scrollbar-width: none` on chip rails, competition carousels, collapsed icon-only left rail) stay hidden — do not force a visible bar there.
+
+**Sticky rails:** `.left-sidebar` / `.right-sidebar` (incl. `.collapsed`) are `position: sticky` under the header with `max-height: calc(100vh - var(--header-h) - 16px)` and internal `overflow-y: auto` so long content scrolls **inside each rail**, independent of the main column.
 
 ### 4.1 Account inner pages (`.account-main`)
 
@@ -438,7 +459,7 @@ Shared shell for Deposit, Withdraw, Bet History, Transaction History, Payment Qu
 ### Desktop grid
 
 - `sportsbook-layout`: `250px | 1fr | 260px`, gap `--gap`, padding `--gap`
-- Sticky header; sidebars sticky/scroll within viewport height
+- Sticky header; sidebars sticky/scroll within viewport height (thin site-wide scrollbar — **§4.0**)
 - Desktop design is the **default** — do not redesign it for mobile
 - **Collapsed rails (xxs):** `--sidebar-collapsed-w: 32px`. Classes: `.left-sidebar.collapsed` + `.sportsbook-layout.left-collapsed`, `.right-sidebar.collapsed` + `.sportsbook-layout.right-collapsed`. Homepage defaults both collapsed to match live desktop compact chrome.
   - **Left rail:** icon-only Favorite / Recommended / Top Games / Live signal + live count chip + sport icons (white cells, dark glyphs). Icons from live: `assets/icons/collapse/common-*.svg`, `sports-*.svg`.
@@ -643,8 +664,9 @@ When designing a **new page**:
 8. [ ] Green = CTA, brand blue = login, accent blue = nav/active  
 9. [ ] **Tables / odds / data rows:** follow **§2.1** (reuse `.odds-table-wrap`, `.league-header`, `.event-row`, `.odd-btn` or identical tokens)  
 10. [ ] **Account pages:** use **§4.1** `--acc-*` spacing — no ad-hoc head/body compressors  
-11. [ ] Mobile: no forced `min-width` desktop tables; card/stack patterns  
-12. [ ] Keep interactions demo-safe and consistent with `js/script.js`  
+11. [ ] **Scrollbars:** use site-wide thin tokens (**§4.0**) — no thick custom bars  
+12. [ ] Mobile: no forced `min-width` desktop tables; card/stack patterns  
+13. [ ] Keep interactions demo-safe and consistent with `js/script.js`  
 
 ---
 
@@ -657,6 +679,7 @@ When designing a **new page**:
 - Dark navy column headers or green odds chips on sportsbook tables  
 - A second table theme instead of §2.1  
 - Account pages inventing one-off head/body pads (use §4.1 `--acc-*`)  
+- Thick / OS-default scrollbars on new panels (use §4.0 thin tokens)  
 - Hiding nav on mobile without a replacement drawer/tab bar  
 - Horizontal-scrolling full odds grids as the only mobile solution  
 

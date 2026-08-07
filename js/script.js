@@ -6456,6 +6456,15 @@
     const container = $("#mybets-content");
     if (!container) return;
 
+    /* Keep bet-history panel node alive across content re-renders */
+    const body = $("#my-bets-body");
+    const backdrop =
+      body?.querySelector("#bh-desktop-backdrop") ||
+      container.querySelector("#bh-desktop-backdrop");
+    if (backdrop && backdrop.parentElement !== document.body) {
+      document.body.appendChild(backdrop);
+    }
+
     const tab = state.myBetsTab;
     const bets = getMyBetsData(tab);
 
@@ -6466,6 +6475,9 @@
         container.innerHTML =
           `<div class="mybets-empty"><p class="bet-empty-text">No open bets. Place a bet to see it here.</p></div>`;
       }
+      if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open--rail")) {
+        mountBetHistoryHost();
+      }
       return;
     }
 
@@ -6475,6 +6487,9 @@
 
     container.innerHTML =
       `<div class="mybets-cards">${visible.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>`;
+    if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open--rail")) {
+      mountBetHistoryHost();
+    }
   }
 
   function updateMyBetsBadges() {
@@ -6747,9 +6762,6 @@
   /**
    * @param {{ category?: 'all'|'sports'|'esports'|'casino' }} [opts]
    */
-  /**
-   * @param {{ category?: 'all'|'sports'|'esports'|'casino' }} [opts]
-   */
   function openBetHistoryPanel(opts) {
     ensureBetHistoryPanel();
     const backdrop = $("#bh-desktop-backdrop");
@@ -6758,14 +6770,13 @@
     if (cat === "all" || cat === "sports" || cat === "esports" || cat === "casino") {
       state.betHistoryCategory = cat;
     }
-    if (backdrop.parentElement !== document.body) {
-      document.body.appendChild(backdrop);
-    }
-    backdrop.classList.remove("bh-desktop-backdrop--rail");
+    mountBetHistoryHost();
     backdrop.hidden = false;
-    document.body.classList.add("bh-desktop-open");
-    document.body.classList.remove("bh-desktop-open--rail");
-    $("#mybets-app")?.classList.remove("is-bh-open");
+    const rail = backdrop.classList.contains("bh-desktop-backdrop--rail");
+    document.body.classList.toggle("bh-desktop-open", !rail);
+    document.body.classList.toggle("bh-desktop-open--rail", !!rail);
+    $("#mybets-app")?.classList.toggle("is-bh-open", !!rail);
+    $(".bet-slip-panel")?.classList.toggle("is-bh-open", !!rail);
     syncBetHistoryControls();
     renderBetHistoryResults();
     const closeBtn = $("#bh-desktop-close");
@@ -6778,8 +6789,22 @@
     backdrop.hidden = true;
     document.body.classList.remove("bh-desktop-open", "bh-desktop-open--rail");
     $("#mybets-app")?.classList.remove("is-bh-open");
+    $(".bet-slip-panel")?.classList.remove("is-bh-open");
     setBetHistoryRangeMenu(false);
     setBetHistoryStatusMenu(false);
+  }
+
+  function mountBetHistoryHost() {
+    const backdrop = $("#bh-desktop-backdrop");
+    if (!backdrop) return;
+    const mobile = isMobileViewport();
+    const myBetsBody = $("#my-bets-body");
+    const panel = $(".bet-slip-panel");
+    const hostInRail = !mobile && myBetsBody && !myBetsBody.hidden;
+    const target = hostInRail ? myBetsBody : document.body;
+    if (backdrop.parentElement !== target) target.appendChild(backdrop);
+    backdrop.classList.toggle("bh-desktop-backdrop--rail", !!hostInRail);
+    panel?.classList.toggle("is-bh-open", !!hostInRail && !backdrop.hidden);
   }
 
   function ensureBetHistoryPanel() {
