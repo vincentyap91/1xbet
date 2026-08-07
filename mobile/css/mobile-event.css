@@ -556,3 +556,54 @@
 .mh-ev-modebar__btn:not(.is-active) img {
   opacity: 0.75;
 }
+
+/* —— Statistics iframe (live statisticpopup) —— */
+.mh-page--event.is-ev-stats .mh-ev-board__status,
+.mh-page--event.is-ev-stats .mh-ev-board__scoreline,
+.mh-page--event.is-ev-stats .mh-ev-board__strip,
+.mh-page--event.is-ev-stats .mh-ev-board__league,
+.mh-page--event.is-ev-stats .mh-ev-filters,
+.mh-page--event.is-ev-stats .mh-ev-searchrow,
+.mh-page--event.is-ev-stats .mh-ev-markets,
+.mh-page--event.is-ev-stats .mh-ev-modebar {
+  display: none !important;
+}
+
+.mh-page--event.is-ev-stats .mh-ev-board {
+  padding-bottom: 0;
+  background: var(--header-bg, #0f2744);
+}
+
+.mh-page--event.is-ev-stats .mh-main {
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  overflow-x: hidden;
+}
+
+.mh-ev-stats {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: #fff;
+}
+
+.mh-ev-stats[hidden] {
+  display: none !important;
+}
+
+.mh-ev-stats__iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 720px;
+  height: 720px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  overflow: hidden;
+  vertical-align: top;
+}

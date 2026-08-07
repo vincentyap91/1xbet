@@ -4760,6 +4760,147 @@ body.bss-open {
   display: none !important;
 }
 
+.ticket-automax {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+  margin: 2px 0 0;
+  padding: 2px 0;
+}
+
+.ticket-automax[hidden] {
+  display: none !important;
+}
+
+.ticket-automax__left {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ticket-automax__label {
+  color: var(--section-blue);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.ticket-automax__info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--section-blue);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ticket-automax__info:hover,
+.ticket-automax__info.is-open,
+.ticket-automax__info:focus-visible {
+  background: var(--odds-hover);
+  outline: none;
+}
+
+.ticket-automax__tip {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  z-index: 12;
+  width: min(220px, 72vw);
+  padding: 10px 12px;
+  background: var(--surface-primary);
+  border: 1px solid var(--accent-blue-soft);
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 18px rgba(11, 29, 51, 0.18);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, visibility 0.12s ease;
+}
+
+.ticket-automax__left:hover .ticket-automax__tip,
+.ticket-automax__info.is-open ~ .ticket-automax__tip,
+.ticket-automax__info:focus-visible ~ .ticket-automax__tip {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ticket-automax__tip::after {
+  content: "";
+  position: absolute;
+  left: 52px;
+  top: 100%;
+  border: 7px solid transparent;
+  border-top-color: var(--surface-primary);
+  filter: drop-shadow(0 1px 0 var(--accent-blue-soft));
+}
+
+.ticket-automax__tip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+}
+
+.ticket-automax__tip[hidden] {
+  display: none !important;
+}
+
+.ticket-automax__toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #c5d3e3;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.ticket-automax__toggle.is-on {
+  background: var(--action-green);
+}
+
+.ticket-automax__knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(11, 29, 51, 0.25);
+  transition: transform 0.15s ease;
+}
+
+.ticket-automax__toggle.is-on .ticket-automax__knob {
+  transform: translateX(18px);
+}
+
 /* Ticket popovers: Baseline odds + Stake (same host behaviour as BSS) */
 .tsp-backdrop .tsp-panel {
   width: min(280px, 100%);

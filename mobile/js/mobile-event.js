@@ -3,6 +3,15 @@
   "use strict";
 
   var PENDING_KEY = "mh-event-pending";
+  /* Live 1xBet Statistics iframe — original path/behavior from event Statistics tool.
+     Absolute origin: https://1xlite-493593.pro
+     Use same-origin path with `node dev-server.js` (strips X-Frame-Options). */
+  var STATS_IFRAME_ORIGIN = "https://1xlite-493593.pro";
+  var STATS_IFRAME_PATH =
+    "/en/statisticpopup/game/football/742250812/main?ln=en&hn=1&mh=720";
+  var STATS_IFRAME_SRC = STATS_IFRAME_PATH;
+  var STATS_HEIGHT_MSG = "iframeProxy.BodyHeightChanged";
+  var STATS_MIN_HEIGHT = 720;
 
   function $(sel, root) {
     return (root || document).querySelector(sel);
@@ -17,6 +26,46 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function statsPanel() {
+    return $("#mh-ev-stats");
+  }
+
+  function statsIframe() {
+    return $("#mh-ev-stats-iframe");
+  }
+
+  function ensureStatsIframe() {
+    var iframe = statsIframe();
+    if (!iframe) return null;
+    if (!iframe.getAttribute("src")) {
+      iframe.setAttribute("data-original-src", STATS_IFRAME_ORIGIN + STATS_IFRAME_PATH);
+      iframe.setAttribute("src", STATS_IFRAME_SRC);
+    }
+    return iframe;
+  }
+
+  function setStatsHeight(px) {
+    var iframe = statsIframe();
+    if (!iframe) return;
+    var h = Math.max(STATS_MIN_HEIGHT, Math.round(Number(px) || 0));
+    iframe.style.height = h + "px";
+  }
+
+  function setEventView(view) {
+    var isStats = view === "stats";
+    document.body.classList.toggle("is-ev-stats", isStats);
+    var panel = statsPanel();
+    if (panel) panel.hidden = !isStats;
+    if (isStats) ensureStatsIframe();
+
+    $$(".mh-ev-tools__btn[data-mh-ev-view]").forEach(function (btn) {
+      var on = btn.getAttribute("data-mh-ev-view") === view;
+      btn.classList.toggle("is-active", on);
+      if (on) btn.setAttribute("aria-current", "true");
+      else btn.removeAttribute("aria-current");
+    });
   }
 
   function readPending() {
@@ -159,13 +208,13 @@
       '<div class="mh-ev-tools" role="toolbar" aria-label="Event views">' +
       '<button type="button" class="mh-ev-tools__btn" data-mh-toast="Favourites" aria-label="Favourite">' +
       '<img src="assets/icons/ei-star.svg" alt="" /></button>' +
-      '<button type="button" class="mh-ev-tools__btn is-active" aria-label="Scoreboard" aria-current="true">' +
+      '<button type="button" class="mh-ev-tools__btn is-active" data-mh-ev-view="scoreboard" aria-label="Scoreboard" aria-current="true">' +
       '<img src="../assets/icons/te-trophy.svg" alt="" /></button>' +
       '<button type="button" class="mh-ev-tools__btn" data-mh-toast="Pitch view" aria-label="Pitch">' +
       '<img src="assets/icons/te-football.svg" alt="" /></button>' +
       '<button type="button" class="mh-ev-tools__btn" data-mh-toast="Live stream" aria-label="Stream">' +
       '<img src="../assets/icons/lnt/icon-stream.svg" alt="" /></button>' +
-      '<button type="button" class="mh-ev-tools__btn" data-mh-toast="Statistics" aria-label="Stats">' +
+      '<button type="button" class="mh-ev-tools__btn" data-mh-ev-view="stats" aria-label="Statistics">' +
       '<img src="assets/icons/ei-stats.svg" alt="" /></button>' +
       '<button type="button" class="mh-ev-tools__btn mh-ev-tools__more" data-mh-toast="More" aria-label="More">' +
       '<img src="assets/icons/icon-more.svg" alt="" /></button>' +
@@ -301,6 +350,12 @@
 
       var tool = e.target.closest(".mh-ev-tools__btn");
       if (tool && !tool.classList.contains("mh-ev-tools__more")) {
+        var view = tool.getAttribute("data-mh-ev-view");
+        if (view === "stats" || view === "scoreboard") {
+          setEventView(view);
+          return;
+        }
+        setEventView("scoreboard");
         $$(".mh-ev-tools__btn").forEach(function (b) {
           b.classList.toggle("is-active", b === tool);
           if (b === tool) b.setAttribute("aria-current", "true");
@@ -342,12 +397,23 @@
       if (window.history.length > 1) window.history.back();
       else window.location.href = "index.html";
     });
+
+    window.addEventListener("message", function (e) {
+      var data = e && e.data;
+      if (!data || data.type !== STATS_HEIGHT_MSG) return;
+      if (typeof data.height === "number" && data.height > 0) {
+        setStatsHeight(data.height);
+      }
+    });
   }
 
   function init() {
     if (!document.body.classList.contains("mh-page--event")) return;
     render(resolveEvent());
     bind();
+    if (new URLSearchParams(window.location.search).get("view") === "stats") {
+      setEventView("stats");
+    }
   }
 
   if (document.readyState === "loading") {

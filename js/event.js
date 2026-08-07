@@ -3,6 +3,13 @@
   "use strict";
 
   var PENDING_KEY = "ds-event-pending";
+  /* Live 1xBet Statistics iframe — original statisticpopup path/behavior */
+  var STATS_IFRAME_ORIGIN = "https://1xlite-493593.pro";
+  var STATS_IFRAME_PATH =
+    "/en/statisticpopup/game/football/742250812/main?ln=en&hn=1&mh=720";
+  var STATS_IFRAME_SRC = STATS_IFRAME_PATH;
+  var STATS_HEIGHT_MSG = "iframeProxy.BodyHeightChanged";
+  var STATS_MIN_HEIGHT = 720;
 
   function $(sel, root) {
     return (root || document).querySelector(sel);
@@ -17,6 +24,46 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function statsPanel() {
+    return $("#ev-stats");
+  }
+
+  function statsIframe() {
+    return $("#ev-stats-iframe");
+  }
+
+  function ensureStatsIframe() {
+    var iframe = statsIframe();
+    if (!iframe) return null;
+    if (!iframe.getAttribute("src")) {
+      iframe.setAttribute("data-original-src", STATS_IFRAME_ORIGIN + STATS_IFRAME_PATH);
+      iframe.setAttribute("src", STATS_IFRAME_SRC);
+    }
+    return iframe;
+  }
+
+  function setStatsHeight(px) {
+    var iframe = statsIframe();
+    if (!iframe) return;
+    var h = Math.max(STATS_MIN_HEIGHT, Math.round(Number(px) || 0));
+    iframe.style.height = h + "px";
+  }
+
+  function setEventView(view) {
+    var isStats = view === "stats";
+    document.body.classList.toggle("is-ev-stats", isStats);
+    var panel = statsPanel();
+    if (panel) panel.hidden = !isStats;
+    if (isStats) ensureStatsIframe();
+
+    $$(".ev-mboard__tool[data-ev-view]").forEach(function (btn) {
+      var on = btn.getAttribute("data-ev-view") === view;
+      btn.classList.toggle("is-active", on);
+      if (on) btn.setAttribute("aria-current", "true");
+      else btn.removeAttribute("aria-current");
+    });
   }
 
   function readPending() {
@@ -453,13 +500,13 @@
       '<div class="ev-mboard__tools" role="toolbar" aria-label="Event views">' +
       '<button type="button" class="ev-mboard__tool" data-toast="Favourites" aria-label="Favourite">' +
       '<img src="mobile/assets/icons/ei-star.svg" alt="" /></button>' +
-      '<button type="button" class="ev-mboard__tool is-active" aria-current="true" aria-label="Scoreboard">' +
+      '<button type="button" class="ev-mboard__tool is-active" data-ev-view="scoreboard" aria-current="true" aria-label="Scoreboard">' +
       '<img src="assets/icons/te-trophy.svg" alt="" /></button>' +
       '<button type="button" class="ev-mboard__tool" data-toast="Pitch view" aria-label="Pitch">' +
       '<img src="assets/icons/te-football.svg" alt="" /></button>' +
       '<button type="button" class="ev-mboard__tool" data-toast="Live stream" aria-label="Stream">' +
       '<img src="assets/icons/lnt/icon-stream.svg" alt="" /></button>' +
-      '<button type="button" class="ev-mboard__tool" data-toast="Statistics" aria-label="Stats">' +
+      '<button type="button" class="ev-mboard__tool" data-ev-view="stats" aria-label="Statistics">' +
       '<img src="mobile/assets/icons/ei-stats.svg" alt="" /></button>' +
       '<button type="button" class="ev-mboard__tool ev-mboard__tool--more" data-event-info="' +
       esc(ev.id) +
@@ -798,6 +845,12 @@
 
       var mTool = e.target.closest(".ev-mboard__tool");
       if (mTool && !mTool.classList.contains("ev-mboard__tool--more")) {
+        var view = mTool.getAttribute("data-ev-view");
+        if (view === "stats" || view === "scoreboard") {
+          setEventView(view);
+          return;
+        }
+        setEventView("scoreboard");
         $$(".ev-mboard__tool").forEach(function (b) {
           b.classList.toggle("is-active", b === mTool);
         });
@@ -899,6 +952,14 @@
         m.hidden = !title.toLowerCase().includes(q);
       });
     });
+
+    window.addEventListener("message", function (e) {
+      var data = e && e.data;
+      if (!data || data.type !== STATS_HEIGHT_MSG) return;
+      if (typeof data.height === "number" && data.height > 0) {
+        setStatsHeight(data.height);
+      }
+    });
   }
 
   function init() {
@@ -907,6 +968,9 @@
     document.title = ev.home + " vs " + ev.away + " — Event — 1xBet";
     render(ev);
     bind();
+    if (new URLSearchParams(window.location.search).get("view") === "stats") {
+      setEventView("stats");
+    }
   }
 
   window.DsEventPage = {

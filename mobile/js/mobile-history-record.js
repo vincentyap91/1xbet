@@ -4,6 +4,58 @@
   if (!document.body.classList.contains("mh-page--history-record")) return;
 
   const page = document.body.dataset.page || "";
+  const isTxPage = page === "transaction-history";
+
+  const TX_DEMO_ROWS = [
+    {
+      id: "12638",
+      type: "Withdrawal",
+      typeKey: "withdrawals",
+      remark: "Processed",
+      amount: "-69.00",
+      amountValue: -69,
+      amountTone: "neg",
+      date: "27/07/2026 14:06 (GMT+8)",
+      status: "Approved",
+      statusKey: "approved",
+    },
+    {
+      id: "12637",
+      type: "Deposit",
+      typeKey: "deposits",
+      remark: "Processed",
+      amount: "50.00",
+      amountValue: 50,
+      amountTone: "pos",
+      date: "27/07/2026 13:54 (GMT+8)",
+      status: "Approved",
+      statusKey: "approved",
+    },
+    {
+      id: "11775",
+      type: "Deposit",
+      typeKey: "deposits",
+      remark: "Processed",
+      amount: "50.00",
+      amountValue: 50,
+      amountTone: "pos",
+      date: "13/07/2026 15:18 (GMT+8)",
+      status: "Approved",
+      statusKey: "approved",
+    },
+    {
+      id: "11774",
+      type: "Deposit",
+      typeKey: "deposits",
+      remark: "Processed",
+      amount: "50.00",
+      amountValue: 50,
+      amountTone: "pos",
+      date: "13/07/2026 15:02 (GMT+8)",
+      status: "Approved",
+      statusKey: "approved",
+    },
+  ];
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -25,6 +77,11 @@
 
   function formatDate(d) {
     return `${pad2(d.getDate())}-${pad2(d.getMonth() + 1)}-${d.getFullYear()}`;
+  }
+
+  function formatMoney(n) {
+    const abs = Math.abs(n).toFixed(2);
+    return (n < 0 ? "-" : "") + abs;
   }
 
   function startOfDay(d) {
@@ -92,9 +149,93 @@
     </div>`;
   }
 
-  function renderEmpty() {
+  function readColumns() {
+    return $$(".mh-hr-table-head [data-col]").map((el, index) => ({
+      key: el.getAttribute("data-col") || "",
+      label: el.textContent.trim(),
+      index,
+    }));
+  }
+
+  function filterTxRows(typeValue, statusValue) {
+    return TX_DEMO_ROWS.filter((row) => {
+      const typeOk =
+        !typeValue ||
+        typeValue === "all" ||
+        (typeValue === "deposits" && row.typeKey === "deposits") ||
+        (typeValue === "withdrawals" && row.typeKey === "withdrawals");
+      const statusOk =
+        !statusValue ||
+        statusValue === "all" ||
+        row.statusKey === statusValue ||
+        (statusValue === "completed" && row.statusKey === "approved");
+      return typeOk && statusOk;
+    });
+  }
+
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function renderRows(rows, columns) {
+    return rows
+      .map((row) => {
+        return (
+          `<div class="mh-hr-row">` +
+          columns
+            .map((col) => {
+              const val = row[col.key] || "";
+              if (col.key === "status" && row.statusKey) {
+                return (
+                  `<div class="mh-hr-cell mh-hr-cell--status">` +
+                  `<span class="mh-hr-status mh-hr-status--${escapeHtml(row.statusKey)}">${escapeHtml(val)}</span>` +
+                  `</div>`
+                );
+              }
+              let cls = `mh-hr-cell mh-hr-cell--${col.key}`;
+              if (col.key === "amount") {
+                cls += " mh-hr-cell--amount";
+                if (row.amountTone) cls += ` is-${row.amountTone}`;
+              }
+              return `<div class="${cls}">${escapeHtml(val)}</div>`;
+            })
+            .join("") +
+          `</div>`
+        );
+      })
+      .join("");
+  }
+
+  function renderGrandTotal(rows, columns) {
+    if (!isTxPage || !rows.length) return "";
+    const total = rows.reduce((sum, row) => sum + (typeof row.amountValue === "number" ? row.amountValue : 0), 0);
+    const tone = total < 0 ? "neg" : "pos";
+
+    return (
+      `<div class="mh-hr-row mh-hr-row--total" role="row">` +
+      `<div class="mh-hr-cell mh-hr-cell--total-label">Grand Total</div>` +
+      `<div class="mh-hr-cell mh-hr-cell--amount is-${tone}">${escapeHtml(formatMoney(total))}</div>` +
+      `</div>`
+    );
+  }
+
+  function renderResults(rows) {
     const body = $("#mh-hr-body");
-    if (body) body.innerHTML = emptyHtml();
+    if (!body) return;
+    const columns = readColumns();
+    if (!rows.length) {
+      body.innerHTML = emptyHtml();
+      return;
+    }
+    body.innerHTML = renderRows(rows, columns) + renderGrandTotal(rows, columns);
+  }
+
+  function renderEmpty() {
+    renderResults([]);
   }
 
   function setPeriod(key) {
@@ -106,6 +247,22 @@
     $$("[data-mh-hr-period]").forEach((btn) => {
       btn.classList.toggle("is-active", btn.getAttribute("data-mh-hr-period") === key);
     });
+  }
+
+  function refreshTxResults() {
+    if (!isTxPage) {
+      renderEmpty();
+      return;
+    }
+    const typeSelect = $("#mh-hr-type");
+    const statusSelect = $("#mh-hr-status");
+    const typeValue = typeSelect?.value || "all";
+    const statusValue = statusSelect?.value || "all";
+    if (typeValue.indexOf(".html") !== -1) {
+      renderEmpty();
+      return;
+    }
+    renderResults(filterTxRows(typeValue, statusValue));
   }
 
   function initAuth() {
@@ -129,8 +286,8 @@
     const titleEl = $(".mh-hr-subbar__title");
     const labelText = titleEl ? titleEl.textContent.trim() : "Record";
 
-    setPeriod("this-week");
-    renderEmpty();
+    setPeriod(isTxPage ? "last-month" : "this-week");
+    refreshTxResults();
 
     $$("[data-mh-hr-period]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -141,13 +298,16 @@
     typeSelect?.addEventListener("change", () => {
       const value = typeSelect.value;
       if (value && value.indexOf(".html") !== -1) {
-        /* Nested desktop record pages not ported — stay on TX with toast */
         toast(`${typeSelect.options[typeSelect.selectedIndex].text} (demo)`);
-        typeSelect.value = typeSelect.querySelector("option")?.value || "deposits";
-        renderEmpty();
+        typeSelect.value = "all";
+        refreshTxResults();
         return;
       }
-      renderEmpty();
+      refreshTxResults();
+    });
+
+    statusSelect?.addEventListener("change", () => {
+      refreshTxResults();
     });
 
     form?.addEventListener("submit", (e) => {
@@ -165,6 +325,11 @@
         return;
       }
 
+      if (isTxPage) {
+        refreshTxResults();
+        return;
+      }
+
       renderEmpty();
       const typeLabel = typeSelect?.options[typeSelect.selectedIndex]?.text || labelText;
       const statusLabel =
@@ -178,7 +343,6 @@
       );
     });
 
-    /* Page marker for debugging / future row demos */
     document.body.dataset.mhHistoryReady = page || "1";
   }
 

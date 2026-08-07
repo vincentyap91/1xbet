@@ -3079,14 +3079,74 @@
     panel.classList.toggle("bss-hide-select-account", !s.selectAccount);
     panel.classList.toggle("bss-automax", !!s.automax);
 
-    if (opts && opts.applyAutomaxStake && s.automax) {
-      const stakeInput = $("#stake-input");
-      if (stakeInput) {
-        const bal = window.DsWallet ? Math.max(1, Math.floor(Number(window.DsWallet.get()) || 0)) : 50;
-        stakeInput.value = String(bal > 0 ? bal : 50);
-        updateTotals();
-      }
+    const automaxRow = $("#ticket-automax");
+    if (automaxRow) {
+      automaxRow.hidden = !s.automax;
+      syncAutomaxToggleUi();
     }
+
+    if (opts && opts.applyAutomaxStake && s.automax && isAutomaxEnabled()) {
+      clampStakeToAutomax();
+    }
+  }
+
+  const AUTOMAX_ON_KEY = "1xbet-automax-enabled";
+
+  function isAutomaxEnabled() {
+    try {
+      const raw = localStorage.getItem(AUTOMAX_ON_KEY);
+      if (raw === null) return false;
+      return raw === "1" || raw === "true";
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function setAutomaxEnabled(on) {
+    try {
+      localStorage.setItem(AUTOMAX_ON_KEY, on ? "1" : "0");
+    } catch (e) { /* ignore */ }
+    syncAutomaxToggleUi();
+    if (on) clampStakeToAutomax();
+  }
+
+  function getAutomaxLimit() {
+    if (window.DsWallet) {
+      const bal = Math.floor(Number(window.DsWallet.get()) || 0);
+      return Math.max(0, bal);
+    }
+    return 0;
+  }
+
+  function clampStakeToAutomax() {
+    if (!state.slipSettings.automax || !isAutomaxEnabled()) return;
+    const stakeInput = $("#stake-input");
+    if (!stakeInput) return;
+    const limit = getAutomaxLimit();
+    if (limit <= 0) return;
+    const current = Number(stakeInput.value) || 0;
+    if (current > limit) {
+      stakeInput.value = String(limit);
+      updateTotals();
+      syncBetSlipAuthUi();
+    }
+  }
+
+  function syncAutomaxToggleUi() {
+    const toggle = $("#automax-toggle");
+    if (!toggle) return;
+    const on = isAutomaxEnabled();
+    toggle.classList.toggle("is-on", on);
+    toggle.setAttribute("aria-checked", on ? "true" : "false");
+  }
+
+  function setAutomaxTipOpen(open) {
+    const tip = $("#automax-tip");
+    const btn = $("#automax-info");
+    if (!btn) return;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.classList.toggle("is-open", !!open);
+    if (tip) tip.removeAttribute("hidden");
   }
 
   function ensureBetSlipSettingsModal() {
@@ -3100,7 +3160,7 @@
     overlay.innerHTML =
       `<div class="bss-panel" role="dialog" aria-modal="true" aria-labelledby="bss-title">` +
         `<div class="bss-head">` +
-          `<h2 class="bss-title" id="bss-title">Bet Slip Settings</h2>` +
+          `<h2 class="bss-title" id="bss-title">BET SLIP SETTINGS</h2>` +
           `<button type="button" class="bss-close" id="bss-close" aria-label="Close settings">&times;</button>` +
         `</div>` +
         `<div class="bss-body">` +
@@ -3123,7 +3183,7 @@
             `</label>` +
           `</div>` +
           `<div class="bss-actions">` +
-            `<button type="button" class="bss-save" id="bss-save">Save</button>` +
+            `<button type="button" class="bss-save" id="bss-save">SAVE</button>` +
           `</div>` +
         `</div>` +
       `</div>`;
@@ -3929,6 +3989,18 @@
           <span>Maximum stake</span>
           <strong data-wallet-max>0 MYR</strong>
         </button>
+        <div class="ticket-automax" id="ticket-automax" hidden>
+          <div class="ticket-automax__left">
+            <span class="ticket-automax__label">Automax</span>
+            <button type="button" class="ticket-automax__info" id="automax-info" aria-label="About Automax" aria-describedby="automax-tip" aria-expanded="false">i</button>
+            <div class="ticket-automax__tip" id="automax-tip" role="tooltip">
+              If the amount you enter exceeds the maximum stake limit, your stake will be automatically set at the maximum amount
+            </div>
+          </div>
+          <button type="button" class="ticket-automax__toggle" id="automax-toggle" role="switch" aria-checked="false" aria-label="Automax">
+            <span class="ticket-automax__knob" aria-hidden="true"></span>
+          </button>
+        </div>
         <button type="button" class="ticket-meta-link" data-ticket-meta="balance">
           <span>Balance</span>
           <strong data-wallet-main>0 MYR</strong>
@@ -3958,6 +4030,34 @@
       </div>
       <button type="button" class="btn-place" id="place-bet">Place Bet</button>
     `;
+    } else {
+      let automax = $("#ticket-automax");
+      const meta = $("#ticket-account-meta");
+      const maxStake = meta?.querySelector(".max-stake-link");
+      if (!automax) {
+        automax = document.createElement("div");
+        automax.className = "ticket-automax";
+        automax.id = "ticket-automax";
+        automax.hidden = true;
+        automax.innerHTML =
+          `<div class="ticket-automax__left">` +
+            `<span class="ticket-automax__label">Automax</span>` +
+            `<button type="button" class="ticket-automax__info" id="automax-info" aria-label="About Automax" aria-describedby="automax-tip" aria-expanded="false">i</button>` +
+            `<div class="ticket-automax__tip" id="automax-tip" role="tooltip">` +
+              `If the amount you enter exceeds the maximum stake limit, your stake will be automatically set at the maximum amount` +
+            `</div>` +
+          `</div>` +
+          `<button type="button" class="ticket-automax__toggle" id="automax-toggle" role="switch" aria-checked="false" aria-label="Automax">` +
+            `<span class="ticket-automax__knob" aria-hidden="true"></span>` +
+          `</button>`;
+      }
+      if (meta && maxStake) {
+        if (automax.parentNode !== meta || automax.previousElementSibling !== maxStake) {
+          maxStake.insertAdjacentElement("afterend", automax);
+        }
+      } else if (!automax.parentNode && meta) {
+        meta.appendChild(automax);
+      }
     }
     syncBetSlipAuthUi();
     applyBetSlipSettings();
@@ -5923,6 +6023,11 @@
       if (e.target && e.target.id === "promo-code-input") {
         savePromoCode(e.target.value);
       }
+      if (e.target.closest("#stake-input")) {
+        clampStakeToAutomax();
+        updateTotals();
+        syncBetSlipAuthUi();
+      }
     });
     $("#bet-slip-body")?.addEventListener("change", (e) => {
       if (e.target && e.target.id === "promo-code-input") {
@@ -5998,6 +6103,24 @@
         return;
       }
 
+      const automaxInfo = e.target.closest("#automax-info");
+      if (automaxInfo) {
+        // Desktop: CSS :hover shows tip. Touch: tap toggles.
+        if (window.matchMedia && window.matchMedia("(hover: hover)").matches) return;
+        setAutomaxTipOpen(!automaxInfo.classList.contains("is-open"));
+        return;
+      }
+
+      const automaxToggle = e.target.closest("#automax-toggle");
+      if (automaxToggle) {
+        setAutomaxEnabled(!isAutomaxEnabled());
+        return;
+      }
+
+      if (!e.target.closest(".ticket-automax__left")) {
+        setAutomaxTipOpen(false);
+      }
+
       const step = e.target.closest("[data-stake-step]");
       const quick = e.target.closest("[data-quick-stake]");
       const clear = e.target.closest("#clear-bets");
@@ -6015,6 +6138,7 @@
       if (step && stakeInput) {
         const next = Math.max(1, (Number(stakeInput.value) || 0) + Number(step.getAttribute("data-stake-step")));
         stakeInput.value = String(next);
+        clampStakeToAutomax();
         updateTotals();
         syncBetSlipAuthUi();
         return;
@@ -6022,6 +6146,7 @@
 
       if (quick && stakeInput) {
         stakeInput.value = String((Number(stakeInput.value) || 0) + Number(quick.getAttribute("data-quick-stake")));
+        clampStakeToAutomax();
         updateTotals();
         syncBetSlipAuthUi();
         return;
@@ -6098,11 +6223,9 @@
       }
     });
 
-    $("#bet-slip-body")?.addEventListener("input", (e) => {
-      if (e.target.closest("#stake-input")) {
-        updateTotals();
-        syncBetSlipAuthUi();
-      }
+    document.addEventListener("click", (e) => {
+      if (e.target.closest("#automax-info") || e.target.closest("#automax-tip")) return;
+      setAutomaxTipOpen(false);
     });
 
     document.addEventListener("keydown", (e) => {

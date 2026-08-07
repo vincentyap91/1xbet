@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transaction Record — 1xBet</title>
+  <title>Transaction Record ï¿½ 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
@@ -257,7 +257,8 @@
                   <label class="tx-record-select-field">
                     <span class="tx-record-label">Type</span>
                     <select class="tx-record-select" id="tx-filter-type" name="type" aria-label="Type">
-                      <option value="deposits" selected>Deposit</option>
+                      <option value="all" selected>Deposit, Withdrawal</option>
+                      <option value="deposits">Deposit</option>
                       <option value="withdrawals">Withdrawal</option>
                       <option value="commission-record.html">Commission Record</option>
                       <option value="rebate-record.html">Rebate Record</option>
@@ -268,6 +269,7 @@
                     <span class="tx-record-label">Status</span>
                     <select class="tx-record-select" id="tx-filter-status" name="status" aria-label="Status">
                       <option value="all" selected>All</option>
+                      <option value="approved">Approved</option>
                       <option value="completed">Completed</option>
                       <option value="pending">Pending</option>
                       <option value="rejected">Rejected</option>
@@ -291,9 +293,9 @@
                   <button type="button" class="tx-record-period-btn" data-tx-period="today">Today</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="yesterday">Yesterday</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
-                  <button type="button" class="tx-record-period-btn is-active" data-tx-period="this-week">This Week</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="this-week">This Week</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="this-month">This Month</button>
-                  <button type="button" class="tx-record-period-btn" data-tx-period="last-month">Last Month</button>
+                  <button type="button" class="tx-record-period-btn is-active" data-tx-period="last-month">Last Month</button>
                 </div>
 
                 <button type="submit" class="tx-record-submit">Submit</button>
@@ -303,10 +305,12 @@
             <section class="pq-panel tx-record-panel tx-record-panel--results" aria-label="Results">
               <div class="tx-record-table-wrap">
                 <div class="tx-record-table-head" aria-hidden="true">
-                  <div class="tx-record-col-label" data-col="date">Date</div>
-                  <div class="tx-record-col-label" data-col="amount">Amount</div>
+                  <div class="tx-record-col-label" data-col="id">ID</div>
+                  <div class="tx-record-col-label" data-col="type">Type</div>
+                  <div class="tx-record-col-label" data-col="remark">Remark</div>
                   <div class="tx-record-col-label" data-col="status">Status</div>
-                  <div class="tx-record-col-label" data-col="description">Description</div>
+                  <div class="tx-record-col-label" data-col="date">Submit Date</div>
+                  <div class="tx-record-col-label" data-col="amount">Amount</div>
                 </div>
                 <div class="tx-record-table-body" id="tx-record-body" aria-live="polite">
                   <div class="acc-empty-panel pq-empty tx-record-empty" id="tx-record-empty" role="status">

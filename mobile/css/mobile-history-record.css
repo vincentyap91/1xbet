@@ -121,14 +121,15 @@ body.mh-page.mh-page--history-record .mh-qbs {
 }
 
 .mh-hr-period {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
 }
 
 .mh-hr-period__btn {
-  min-height: 32px;
-  padding: 0 12px;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 6px;
   border: 1px solid rgba(201, 215, 228, 0.8);
   border-radius: var(--radius-md);
   background: var(--surface-primary);
@@ -137,6 +138,12 @@ body.mh-page.mh-page--history-record .mh-qbs {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+}
+
+@media (max-width: 360px) {
+  .mh-hr-period {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .mh-hr-period__btn.is-active {
@@ -162,13 +169,13 @@ body.mh-page.mh-page--history-record .mh-qbs {
   filter: brightness(0.96);
 }
 
-/* Results — mobile stacked cells (desktop ≤900 pattern) */
+/* Results — mobile stacked / 2-col cards */
 .mh-hr-table-head {
   display: none;
 }
 
 .mh-hr-table-body {
-  min-height: 160px;
+  min-height: 120px;
 }
 
 .mh-hr-empty {
@@ -203,11 +210,26 @@ body.mh-page.mh-page--history-record .mh-qbs {
   background: var(--odds-bg);
 }
 
+body.mh-page--tx-history .mh-hr-row:not(.mh-hr-row--total) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+  padding: 14px var(--mh-hr-panel-pad);
+}
+
+body.mh-page--tx-history .mh-hr-cell--amount {
+  text-align: right;
+}
+
+body.mh-page--tx-history .mh-hr-cell--amount::before {
+  text-align: right;
+}
+
 .mh-hr-cell {
   font-size: 13px;
   color: var(--text-primary);
   line-height: 1.35;
   word-break: break-word;
+  min-width: 0;
 }
 
 .mh-hr-cell::before {
@@ -220,7 +242,7 @@ body.mh-page.mh-page--history-record .mh-qbs {
   letter-spacing: 0.04em;
 }
 
-.mh-hr-cell--date::before { content: "Date"; }
+.mh-hr-cell--date::before { content: "Submit Date"; }
 .mh-hr-cell--amount::before { content: "Amount"; }
 .mh-hr-cell--stake::before { content: "Stake"; }
 .mh-hr-cell--bonus::before { content: "Bonus"; }
@@ -229,12 +251,57 @@ body.mh-page.mh-page--history-record .mh-qbs {
 .mh-hr-cell--desc::before { content: "Description"; }
 .mh-hr-cell--event::before { content: "Event"; }
 .mh-hr-cell--promotion::before { content: "Promotion"; }
+.mh-hr-cell--id::before { content: "ID"; }
+.mh-hr-cell--type::before { content: "Type"; }
+.mh-hr-cell--remark::before { content: "Remark"; }
+.mh-hr-cell--total-label::before { content: none; }
 
 .mh-hr-cell--amount,
 .mh-hr-cell--stake,
 .mh-hr-cell--bonus {
   font-weight: 700;
   color: var(--section-blue);
+}
+
+.mh-hr-cell--amount.is-pos {
+  color: #5f7c1e;
+}
+
+.mh-hr-cell--amount.is-neg {
+  color: #c0392b;
+}
+
+.mh-hr-cell--id {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mh-hr-row--total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--league-header, #d8e3ee);
+  font-weight: 700;
+  padding: 14px var(--mh-hr-panel-pad);
+}
+
+.mh-hr-row--total:nth-child(even) {
+  background: var(--league-header, #d8e3ee);
+}
+
+.mh-hr-cell--total-label {
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.mh-hr-row--total .mh-hr-cell--amount::before {
+  display: none;
+}
+
+.mh-hr-row--total .mh-hr-cell--amount {
+  font-size: 15px;
+  text-align: right;
 }
 
 .mh-hr-status {
@@ -248,10 +315,12 @@ body.mh-page.mh-page--history-record .mh-qbs {
 }
 
 .mh-hr-status--completed,
+.mh-hr-status--approved,
 .mh-hr-status--won,
 .mh-hr-status--active {
   background: color-mix(in srgb, var(--action-green) 22%, #fff);
   color: #5f7c1e;
+  border: 1px solid color-mix(in srgb, var(--action-green) 45%, #fff);
 }
 
 .mh-hr-status--pending,
@@ -262,7 +331,7 @@ body.mh-page.mh-page--history-record .mh-qbs {
 
 .mh-hr-status--rejected,
 .mh-hr-status--lost,
-.mh-hr-status--cancelled,
+.mh-hr-status--failed,
 .mh-hr-status--cancelledelled {
   background: var(--odds-bg);
   color: var(--text-muted);

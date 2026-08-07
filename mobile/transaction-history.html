@@ -54,7 +54,8 @@
           <label class="mh-hr-field">
             <span class="mh-hr-label">Type</span>
             <select class="mh-hr-select" id="mh-hr-type" name="type" aria-label="Type">
-              <option value="deposits" selected>Deposit</option>
+              <option value="all" selected>Deposit, Withdrawal</option>
+              <option value="deposits">Deposit</option>
               <option value="withdrawals">Withdrawal</option>
               <option value="commission-record.html">Commission Record</option>
               <option value="rebate-record.html">Rebate Record</option>
@@ -65,6 +66,7 @@
             <span class="mh-hr-label">Status</span>
             <select class="mh-hr-select" id="mh-hr-status" name="status" aria-label="Status">
               <option value="all" selected>All</option>
+              <option value="approved">Approved</option>
               <option value="completed">Completed</option>
               <option value="pending">Pending</option>
               <option value="rejected">Rejected</option>
@@ -88,9 +90,9 @@
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="today">Today</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="yesterday">Yesterday</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-week">Last Week</button>
-          <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="this-week">This Week</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-week">This Week</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-month">This Month</button>
-          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-month">Last Month</button>
+          <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="last-month">Last Month</button>
         </div>
 
         <button type="submit" class="mh-hr-submit">Submit</button>
@@ -99,10 +101,12 @@
 
     <section class="mh-hr-panel mh-hr-panel--results" aria-label="Results">
       <div class="mh-hr-table-head" aria-hidden="true">
-        <div data-col="date">Date</div>
-        <div data-col="amount">Amount</div>
+        <div data-col="id">ID</div>
+        <div data-col="type">Type</div>
+        <div data-col="remark">Remark</div>
         <div data-col="status">Status</div>
-        <div data-col="description">Description</div>
+        <div data-col="date">Submit Date</div>
+        <div data-col="amount">Amount</div>
       </div>
       <div class="mh-hr-table-body" id="mh-hr-body" aria-live="polite">
         <div class="mh-hr-empty" role="status">

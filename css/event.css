@@ -1378,4 +1378,56 @@
     background: #e8eef5;
     color: var(--section-blue);
   }
+
+  body.is-ev-stats .ev-mboard__status,
+  body.is-ev-stats .ev-mboard__scoreline,
+  body.is-ev-stats .ev-mboard__strip,
+  body.is-ev-stats .ev-mboard__league,
+  body.is-ev-stats .ev-tabs,
+  body.is-ev-stats .ev-m-searchrow,
+  body.is-ev-stats .ev-filters,
+  body.is-ev-stats .ev-markets-wrap,
+  body.is-ev-stats .ev-m-modebar,
+  body.is-ev-stats .accumulators,
+  body.is-ev-stats .ml-toolbar {
+    display: none !important;
+  }
+
+  body.is-ev-stats .ev-mboard {
+    padding-bottom: 0;
+    background: var(--header-bg);
+  }
+
+  .ev-stats {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: #fff;
+  }
+
+  .ev-stats[hidden] {
+    display: none !important;
+  }
+
+  .ev-stats__iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-height: 720px;
+    height: 720px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+}
+
+/* Desktop: hide mobile stats panel (Statistics tool is mobile board only) */
+@media (min-width: 901px) {
+  .ev-stats {
+    display: none !important;
+  }
 }

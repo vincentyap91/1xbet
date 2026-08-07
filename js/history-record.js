@@ -15,6 +15,58 @@
   if (HISTORY_PAGES.indexOf(pageKey) === -1) return;
   if (!document.querySelector('.tx-record-content')) return;
 
+  /* Demo deposit / withdrawal rows (Transaction History reference) */
+  var TX_DEMO_ROWS = [
+    {
+      id: '12638',
+      type: 'Withdrawal',
+      typeKey: 'withdrawals',
+      remark: 'Processed',
+      amount: '-69.00',
+      amountValue: -69,
+      amountTone: 'neg',
+      date: '27/07/2026 14:06 (GMT+8)',
+      status: 'Approved',
+      statusKey: 'approved'
+    },
+    {
+      id: '12637',
+      type: 'Deposit',
+      typeKey: 'deposits',
+      remark: 'Processed',
+      amount: '50.00',
+      amountValue: 50,
+      amountTone: 'pos',
+      date: '27/07/2026 13:54 (GMT+8)',
+      status: 'Approved',
+      statusKey: 'approved'
+    },
+    {
+      id: '11775',
+      type: 'Deposit',
+      typeKey: 'deposits',
+      remark: 'Processed',
+      amount: '50.00',
+      amountValue: 50,
+      amountTone: 'pos',
+      date: '13/07/2026 15:18 (GMT+8)',
+      status: 'Approved',
+      statusKey: 'approved'
+    },
+    {
+      id: '11774',
+      type: 'Deposit',
+      typeKey: 'deposits',
+      remark: 'Processed',
+      amount: '50.00',
+      amountValue: 50,
+      amountTone: 'pos',
+      date: '13/07/2026 15:02 (GMT+8)',
+      status: 'Approved',
+      statusKey: 'approved'
+    }
+  ];
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, '&amp;')
@@ -29,6 +81,11 @@
 
   function formatDate(d) {
     return pad2(d.getDate()) + '-' + pad2(d.getMonth() + 1) + '-' + d.getFullYear();
+  }
+
+  function formatMoney(n) {
+    var abs = Math.abs(n).toFixed(2);
+    return (n < 0 ? '-' : '') + abs;
   }
 
   function startOfDay(d) {
@@ -94,6 +151,22 @@
     if (typeof window.showToast === 'function') window.showToast(msg);
   }
 
+  function filterTxRows(typeValue, statusValue) {
+    return TX_DEMO_ROWS.filter(function (row) {
+      var typeOk =
+        !typeValue ||
+        typeValue === 'all' ||
+        (typeValue === 'deposits' && row.typeKey === 'deposits') ||
+        (typeValue === 'withdrawals' && row.typeKey === 'withdrawals');
+      var statusOk =
+        !statusValue ||
+        statusValue === 'all' ||
+        row.statusKey === statusValue ||
+        (statusValue === 'completed' && row.statusKey === 'approved');
+      return typeOk && statusOk;
+    });
+  }
+
   function renderRows(rows, columns) {
     return rows
       .map(function (row) {
@@ -112,8 +185,16 @@
                 var cls = 'tx-record-cell tx-record-cell--' + col.key;
                 if (col.key === 'amount' || col.key === 'stake' || col.key === 'bonus' || col.key === 'reward') {
                   cls += ' tx-record-cell--amount';
+                  if (row.amountTone) cls += ' is-' + row.amountTone;
                 }
-                if (col.key === 'description' || col.key === 'event' || col.key === 'source' || col.key === 'type' || col.key === 'promotion') {
+                if (
+                  col.key === 'description' ||
+                  col.key === 'event' ||
+                  col.key === 'source' ||
+                  col.key === 'type' ||
+                  col.key === 'promotion' ||
+                  col.key === 'remark'
+                ) {
                   cls += ' tx-record-cell--desc';
                 }
                 if (col.key === 'date' || col.key === 'day') {
@@ -128,6 +209,25 @@
       .join('');
   }
 
+  function renderGrandTotal(rows, columns) {
+    if (pageKey !== 'transaction-history' || !rows.length) return '';
+    var total = rows.reduce(function (sum, row) {
+      return sum + (typeof row.amountValue === 'number' ? row.amountValue : 0);
+    }, 0);
+    var tone = total < 0 ? 'neg' : 'pos';
+
+    return (
+      '<div class="tx-record-row tx-record-row--total" role="row">' +
+        '<div class="tx-record-cell tx-record-cell--total-label">Grand Total</div>' +
+        '<div class="tx-record-cell tx-record-cell--amount is-' +
+        tone +
+        '">' +
+        escapeHtml(formatMoney(total)) +
+        '</div>' +
+      '</div>'
+    );
+  }
+
   function renderResults(rows, columns) {
     var body = document.getElementById('tx-record-body');
     if (!body) return;
@@ -140,7 +240,7 @@
       return;
     }
 
-    body.innerHTML = renderRows(rows, columns);
+    body.innerHTML = renderRows(rows, columns) + renderGrandTotal(rows, columns);
   }
 
   function readColumns() {
@@ -162,6 +262,7 @@
 
   var STATUS_OPTIONS = [
     { value: 'all', label: 'All' },
+    { value: 'approved', label: 'Approved' },
     { value: 'completed', label: 'Completed' },
     { value: 'pending', label: 'Pending' },
     { value: 'rejected', label: 'Rejected' },
@@ -215,18 +316,6 @@
       fillSelect(typeSelect, RECORD_TYPE_OPTIONS, pageKey);
       fillSelect(statusSelect, STATUS_OPTIONS, 'all');
     }
-
-    if (typeSelect) {
-      typeSelect.addEventListener('change', function () {
-        var value = typeSelect.value;
-        if (!value) return;
-        if (value.indexOf('.html') !== -1) {
-          window.location.href = value;
-          return;
-        }
-        renderResults([], readColumns());
-      });
-    }
   }
 
   function init() {
@@ -242,6 +331,7 @@
     var labelText = recordLabel ? recordLabel.textContent.trim() : 'Record';
     var typeSelect = document.getElementById('tx-filter-type');
     var statusSelect = document.getElementById('tx-filter-status');
+    var isTxPage = pageKey === 'transaction-history';
 
     function setPeriod(key) {
       var range = periodRange(key);
@@ -252,7 +342,22 @@
       });
     }
 
-    setPeriod('this-week');
+    function refreshTxResults() {
+      if (!isTxPage) {
+        renderResults([], columns);
+        return;
+      }
+      var typeValue = typeSelect ? typeSelect.value : 'all';
+      var statusValue = statusSelect ? statusSelect.value : 'all';
+      if (typeValue && typeValue.indexOf('.html') !== -1) {
+        renderResults([], columns);
+        return;
+      }
+      renderResults(filterTxRows(typeValue, statusValue), columns);
+    }
+
+    setPeriod(isTxPage ? 'last-month' : 'this-week');
+    refreshTxResults();
 
     periodBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -268,9 +373,27 @@
         });
         tab.classList.add('is-active');
         tab.setAttribute('aria-selected', 'true');
-        renderResults([], columns);
+        refreshTxResults();
       });
     });
+
+    if (typeSelect) {
+      typeSelect.addEventListener('change', function () {
+        var value = typeSelect.value;
+        if (!value) return;
+        if (value.indexOf('.html') !== -1) {
+          window.location.href = value;
+          return;
+        }
+        refreshTxResults();
+      });
+    }
+
+    if (statusSelect) {
+      statusSelect.addEventListener('change', function () {
+        refreshTxResults();
+      });
+    }
 
     if (form) {
       form.addEventListener('submit', function (e) {
@@ -285,6 +408,11 @@
         if (start > end) {
           toast('Start date must be before end date');
           renderResults([], columns);
+          return;
+        }
+
+        if (isTxPage) {
+          refreshTxResults();
           return;
         }
 
