@@ -5834,7 +5834,7 @@ body.tsp-open {
   inset: 0;
   z-index: 1200;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   padding: 24px 32px;
   background: rgba(11, 29, 51, 0.55);

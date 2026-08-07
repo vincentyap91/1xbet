@@ -6009,6 +6009,9 @@
           state.myBetsViewAll = false;
           syncMyBetsViewAllChrome();
         }
+        if (which !== "mybets") {
+          closeBetHistoryPanel();
+        }
         if (which !== "slip") {
           closeBetSlipSettings();
           closeBetSlipShare();
@@ -6522,6 +6525,7 @@
   function setMyBetsTab(tab) {
     state.myBetsTab = tab;
     if (tab !== "open") state.myBetsViewAll = false;
+    if (tab !== "history") closeBetHistoryPanel();
     $$(".mybets-subtab").forEach((btn) => {
       const isActive = btn.getAttribute("data-mybets-tab") === tab;
       btn.classList.toggle("active", isActive);
@@ -6743,6 +6747,9 @@
   /**
    * @param {{ category?: 'all'|'sports'|'esports'|'casino' }} [opts]
    */
+  /**
+   * @param {{ category?: 'all'|'sports'|'esports'|'casino' }} [opts]
+   */
   function openBetHistoryPanel(opts) {
     ensureBetHistoryPanel();
     const backdrop = $("#bh-desktop-backdrop");
@@ -6751,8 +6758,14 @@
     if (cat === "all" || cat === "sports" || cat === "esports" || cat === "casino") {
       state.betHistoryCategory = cat;
     }
+    if (backdrop.parentElement !== document.body) {
+      document.body.appendChild(backdrop);
+    }
+    backdrop.classList.remove("bh-desktop-backdrop--rail");
     backdrop.hidden = false;
     document.body.classList.add("bh-desktop-open");
+    document.body.classList.remove("bh-desktop-open--rail");
+    $("#mybets-app")?.classList.remove("is-bh-open");
     syncBetHistoryControls();
     renderBetHistoryResults();
     const closeBtn = $("#bh-desktop-close");
@@ -6763,7 +6776,8 @@
     const backdrop = $("#bh-desktop-backdrop");
     if (!backdrop) return;
     backdrop.hidden = true;
-    document.body.classList.remove("bh-desktop-open");
+    document.body.classList.remove("bh-desktop-open", "bh-desktop-open--rail");
+    $("#mybets-app")?.classList.remove("is-bh-open");
     setBetHistoryRangeMenu(false);
     setBetHistoryStatusMenu(false);
   }
@@ -7053,12 +7067,8 @@
         return;
       }
       if (e.target.closest(".mybets-view-history") || e.target.closest("#mybets-view-history")) {
-        if (isMobileViewport()) {
-          /* Esports page → land on Esports category tab */
-          openBetHistoryPanel(isEsportsPage ? { category: "esports" } : undefined);
-        } else {
-          window.location.href = "bet-history.html";
-        }
+        /* Desktop: keep history inside the My bets / bet-slip rail block */
+        openBetHistoryPanel(isEsportsPage ? { category: "esports" } : undefined);
         return;
       }
       if (e.target.closest(".mybets-cashout:not(.is-disabled)")) {
