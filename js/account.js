@@ -803,8 +803,7 @@
       label: 'My Wallet and Bets',
       items: [
         { key: 'deposit', href: 'deposit.html', label: 'Deposit', pages: ['deposit'] },
-        { key: 'withdraw', href: 'withdraw.html', label: 'Withdraw Funds', pages: ['withdraw'] },
-        { key: 'payment-queries', href: 'payment-queries.html', label: 'Payment Queries', pages: ['payment-queries'] }
+        { key: 'withdraw', href: 'withdraw.html', label: 'Withdraw Funds', pages: ['withdraw'] }
       ]
     },
     {
@@ -1037,7 +1036,7 @@
   }
 
   function buildAccSubnavItems() {
-    /* Mobile chips only: hide Payment Queries; insert Messages after Withdraw. */
+    /* Mobile chips: insert Messages after Withdraw (Payment Queries not in ACCOUNT_NAV_GROUPS). */
     var items = [];
     accountNavItemsFlat().forEach(function (item) {
       if (item.key === 'payment-queries') return;
