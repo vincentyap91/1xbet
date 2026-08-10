@@ -7448,6 +7448,30 @@
     }
   }
 
+  /** Casino KPI: Total Bet + Win/Loss only; other cats keep Total Stake / Settled Stake / Win-Loss. */
+  function syncDeskBetKpiMode() {
+    const root = $("#bh-desktop-kpi");
+    if (!root) return;
+    const isCasino = state.betHistoryCategory === "casino";
+    root.classList.toggle("bh-desktop-kpi--casino", isCasino);
+
+    const stakeLabel = root.querySelector('[data-bh-desk-kpi-label="stake"]');
+    const stakeSumLabel = root.querySelector('[data-bh-desk-kpi-summary-label="stake"]');
+    if (stakeLabel) {
+      stakeLabel.innerHTML = isCasino
+        ? "Total Bet"
+        : `Total Stake <small>All bets</small>`;
+    }
+    if (stakeSumLabel) {
+      stakeSumLabel.textContent = isCasino ? "Total Bet" : "Stake";
+    }
+
+    const turnoverHead = document.querySelector("[data-bh-desk-summary-turnover]");
+    if (turnoverHead) {
+      turnoverHead.textContent = isCasino ? "Total Bet" : "Settled Stake";
+    }
+  }
+
   function aggregateDeskProviderSummary(bets) {
     const map = new Map();
     bets.forEach((bet) => {
@@ -7521,6 +7545,7 @@
     if (!root) return;
 
     const bets = getFilteredBetHistory();
+    syncDeskBetKpiMode();
     updateDeskBetKpi(computeDeskBetKpis(bets));
     renderBetHistorySummary(bets);
     setDeskBetHistoryView(state.betHistoryView);
@@ -7737,24 +7762,24 @@
           `<div class="bh-desktop-kpi" id="bh-desktop-kpi" aria-live="polite">` +
             `<div class="bh-desktop-kpi__summary">` +
               `<span class="bh-desktop-kpi__summary-item">` +
-                `<span class="bh-desktop-kpi__summary-label">W/L</span>` +
-                `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="net">0.00</strong>` +
-              `</span>` +
-              `<span class="bh-desktop-kpi__summary-item">` +
-                `<span class="bh-desktop-kpi__summary-label">Stake</span>` +
+                `<span class="bh-desktop-kpi__summary-label" data-bh-desk-kpi-summary-label="stake">Stake</span>` +
                 `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="stake">0.00</strong>` +
               `</span>` +
-              `<span class="bh-desktop-kpi__summary-item">` +
+              `<span class="bh-desktop-kpi__summary-item" data-bh-desk-kpi-summary-item="settled">` +
                 `<span class="bh-desktop-kpi__summary-label">Settled</span>` +
                 `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="settled">0.00</strong>` +
+              `</span>` +
+              `<span class="bh-desktop-kpi__summary-item">` +
+                `<span class="bh-desktop-kpi__summary-label">W/L</span>` +
+                `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="net">0.00</strong>` +
               `</span>` +
             `</div>` +
             `<div class="bh-desktop-kpi__grid" id="bh-desktop-kpi-grid">` +
               `<div class="bh-desktop-kpi__item">` +
-                `<span class="bh-desktop-kpi__label">Total Stake <small>All bets</small></span>` +
+                `<span class="bh-desktop-kpi__label" data-bh-desk-kpi-label="stake">Total Stake <small>All bets</small></span>` +
                 `<strong class="bh-desktop-kpi__value" data-bh-desk-kpi="stake">0.00</strong>` +
               `</div>` +
-              `<div class="bh-desktop-kpi__item">` +
+              `<div class="bh-desktop-kpi__item" data-bh-desk-kpi-item="settled">` +
                 `<span class="bh-desktop-kpi__label">Settled Stake</span>` +
                 `<strong class="bh-desktop-kpi__value" data-bh-desk-kpi="settled">0.00</strong>` +
               `</div>` +
@@ -7771,7 +7796,7 @@
             `<div class="bh-desktop-summary">` +
               `<div class="bh-desk-summary-head" aria-hidden="true">` +
                 `<div>Provider</div>` +
-                `<div>Settled Stake</div>` +
+                `<div data-bh-desk-summary-turnover>Settled Stake</div>` +
                 `<div>Win/Loss</div>` +
               `</div>` +
               `<div class="bh-desk-summary-body" id="bh-desktop-summary-body" aria-live="polite"></div>` +
