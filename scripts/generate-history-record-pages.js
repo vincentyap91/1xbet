@@ -115,11 +115,7 @@ var pages = [
     file: "rebate-record.html",
     page: "rebate-record",
     title: "Rebate Record",
-    tabAria: "Rebate type",
-    tabs: [
-      { id: "casino", label: "Casino" },
-      { id: "sports", label: "Sports" }
-    ],
+    tabs: null,
     columns: [
       { key: "date", label: "Date" },
       { key: "amount", label: "Amount" },

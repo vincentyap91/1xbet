@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0f2744" />
-  <title>Transaction Record - 1xBet Mobile</title>
+  <title>Rebate Record - 1xBet Mobile</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/auth-modals.css" />
   <link rel="stylesheet" href="css/mobile-home.css" />
   <link rel="stylesheet" href="css/mobile-history-record.css" />
 </head>
-<body class="mh-page mh-page--history-record mh-page--tx-history is-logged-in" data-page="transaction-history">
+<body class="mh-page mh-page--history-record mh-page--rebate-record is-logged-in" data-page="rebate-record">
   <header class="mh-header" id="mh-header">
     <a href="index.html" class="mh-header__brand" aria-label="1xBet home">
       <img src="assets/logos/logo-1xbet.svg" alt="1xBet" width="92" height="24" />
@@ -44,7 +44,7 @@
     <a href="profile.html" class="mh-hr-subbar__back" aria-label="Back to profile">
       <img src="assets/icons/sp-back.svg" alt="" width="10" height="16" />
     </a>
-    <h1 class="mh-hr-subbar__title">Transaction record</h1>
+    <h1 class="mh-hr-subbar__title">Rebate record</h1>
   </div>
 
   <main class="mh-main">
@@ -54,12 +54,8 @@
           <label class="mh-hr-field">
             <span class="mh-hr-label">Type</span>
             <select class="mh-hr-select" id="mh-hr-type" name="type" aria-label="Type">
-              <option value="all" selected>Deposit, Withdrawal</option>
-              <option value="deposits">Deposit</option>
-              <option value="withdrawals">Withdrawal</option>
-              <option value="commission-record.html">Commission Record</option>
-              <option value="rebate-record.html">Rebate Record</option>
-              <option value="checkin-record.html">Daily Check In Record</option>
+              <option value="casino" selected>Casino</option>
+              <option value="sports">Sports</option>
             </select>
           </label>
           <label class="mh-hr-field">
@@ -89,10 +85,10 @@
         <div class="mh-hr-period" role="group" aria-label="Quick date range">
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="today">Today</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="yesterday">Yesterday</button>
+          <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="this-week">This Week</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-week">Last Week</button>
-          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-week">This Week</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-month">This Month</button>
-          <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="last-month">Last Month</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-month">Last Month</button>
         </div>
 
         <button type="submit" class="mh-hr-submit">Submit</button>
@@ -101,12 +97,10 @@
 
     <section class="mh-hr-panel mh-hr-panel--results" aria-label="Results">
       <div class="mh-hr-table-head" aria-hidden="true">
-        <div data-col="id">ID</div>
-        <div data-col="type">Type</div>
-        <div data-col="remark">Remark</div>
-        <div data-col="status">Status</div>
-        <div data-col="date">Submit Date</div>
+        <div data-col="date">Date</div>
         <div data-col="amount">Amount</div>
+        <div data-col="status">Status</div>
+        <div data-col="type">Type</div>
       </div>
       <div class="mh-hr-table-body" id="mh-hr-body" aria-live="polite">
         <div class="mh-hr-empty" role="status">

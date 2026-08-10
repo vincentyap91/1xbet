@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -65,20 +65,21 @@
               <option value="all" selected>All</option>
               <option value="open">Open</option>
               <option value="won">Won</option>
-              <option value="lost">Lost</option>
+              <option value="lost">Loss</option>
+              <option value="sold">Sold</option>
               <option value="void">Void</option>
               <option value="cancelled">Cancelled</option>
             </select>
           </label>
         </div>
 
-        <div class="mh-hr-date-grid">
+        <div class="mh-hr-date-grid mh-hr-date-grid--pair">
           <label class="mh-hr-field">
-            <span class="mh-hr-label">Start date</span>
+            <span class="mh-hr-label">Start Date</span>
             <input class="mh-hr-input" type="text" id="mh-hr-start" name="start" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
           </label>
           <label class="mh-hr-field">
-            <span class="mh-hr-label">End date</span>
+            <span class="mh-hr-label">End Date</span>
             <input class="mh-hr-input" type="text" id="mh-hr-end" name="end" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
           </label>
         </div>
@@ -86,8 +87,8 @@
         <div class="mh-hr-period" role="group" aria-label="Quick date range">
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="today">Today</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="yesterday">Yesterday</button>
-          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-week">Last Week</button>
           <button type="button" class="mh-hr-period__btn is-active" data-mh-hr-period="this-week">This Week</button>
+          <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-week">Last Week</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="this-month">This Month</button>
           <button type="button" class="mh-hr-period__btn" data-mh-hr-period="last-month">Last Month</button>
         </div>
@@ -96,14 +97,22 @@
       </form>
     </section>
 
-    <section class="mh-hr-panel mh-hr-panel--results" aria-label="Results">
-      <div class="mh-hr-table-head" aria-hidden="true">
-        <div data-col="date">Date</div>
-        <div data-col="stake">Stake</div>
-        <div data-col="status">Status</div>
-        <div data-col="event">Event</div>
+    <section class="mh-hr-panel mh-hr-panel--results mh-hr-panel--bet-cards" aria-label="Results">
+      <div class="mh-bh-kpi" id="mh-bh-kpi" aria-live="polite" hidden>
+        <div class="mh-bh-kpi__item">
+          <span class="mh-bh-kpi__label">Total Stake <small>All bets</small></span>
+          <strong class="mh-bh-kpi__value" data-mh-bh-kpi="stake">0.00</strong>
+        </div>
+        <div class="mh-bh-kpi__item">
+          <span class="mh-bh-kpi__label">Settled Stake</span>
+          <strong class="mh-bh-kpi__value" data-mh-bh-kpi="settled">0.00</strong>
+        </div>
+        <div class="mh-bh-kpi__item mh-bh-kpi__item--net">
+          <span class="mh-bh-kpi__label">Win / Loss</span>
+          <strong class="mh-bh-kpi__value" data-mh-bh-kpi="net">0.00</strong>
+        </div>
       </div>
-      <div class="mh-hr-table-body" id="mh-hr-body" aria-live="polite">
+      <div class="mh-hr-table-body mh-bh-card-list" id="mh-hr-body" aria-live="polite">
         <div class="mh-hr-empty" role="status">
           <p class="mh-hr-empty__title">No Data Found</p>
         </div>
@@ -112,6 +121,7 @@
   </main>
 
   <div class="mh-toast" id="mh-toast" role="status" aria-live="polite" hidden></div>
+  <script src="../js/script.js"></script>
   <script src="../js/auth-modals.js"></script>
   <script src="js/mobile-home.js"></script>
   <script src="js/mobile-history-record.js"></script>

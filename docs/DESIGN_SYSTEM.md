@@ -225,11 +225,12 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Primary CTA | `.btn-reg`, `.btn-slip-reg` | `--action-green` / hover `--action-green-hover` |
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
 | My bets History empty | `.mybets-empty--history` + `.mybets-view-history` | clipboard empty + `--action-green` **View Bet History** CTA |
+| My bets History list | `.mybets-cards` + `.mybets-view-history--list` | settled/sold cards first; **View Bet History** stays as a full-width footer CTA under the list (same panel as empty state) |
 | My bets Active → View All | `#mybets-view-all` | Active bets preview 1 card; **View All** expands remaining cards below — same Active bets chrome and per-slip Sell/Repeat controls, no extra title bar |
 | Bet accepted | `.ba-backdrop` / `.ba-panel` | shown only after wallet debit + open-slip persistence succeed; actual slip number/event/odds/type/stake/winnings; Continue closes, Bet history opens **My bets → Active bets**, print/share icon actions |
 | Active bet slip | `.mybets-slip-card` | newest first from `1xbet-open-bets`; status **Unsettled**; actual competition/match/selection/odds/stake/potential winnings; eligible slips show **Sell for X MYR** + sale settings and **Repeat** |
 | Sale of bet slip | `.sbs-backdrop` / `.sbs-panel` | Sell now (default) / Sell later; selected slip drives min/max/current value. Partial sale uses `sold stake = stake × price / max sell value`, updates loss/new stake/potential winnings and credits wallet; full sale moves slip to persisted History (`1xbet-settled-bets`) |
-| Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | overlay dialog from My Bets → History; cats All/Sports/Casino; date range presets + custom (`.bh-desktop-date-input`: `appearance: none`, ≤900 uses 16px/44px for real iOS date widgets); date-grouped `.bh-desk-card` rows (wide grid: type/odds/stake/winnings/id) |
+| Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | **Desktop ≥901: centered pop modal** from My Bets → View Bet History (not in-rail). Cats All/Sports/Esports/Casino; date + status filters; Details / Summary + KPI **3-col one row** (Total Stake / Settled Stake / Win-Loss; ≤900: compact left-aligned one-line); Details cards; Summary provider rollup |
 | Bet slip settings (toolbar gear) | `.bss-backdrop` / `.bss-panel` | Automax / Balance / Potential winnings / Select account; Save → `localStorage` (`1xbet-bet-slip-settings`) |
 | Bet slip share (toolbar Share) | `.bsh-backdrop` / `.bsh-panel` (`#bsh-overlay`) | Generates 5-char coupon (e.g. `441FC`) + URL `?coupon-code=441FC` (optional compact `slip=` payload for cross-browser restore); Copy Link / Copy Coupon; Native Share on mobile (`navigator.share`); QR on desktop. Snapshot also in `localStorage` (`1xbet-shared-coupons`). Opening the URL restores the slip, toasts **Bet Slip imported**, reconciles live odds (`.is-odds-changed` / `.is-closed`), never auto-places |
 | Baseline odds popover | `.tsp-backdrop` `#tsp-baseline-overlay` | From **Overall odds** `.ticket-settings[data-ticket-popover="baseline"]`; set odds + cancel-on-score-change; Save + clear (trash) |
@@ -245,7 +246,22 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 
 **Ticket list growth:** Keep adding selections indefinitely; `.bet-list` stays `overflow: visible` so every ticket remains in the document flow (page/rail scroll, not an inner clipped scroller).
 
-**Bet Slip → My Bets → History flow (desktop):** Successful submission is transactional: validate → debit wallet → persist Active bet → show `.ba-panel`; failure never opens the success dialog. Active bets are backed by the replaceable `window.DsBetFlow` boundary and local persistence until an API is connected. History tab shows sold/settled slips (or empty CTA). **View Bet History** opens `.bh-desktop-panel` (not the account `bet-history.html` page). Keep right-rail chrome unchanged; do not copy mobile bottom-sheet layout into the panel.
+**Bet Slip → My Bets → History flow (desktop):** Successful submission is transactional: validate → debit wallet → persist Active bet → show `.ba-panel`; failure never opens the success dialog. Active bets are backed by the replaceable `window.DsBetFlow` boundary and local persistence until an API is connected. History tab shows sold/settled slips (or empty CTA). **View Bet History** remains available in both states — empty CTA or list footer (`.mybets-view-history--list`) — and opens a **centered pop modal** (`.bh-desktop-backdrop` / `.bh-desktop-panel`) on desktop ≥901 (not embedded in the right rail; not the account `bet-history.html` page). Panel includes **Details / Summary** + period KPI. Keep right-rail chrome unchanged. ≤900 may still use the full-viewport sheet treatment.
+
+**Account Bet Record (`bet-history.html`):** Same shared history feed as the desktop panel via `DsBetFlow.getBetHistory()` — merges session open (`1xbet-open-bets`) + settled/sold (`1xbet-settled-bets`) with demo rows. UX is **detail-first**:
+
+| Layer | Class / behavior |
+|-------|------------------|
+| View tabs | `.bh-view-tabs` — default **Details**; secondary **Summary** (provider rollup) |
+| Period KPI | `.bh-kpi` — bg `--surface-secondary`; **Total Stake** / **Settled Stake** `--text-primary`; **Win/Loss** `--action-green-active` / `--danger` |
+| Details table | Event, Bet Slip, Date, Bet Type, **Bet** (stake), Odds, Status, **Payout** (Loss = strikethrough potential; Open = blue potential) |
+| Summary table | Provider / **Settled Stake** / **Win/Loss** + footer Total (same labels as KPI) |
+| Footer total | Details `.bh-detail-total` aligns Stake under Bet column and Win/Loss under Payout |
+| Mobile ≤900 | **Filters:** Type/Status 2-col · Start/End 2-col · horizontal period chips (scroll right if >4) · Submit. Details = slip cards / labeled grid; Summary keeps 3-col |
+
+**Account Transaction Record (`transaction-history.html`):** Classic Type / Status / dates / 6 period chips / Submit (page title outside the panel). **No** Record Type dropdown, section title, Details/Summary, or KPI — results stay the ID/Type/Remark/Status/Date/Amount table (stacked cards ≤900).
+
+`js/history-record.js` owns filtering, KPI math, detail/summary render. Do not replace the detail view with provider-only summary.
 
 #### Accumulators (data cards)
 

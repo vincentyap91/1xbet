@@ -269,7 +269,8 @@
                       <option value="all" selected>All</option>
                       <option value="open">Open</option>
                       <option value="won">Won</option>
-                      <option value="lost">Lost</option>
+                      <option value="lost">Loss</option>
+                      <option value="sold">Sold</option>
                       <option value="void">Void</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
@@ -278,11 +279,11 @@
 
                 <div class="tx-record-date-grid">
                   <label class="tx-record-field">
-                    <span class="tx-record-label">Start date</span>
+                    <span class="tx-record-label">Start Date</span>
                     <input type="text" class="tx-record-input" id="tx-start-date" name="start" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
                   </label>
                   <label class="tx-record-field">
-                    <span class="tx-record-label">End date</span>
+                    <span class="tx-record-label">End Date</span>
                     <input type="text" class="tx-record-input" id="tx-end-date" name="end" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
                   </label>
                 </div>
@@ -290,8 +291,8 @@
                 <div class="tx-record-period-row" role="group" aria-label="Quick date range">
                   <button type="button" class="tx-record-period-btn" data-tx-period="today">Today</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="yesterday">Yesterday</button>
-                  <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
                   <button type="button" class="tx-record-period-btn is-active" data-tx-period="this-week">This Week</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="this-month">This Month</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="last-month">Last Month</button>
                 </div>
@@ -301,15 +302,52 @@
             </section>
 
             <section class="pq-panel tx-record-panel tx-record-panel--results" aria-label="Results">
-              <div class="tx-record-table-wrap">
-                <div class="tx-record-table-head" aria-hidden="true">
-                  <div class="tx-record-col-label" data-col="date">Date</div>
-                  <div class="tx-record-col-label" data-col="stake">Stake</div>
-                  <div class="tx-record-col-label" data-col="status">Status</div>
+              <div class="bh-view-tabs" role="tablist" aria-label="Bet history view">
+                <button type="button" class="bh-view-tab is-active" role="tab" id="bh-view-details" data-bh-view="details" aria-selected="true" aria-controls="bh-details-panel">Details</button>
+                <button type="button" class="bh-view-tab" role="tab" id="bh-view-summary" data-bh-view="summary" aria-selected="false" aria-controls="bh-summary-panel">Summary</button>
+              </div>
+
+              <div class="bh-kpi" id="bh-kpi" aria-live="polite">
+                <div class="bh-kpi-item">
+                  <span class="bh-kpi-label">Total Stake <small class="bh-kpi-note">All bets</small></span>
+                  <strong class="bh-kpi-value" data-bh-kpi="stake">0.00</strong>
+                </div>
+                <div class="bh-kpi-item">
+                  <span class="bh-kpi-label">Settled Stake</span>
+                  <strong class="bh-kpi-value" data-bh-kpi="settled">0.00</strong>
+                </div>
+                <div class="bh-kpi-item bh-kpi-item--net">
+                  <span class="bh-kpi-label">Win / Loss</span>
+                  <strong class="bh-kpi-value" data-bh-kpi="net">0.00</strong>
+                </div>
+              </div>
+
+              <div class="tx-record-table-wrap bh-details-wrap" id="bh-details-panel" role="tabpanel" aria-labelledby="bh-view-details">
+                <div class="tx-record-table-head bh-details-head" aria-hidden="true">
                   <div class="tx-record-col-label" data-col="event">Event</div>
+                  <div class="tx-record-col-label" data-col="slip">Bet Slip</div>
+                  <div class="tx-record-col-label" data-col="date">Date</div>
+                  <div class="tx-record-col-label" data-col="betType">Bet Type</div>
+                  <div class="tx-record-col-label" data-col="stake">Bet</div>
+                  <div class="tx-record-col-label" data-col="odds">Odds</div>
+                  <div class="tx-record-col-label" data-col="status">Status</div>
+                  <div class="tx-record-col-label" data-col="win">Payout</div>
                 </div>
                 <div class="tx-record-table-body" id="tx-record-body" aria-live="polite">
                   <div class="acc-empty-panel pq-empty tx-record-empty" id="tx-record-empty" role="status">
+                    <p class="acc-empty-title">No Data Found</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tx-record-table-wrap bh-summary-wrap" id="bh-summary-panel" role="tabpanel" aria-labelledby="bh-view-summary" hidden>
+                <div class="tx-record-table-head bh-summary-head" aria-hidden="true">
+                  <div class="tx-record-col-label" data-col="provider">Provider</div>
+                  <div class="tx-record-col-label" data-col="turnover">Settled Stake</div>
+                  <div class="tx-record-col-label" data-col="winLoss">Win/Loss</div>
+                </div>
+                <div class="tx-record-table-body" id="bh-summary-body" aria-live="polite">
+                  <div class="acc-empty-panel pq-empty tx-record-empty" role="status">
                     <p class="acc-empty-title">No Data Found</p>
                   </div>
                 </div>

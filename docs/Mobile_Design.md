@@ -25,6 +25,7 @@ Home can use a **floating player-online pill** anchored above the sticky tab bar
 **Bet history (My bets):** `mobile/bet-history.html` — desktop Bet Record filters (shared history shell)  
 **Transaction history:** `mobile/transaction-history.html` — desktop Transaction Record filters  
 **Promotion record:** `mobile/promotion-record.html` — desktop Promotion Record filters  
+**Rebate record:** `mobile/rebate-record.html` — desktop Rebate Record filters (Casino/Sports Type)  
 **History record (shared):** `mobile/css/mobile-history-record.css` + `mobile/js/mobile-history-record.js`  
 **Personal profile:** `mobile/personal-profile.html` + `mobile/css/mobile-personal-profile.css` + `mobile/js/mobile-personal-profile.js` — desktop medal / personal info, mobile shell  
 **Security:** `mobile/security.html` (+ `change-language` / `change-password` / `information-center`) + `css/mobile-security.css` + `js/mobile-security.js`  
@@ -236,14 +237,14 @@ Logged-in fund withdrawal. Opened from Deposit/Withdrawal tabs, profile **Withdr
 Shared mobile shell for **Transaction Record**, **Bet Record**, and **Promotion Record** — mirrors desktop `tx-record-*` / `js/history-record.js` (not the older casino card list).
 
 **Files:** `css/mobile-history-record.css` · `js/mobile-history-record.js`  
-**Body:** `mh-page--history-record` (+ page flag `mh-page--tx-history` / `--bet-history` / `--promo-record`)  
+**Body:** `mh-page--history-record` (+ page flag `mh-page--tx-history` / `--bet-history` / `--promo-record` / `--rebate-record`)  
 **No bottom tabbar.** Guests → `login.html`. Back → `profile.html`.
 
 | Block | Desktop source | Mobile |
 |-------|----------------|--------|
 | `.mh-hr-subbar` | Content title | Referral-style back + uppercase title |
 | `.mh-hr-panel--filters` | `.pq-panel.tx-record-panel` | Type + Status selects, Start/End (`DD-MM-YYYY`), period chips, green **Submit** |
-| Period chips | `.tx-record-period-btn` | Today · Yesterday · Last Week · **This Week** (default) · This Month · Last Month; active = `--accent-blue` |
+| Period chips | `.tx-record-period-btn` / `.mh-hr-period` | Horizontal chip row (active = `--accent-blue`). **>4 chips:** `overflow-x: auto` scroll right. Bet/Tx/Promo: Today · Yesterday · This Week · Last Week · This Month · Last Month |
 | Submit | `.tx-record-submit` | Full-width `--action-green` |
 | `.mh-hr-panel--results` | Results table | Stacked labeled cells (desktop ≤900 pattern); empty **No Data Found** |
 | Behavior | `history-record.js` | Period fills dates; Submit validates range → empty + toast (demo) |
@@ -252,35 +253,63 @@ Shared mobile shell for **Transaction Record**, **Bet Record**, and **Promotion 
 
 Opened from profile **Transaction history** (`data-mh-tx-history`). Title **Transaction record**.
 
-| Filter | Options (desktop) |
-|--------|-------------------|
-| Type | Deposit · Withdrawal · Commission Record · Rebate Record · Daily Check In Record |
-| Status | All · Completed · Pending · Rejected · Cancelled |
-| Columns | Date · Amount · Status · Description |
+Classic filters (no Record Type / section title). Results stay the stacked table / cards — **no** Details/Summary.
 
-Nested Type options (Commission / Rebate / Check In) toast demo (pages not ported).
+| Filter | Options |
+|--------|-------------------|
+| Type | Deposit, Withdrawal · Deposit · Withdrawal · Commission / Rebate / Check In (demo toast) |
+| Status | All · Approved · Completed · Pending · Rejected · Cancelled |
+| Periods | Today · Yesterday · Last Week · This Week · This Month · **Last Month** (default) |
+| Columns | ID · Type · Remark · Status · Submit Date · Amount |
 
 ### Bet history (`mobile/bet-history.html`)
 
 Opened from profile **My bets** / **Bet history** (`data-mh-bets`). Title **Bet record**.
 
+Uses the same feed as desktop account Bet Record via `DsBetFlow.getBetHistory()` (`../js/script.js`): session open/settled + demo rows.
+
+| Layer | Notes |
+|-------|--------|
+| Filters | Type + Status · Start/End dates side-by-side · horizontal period chips (scroll if >4; active = `--accent-blue`) · Submit — no Record Type / section title |
+| KPI | Top **Total Stake** \| **Settled Stake**; bottom full-width **Win / Loss** (positive net shows `+`) |
+| Results | Screenshot **slip cards** `.mh-bh-card`: league+icon + status · match title · 2-col Type/Odds · Stake/Payout · Bet ID/Placed |
+
 The responsive Bet History overlay opened from the sportsbook uses four equal-width category tabs: **All · Sports · Esports · Casino**. Esports is a distinct category (`data-bh-cat="esports"`) and renders esports-only history cards with the shared card/status/date filters. On `esports.html` (≤900), **View Bet History** opens the overlay with the **Esports** tab pre-selected (`openBetHistoryPanel({ category: "esports" })`).
 
-| Filter | Options (desktop) |
+| Filter | Options |
 |--------|-------------------|
 | Type | Sports · Casino · Live |
-| Status | All · Open · Won · Lost · Void · Cancelled |
-| Columns | Date · Stake · Status · Event |
+| Status | All · Open · Won · Loss · Sold · Void · Cancelled |
+| Periods | Today · Yesterday · This Week · Last Week · This Month · Last Month (horizontal scroll if overflow) |
+| Card fields | Type · Odds · Stake · Payout · Bet ID · Placed |
 
 ### Promotion record (`mobile/promotion-record.html`)
 
 Opened from profile **Promotion record** (`data-mh-promo-record`). Title **Promotion record**.
 
-| Filter | Options (desktop) |
+Same mobile filter shell as Bet Record (no Record Type / section title): Type | Status · Start | End · horizontal period chips (scroll if >4) · Submit.
+
+| Filter | Options |
 |--------|-------------------|
 | Type | All · Welcome Bonus · Reload Bonus · Cashback · Free Bet |
 | Status | All · Active · Completed · Expired · Cancelled |
+| Periods | Today · Yesterday · This Week · Last Week · This Month · Last Month |
 | Columns | Date · Bonus · Status · Promotion |
+
+Colors: page `#e9eef2`; panels `--surface-primary`; period active `--accent-blue`; Submit `--action-green`; empty title `--section-blue`.
+
+### Rebate record (`mobile/rebate-record.html`)
+
+Opened from Transaction Type → **Rebate Record** (or direct link). Title **Rebate record**.
+
+Same mobile filter shell as Bet Record: Type | Status · Start | End · horizontal period chips (scroll if >4) · Submit. Casino/Sports only via **Type** select (no tabs).
+
+| Filter | Options |
+|--------|-------------------|
+| Type | Casino · Sports |
+| Status | All · Approved · Completed · Pending · Rejected · Cancelled |
+| Periods | Today · Yesterday · This Week · Last Week · This Month · Last Month |
+| Columns | Date · Amount · Status · Type |
 
 Colors: page `#e9eef2`; panels `--surface-primary`; period active `--accent-blue`; Submit `--action-green`; empty title `--section-blue`.
 
@@ -923,18 +952,23 @@ Shell: `border-radius: 10px 10px 0 0`. Never `display:none` mid-animation.
 
 ### Bet history
 - [ ] Profile My bets / Bet history → `bet-history.html`; guest → `login.html`
-- [ ] Desktop filters: Type Sports/Casino/Live · Status · dates · period chips · Submit
+- [ ] Filters: Type/Status · Start/End pair · horizontal period chips · Submit — no Record Type / section title
 - [ ] **No bottom tabbar**; default This Week; Submit → No Data Found + toast
 
 ### Transaction history
 - [ ] Profile Transaction history → `transaction-history.html`; guest → `login.html`
-- [ ] Desktop filters: Deposit/Withdrawal (+ nested types toast) · Status · periods · Submit
+- [ ] Filters: Type · Status · Start/End · 6 periods (default Last Month) · Submit — no Record Type / section title / Details-Summary
+- [ ] Results table only (ID/Type/Remark/Status/Date/Amount)
 - [ ] Results empty **No Data Found**; shared `mobile-history-record` CSS/JS
 
 ### Promotion record
 - [ ] Profile Promotion record → `promotion-record.html`; guest → `login.html`
-- [ ] Desktop Type/Status (Welcome/Reload/Cashback/Free Bet) · periods · Submit
+- [ ] Filters match Bet Record mobile shell: Type/Status 2-col · Start/End pair · horizontal period chips · Submit
 - [ ] Shared history shell; empty + toast on submit (demo)
+
+### Rebate record
+- [ ] `rebate-record.html` / `mobile/rebate-record.html`; guest → `login.html`
+- [ ] Filters match Bet Record shell: Type Casino/Sports · Status · Start/End · period chips · Submit (no Casino/Sports tabs)
 
 ### Personal profile
 - [ ] Profile **Personal profile** → `personal-profile.html`; guest → `login.html`

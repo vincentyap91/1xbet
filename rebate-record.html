@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rebate Record — 1xBet</title>
+  <title>Rebate Record â€” 1xBet</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/account.css" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
@@ -242,19 +242,36 @@
           </div>
 
           <div class="account-content-body">
-            <nav class="tx-record-tabs" role="tablist" aria-label="Rebate type">
-              <button type="button" class="tx-record-tab is-active" role="tab" aria-selected="true" data-tx-type="casino">Casino</button>
-              <button type="button" class="tx-record-tab" role="tab" aria-selected="false" data-tx-type="sports">Sports</button>
-            </nav>
             <section class="pq-panel tx-record-panel" aria-label="Filters">
               <form class="tx-record-form" id="tx-record-form" action="#" novalidate>
+                <div class="tx-record-filter-stack">
+                  <label class="tx-record-select-field">
+                    <span class="tx-record-label">Type</span>
+                    <select class="tx-record-select" id="tx-filter-type" name="type" aria-label="Type">
+                      <option value="casino" selected>Casino</option>
+                      <option value="sports">Sports</option>
+                    </select>
+                  </label>
+                  <label class="tx-record-select-field">
+                    <span class="tx-record-label">Status</span>
+                    <select class="tx-record-select" id="tx-filter-status" name="status" aria-label="Status">
+                      <option value="all" selected>All</option>
+                      <option value="approved">Approved</option>
+                      <option value="completed">Completed</option>
+                      <option value="pending">Pending</option>
+                      <option value="rejected">Rejected</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </label>
+                </div>
+
                 <div class="tx-record-date-grid">
                   <label class="tx-record-field">
-                    <span class="tx-record-label">Start date</span>
+                    <span class="tx-record-label">Start Date</span>
                     <input type="text" class="tx-record-input" id="tx-start-date" name="start" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
                   </label>
                   <label class="tx-record-field">
-                    <span class="tx-record-label">End date</span>
+                    <span class="tx-record-label">End Date</span>
                     <input type="text" class="tx-record-input" id="tx-end-date" name="end" inputmode="numeric" placeholder="DD-MM-YYYY" autocomplete="off" />
                   </label>
                 </div>
@@ -262,8 +279,8 @@
                 <div class="tx-record-period-row" role="group" aria-label="Quick date range">
                   <button type="button" class="tx-record-period-btn" data-tx-period="today">Today</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="yesterday">Yesterday</button>
-                  <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
                   <button type="button" class="tx-record-period-btn is-active" data-tx-period="this-week">This Week</button>
+                  <button type="button" class="tx-record-period-btn" data-tx-period="last-week">Last Week</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="this-month">This Month</button>
                   <button type="button" class="tx-record-period-btn" data-tx-period="last-month">Last Month</button>
                 </div>

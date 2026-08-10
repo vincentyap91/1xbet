@@ -1427,6 +1427,7 @@
     betHistoryRange: "7d",
     betHistoryCustomFrom: "",
     betHistoryCustomTo: "",
+    betHistoryView: "details",
     slipSettings: {
       automax: false,
       balance: true,
@@ -6428,6 +6429,104 @@
     if (!MOCK_BET_HISTORY.length) MOCK_BET_HISTORY = buildMockBetHistory();
   }
 
+  function getBetHistoryIcon(bet) {
+    const sport = String(bet?.sport || bet?.competition || bet?.eventName || "").toLowerCase();
+    if (sport.includes("casino") || sport.includes("baccarat") || sport.includes("slot")) {
+      return "assets/icons/icon-dice.svg";
+    }
+    if (sport.includes("esport") || sport.includes("cs") || sport.includes("dota")) {
+      return "assets/icons/sport-esports.svg";
+    }
+    if (sport.includes("basket")) return "assets/icons/sport-basketball.svg";
+    if (sport.includes("tennis")) return "assets/icons/sport-tennis.svg";
+    if (sport.includes("hockey")) return "assets/icons/sport-hockey.svg";
+    if (sport.includes("volley")) return "assets/icons/sport-volleyball.svg";
+    if (sport.includes("baseball")) return "assets/icons/sport-baseball.svg";
+    return "assets/icons/sport-football.svg";
+  }
+
+  function resolveBetHistoryDate(bet) {
+    if (bet?.soldDate) {
+      const sold = new Date(bet.soldDate);
+      if (!Number.isNaN(sold.getTime())) return sold;
+    }
+    const parts = String(bet?.placedDate || "")
+      .split("/")
+      .map((part) => Number(part));
+    if (parts.length === 3 && parts[0] && parts[1] && parts[2]) {
+      const d = new Date(parts[2], parts[0] - 1, parts[1]);
+      const timeParts = String(bet?.placedTime || "12:00:00")
+        .split(":")
+        .map((part) => Number(part));
+      d.setHours(timeParts[0] || 0, timeParts[1] || 0, timeParts[2] || 0, 0);
+      return d;
+    }
+    return new Date();
+  }
+
+  function normalizeHistoryStatus(status) {
+    const raw = String(status || "Open").trim();
+    if (/^(unsettled|running|open)$/i.test(raw)) return "Open";
+    if (/^sold$/i.test(raw)) return "Sold";
+    return raw.replace(/^\w/, (ch) => ch.toUpperCase());
+  }
+
+  function sessionBetToHistoryEntry(bet) {
+    const when = resolveBetHistoryDate(bet);
+    const y = when.getFullYear();
+    const m = String(when.getMonth() + 1).padStart(2, "0");
+    const day = String(when.getDate()).padStart(2, "0");
+    const dateKey = `${y}-${m}-${day}`;
+    const dateLabel = when.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const placedAt =
+      when.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) +
+      ", " +
+      String(when.getHours()).padStart(2, "0") +
+      ":" +
+      String(when.getMinutes()).padStart(2, "0");
+    const status = normalizeHistoryStatus(bet.status);
+    const winnings =
+      bet.soldValue != null
+        ? Number(bet.soldValue).toFixed(2)
+        : String(bet.potentialWinnings || bet.maxPayout || bet.winnings || "0.00");
+    const sport = String(bet.sport || "Sports");
+    const category = /casino/i.test(sport) ? "casino" : /esport/i.test(sport) ? "esports" : "sports";
+
+    return {
+      id: String(bet.id),
+      category,
+      sport,
+      icon: getBetHistoryIcon(bet),
+      league: bet.competition || bet.eventName || bet.league || "",
+      match: bet.match || "",
+      betType: bet.betType || "Single",
+      odds: String(bet.odds || "—"),
+      stake: Number(bet.stake || 0).toFixed(2),
+      winnings,
+      status,
+      dateKey,
+      dateLabel,
+      placedAt,
+      source: "session",
+    };
+  }
+
+  /** Merges session open/settled slips with demo Bet History for shared surfaces. */
+  function getMergedBetHistory() {
+    ensureMockBetHistory();
+    const session = [
+      ...MOCK_SETTLED_BETS.map((bet) => sessionBetToHistoryEntry(bet)),
+      ...MOCK_RUNNING_BETS.map((bet) => sessionBetToHistoryEntry(bet)),
+    ];
+    const seen = new Set(session.map((bet) => String(bet.id)));
+    const demo = MOCK_BET_HISTORY.filter((bet) => !seen.has(String(bet.id)));
+    return session.concat(demo);
+  }
+
   function getBetHistoryRangeBounds() {
     const today = startOfDay(new Date());
     const range = state.betHistoryRange;
@@ -6470,15 +6569,16 @@
   }
 
   function getFilteredBetHistory() {
-    ensureMockBetHistory();
     const cat = state.betHistoryCategory;
     const status = state.betHistoryStatus;
     const { from, to } = getBetHistoryRangeBounds();
-    return MOCK_BET_HISTORY.filter((bet) => {
+    return getMergedBetHistory().filter((bet) => {
       if (cat !== "all" && bet.category !== cat) return false;
       if (status !== "all") {
         const betStatus = String(bet.status || "").toLowerCase();
-        const matchOpen = status === "open" && (betStatus === "open" || betStatus === "running");
+        const matchOpen =
+          status === "open" &&
+          (betStatus === "open" || betStatus === "running" || betStatus === "unsettled");
         if (!matchOpen && betStatus !== status) return false;
       }
       const d = parseDateKey(bet.dateKey);
@@ -6574,7 +6674,7 @@
         container.innerHTML =
           `<div class="mybets-empty"><p class="bet-empty-text">No open bets. Place a bet to see it here.</p></div>`;
       }
-      if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open--rail")) {
+      if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open")) {
         mountBetHistoryHost();
       }
       return;
@@ -6585,8 +6685,11 @@
       tab === "open" && !showAll ? bets.slice(0, MYBETS_OPEN_PREVIEW) : bets;
 
     container.innerHTML =
-      `<div class="mybets-cards">${visible.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>`;
-    if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open--rail")) {
+      `<div class="mybets-cards">${visible.map((bet) => renderMyBetsOpenCard(bet)).join("")}</div>` +
+      (tab === "history"
+        ? `<button type="button" class="mybets-view-history mybets-view-history--list" id="mybets-view-history">View Bet History</button>`
+        : "");
+    if (backdrop && !backdrop.hidden && document.body.classList.contains("bh-desktop-open")) {
       mountBetHistoryHost();
     }
   }
@@ -7234,6 +7337,7 @@
   window.DsBetFlow = {
     getActiveBets: () => MOCK_RUNNING_BETS.map((bet) => ({ ...bet })),
     getSettledBets: () => MOCK_SETTLED_BETS.map((bet) => ({ ...bet })),
+    getBetHistory: () => getMergedBetHistory().map((bet) => ({ ...bet })),
     openAccepted: (betId) => {
       const bet = MOCK_RUNNING_BETS.find((item) => String(item.id) === String(betId));
       if (bet) openBetAcceptedModal(bet);
@@ -7269,7 +7373,7 @@
             `<span class="bh-desk-value">${escapeHtml(formatMoneyMyr(bet.stake))}</span>` +
           `</div>` +
           `<div class="bh-desk-field">` +
-            `<span class="bh-desk-label">Winnings</span>` +
+            `<span class="bh-desk-label">Payout</span>` +
             `<span class="bh-desk-value${winningsClass}">${escapeHtml(formatMoneyMyr(bet.winnings))}</span>` +
           `</div>` +
           `<div class="bh-desk-field bh-desk-field--meta">` +
@@ -7285,11 +7389,142 @@
     );
   }
 
+  function parseDeskBetMoney(value) {
+    const n = Number(String(value ?? "").replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function isDeskBetOpen(status) {
+    return /^(open|unsettled|running)$/i.test(String(status || ""));
+  }
+
+  function computeDeskBetKpis(bets) {
+    let totalStake = 0;
+    let settledStake = 0;
+    let totalReturn = 0;
+    bets.forEach((bet) => {
+      const stake = parseDeskBetMoney(bet.stake);
+      totalStake += stake;
+      if (!isDeskBetOpen(bet.status)) {
+        settledStake += stake;
+        totalReturn += parseDeskBetMoney(bet.winnings);
+      }
+    });
+    const round = (n) => Math.round(n * 100) / 100;
+    return {
+      totalStake: round(totalStake),
+      settledStake: round(settledStake),
+      net: round(totalReturn - settledStake),
+    };
+  }
+
+  function updateDeskBetKpi(kpis) {
+    const root = $("#bh-desktop-kpi");
+    if (!root) return;
+    const stakeEl = root.querySelector('[data-bh-desk-kpi="stake"]');
+    const settledEl = root.querySelector('[data-bh-desk-kpi="settled"]');
+    const netEl = root.querySelector('[data-bh-desk-kpi="net"]');
+    const stakeSum = root.querySelector('[data-bh-desk-kpi-summary="stake"]');
+    const settledSum = root.querySelector('[data-bh-desk-kpi-summary="settled"]');
+    const netSum = root.querySelector('[data-bh-desk-kpi-summary="net"]');
+    const stakeText = kpis.totalStake.toFixed(2);
+    const settledText = kpis.settledStake.toFixed(2);
+    const netText =
+      kpis.net > 0 ? `+${kpis.net.toFixed(2)}` : kpis.net.toFixed(2);
+    if (stakeEl) stakeEl.textContent = stakeText;
+    if (settledEl) settledEl.textContent = settledText;
+    if (stakeSum) stakeSum.textContent = stakeText;
+    if (settledSum) settledSum.textContent = settledText;
+    if (netEl) {
+      netEl.textContent = netText;
+      netEl.classList.toggle("is-pos", kpis.net > 0);
+      netEl.classList.toggle("is-neg", kpis.net < 0);
+      netEl.classList.toggle("is-zero", kpis.net === 0);
+    }
+    if (netSum) {
+      netSum.textContent = netText;
+      netSum.classList.toggle("is-pos", kpis.net > 0);
+      netSum.classList.toggle("is-neg", kpis.net < 0);
+    }
+  }
+
+  function aggregateDeskProviderSummary(bets) {
+    const map = new Map();
+    bets.forEach((bet) => {
+      if (isDeskBetOpen(bet.status)) return;
+      const provider =
+        bet.league || bet.sport || (bet.category === "casino" ? "Casino" : "Sports");
+      if (!map.has(provider)) {
+        map.set(provider, { provider, turnover: 0, winLoss: 0 });
+      }
+      const row = map.get(provider);
+      const stake = parseDeskBetMoney(bet.stake);
+      row.turnover += stake;
+      row.winLoss += parseDeskBetMoney(bet.winnings) - stake;
+    });
+    return Array.from(map.values()).map((row) => ({
+      ...row,
+      turnover: Math.round(row.turnover * 100) / 100,
+      winLoss: Math.round(row.winLoss * 100) / 100,
+    }));
+  }
+
+  function renderBetHistorySummary(bets) {
+    const body = $("#bh-desktop-summary-body");
+    if (!body) return;
+    const rows = aggregateDeskProviderSummary(bets);
+    if (!rows.length) {
+      body.innerHTML =
+        `<div class="bh-desk-empty" role="status">` +
+          `<p class="bet-empty-text">No settled bets for the selected filters.</p>` +
+        `</div>`;
+      return;
+    }
+    const totalTurnover = rows.reduce((sum, row) => sum + row.turnover, 0);
+    const totalNet = rows.reduce((sum, row) => sum + row.winLoss, 0);
+    const fmtNet = (n) => (n > 0 ? `+${n.toFixed(2)}` : n.toFixed(2));
+    const tone = (n) => (n > 0 ? " is-pos" : n < 0 ? " is-neg" : "");
+    body.innerHTML =
+      rows
+        .map(
+          (row) =>
+            `<div class="bh-desk-summary-row">` +
+              `<div class="bh-desk-summary-cell bh-desk-summary-cell--provider">${escapeHtml(row.provider)}</div>` +
+              `<div class="bh-desk-summary-cell bh-desk-summary-cell--num">${row.turnover.toFixed(2)}</div>` +
+              `<div class="bh-desk-summary-cell bh-desk-summary-cell--num${tone(row.winLoss)}">${fmtNet(row.winLoss)}</div>` +
+            `</div>`
+        )
+        .join("") +
+      `<div class="bh-desk-summary-row bh-desk-summary-row--total">` +
+        `<div class="bh-desk-summary-cell bh-desk-summary-cell--provider">Total</div>` +
+        `<div class="bh-desk-summary-cell bh-desk-summary-cell--num">${totalTurnover.toFixed(2)}</div>` +
+        `<div class="bh-desk-summary-cell bh-desk-summary-cell--num${tone(totalNet)}">${fmtNet(totalNet)}</div>` +
+      `</div>`;
+  }
+
+  function setDeskBetHistoryView(view) {
+    state.betHistoryView = view === "summary" ? "summary" : "details";
+    const isSummary = state.betHistoryView === "summary";
+    $$("[data-bh-desk-view]").forEach((tab) => {
+      const on = tab.getAttribute("data-bh-desk-view") === state.betHistoryView;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    const details = $("#bh-desktop-details-panel");
+    const summary = $("#bh-desktop-summary-panel");
+    if (details) details.hidden = isSummary;
+    if (summary) summary.hidden = !isSummary;
+  }
+
   function renderBetHistoryResults() {
     const root = $("#bh-desktop-results");
     if (!root) return;
 
     const bets = getFilteredBetHistory();
+    updateDeskBetKpi(computeDeskBetKpis(bets));
+    renderBetHistorySummary(bets);
+    setDeskBetHistoryView(state.betHistoryView);
+
     if (!bets.length) {
       root.innerHTML =
         `<div class="bh-desk-empty" role="status">` +
@@ -7392,11 +7627,11 @@
     }
     mountBetHistoryHost();
     backdrop.hidden = false;
-    const rail = backdrop.classList.contains("bh-desktop-backdrop--rail");
-    document.body.classList.toggle("bh-desktop-open", !rail);
-    document.body.classList.toggle("bh-desktop-open--rail", !!rail);
-    $("#mybets-app")?.classList.toggle("is-bh-open", !!rail);
-    $(".bet-slip-panel")?.classList.toggle("is-bh-open", !!rail);
+    /* Desktop (≥901): always centered pop modal — never embed in right-rail My Bets */
+    document.body.classList.add("bh-desktop-open");
+    document.body.classList.remove("bh-desktop-open--rail");
+    $("#mybets-app")?.classList.remove("is-bh-open");
+    $(".bet-slip-panel")?.classList.remove("is-bh-open");
     syncBetHistoryControls();
     renderBetHistoryResults();
     const closeBtn = $("#bh-desktop-close");
@@ -7417,14 +7652,11 @@
   function mountBetHistoryHost() {
     const backdrop = $("#bh-desktop-backdrop");
     if (!backdrop) return;
-    const mobile = isMobileViewport();
-    const myBetsBody = $("#my-bets-body");
-    const panel = $(".bet-slip-panel");
-    const hostInRail = !mobile && myBetsBody && !myBetsBody.hidden;
-    const target = hostInRail ? myBetsBody : document.body;
-    if (backdrop.parentElement !== target) target.appendChild(backdrop);
-    backdrop.classList.toggle("bh-desktop-backdrop--rail", !!hostInRail);
-    panel?.classList.toggle("is-bh-open", !!hostInRail && !backdrop.hidden);
+    if (backdrop.parentElement !== document.body) {
+      document.body.appendChild(backdrop);
+    }
+    backdrop.classList.remove("bh-desktop-backdrop--rail");
+    $(".bet-slip-panel")?.classList.remove("is-bh-open");
   }
 
   function ensureBetHistoryPanel() {
@@ -7497,7 +7729,55 @@
           `</label>` +
           `<button type="button" class="bh-desktop-apply" id="bh-desktop-apply">Apply</button>` +
         `</div>` +
-        `<div class="bh-desktop-results" id="bh-desktop-results" aria-live="polite"></div>` +
+        `<div class="bh-desktop-views">` +
+          `<div class="bh-desktop-view-tabs" role="tablist" aria-label="Bet history view">` +
+            `<button type="button" class="bh-desktop-view-tab is-active" role="tab" id="bh-desktop-view-details" data-bh-desk-view="details" aria-selected="true" aria-controls="bh-desktop-details-panel">Details</button>` +
+            `<button type="button" class="bh-desktop-view-tab" role="tab" id="bh-desktop-view-summary" data-bh-desk-view="summary" aria-selected="false" aria-controls="bh-desktop-summary-panel">Summary</button>` +
+          `</div>` +
+          `<div class="bh-desktop-kpi" id="bh-desktop-kpi" aria-live="polite">` +
+            `<div class="bh-desktop-kpi__summary">` +
+              `<span class="bh-desktop-kpi__summary-item">` +
+                `<span class="bh-desktop-kpi__summary-label">W/L</span>` +
+                `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="net">0.00</strong>` +
+              `</span>` +
+              `<span class="bh-desktop-kpi__summary-item">` +
+                `<span class="bh-desktop-kpi__summary-label">Stake</span>` +
+                `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="stake">0.00</strong>` +
+              `</span>` +
+              `<span class="bh-desktop-kpi__summary-item">` +
+                `<span class="bh-desktop-kpi__summary-label">Settled</span>` +
+                `<strong class="bh-desktop-kpi__summary-value" data-bh-desk-kpi-summary="settled">0.00</strong>` +
+              `</span>` +
+            `</div>` +
+            `<div class="bh-desktop-kpi__grid" id="bh-desktop-kpi-grid">` +
+              `<div class="bh-desktop-kpi__item">` +
+                `<span class="bh-desktop-kpi__label">Total Stake <small>All bets</small></span>` +
+                `<strong class="bh-desktop-kpi__value" data-bh-desk-kpi="stake">0.00</strong>` +
+              `</div>` +
+              `<div class="bh-desktop-kpi__item">` +
+                `<span class="bh-desktop-kpi__label">Settled Stake</span>` +
+                `<strong class="bh-desktop-kpi__value" data-bh-desk-kpi="settled">0.00</strong>` +
+              `</div>` +
+              `<div class="bh-desktop-kpi__item bh-desktop-kpi__item--net">` +
+                `<span class="bh-desktop-kpi__label">Win / Loss</span>` +
+                `<strong class="bh-desktop-kpi__value" data-bh-desk-kpi="net">0.00</strong>` +
+              `</div>` +
+            `</div>` +
+          `</div>` +
+          `<div class="bh-desktop-details-panel" id="bh-desktop-details-panel" role="tabpanel" aria-labelledby="bh-desktop-view-details">` +
+            `<div class="bh-desktop-results" id="bh-desktop-results" aria-live="polite"></div>` +
+          `</div>` +
+          `<div class="bh-desktop-summary-panel" id="bh-desktop-summary-panel" role="tabpanel" aria-labelledby="bh-desktop-view-summary" hidden>` +
+            `<div class="bh-desktop-summary">` +
+              `<div class="bh-desk-summary-head" aria-hidden="true">` +
+                `<div>Provider</div>` +
+                `<div>Settled Stake</div>` +
+                `<div>Win/Loss</div>` +
+              `</div>` +
+              `<div class="bh-desk-summary-body" id="bh-desktop-summary-body" aria-live="polite"></div>` +
+            `</div>` +
+          `</div>` +
+        `</div>` +
         `<p class="bh-desktop-note">All transactions are time stamped at GMT-4.</p>` +
       `</div>`;
 
@@ -7514,6 +7794,12 @@
         state.betHistoryCategory = cat.getAttribute("data-bh-cat");
         syncBetHistoryControls();
         renderBetHistoryResults();
+        return;
+      }
+
+      const viewTab = e.target.closest("[data-bh-desk-view]");
+      if (viewTab) {
+        setDeskBetHistoryView(viewTab.getAttribute("data-bh-desk-view"));
         return;
       }
 
