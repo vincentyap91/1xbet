@@ -1517,14 +1517,17 @@
   ];
 
   const OPEN_BETS_STORAGE_KEY = "1xbet-open-bets";
+  const SETTLED_BETS_STORAGE_KEY = "1xbet-settled-bets";
   const MYBETS_OPEN_PREVIEW = 1;
+  let activeAcceptedBet = null;
+  let activeSellSession = null;
 
   function loadPersistedOpenBets() {
     try {
       const raw = localStorage.getItem(OPEN_BETS_STORAGE_KEY);
       if (!raw) return;
       const list = JSON.parse(raw);
-      if (Array.isArray(list) && list.length) MOCK_RUNNING_BETS = list;
+      if (Array.isArray(list)) MOCK_RUNNING_BETS = list;
     } catch (_) {
       /* ignore */
     }
@@ -1538,10 +1541,30 @@
     }
   }
 
-  loadPersistedOpenBets();
+  /* Settled/sold slips share the same replaceable local state layer. */
+  let MOCK_SETTLED_BETS = [];
 
-  /* Last-session settled bets (empty → show View Bet History CTA) */
-  const MOCK_SETTLED_BETS = [];
+  function loadPersistedSettledBets() {
+    try {
+      const raw = localStorage.getItem(SETTLED_BETS_STORAGE_KEY);
+      if (!raw) return;
+      const list = JSON.parse(raw);
+      if (Array.isArray(list)) MOCK_SETTLED_BETS = list;
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function persistSettledBets() {
+    try {
+      localStorage.setItem(SETTLED_BETS_STORAGE_KEY, JSON.stringify(MOCK_SETTLED_BETS));
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  loadPersistedOpenBets();
+  loadPersistedSettledBets();
 
   const BH_RANGE_LABELS = {
     today: "Today",
@@ -6195,25 +6218,51 @@
           showToast("Login required to place bets");
           return;
         }
-        const result = wallet.debit(stake);
-        if (!result.ok) {
-          showToast(
-            result.reason === "insufficient"
-              ? "Insufficient balance — please deposit"
-              : "Could not place bet"
-          );
-          syncBetSlipAuthUi();
-          return;
-        }
         const slipSnapshot = state.betSlip.slice();
-        const openBet = buildOpenBetFromSlip(slipSnapshot, stake);
-        MOCK_RUNNING_BETS.unshift(openBet);
-        persistOpenBets();
-        showToast(`Bet placed — ${wallet.format(stake)} MYR`);
-        state.betSlip = [];
-        renderBetSlip();
-        wallet.sync();
-        showMyBetsOpenPanel();
+        if (place.dataset.loading === "true") return;
+        place.dataset.loading = "true";
+        place.disabled = true;
+        place.setAttribute("aria-busy", "true");
+        place.textContent = "Placing…";
+
+        /* Temporary async state boundary: replace this callback with the API later. */
+        window.setTimeout(() => {
+          try {
+            const result = wallet.debit(stake);
+            if (!result.ok) {
+              showToast(
+                result.reason === "insufficient"
+                  ? "Insufficient balance — please deposit"
+                  : "Could not place bet"
+              );
+              syncBetSlipAuthUi();
+              return;
+            }
+
+            try {
+              const openBet = buildOpenBetFromSlip(slipSnapshot, stake);
+              MOCK_RUNNING_BETS.unshift(openBet);
+              persistOpenBets();
+              state.betSlip = [];
+              renderBetSlip();
+              wallet.sync();
+              openBetAcceptedModal(openBet);
+            } catch (_) {
+              /* Keep wallet and bet state atomic if local submission fails. */
+              wallet.credit(stake);
+              wallet.sync();
+              showToast("Could not place bet — please try again");
+            }
+          } finally {
+            const currentPlace = $("#place-bet");
+            if (currentPlace) {
+              currentPlace.dataset.loading = "false";
+              currentPlace.disabled = false;
+              currentPlace.removeAttribute("aria-busy");
+              syncBetSlipAuthUi();
+            }
+          }
+        }, 220);
         return;
       }
 
@@ -6313,6 +6362,58 @@
     return "MYR " + n.toFixed(2);
   }
 
+  function roundMoney(amount) {
+    return Math.max(0, Math.round((Number(amount) || 0) * 100) / 100);
+  }
+
+  function formatCompactAmount(amount) {
+    const n = Number(amount);
+    if (!Number.isFinite(n)) return String(amount == null ? "0" : amount);
+    return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/0$/, "");
+  }
+
+  function getBetSellMax(bet) {
+    const stored = Number(bet && (bet.sellValue ?? bet.cashOutValue));
+    if (Number.isFinite(stored) && stored > 0) return roundMoney(stored);
+    const stake = Number(bet && bet.stake);
+    return Number.isFinite(stake) && stake > 0 ? roundMoney(stake * 0.75) : 0;
+  }
+
+  /** Build min/step/max so the stepper + slider can land on a true full-sale price. */
+  function getSellPriceBounds(stake, sellMax) {
+    const max = roundMoney(sellMax);
+    const min = roundMoney(Math.min(max, Math.max(0.01, max * 0.1)));
+    const span = roundMoney(Math.max(0, max - min));
+    if (span <= 0) {
+      return { min: max, max, step: 0.01, partialMax: max };
+    }
+    const targetSteps = Math.max(1, Math.round(max / 0.25) || 30);
+    let step = roundMoney(Math.max(0.01, span / targetSteps));
+    const steps = Math.max(1, Math.round(span / step));
+    step = roundMoney(span / steps) || 0.01;
+    /* Keep 2dp money steps that still reach max from min. */
+    if (roundMoney(min + steps * step) !== max) {
+      step = 0.01;
+    }
+    return {
+      min,
+      max,
+      step,
+      /* Partial-sale band shown in copy; slider still goes to full `max`. */
+      partialMax: roundMoney(Math.max(min, max * 0.9)),
+    };
+  }
+
+  function getBetSportGlyph(bet) {
+    const sport = String(bet?.sport || bet?.competition || bet?.eventName || "").toLowerCase();
+    if (sport.includes("basket")) return "🏀";
+    if (sport.includes("hockey")) return "🏒";
+    if (sport.includes("tennis")) return "🎾";
+    if (sport.includes("baseball")) return "⚾";
+    if (sport.includes("volley")) return "🏐";
+    return "⚽";
+  }
+
   function parseDateKey(key) {
     const parts = String(key).split("-").map(Number);
     if (parts.length !== 3) return null;
@@ -6389,48 +6490,46 @@
   }
 
   function renderMyBetsOpenCard(bet) {
-    const oddsLine =
-      escapeHtml(bet.odds) +
-      (bet.oddsTag ? ` <span class="mybets-card-odds-tag">(${escapeHtml(bet.oddsTag)})</span>` : "");
-    const cashOutBtn = bet.cashOut
-      ? `<button type="button" class="mybets-cashout">Cash Out</button>`
-      : `<button type="button" class="mybets-cashout is-disabled" disabled>Cash Out not available</button>`;
-    const eventName = bet.eventName || bet.event || "";
-    const eventDate = bet.eventDate ? `<span class="mybets-card-event-date">${escapeHtml(bet.eventDate)}</span>` : "";
+    const status = bet.status || "Unsettled";
+    const statusClass = String(status).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const eventName = bet.competition || bet.eventName || bet.event || "";
+    const betType = bet.betType || (bet.market === "Accumulator" ? "Accumulator" : "Single bet");
+    const selection = bet.selection || bet.pick || "";
+    const potential = bet.potentialWinnings || bet.maxPayout || "0.00";
+    const displayTime = String(bet.placedTime || "").split(":").slice(0, 2).join(":");
+    const sellMax = getBetSellMax(bet);
+    const canSell =
+      bet.sellEligible !== false &&
+      bet.cashOut !== false &&
+      /^(unsettled|running|open)$/i.test(status) &&
+      sellMax > 0;
+    const sellActions = canSell
+      ? (
+          `<div class="mybets-sell-row">` +
+            `<button type="button" class="mybets-sell" data-mybets-sell="${escapeHtml(bet.id)}">Sell for ${escapeHtml(formatCompactAmount(sellMax))} MYR</button>` +
+            `<button type="button" class="mybets-sell-settings" data-mybets-sell-settings="${escapeHtml(bet.id)}" aria-label="Sale settings">` +
+              `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M19.1 13a7.7 7.7 0 0 0 .1-1 7.7 7.7 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1l-.4-2.7h-4L10.2 6a8 8 0 0 0-1.7 1L6 6 4 9.4 6.1 11A7.7 7.7 0 0 0 6 12c0 .3 0 .7.1 1L4 14.6 6 18l2.5-1a8 8 0 0 0 1.7 1l.4 2.7h4L15 18a8 8 0 0 0 1.7-1l2.5 1 2-3.4L19.1 13ZM12.6 15.2A3.2 3.2 0 1 1 12.6 8.8a3.2 3.2 0 0 1 0 6.4Z"/></svg>` +
+            `</button>` +
+          `</div>`
+        )
+      : "";
 
     return (
-      `<article class="mybets-card">` +
-        `<header class="mybets-card-head">${escapeHtml(bet.sport)} - ${escapeHtml(bet.market)}</header>` +
-        `<div class="mybets-card-main">` +
-          `<div class="mybets-card-pick">` +
-            `<span class="mybets-selection-accent" aria-hidden="true"></span>` +
-            `<div class="mybets-card-pick-body">` +
-              `<div class="mybets-card-score">${escapeHtml(bet.pick)}</div>` +
-              `<div class="mybets-card-odds-line">${oddsLine}</div>` +
-              eventDate +
-            `</div>` +
-          `</div>` +
-          `<div class="mybets-card-stake">` +
-            `<span class="mybets-card-stake-currency">RM</span>` +
-            `<span class="mybets-card-stake-value">${escapeHtml(formatMyBetsStake(bet.stake))}</span>` +
-          `</div>` +
+      `<article class="mybets-card mybets-slip-card" data-mybets-id="${escapeHtml(bet.id)}">` +
+        `<header class="mybets-slip-card__head">Bet slip № ${escapeHtml(bet.id)}</header>` +
+        `<div class="mybets-slip-card__summary">` +
+          `<div class="mybets-slip-card__row"><span>${escapeHtml(bet.placedDate || "")} (${escapeHtml(displayTime)})</span><span>${escapeHtml(status)}</span></div>` +
+          `<div class="mybets-slip-card__row"><span>${escapeHtml(betType)}</span><strong>${escapeHtml(formatCompactAmount(bet.stake))} MYR</strong></div>` +
+          `<div class="mybets-slip-card__row"><span>Potential winnings</span><strong>${escapeHtml(formatCompactAmount(potential))} MYR</strong></div>` +
         `</div>` +
-        `<div class="mybets-card-event">` +
-          `<div class="mybets-card-match">${escapeHtml(bet.match)}</div>` +
-          `<div class="mybets-card-league">${escapeHtml(eventName)}</div>` +
+        `<div class="mybets-slip-card__event">` +
+          `<div class="mybets-slip-card__league"><span aria-hidden="true">${getBetSportGlyph(bet)}</span> ${escapeHtml(eventName)}</div>` +
+          `<div class="mybets-slip-card__match">${escapeHtml(bet.match || "")}</div>` +
+          `<div class="mybets-slip-card__selection"><span>${escapeHtml(formatCompactAmount(bet.odds))}</span> ${escapeHtml(selection)}</div>` +
+          `<div class="mybets-slip-card__row mybets-slip-card__status"><span>Status</span><span>${escapeHtml(status)}</span></div>` +
         `</div>` +
-        `<div class="mybets-card-meta">` +
-          `<div class="mybets-card-meta-left">` +
-            `<span class="mybets-card-id">ID: ${escapeHtml(bet.id)}</span>` +
-            `<span class="mybets-card-time">${escapeHtml(bet.placedDate)} ${escapeHtml(bet.placedTime)} GMT-4</span>` +
-          `</div>` +
-          `<span class="mybets-status mybets-status--${bet.status.toLowerCase()}">${escapeHtml(bet.status)}</span>` +
-        `</div>` +
-        `<div class="mybets-card-payout">` +
-          `<span class="mybets-card-payout-label">Max payout</span>` +
-          `<strong class="mybets-card-payout-value">RM ${escapeHtml(bet.maxPayout)}</strong>` +
-        `</div>` +
-        cashOutBtn +
+        sellActions +
+        `<button type="button" class="mybets-repeat" data-mybets-repeat="${escapeHtml(bet.id)}">Repeat</button>` +
       `</article>`
     );
   }
@@ -6577,50 +6676,571 @@
     const pad = (n) => String(n).padStart(2, "0");
     const placedDate = `${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()}`;
     const placedTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-    const id = String(480000000 + Math.floor(Math.random() * 19999999));
+    const id = String(Date.now()).slice(-10) + String(Math.floor(Math.random() * 10));
     const oddsVal = productOdds(active);
     const maxPayout = (Number(stake) * oddsVal).toFixed(2);
     const oddsStr = formatOdd(oddsVal);
+    const stakeValue = roundMoney(stake);
+    const betType =
+      active.length === 1
+        ? "Single bet"
+        : BET_TYPE_LABELS[state.betTypeMode] || "Accumulator";
+    const sellValue = roundMoney(stakeValue * 0.75);
+    const storedItems = active.map((item) => ({
+      id: item.id,
+      league: item.league || "",
+      match: item.match || "",
+      market: item.market || "",
+      selection: item.selection || "",
+      odds: Number(item.odds) || 1,
+      sport: item.sport || "",
+    }));
 
     if (active.length === 1) {
       const b = active[0];
+      const selection = b.selection || formatTicketMarket(b) || "";
       return {
         id,
         placedDate,
         placedTime,
-        sport: "Sports",
+        sport: b.sport || "Sports",
         market: b.market || "1X2",
-        pick: formatTicketMarket(b) || b.selection,
+        pick: selection,
+        selection,
         match: String(b.match || "").replace(" - ", " -vs- "),
         eventName: b.league || "",
+        competition: b.league || "",
         eventDate: "",
         maxPayout,
+        potentialWinnings: maxPayout,
         odds: oddsStr,
         oddsTag: "",
-        stake: formatMyBetsStake(stake),
-        status: "Running",
+        stake: stakeValue.toFixed(2),
+        originalStake: stakeValue.toFixed(2),
+        betType,
+        status: "Unsettled",
         cashOut: true,
+        sellEligible: true,
+        sellValue,
+        items: storedItems,
       };
     }
 
+    const selection = active
+      .map((b) => b.selection || formatTicketMarket(b))
+      .filter(Boolean)
+      .join(" · ");
     return {
       id,
       placedDate,
       placedTime,
       sport: "Sports",
       market: active.length > 1 ? "Accumulator" : "Single",
-      pick: active.map((b) => b.selection || formatTicketMarket(b)).join(" · "),
+      pick: selection,
+      selection,
       match: active.map((b) => String(b.match || "").replace(" - ", " -vs- ")).join(" | "),
       eventName: active.length ? `${active.length} events` : "",
+      competition: active.length ? `${active.length} events` : "",
       eventDate: "",
       maxPayout,
+      potentialWinnings: maxPayout,
       odds: oddsStr,
       oddsTag: "",
-      stake: formatMyBetsStake(stake),
-      status: "Running",
+      stake: stakeValue.toFixed(2),
+      originalStake: stakeValue.toFixed(2),
+      betType,
+      status: "Unsettled",
       cashOut: true,
+      sellEligible: true,
+      sellValue,
+      items: storedItems,
     };
   }
+
+  function closeBetAcceptedModal() {
+    const overlay = $("#ba-overlay");
+    if (!overlay) return;
+    overlay.hidden = true;
+    document.body.classList.remove("ba-open");
+    activeAcceptedBet = null;
+  }
+
+  function getAcceptedShareText(bet) {
+    return [
+      `Bet slip № ${bet.id}`,
+      bet.competition || bet.eventName || "",
+      bet.match || "",
+      `${bet.selection || bet.pick || ""} @ ${formatCompactAmount(bet.odds)}`,
+      `Stake: ${formatCompactAmount(bet.stake)} MYR`,
+      `Potential winnings: ${formatCompactAmount(bet.potentialWinnings || bet.maxPayout)} MYR`,
+    ].filter(Boolean).join("\n");
+  }
+
+  function ensureBetAcceptedModal() {
+    let overlay = $("#ba-overlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.className = "ba-backdrop";
+    overlay.id = "ba-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<section class="ba-panel" role="dialog" aria-modal="true" aria-labelledby="ba-title">` +
+        `<button type="button" class="ba-close" data-ba-close aria-label="Close">&times;</button>` +
+        `<header class="ba-head">` +
+          `<span class="ba-success" aria-hidden="true">` +
+            `<svg viewBox="0 0 32 32"><path d="m8 16 5 5 11-12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>` +
+          `</span>` +
+          `<div><h2 class="ba-title" id="ba-title">Bet accepted!</h2><p class="ba-slip-number" data-ba-number></p></div>` +
+        `</header>` +
+        `<div class="ba-event">` +
+          `<div class="ba-event-league" data-ba-league></div>` +
+          `<div class="ba-event-match" data-ba-match></div>` +
+          `<div class="ba-event-selection"><span data-ba-odds></span><strong data-ba-selection></strong></div>` +
+        `</div>` +
+        `<dl class="ba-details">` +
+          `<div><dt>Overall odds</dt><dd data-ba-overall></dd></div>` +
+          `<div><dt>Bet type</dt><dd data-ba-type></dd></div>` +
+          `<div><dt>Stake</dt><dd data-ba-stake></dd></div>` +
+          `<div><dt>Potential winnings</dt><dd data-ba-winnings></dd></div>` +
+        `</dl>` +
+        `<div class="ba-actions">` +
+          `<button type="button" class="ba-action ba-action--continue" data-ba-continue>Continue</button>` +
+          `<button type="button" class="ba-action ba-action--history" data-ba-history>Bet history</button>` +
+          `<button type="button" class="ba-icon-action" data-ba-print aria-label="Print bet slip">` +
+            `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 3h10v5H7V3Zm10 16v2H7v-5h10v3Zm2-10H5a3 3 0 0 0-3 3v5h4v-3h12v3h4v-5a3 3 0 0 0-3-3Z"/></svg>` +
+          `</button>` +
+          `<button type="button" class="ba-icon-action" data-ba-share aria-label="Share bet slip">` +
+            `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16a3 3 0 0 0-2.4 1.2l-7-4A3 3 0 0 0 8.7 12a3 3 0 0 0-.1-.8l7-4A3 3 0 1 0 15 5c0 .3 0 .5.1.8l-7 4a3 3 0 1 0 0 4.4l7 4A3 3 0 1 0 18 16Z"/></svg>` +
+          `</button>` +
+        `</div>` +
+      `</section>`;
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", async (e) => {
+      if (e.target === overlay || e.target.closest("[data-ba-close], [data-ba-continue]")) {
+        closeBetAcceptedModal();
+        return;
+      }
+      if (e.target.closest("[data-ba-history]")) {
+        closeBetAcceptedModal();
+        showMyBetsOpenPanel();
+        openRightDrawer();
+        return;
+      }
+      if (e.target.closest("[data-ba-print]")) {
+        window.print();
+        return;
+      }
+      if (e.target.closest("[data-ba-share]") && activeAcceptedBet) {
+        const text = getAcceptedShareText(activeAcceptedBet);
+        try {
+          if (navigator.share) {
+            await navigator.share({ title: `Bet slip № ${activeAcceptedBet.id}`, text });
+          } else if (navigator.clipboard) {
+            await navigator.clipboard.writeText(text);
+            showToast("Bet slip copied");
+          } else {
+            showToast("Sharing is not available");
+          }
+        } catch (err) {
+          if (err && err.name !== "AbortError") showToast("Could not share bet slip");
+        }
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay && !overlay.hidden) closeBetAcceptedModal();
+    });
+    return overlay;
+  }
+
+  function openBetAcceptedModal(bet) {
+    if (!bet) return;
+    const overlay = ensureBetAcceptedModal();
+    activeAcceptedBet = bet;
+    const setText = (selector, value) => {
+      const el = overlay.querySelector(selector);
+      if (el) el.textContent = value;
+    };
+    setText("[data-ba-number]", `Bet slip № ${bet.id}`);
+    setText(
+      "[data-ba-league]",
+      `${getBetSportGlyph(bet)} ${bet.competition || bet.eventName || "Sports"}`
+    );
+    setText("[data-ba-match]", bet.match || "");
+    setText("[data-ba-odds]", formatCompactAmount(bet.odds));
+    setText("[data-ba-selection]", bet.selection || bet.pick || "");
+    setText("[data-ba-overall]", formatCompactAmount(bet.odds));
+    setText("[data-ba-type]", bet.betType || "Single bet");
+    setText("[data-ba-stake]", `${formatCompactAmount(bet.stake)} MYR`);
+    setText(
+      "[data-ba-winnings]",
+      `${formatCompactAmount(bet.potentialWinnings || bet.maxPayout)} MYR`
+    );
+    overlay.hidden = false;
+    document.body.classList.add("ba-open");
+    requestAnimationFrame(() => overlay.querySelector("[data-ba-continue]")?.focus());
+  }
+
+  function closeSellBetModal() {
+    const overlay = $("#sbs-overlay");
+    if (!overlay) return;
+    overlay.hidden = true;
+    document.body.classList.remove("sbs-open");
+    activeSellSession = null;
+  }
+
+  function isFullSellPrice(session) {
+    if (!session) return false;
+    return roundMoney(session.value) >= roundMoney(session.max) - 1e-9;
+  }
+
+  function getSellSessionMetrics(session) {
+    /* Max selectable price = full sale of the current stake. */
+    if (isFullSellPrice(session)) {
+      return {
+        soldStake: roundMoney(session.stake),
+        loss: roundMoney(Math.max(0, session.stake - session.value)),
+        newStake: 0,
+        isFullSale: true,
+      };
+    }
+    const ratio = session.max > 0 ? session.value / session.max : 0;
+    const soldStake = roundMoney(session.stake * ratio);
+    const newStake = roundMoney(Math.max(0, session.stake - soldStake));
+    return {
+      soldStake,
+      loss: roundMoney(Math.max(0, soldStake - session.value)),
+      newStake,
+      isFullSale: newStake <= 0.01,
+    };
+  }
+
+  function syncSellBetModal() {
+    const overlay = $("#sbs-overlay");
+    const session = activeSellSession;
+    if (!overlay || !session) return;
+    const metrics = getSellSessionMetrics(session);
+    const price = formatCompactAmount(session.value);
+    const input = overlay.querySelector("[data-sbs-price]");
+    const range = overlay.querySelector("[data-sbs-range]");
+    if (input) input.value = session.value.toFixed(2);
+    if (range) range.value = String(session.value);
+    const setText = (selector, value) => {
+      const el = overlay.querySelector(selector);
+      if (el) el.textContent = value;
+    };
+    const rangeTo = session.partialMax || session.max;
+    setText(
+      "[data-sbs-range-copy]",
+      `from ${formatCompactAmount(session.min)} to ${formatCompactAmount(rangeTo)} MYR`
+    );
+    setText("[data-sbs-min]", `${formatCompactAmount(session.min)} MYR`);
+    setText("[data-sbs-max]", `${formatCompactAmount(session.max)} MYR`);
+    setText("[data-sbs-loss]", `${formatCompactAmount(metrics.loss)} MYR`);
+    setText("[data-sbs-new-stake]", `${formatCompactAmount(metrics.newStake)} MYR`);
+    setText(
+      "[data-sbs-submit]",
+      session.mode === "later" ? `Set sell price ${price} MYR` : `Sell for ${price} MYR`
+    );
+  }
+
+  function setSellSessionValue(value) {
+    if (!activeSellSession) return;
+    let next = Number(value);
+    if (!Number.isFinite(next)) next = activeSellSession.min;
+    next = Math.min(activeSellSession.max, Math.max(activeSellSession.min, next));
+    const snap = activeSellSession.step > 0 ? activeSellSession.step / 2 : 0.005;
+    /* Snap to ends so the slider/stepper can always reach a full sale. */
+    if (next >= activeSellSession.max - snap) next = activeSellSession.max;
+    else if (next <= activeSellSession.min + snap) next = activeSellSession.min;
+    activeSellSession.value = roundMoney(next);
+    syncSellBetModal();
+  }
+
+  function setSellModalMode(mode) {
+    if (!activeSellSession) return;
+    activeSellSession.mode = mode === "later" ? "later" : "now";
+    const overlay = $("#sbs-overlay");
+    overlay?.querySelectorAll("[data-sbs-mode]").forEach((btn) => {
+      const active = btn.getAttribute("data-sbs-mode") === activeSellSession.mode;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    syncSellBetModal();
+  }
+
+  function ensureSellBetModal() {
+    let overlay = $("#sbs-overlay");
+    if (overlay) return overlay;
+    overlay = document.createElement("div");
+    overlay.className = "sbs-backdrop";
+    overlay.id = "sbs-overlay";
+    overlay.hidden = true;
+    overlay.innerHTML =
+      `<section class="sbs-panel" role="dialog" aria-modal="true" aria-labelledby="sbs-title">` +
+        `<button type="button" class="sbs-close" data-sbs-close aria-label="Close">&times;</button>` +
+        `<h2 class="sbs-title" id="sbs-title" data-sbs-title></h2>` +
+        `<div class="sbs-tabs" role="tablist" aria-label="Sale timing">` +
+          `<button type="button" class="sbs-tab is-active" role="tab" aria-selected="true" data-sbs-mode="now">Sell now</button>` +
+          `<button type="button" class="sbs-tab" role="tab" aria-selected="false" data-sbs-mode="later">Sell later</button>` +
+        `</div>` +
+        `<div class="sbs-event">` +
+          `<div class="sbs-event__league" data-sbs-league></div>` +
+          `<div class="sbs-event__match" data-sbs-match></div>` +
+          `<div class="sbs-event__selection"><span data-sbs-odds></span><strong data-sbs-selection></strong></div>` +
+        `</div>` +
+        `<div class="sbs-stake-row"><span>Stake</span><strong data-sbs-stake></strong></div>` +
+        `<p class="sbs-note"><span aria-hidden="true">i</span> Bet slips can be sold partially or in full. A partial sale is only available within the specified range</p>` +
+        `<div class="sbs-price-card">` +
+          `<label for="sbs-price">Price</label>` +
+          `<div class="sbs-price-line">` +
+            `<div class="sbs-stepper">` +
+              `<button type="button" data-sbs-minus aria-label="Decrease price">−</button>` +
+              `<input id="sbs-price" data-sbs-price type="number" inputmode="decimal" />` +
+              `<button type="button" data-sbs-plus aria-label="Increase price">+</button>` +
+            `</div>` +
+            `<span class="sbs-range-copy">Price range<br><span data-sbs-range-copy></span></span>` +
+          `</div>` +
+          `<input class="sbs-range" data-sbs-range type="range" aria-label="Sell price" />` +
+          `<div class="sbs-range-labels"><span data-sbs-min></span><span data-sbs-max></span></div>` +
+        `</div>` +
+        `<dl class="sbs-calculation">` +
+          `<div><dt>You lose</dt><dd class="sbs-loss" data-sbs-loss></dd></div>` +
+          `<div><dt>New stake</dt><dd data-sbs-new-stake></dd></div>` +
+        `</dl>` +
+        `<p class="sbs-error" data-sbs-error hidden></p>` +
+        `<button type="button" class="sbs-submit" data-sbs-submit></button>` +
+      `</section>`;
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay || e.target.closest("[data-sbs-close]")) {
+        closeSellBetModal();
+        return;
+      }
+      const mode = e.target.closest("[data-sbs-mode]");
+      if (mode) {
+        setSellModalMode(mode.getAttribute("data-sbs-mode"));
+        return;
+      }
+      if (e.target.closest("[data-sbs-minus]") && activeSellSession) {
+        setSellSessionValue(activeSellSession.value - activeSellSession.step);
+        return;
+      }
+      if (e.target.closest("[data-sbs-plus]") && activeSellSession) {
+        setSellSessionValue(activeSellSession.value + activeSellSession.step);
+        return;
+      }
+      if (e.target.closest("[data-sbs-submit]")) completeSellBetAction();
+    });
+    overlay.addEventListener("input", (e) => {
+      if (e.target.matches("[data-sbs-range]")) {
+        setSellSessionValue(e.target.value);
+      }
+    });
+    overlay.addEventListener("change", (e) => {
+      if (e.target.matches("[data-sbs-price]")) setSellSessionValue(e.target.value);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay && !overlay.hidden) closeSellBetModal();
+    });
+    return overlay;
+  }
+
+  function openSellBetModal(betId, initialMode) {
+    const bet = MOCK_RUNNING_BETS.find((item) => String(item.id) === String(betId));
+    const status = String(bet?.status || "");
+    const max = getBetSellMax(bet);
+    if (
+      !bet ||
+      bet.sellEligible === false ||
+      bet.cashOut === false ||
+      !/^(unsettled|running|open)$/i.test(status) ||
+      max <= 0
+    ) {
+      showToast("This bet slip is not available for sale");
+      return;
+    }
+
+    const overlay = ensureSellBetModal();
+    const stake = roundMoney(bet.stake);
+    const bounds = getSellPriceBounds(stake, max);
+    activeSellSession = {
+      betId: String(bet.id),
+      mode: initialMode === "later" ? "later" : "now",
+      stake,
+      min: bounds.min,
+      max: bounds.max,
+      step: bounds.step,
+      partialMax: bounds.partialMax,
+      value: bounds.min,
+    };
+    const setText = (selector, value) => {
+      const el = overlay.querySelector(selector);
+      if (el) el.textContent = value;
+    };
+    setText("[data-sbs-title]", `Sale of bet slip № ${bet.id}`);
+    setText(
+      "[data-sbs-league]",
+      `${getBetSportGlyph(bet)} ${bet.competition || bet.eventName || "Sports"}`
+    );
+    setText("[data-sbs-match]", bet.match || "");
+    setText("[data-sbs-odds]", formatCompactAmount(bet.odds));
+    setText("[data-sbs-selection]", bet.selection || bet.pick || "");
+    setText("[data-sbs-stake]", `${formatCompactAmount(stake)} MYR`);
+    const priceInput = overlay.querySelector("[data-sbs-price]");
+    const range = overlay.querySelector("[data-sbs-range]");
+    [priceInput, range].forEach((input) => {
+      if (!input) return;
+      input.min = String(bounds.min);
+      input.max = String(bounds.max);
+      input.step = "any";
+    });
+    const error = overlay.querySelector("[data-sbs-error]");
+    if (error) error.hidden = true;
+    setSellModalMode(activeSellSession.mode);
+    overlay.hidden = false;
+    document.body.classList.add("sbs-open");
+    requestAnimationFrame(() => overlay.querySelector("[data-sbs-minus]")?.focus());
+  }
+
+  function completeSellBetAction() {
+    const session = activeSellSession;
+    const overlay = $("#sbs-overlay");
+    if (!session || !overlay) return;
+    const betIndex = MOCK_RUNNING_BETS.findIndex(
+      (item) => String(item.id) === session.betId
+    );
+    const error = overlay.querySelector("[data-sbs-error]");
+    if (betIndex < 0) {
+      if (error) {
+        error.textContent = "This bet slip is no longer available.";
+        error.hidden = false;
+      }
+      return;
+    }
+    const bet = MOCK_RUNNING_BETS[betIndex];
+    if (session.mode === "later") {
+      bet.sellLaterValue = session.value;
+      persistOpenBets();
+      closeSellBetModal();
+      renderMyBetsContent();
+      showToast(`Sell price set at ${formatCompactAmount(session.value)} MYR`);
+      return;
+    }
+
+    const wallet = window.DsWallet;
+    if (!wallet || session.value <= 0) {
+      if (error) {
+        error.textContent = "The sale cannot be completed right now.";
+        error.hidden = false;
+      }
+      return;
+    }
+    const metrics = getSellSessionMetrics(session);
+    const oldStake = roundMoney(bet.stake);
+    const oldPotential = roundMoney(bet.potentialWinnings || bet.maxPayout);
+    let fullSale =
+      metrics.isFullSale ||
+      isFullSellPrice(session) ||
+      metrics.newStake <= 0.01 ||
+      metrics.soldStake >= oldStake - 0.01;
+    wallet.credit(session.value);
+
+    if (fullSale) {
+      MOCK_RUNNING_BETS.splice(betIndex, 1);
+      MOCK_SETTLED_BETS.unshift({
+        ...bet,
+        status: "Sold",
+        cashOut: false,
+        sellEligible: false,
+        soldValue: session.value,
+        soldDate: new Date().toISOString(),
+      });
+      persistSettledBets();
+    } else {
+      const ratio = oldStake > 0 ? metrics.newStake / oldStake : 0;
+      bet.stake = metrics.newStake.toFixed(2);
+      bet.maxPayout = roundMoney(oldPotential * ratio).toFixed(2);
+      bet.potentialWinnings = bet.maxPayout;
+      bet.sellValue = roundMoney(metrics.newStake * 0.75);
+      bet.status = "Unsettled";
+      bet.lastSaleValue = session.value;
+      if (roundMoney(bet.stake) <= 0.01) {
+        fullSale = true;
+        MOCK_RUNNING_BETS.splice(betIndex, 1);
+        MOCK_SETTLED_BETS.unshift({
+          ...bet,
+          status: "Sold",
+          cashOut: false,
+          sellEligible: false,
+          soldValue: session.value,
+          soldDate: new Date().toISOString(),
+        });
+        persistSettledBets();
+      }
+    }
+    persistOpenBets();
+    wallet.sync();
+    closeSellBetModal();
+    updateMyBetsBadges();
+    renderMyBetsContent();
+    syncMyBetsViewAllChrome();
+    showToast(
+      fullSale
+        ? `Bet slip sold for ${formatCompactAmount(session.value)} MYR`
+        : `Partial sale ${formatCompactAmount(session.value)} MYR`
+    );
+  }
+
+  function repeatOpenBet(betId) {
+    const bet =
+      MOCK_RUNNING_BETS.find((item) => String(item.id) === String(betId)) ||
+      MOCK_SETTLED_BETS.find((item) => String(item.id) === String(betId));
+    if (!bet) {
+      showToast("Bet slip is no longer available");
+      return;
+    }
+    const sourceItems =
+      Array.isArray(bet.items) && bet.items.length
+        ? bet.items
+        : [{
+            id: `repeat-${bet.id}`,
+            league: bet.competition || bet.eventName || "",
+            match: String(bet.match || "").replace(" -vs- ", " - "),
+            market: bet.market || "1X2",
+            selection: bet.selection || bet.pick || "",
+            odds: Number(bet.odds) || 1,
+          }];
+    sourceItems.forEach((item, index) => {
+      const copy = {
+        ...item,
+        id: item.id || `repeat-${bet.id}-${index}`,
+        status: "open",
+      };
+      if (!state.betSlip.some((existing) => existing.id === copy.id)) {
+        state.betSlip.push(copy);
+      }
+    });
+    renderBetSlip();
+    $('.bet-tab[data-bet-tab="slip"]')?.click();
+    openRightDrawer();
+    showToast("Bet slip repeated");
+  }
+
+  /* Replaceable boundary for a future backend/API implementation. */
+  window.DsBetFlow = {
+    getActiveBets: () => MOCK_RUNNING_BETS.map((bet) => ({ ...bet })),
+    getSettledBets: () => MOCK_SETTLED_BETS.map((bet) => ({ ...bet })),
+    openAccepted: (betId) => {
+      const bet = MOCK_RUNNING_BETS.find((item) => String(item.id) === String(betId));
+      if (bet) openBetAcceptedModal(bet);
+      return !!bet;
+    },
+    openSale: (betId, mode) => openSellBetModal(betId, mode),
+  };
 
   function renderBetHistoryCard(bet) {
     const won = bet.status === "Won";
@@ -7020,34 +7640,11 @@
       `<div class="mybets-app" id="mybets-app" hidden>` +
         `<div class="mybets-subtabs" role="tablist" aria-label="My bets views">` +
           `<button type="button" class="mybets-subtab active" role="tab" aria-selected="true" data-mybets-tab="open">` +
-            `Open <span class="mybets-badge" id="mybets-open-count">0</span>` +
+            `Active bets <span class="mybets-badge" id="mybets-open-count">0</span>` +
           `</button>` +
           `<button type="button" class="mybets-subtab" role="tab" aria-selected="false" data-mybets-tab="history">` +
             `History <span class="mybets-badge" id="mybets-history-count">0</span>` +
           `</button>` +
-        `</div>` +
-        `<div class="mybets-open-controls" id="mybets-open-controls">` +
-          `<div class="mybets-controls-row">` +
-            `<label class="mybets-check">` +
-              `<input type="checkbox" class="mybets-check-input" id="mybets-cashout-toggle" />` +
-              `<span class="mybets-check-label">Cash Out</span>` +
-              `<button type="button" class="mybets-info" data-mybets-tip aria-expanded="false" aria-label="Cash Out information">` +
-                `i` +
-                `<span class="mybets-tip" role="tooltip">Cash Out Value Includes Stake.</span>` +
-              `</button>` +
-            `</label>` +
-            `<button type="button" class="mybets-refresh" aria-label="Refresh bets">` +
-              `<span class="mybets-refresh-icon" aria-hidden="true">↻</span> 98` +
-            `</button>` +
-          `</div>` +
-          `<label class="mybets-check mybets-check--full">` +
-            `<input type="checkbox" class="mybets-check-input" id="mybets-accept-cashout" />` +
-            `<span class="mybets-check-label">Accept Any Cash Out Value</span>` +
-            `<button type="button" class="mybets-info mybets-info--accept" data-mybets-tip aria-expanded="false" aria-label="Accept any cash out value information">` +
-              `i` +
-              `<span class="mybets-tip" role="tooltip">Cash Out on the value offered at that time. It helps you to Cash Out faster.</span>` +
-            `</button>` +
-          `</label>` +
         `</div>` +
         `<div class="mybets-content" id="mybets-content"></div>` +
         `<button type="button" class="mybets-view-all" id="mybets-view-all">View All</button>` +
@@ -7096,8 +7693,23 @@
         openBetHistoryPanel(isEsportsPage ? { category: "esports" } : undefined);
         return;
       }
-      if (e.target.closest(".mybets-cashout:not(.is-disabled)")) {
-        showToast("Cash Out — demo only");
+      const sell = e.target.closest("[data-mybets-sell]");
+      if (sell) {
+        openSellBetModal(sell.getAttribute("data-mybets-sell"), "now");
+        return;
+      }
+      const sellSettings = e.target.closest("[data-mybets-sell-settings]");
+      if (sellSettings) {
+        openSellBetModal(
+          sellSettings.getAttribute("data-mybets-sell-settings"),
+          "later"
+        );
+        return;
+      }
+      const repeat = e.target.closest("[data-mybets-repeat]");
+      if (repeat) {
+        repeatOpenBet(repeat.getAttribute("data-mybets-repeat"));
+        return;
       }
     });
 

@@ -812,6 +812,8 @@ a:focus-visible {
 }
 .left-sidebar.collapsed::-webkit-scrollbar {
   display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Left compact: separate rounded icon boxes */
@@ -903,6 +905,7 @@ a:focus-visible {
   margin: 0;
   padding: 0;
   width: 32px;
+  border: none;
   border-radius: 8px;
   overflow: hidden;
   background: var(--surface-primary);
@@ -924,11 +927,14 @@ a:focus-visible {
   justify-content: center;
   width: 32px;
   height: 32px;
+  margin: 0;
   padding: 8px;
+  border: none;
   border-radius: 0;
   background: var(--header-action);
   font-size: 0;
   color: var(--action-green);
+  box-sizing: border-box;
 }
 .left-sidebar.collapsed .sidebar-tab.active img {
   display: block;
@@ -942,14 +948,15 @@ a:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 32px;
   height: 32px;
-  padding: 8px 4px;
+  padding: 0;
   background: var(--surface-tertiary);
   color: var(--section-blue);
   font-size: 11px;
   font-weight: 700;
   line-height: normal;
+  box-sizing: border-box;
 }
 
 .left-sidebar.collapsed .sidebar-sports-panel,
@@ -1027,13 +1034,19 @@ a:focus-visible {
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  align-items: stretch;
+  align-items: center;
   position: sticky;
   top: calc(var(--header-h) + 8px);
   align-self: start;
   max-height: calc(100vh - var(--header-h) - 16px);
-  scrollbar-width: thin;
+  /* Match left compact rail — wheel-scroll without a gutter that squeezes 32px chips */
+  scrollbar-width: none;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+.right-sidebar.collapsed::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 .right-sidebar.collapsed > .right-collapse,
 .right-sidebar.collapsed > .mobile-drawer-close,
@@ -4161,6 +4174,33 @@ body[data-page="marble-live"] .league-header .league-sport-icon {
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
+/* Desktop: keep Collapse / panel blocks full rail width while the rail scrolls. */
+@media (min-width: 901px) {
+  .left-sidebar > .sidebar-collapse,
+  .left-sidebar > .sidebar-quick,
+  .left-sidebar > .top-games-head,
+  .left-sidebar > .top-games,
+  .left-sidebar > .sidebar-line,
+  .right-sidebar > .right-collapse,
+  .right-sidebar > .reg-panel,
+  .right-sidebar > .bet-slip-panel,
+  .right-sidebar > .generator-panel,
+  .right-sidebar > .app-panel {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .left-sidebar.collapsed > .sidebar-collapse,
+  .left-sidebar.collapsed > .sidebar-quick,
+  .left-sidebar.collapsed > .sidebar-line,
+  .right-sidebar.collapsed > .right-compact-rail {
+    width: var(--sidebar-collapsed-w);
+    max-width: var(--sidebar-collapsed-w);
+  }
+}
+
 .right-collapse {
   display: flex;
   align-items: center;
@@ -5754,6 +5794,129 @@ body.tsp-open {
   opacity: .9;
 }
 
+/* My bets — compact active slip card */
+.mybets-slip-card {
+  gap: 6px;
+  padding: 8px;
+}
+
+.mybets-slip-card__head {
+  padding-bottom: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--section-blue);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.mybets-slip-card__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mybets-slip-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.mybets-slip-card__row strong {
+  flex-shrink: 0;
+  color: var(--section-blue);
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.mybets-slip-card__event {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-light);
+}
+
+.mybets-slip-card__league {
+  font-size: 9px;
+  line-height: 1.3;
+  color: var(--text-secondary);
+}
+
+.mybets-slip-card__match {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.mybets-slip-card__selection {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--accent-blue);
+}
+
+.mybets-slip-card__selection > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 19px;
+  padding: 1px 8px;
+  color: var(--text-secondary);
+  background: var(--odds-bg);
+  border-radius: 9px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mybets-slip-card__status {
+  padding-top: 2px;
+  color: var(--section-blue);
+}
+
+.mybets-sell-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  gap: 4px;
+}
+
+.mybets-sell,
+.mybets-repeat,
+.mybets-sell-settings {
+  min-height: 28px;
+  padding: 4px 8px;
+  font-family: var(--font);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-inverse);
+  background: var(--header-action);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.mybets-sell:hover,
+.mybets-repeat:hover,
+.mybets-sell-settings:hover {
+  background: var(--header-action-hover);
+}
+
+.mybets-sell-settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.mybets-repeat {
+  width: 100%;
+  text-transform: none;
+}
+
 .mybets-status {
   display: inline-block;
   flex-shrink: 0;
@@ -5765,6 +5928,12 @@ body.tsp-open {
 }
 
 .mybets-status--running {
+  color: var(--accent-blue);
+  background: rgba(47, 105, 177, .1);
+  border: 1px solid var(--accent-blue-soft);
+}
+
+.mybets-status--unsettled {
   color: var(--accent-blue);
   background: rgba(47, 105, 177, .1);
   border: 1px solid var(--accent-blue-soft);
@@ -5789,10 +5958,511 @@ body.tsp-open {
 }
 
 .mybets-status--void,
-.mybets-status--cancelled {
+.mybets-status--cancelled,
+.mybets-status--sold {
   color: var(--text-secondary);
   background: var(--odds-bg);
   border: 1px solid var(--border-light);
+}
+
+/* Bet accepted + Sale of bet slip dialogs */
+.ba-backdrop,
+.sbs-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(11, 29, 51, 0.55);
+  box-sizing: border-box;
+}
+
+.ba-backdrop[hidden],
+.sbs-backdrop[hidden] {
+  display: none !important;
+}
+
+body.ba-open,
+body.sbs-open {
+  overflow: hidden;
+}
+
+.ba-panel,
+.sbs-panel {
+  position: relative;
+  width: min(464px, 100%);
+  max-height: calc(100dvh - 24px);
+  padding: 20px 24px 24px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  box-shadow: 0 14px 40px rgba(11, 29, 51, 0.35);
+  -webkit-overflow-scrolling: touch;
+}
+
+.ba-close,
+.sbs-close {
+  position: absolute;
+  top: 5px;
+  right: 7px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--text-muted);
+  font-family: var(--font);
+  font-size: 28px;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.ba-close:hover,
+.sbs-close:hover {
+  color: var(--section-blue);
+  background: var(--odds-bg);
+}
+
+.ba-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 24px;
+  margin-bottom: 12px;
+}
+
+.ba-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  color: var(--text-inverse);
+  background: var(--action-green);
+  border-radius: 50%;
+}
+
+.ba-success svg {
+  width: 32px;
+  height: 32px;
+}
+
+.ba-title,
+.sbs-title {
+  margin: 0;
+  color: var(--section-blue);
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ba-slip-number {
+  margin: 2px 0 0;
+  color: var(--accent-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ba-event,
+.sbs-event {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  background: var(--surface-primary);
+  border-radius: var(--radius-md);
+}
+
+.ba-event-league,
+.sbs-event__league {
+  color: var(--accent-blue);
+  font-size: 11px;
+}
+
+.ba-event-match,
+.sbs-event__match {
+  color: var(--section-blue);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.ba-event-selection,
+.sbs-event__selection {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent-blue);
+  font-size: 11px;
+}
+
+.ba-event-selection > span,
+.sbs-event__selection > span {
+  padding: 2px 9px;
+  color: var(--text-secondary);
+  background: var(--odds-bg);
+  border-radius: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ba-event-selection strong,
+.sbs-event__selection strong {
+  font-weight: 500;
+}
+
+.ba-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 8px 0;
+}
+
+.ba-details > div,
+.sbs-calculation > div,
+.sbs-stake-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 34px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  color: var(--accent-blue);
+  background: var(--surface-primary);
+  border-radius: var(--radius-sm);
+}
+
+.ba-details dt,
+.sbs-calculation dt {
+  font-size: 12px;
+}
+
+.ba-details dd,
+.sbs-calculation dd {
+  margin: 0;
+  color: var(--section-blue);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ba-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 36px 36px;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ba-action,
+.ba-icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-inverse);
+  background: var(--header-action);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.ba-action--continue {
+  background: var(--action-green);
+}
+
+.ba-action--continue:hover {
+  background: var(--action-green-hover);
+}
+
+.ba-action--history {
+  color: var(--accent-blue);
+  background: var(--odds-bg);
+}
+
+.ba-icon-action {
+  padding: 0;
+  color: var(--accent-blue);
+  background: var(--odds-bg);
+}
+
+.ba-icon-action svg {
+  width: 17px;
+  height: 17px;
+}
+
+.sbs-panel {
+  width: min(450px, 100%);
+  padding: 20px 24px 24px;
+}
+
+.sbs-title {
+  padding-right: 32px;
+  margin-bottom: 12px;
+  font-size: 19px;
+}
+
+.sbs-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--odds-bg);
+  border-radius: var(--radius-md);
+}
+
+.sbs-tab {
+  min-height: 34px;
+  padding: 6px 10px;
+  color: var(--accent-blue);
+  font-family: var(--font);
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.sbs-tab.is-active {
+  color: var(--text-inverse);
+  background: var(--header-action);
+}
+
+.sbs-stake-row {
+  margin-top: 8px;
+  color: var(--accent-blue);
+  font-size: 12px;
+}
+
+.sbs-stake-row strong {
+  color: var(--section-blue);
+}
+
+.sbs-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 10px 12px;
+  color: var(--accent-blue);
+  font-size: 11px;
+  line-height: 1.35;
+  background: var(--surface-primary);
+  border-radius: var(--radius-sm);
+}
+
+.sbs-note > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--text-inverse);
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--header-action);
+  border-radius: 50%;
+}
+
+.sbs-price-card {
+  padding: 8px 12px 7px;
+  background: var(--surface-primary);
+  border-radius: var(--radius-sm);
+}
+
+.sbs-price-card > label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--accent-blue);
+  font-size: 12px;
+}
+
+.sbs-price-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sbs-stepper {
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  flex: 0 0 142px;
+  min-width: 0;
+  height: 26px;
+  overflow: hidden;
+  border: 1px solid var(--accent-blue-soft);
+  border-radius: var(--radius-sm);
+}
+
+.sbs-stepper button {
+  padding: 0;
+  color: var(--accent-blue);
+  font-size: 15px;
+  background: var(--surface-primary);
+  border: none;
+  cursor: pointer;
+}
+
+.sbs-stepper button:first-child {
+  border-right: 1px solid var(--accent-blue-soft);
+}
+
+.sbs-stepper button:last-child {
+  border-left: 1px solid var(--accent-blue-soft);
+}
+
+.sbs-stepper input {
+  min-width: 0;
+  width: 100%;
+  padding: 0 4px;
+  color: var(--accent-blue);
+  font-family: var(--font);
+  font-size: 11px;
+  text-align: center;
+  background: var(--surface-primary);
+  border: none;
+  outline: none;
+  appearance: textfield;
+  box-sizing: border-box;
+}
+
+.sbs-stepper input::-webkit-inner-spin-button,
+.sbs-stepper input::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.sbs-range-copy {
+  color: var(--text-muted);
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.sbs-range {
+  width: 100%;
+  height: 20px;
+  margin: 5px 0 -2px;
+  accent-color: var(--cyan-accent);
+  cursor: pointer;
+}
+
+.sbs-range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.sbs-calculation {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 8px 0;
+}
+
+.sbs-calculation .sbs-loss {
+  color: var(--danger);
+}
+
+.sbs-error {
+  margin: 6px 0;
+  color: var(--danger);
+  font-size: 11px;
+  text-align: center;
+}
+
+.sbs-submit {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 12px;
+  color: var(--text-inverse);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--action-green);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.sbs-submit:hover {
+  background: var(--action-green-hover);
+}
+
+@media (max-width: 480px) {
+  .ba-backdrop,
+  .sbs-backdrop {
+    padding: 8px;
+  }
+
+  .ba-panel,
+  .sbs-panel {
+    max-height: calc(100dvh - 16px);
+    padding: 18px 16px 16px;
+  }
+
+  .ba-actions {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 34px 34px;
+    gap: 5px;
+  }
+
+  .ba-action {
+    padding-inline: 6px;
+    font-size: 10px;
+  }
+
+  .sbs-price-line {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .sbs-stepper {
+    flex-basis: auto;
+    width: 142px;
+  }
+}
+
+@media print {
+  body.ba-open > *:not(#ba-overlay) {
+    display: none !important;
+  }
+
+  body.ba-open #ba-overlay {
+    position: static;
+    display: block;
+    padding: 0;
+    background: #fff;
+  }
+
+  body.ba-open .ba-panel {
+    width: 100%;
+    max-height: none;
+    box-shadow: none;
+  }
+
+  body.ba-open .ba-close,
+  body.ba-open .ba-actions {
+    display: none !important;
+  }
 }
 
 .mybets-view-all {
@@ -7780,12 +8450,12 @@ body.bh-desktop-open {
   }
 
   .my-bets-body {
-    overflow: hidden;
+    overflow: visible;
   }
 
   .mybets-guest {
     min-height: 0;
-    overflow: auto;
+    overflow: visible;
   }
 
   .mybets-app {
@@ -7795,7 +8465,7 @@ body.bh-desktop-open {
   .mybets-content {
     flex: 1 1 auto;
     min-height: 0;
-    overflow-y: auto;
+    overflow: visible;
   }
 
   .mybets-guest-card {

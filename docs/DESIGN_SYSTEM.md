@@ -225,7 +225,10 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 | Primary CTA | `.btn-reg`, `.btn-slip-reg` | `--action-green` / hover `--action-green-hover` |
 | Bonus bar | `.reg-bonus-bar` | `--section-blue`; hover `--brand-blue` |
 | My bets History empty | `.mybets-empty--history` + `.mybets-view-history` | clipboard empty + `--action-green` **View Bet History** CTA |
-| My bets Open → View All | `#mybets-view-all` | Open previews 1 card; **View All** expands remaining cards below — same Open chrome (subtabs / Cash Out controls), no extra title bar |
+| My bets Active → View All | `#mybets-view-all` | Active bets preview 1 card; **View All** expands remaining cards below — same Active bets chrome and per-slip Sell/Repeat controls, no extra title bar |
+| Bet accepted | `.ba-backdrop` / `.ba-panel` | shown only after wallet debit + open-slip persistence succeed; actual slip number/event/odds/type/stake/winnings; Continue closes, Bet history opens **My bets → Active bets**, print/share icon actions |
+| Active bet slip | `.mybets-slip-card` | newest first from `1xbet-open-bets`; status **Unsettled**; actual competition/match/selection/odds/stake/potential winnings; eligible slips show **Sell for X MYR** + sale settings and **Repeat** |
+| Sale of bet slip | `.sbs-backdrop` / `.sbs-panel` | Sell now (default) / Sell later; selected slip drives min/max/current value. Partial sale uses `sold stake = stake × price / max sell value`, updates loss/new stake/potential winnings and credits wallet; full sale moves slip to persisted History (`1xbet-settled-bets`) |
 | Desktop Bet History panel | `.bh-desktop-backdrop` / `.bh-desktop-panel` | overlay dialog from My Bets → History; cats All/Sports/Casino; date range presets + custom (`.bh-desktop-date-input`: `appearance: none`, ≤900 uses 16px/44px for real iOS date widgets); date-grouped `.bh-desk-card` rows (wide grid: type/odds/stake/winnings/id) |
 | Bet slip settings (toolbar gear) | `.bss-backdrop` / `.bss-panel` | Automax / Balance / Potential winnings / Select account; Save → `localStorage` (`1xbet-bet-slip-settings`) |
 | Bet slip share (toolbar Share) | `.bsh-backdrop` / `.bsh-panel` (`#bsh-overlay`) | Generates 5-char coupon (e.g. `441FC`) + URL `?coupon-code=441FC` (optional compact `slip=` payload for cross-browser restore); Copy Link / Copy Coupon; Native Share on mobile (`navigator.share`); QR on desktop. Snapshot also in `localStorage` (`1xbet-shared-coupons`). Opening the URL restores the slip, toasts **Bet Slip imported**, reconciles live odds (`.is-odds-changed` / `.is-closed`), never auto-places |
@@ -242,7 +245,7 @@ Same map for Sports pages: `.bt-tour-item` / `.bt-side-*` must follow these toke
 
 **Ticket list growth:** Keep adding selections indefinitely; `.bet-list` stays `overflow: visible` so every ticket remains in the document flow (page/rail scroll, not an inner clipped scroller).
 
-**Bet Slip → My Bets → History flow (desktop):** History tab shows last-session settled bets (or empty CTA). **View Bet History** opens `.bh-desktop-panel` (not the account `bet-history.html` page). Keep right-rail chrome unchanged; do not copy mobile bottom-sheet layout into the panel.
+**Bet Slip → My Bets → History flow (desktop):** Successful submission is transactional: validate → debit wallet → persist Active bet → show `.ba-panel`; failure never opens the success dialog. Active bets are backed by the replaceable `window.DsBetFlow` boundary and local persistence until an API is connected. History tab shows sold/settled slips (or empty CTA). **View Bet History** opens `.bh-desktop-panel` (not the account `bet-history.html` page). Keep right-rail chrome unchanged; do not copy mobile bottom-sheet layout into the panel.
 
 #### Accumulators (data cards)
 
@@ -387,7 +390,7 @@ Thin, low-contrast scrollbars are **global chrome** — apply to the page and ev
 
 **Do not** invent thicker OS-default scrollbars on new pages. Exceptions that intentionally hide overflow chrome (`scrollbar-width: none` on chip rails, competition carousels, collapsed icon-only left rail) stay hidden — do not force a visible bar there.
 
-**Sticky rails:** `.left-sidebar` / `.right-sidebar` (incl. `.collapsed`) are `position: sticky` under the header with `max-height: calc(100vh - var(--header-h) - 16px)` and internal `overflow-y: auto` so long content scrolls **inside each rail**, independent of the main column.
+**Sticky rails:** `.left-sidebar` / `.right-sidebar` (incl. `.collapsed`) are `position: sticky` under the header with `max-height: calc(100vh - var(--header-h) - 16px)`, `overflow-x: hidden`, `overflow-y: auto`, and `overscroll-behavior: contain`. Long content scrolls inside the rail while the pointer is over it. Expanded rails keep the thin site scrollbar; **collapsed 32px rails hide the scrollbar gutter** (wheel/touch still scrolls) so Collapse/compact chips stay a true 32px column. Desktop Collapse / panel blocks stay `width: 100%` of the rail.
 
 ### 4.1 Account inner pages (`.account-main`)
 
