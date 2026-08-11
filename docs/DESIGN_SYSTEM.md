@@ -613,20 +613,23 @@ Prefer SVG from Figma over inventing new icons. Keep white/`currentColor` fills;
 
 ## 7. Page modules (homepage map)
 
+**Clone middle shell into a new project (no header / footer / home-social):** see [`docs/HOMEPAGE_CANON.md`](./HOMEPAGE_CANON.md) — portable recipe for left + main + right only. Explicitly **excludes** Live Transactions, RECENT BIG WINS, RECENT PAYOUT, and Your Unique Referral Hub.
+
 Use as a checklist when cloning patterns onto new pages:
 
 1. **Header** — brand, actions, primary nav  
 2. **Left nav** — Favorite / Recommended / Top Games / LIVE–SPORTS / A–Z  
 3. **Promo slider** — full-bleed photo slides, green CTA. **≤900:** left-aligned copy + CTA; side chevrons vertically centered; dots bottom-right (clear of button); left scrim for readability  
    Desktop home may include a **player-online utility pill** pinned to the hero's top-right. Keep it inside the banner chrome, use `--action-green` for the pill, white text, a live dot, and compact pill geometry. Treat it as a shortcut into LIVE content, not a second CTA.
-4. **Game strip** — horizontal cards  
-5. **TOP-EVENTS + LIVE toolbar** — banner, crumbs, tabs, search, stream toggle, sport chips + more menu  
-6. **Odds tables** — league blocks, light rows (**§2.1 canon**)  
-7. **LINE section** — same table language as LIVE  
-8. **Accumulators** — dual cards (same wrap/header/odds emphasis as §2.1)  
-9. **Home social** (`css/home-social.css`) — Live Transactions / Recent Big Wins / **Recent Payout** (`.home-payout__viewport` + cloned `.home-payout__group`; CSS `home-payout-marquee` infinite scroll left; pause on hover; `prefers-reduced-motion` → static scroll) / Referral Hub  
-10. **Right block** — registration, bet slip, generator, app  
-11. **Footer** — link columns, partners strip, legal / support / social  
+4. **`.home-popular-sports`** — ≤900 Popular Sports rail (+ sports filter drawer); desktop hidden  
+5. **Game strip** — horizontal cards  
+6. **TOP-EVENTS + LIVE toolbar** — `.home-quicknav`, banner, crumbs, tabs, search, stream toggle, sport chips + more / esports menus  
+7. **Odds tables** — league blocks, light rows (**§2.1 canon**)  
+8. **LINE section** — same table language as LIVE  
+9. **Accumulators** — dual cards (same wrap/header/odds emphasis as §2.1)  
+10. **Home social** (`css/home-social.css`) — Live Transactions / Recent Big Wins / **Recent Payout** / Referral Hub — **not** part of `HOMEPAGE_CANON.md` portable clone  
+11. **Right block** — `.right-compact-rail`, registration, bet slip, generator, app  
+12. **Footer** — link columns, partners strip, legal / support / social  
 
 New pages should reuse these modules’ classes and tokens rather than inventing parallel UI. Any new odds/data table = copy §2.1.
 
