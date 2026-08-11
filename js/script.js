@@ -1578,7 +1578,6 @@
 
   const BH_STATUS_LABELS = {
     all: "All",
-    open: "Open",
     won: "Won",
     lost: "Lost",
     void: "Void",
@@ -1655,7 +1654,7 @@
         odds: "2.10",
         stake: "25.00",
         winnings: "52.50",
-        status: "Open",
+        status: "Lost",
         dateKey: fmtKey(d3),
         dateLabel: fmtLabel(d3),
         placedAt: fmtPlaced(d3, "21:18"),
@@ -1703,7 +1702,7 @@
         odds: "2.05",
         stake: "20.00",
         winnings: "0.00",
-        status: "Open",
+        status: "Lost",
         dateKey: fmtKey(d1),
         dateLabel: fmtLabel(d1),
         placedAt: fmtPlaced(d1, "20:15"),
@@ -6515,16 +6514,37 @@
     };
   }
 
-  /** Merges session open/settled slips with demo Bet History for shared surfaces. */
+  /** Settled slips + demo Bet History (no open/running — those stay on My bets → Open). */
   function getMergedBetHistory() {
     ensureMockBetHistory();
-    const session = [
-      ...MOCK_SETTLED_BETS.map((bet) => sessionBetToHistoryEntry(bet)),
-      ...MOCK_RUNNING_BETS.map((bet) => sessionBetToHistoryEntry(bet)),
-    ];
+    const session = MOCK_SETTLED_BETS.map((bet) => sessionBetToHistoryEntry(bet));
     const seen = new Set(session.map((bet) => String(bet.id)));
     const demo = MOCK_BET_HISTORY.filter((bet) => !seen.has(String(bet.id)));
     return session.concat(demo);
+  }
+
+  function isOpenBetHistoryStatus(status) {
+    return /^(open|running|unsettled)$/i.test(String(status || ""));
+  }
+
+  function getFilteredBetHistory() {
+    const cat = state.betHistoryCategory;
+    const status = state.betHistoryStatus;
+    const { from, to } = getBetHistoryRangeBounds();
+    return getMergedBetHistory().filter((bet) => {
+      /* History is past/settled only — never list Open */
+      if (isOpenBetHistoryStatus(bet.status)) return false;
+      if (cat !== "all" && bet.category !== cat) return false;
+      if (status !== "all") {
+        const betStatus = String(bet.status || "").toLowerCase();
+        if (betStatus !== status) return false;
+      }
+      const d = parseDateKey(bet.dateKey);
+      if (!d) return true;
+      if (from && d < from) return false;
+      if (to && d > to) return false;
+      return true;
+    });
   }
 
   function getBetHistoryRangeBounds() {
@@ -6566,27 +6586,6 @@
       };
     }
     return { from: null, to: null };
-  }
-
-  function getFilteredBetHistory() {
-    const cat = state.betHistoryCategory;
-    const status = state.betHistoryStatus;
-    const { from, to } = getBetHistoryRangeBounds();
-    return getMergedBetHistory().filter((bet) => {
-      if (cat !== "all" && bet.category !== cat) return false;
-      if (status !== "all") {
-        const betStatus = String(bet.status || "").toLowerCase();
-        const matchOpen =
-          status === "open" &&
-          (betStatus === "open" || betStatus === "running" || betStatus === "unsettled");
-        if (!matchOpen && betStatus !== status) return false;
-      }
-      const d = parseDateKey(bet.dateKey);
-      if (!d) return true;
-      if (from && d < from) return false;
-      if (to && d > to) return false;
-      return true;
-    });
   }
 
   function renderMyBetsOpenCard(bet) {
@@ -7650,6 +7649,8 @@
     if (cat === "all" || cat === "sports" || cat === "esports" || cat === "casino") {
       state.betHistoryCategory = cat;
     }
+    /* Legacy: Open is not a history filter */
+    if (state.betHistoryStatus === "open") state.betHistoryStatus = "all";
     mountBetHistoryHost();
     backdrop.hidden = false;
     /* Desktop (≥901): always centered pop modal — never embed in right-rail My Bets */
