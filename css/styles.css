@@ -3053,6 +3053,8 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+  /* White te-* icons on light menu — same navy as sport-basketball.svg */
+  filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
 }
 
 .te-more-item .te-more-count {
@@ -3214,6 +3216,8 @@ body[data-page="marble-live"] .sports-section-label:not(.az) {
   width: 16px;
   height: 16px;
   object-fit: contain;
+  /* White Figma icons on light menu — same navy as sport-basketball.svg */
+  filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
 }
 
 .te-esports-item > span:nth-child(2),

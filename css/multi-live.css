@@ -264,9 +264,9 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--odds-bg);
+  object-fit: contain;
+  /* Tint white Figma glyphs only — no circle bg (filter would paint that navy too) */
+  filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
 }
 
 .ml-flyout-item:hover,
@@ -335,8 +335,8 @@
   width: 14px;
   height: 14px;
   flex-shrink: 0;
-  /* te-* icons are light; remap to section-blue on white flyout */
-  filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(1200%) hue-rotate(182deg) brightness(0.95);
+  /* te-* icons are light; remap to basketball navy on white flyout */
+  filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
   opacity: 1;
 }
 
@@ -409,7 +409,7 @@
 .ml-match-card-serve {
   width: 10px;
   height: 10px;
-  filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(1200%) hue-rotate(182deg) brightness(0.95);
+  filter: brightness(0) saturate(100%) invert(23%) sepia(48%) saturate(1100%) hue-rotate(185deg) brightness(92%) contrast(92%);
   opacity: 0.9;
 }
 

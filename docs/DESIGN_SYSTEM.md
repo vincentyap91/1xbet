@@ -317,14 +317,14 @@ Figma `21:2` empty state + live cascade (sport → game/league → match). No le
 |-------|-------|----------------|
 | Toolbar / crumbs | `.ml-toolbar` | section-blue → section-blue-dark gradient |
 | Sport chips | `.ml-filters` / `.ml-chip` | same section-blue gradient; active underline `--action-green` |
-| Cascade menu | `.ml-flyout` / `.ml-flyout-item` / `.ml-match-card` | light `--surface-primary`; hover `--odds-hover`; preview on `--surface-secondary` |
+| Cascade menu | `.ml-flyout` / `.ml-flyout-item` / `.ml-match-card` | light `--surface-primary`; hover `--odds-hover`; preview on `--surface-secondary`. Flyout glyphs (`.ml-flyout-ico`) tinted to basketball navy; no circular fill (CSS `filter` would recast a chip bg to the same navy) |
 | Empty board | `.ml-board.is-empty` | `--surface-secondary`; title `--text-primary`; copy `--text-secondary` |
 | Filled board | `.ml-board-grid` / `.ml-panel` | 3-col panels; head `--section-blue`; view tabs on `--header-nav-bg`; horizontal scoreboard; market bar `--odds-bg`; odds `.odd-btn` on light |
 | Right rail | shared | same as homepage (reg / bet slip / generator) |
 
 **Interaction:** hover/click a sport chip opens the cascade **under that chip** (not pinned to the left of the strip). Esports: Games → Leagues → match card; other sports: Leagues → match. Click match → pin panel (max 6). Panel odds use homepage `.odd-btn` / ticket payloads. Remove via panel close.
 
-Icons: reuse `te-*` / `sport-*` / `esports/icon-*` from Figma exports already in `assets/icons/`.
+Icons: reuse `te-*` / `sport-*` / `esports/icon-*` from Figma exports already in `assets/icons/`. On the light cascade (`.ml-flyout-ico`), white Figma fills are remapped with the same CSS filter as basketball (`sport-basketball.svg`).
 
 #### Promo category tabs (`promo.html`)
 
