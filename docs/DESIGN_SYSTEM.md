@@ -322,7 +322,7 @@ Figma `21:2` empty state + live cascade (sport → game/league → match). No le
 | Filled board | `.ml-board-grid` / `.ml-panel` | 3-col panels; head `--section-blue`; view tabs on `--header-nav-bg`; horizontal scoreboard; market bar `--odds-bg`; odds `.odd-btn` on light |
 | Right rail | shared | same as homepage (reg / bet slip / generator) |
 
-**Interaction:** chip opens flyout (Esports: Games → Leagues → match card; other sports: Leagues → match). Click match → pin panel (max 6). Panel odds use homepage `.odd-btn` / ticket payloads. Remove via panel close.
+**Interaction:** hover/click a sport chip opens the cascade **under that chip** (not pinned to the left of the strip). Esports: Games → Leagues → match card; other sports: Leagues → match. Click match → pin panel (max 6). Panel odds use homepage `.odd-btn` / ticket payloads. Remove via panel close.
 
 Icons: reuse `te-*` / `sport-*` / `esports/icon-*` from Figma exports already in `assets/icons/`.
 

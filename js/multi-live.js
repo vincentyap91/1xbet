@@ -497,6 +497,7 @@
     if (flyout) {
       flyout.hidden = true;
       flyout.innerHTML = "";
+      flyout.style.left = "";
     }
     $$(".ml-chip[data-sport]").forEach((chip) => {
       chip.classList.remove("active");
@@ -508,13 +509,36 @@
     state.leagueId = null;
   }
 
-  function openSport(sportId) {
+  /** Align cascade under the active sport chip (clamped to the filter wrap). */
+  function positionFlyout() {
+    const flyout = $("#ml-flyout");
+    const wrap = $(".ml-filters-wrap");
+    const chip = state.sportId
+      ? document.querySelector(`.ml-chip[data-sport="${state.sportId}"]`)
+      : null;
+    if (!flyout || !wrap || !chip || flyout.hidden) return;
+
+    const wrapRect = wrap.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    const width = flyout.offsetWidth || 260;
+    const maxLeft = Math.max(0, wrapRect.width - width);
+    const left = Math.min(Math.max(0, chipRect.left - wrapRect.left), maxLeft);
+    flyout.style.left = `${Math.round(left)}px`;
+  }
+
+  function openSport(sportId, opts) {
     const data = sportData(sportId);
     const flyout = $("#ml-flyout");
     if (!flyout) return;
 
-    if (state.sportId === sportId && !flyout.hidden) {
+    const toggle = opts && opts.toggle;
+    if (toggle && state.sportId === sportId && !flyout.hidden) {
       closeFlyout();
+      return;
+    }
+
+    if (state.sportId === sportId && !flyout.hidden) {
+      positionFlyout();
       return;
     }
 
@@ -532,6 +556,7 @@
     if (!data) {
       flyout.hidden = false;
       flyout.innerHTML = `<div class="ml-flyout-col"><p class="ml-flyout-empty">No live events</p></div>`;
+      positionFlyout();
       return;
     }
 
@@ -609,6 +634,7 @@
     }
 
     flyout.innerHTML = parts.join("");
+    positionFlyout();
   }
 
   function matchPreviewCol(league) {
@@ -865,11 +891,15 @@
   }
 
   function bindFlyout() {
+    const wrap = $(".ml-filters-wrap");
+    const filters = $(".ml-filters");
+    let leaveTimer = 0;
+
     document.addEventListener("click", (e) => {
       const chip = e.target.closest(".ml-chip[data-sport]");
       if (chip) {
         e.preventDefault();
-        openSport(chip.dataset.sport);
+        openSport(chip.dataset.sport, { toggle: true });
         return;
       }
 
@@ -906,8 +936,14 @@
       }
     });
 
-    /* Hover advances one step at a time (same cascade as click) */
+    /* Hover chip → open that sport's menu under the chip; inner columns still cascade. */
     document.addEventListener("pointerover", (e) => {
+      const chip = e.target.closest(".ml-chip[data-sport]");
+      if (chip) {
+        openSport(chip.dataset.sport);
+        return;
+      }
+
       const gameBtn = e.target.closest("[data-ml-game]");
       if (gameBtn && state.sportId) {
         const id = gameBtn.getAttribute("data-ml-game");
@@ -927,6 +963,21 @@
         }
       }
     });
+
+    if (wrap) {
+      wrap.addEventListener("pointerenter", () => {
+        window.clearTimeout(leaveTimer);
+      });
+      wrap.addEventListener("pointerleave", () => {
+        window.clearTimeout(leaveTimer);
+        leaveTimer = window.setTimeout(() => {
+          if (!$("#ml-flyout")?.hidden) closeFlyout();
+        }, 160);
+      });
+    }
+
+    filters?.addEventListener("scroll", positionFlyout);
+    window.addEventListener("resize", positionFlyout);
   }
 
   function bindBoard() {

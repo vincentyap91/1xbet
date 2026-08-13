@@ -189,7 +189,8 @@
   filter: brightness(0) invert(1);
 }
 
-/* Cascade menu: league list + match preview (live multi parity) */
+/* Cascade menu: league list + match preview (live multi parity).
+   left is set in JS so the panel sits under the hovered/selected chip. */
 .ml-flyout {
   position: absolute;
   top: 100%;
