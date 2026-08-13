@@ -6,7 +6,7 @@ Reusable layout, spacing, and class conventions for the mobile site (`mobile/`).
 
 **Reference:** [1xlite mobile](https://1xlite-46272.pro/en?platform_type=mobile)  
 **Canonical home:** `mobile/index.html` + `mobile/css/mobile-home.css` (scoped under `body.mh-page`)  
-Home can use a **floating player-online pill** anchored above the sticky tab bar. Keep it compact, right-aligned, linked to the LIVE section, and hide or fade it while the Quick bet slip is open.
+Home pins a **player-online pill** to the first promo banner’s top-right (same as desktop sportsbook / Caelo). Keep it compact, linked to the LIVE section. Do not float it above the sticky tab bar.
 **Sports (Line):** `mobile/sports.html` + `mobile/css/mobile-sports.css` — [1xlite line](https://1xlite-46272.pro/en/line?platform_type=mobile)  
 **Live (sports):** `mobile/live.html` + `mobile/css/mobile-sports.css` + `mobile/css/mobile-live.css` — [1xlite live](https://1xlite-46272.pro/en/live?platform_type=mobile)  
 **Accumulators of the day:** `mobile/accumulators.html` + `mobile/css/mobile-accumulators.css` + `mobile/js/mobile-accumulators.js` — [1xlite dailyexpress](https://1xlite-46272.pro/en/dailyexpress?platform_type=mobile)  
@@ -116,7 +116,7 @@ Apply **`data-mh-scroll` + `data-mh-drag-scroll`** together on any rail that sho
 
 The responsive desktop homepage keeps its existing theme and match logic, but prioritizes sport discovery on mobile:
 
-1. Promo hero
+1. Promo hero — **player-online pill** (`.promo-live-pill--banner`) pinned top-right of `#promo-slider` (8px inset, compact; person icon, no label). Same placement as Caelo sportsbook. Dedicated mobile home (`mobile/index.html`) uses `.mh-live-floating` on `.mh-promos` with the same top-right inset.
 2. **Popular Sports** (`.home-popular-sports`) — horizontal `.home-sports-rail` of rounded `.home-sport-card` buttons; sport art from desktop `assets/games/sports/*.png` (not under `mobile/`); first/last card use `12px` side margin (matches `.home-rail-head`) so the lead card is not flush to the panel edge
 3. Live / Sports quick navigation
 4. TOP-EVENTS and live match table (`#live-table` stacks **Live** then **Upcoming** sections on Matches; cards honor `status` / `hasLiveStream` / scores vs `startTime`)

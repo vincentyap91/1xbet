@@ -620,7 +620,7 @@ Use as a checklist when cloning patterns onto new pages:
 1. **Header** — brand, actions, primary nav  
 2. **Left nav** — Favorite / Recommended / Top Games / LIVE–SPORTS / A–Z  
 3. **Promo slider** — full-bleed photo slides, green CTA. **≤900:** left-aligned copy + CTA; side chevrons vertically centered; dots bottom-right (clear of button); left scrim for readability  
-   Desktop home may include a **player-online utility pill** pinned to the hero's top-right. Keep it inside the banner chrome, use `--action-green` for the pill, white text, a live dot, and compact pill geometry. Treat it as a shortcut into LIVE content, not a second CTA.
+   Desktop and ≤900 home pin a **player-online utility pill** to the first promo banner’s top-right (`.promo-live-pill--banner`). Keep it inside the banner chrome, use `--action-green` for the pill, white text, a live dot, and compact pill geometry. On ≤900 hide the “Players Online” label and show the person icon. Treat it as a shortcut into LIVE content, not a second CTA. Do not float it above the tab bar.
 4. **`.home-popular-sports`** — ≤900 Popular Sports rail (+ sports filter drawer); desktop hidden  
 5. **Game strip** — horizontal cards  
 6. **TOP-EVENTS + LIVE toolbar** — `.home-quicknav`, banner, crumbs, tabs, search, stream toggle, sport chips + more / esports menus  

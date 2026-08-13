@@ -650,11 +650,12 @@
           const [hs, as] = String(m.score || "0:0").split(":");
           const homeSets = m.homeSets || "";
           const awaySets = m.awaySets || "";
-          return `<button type="button" class="ml-match-card${pinned ? " is-pinned" : ""}" data-ml-match="${escapeHtml(m.id)}">
+          const favOn = isMatchFavourite(m.id);
+          return `<div class="ml-match-card${pinned ? " is-pinned" : ""}" data-ml-match="${escapeHtml(m.id)}" role="button" tabindex="0">
             <div class="ml-match-card-head">
               <img class="ml-match-card-sport" src="${ico}" alt="" width="14" height="14" />
               <span class="ml-match-card-league">${escapeHtml(m.league || league.name)}</span>
-              <span class="ml-match-card-star" aria-hidden="true" title="Favourite">☆</span>
+              <button type="button" class="ml-match-card-star${favOn ? " is-fav" : ""}" data-ml-fav="${escapeHtml(m.id)}" aria-label="${favOn ? "Remove from favorites" : "Add to favorites"}" aria-pressed="${favOn ? "true" : "false"}" title="Favourite">${favOn ? "★" : "☆"}</button>
             </div>
             <div class="ml-match-card-row">
               <span class="ml-match-card-badge" aria-hidden="true">${escapeHtml(teamInitials(m.home))}</span>
@@ -671,7 +672,7 @@
               ${m.serving === "away" ? `<img class="ml-match-card-serve" src="${ico}" alt="" width="10" height="10" />` : `<span class="ml-match-card-serve-spacer"></span>`}
             </div>
             <div class="ml-match-card-status">${escapeHtml(m.period)}</div>
-          </button>`;
+          </div>`;
         })
         .join("")}
     </div>`;
@@ -694,6 +695,68 @@
       }
     }
     return null;
+  }
+
+  function findMatchSportId(id) {
+    for (const [sportId, sport] of Object.entries(CATALOG)) {
+      if (sport.mode === "games") {
+        for (const g of sport.games || []) {
+          for (const lg of g.leagues || []) {
+            if ((lg.matches || []).some((x) => x.id === id)) return sportId;
+          }
+        }
+      } else if ((sport.leagues || []).some((lg) => (lg.matches || []).some((x) => x.id === id))) {
+        return sportId;
+      }
+    }
+    return state.sportId;
+  }
+
+  function isMatchFavourite(id) {
+    return Boolean(window.SbFavourites?.isFavourite?.(id));
+  }
+
+  function matchToFavouriteRecord(m, sportId) {
+    const [hs, as] = String(m.score || "0:0").split(":");
+    const resolvedSport = sportId || findMatchSportId(m.id) || "football";
+    return {
+      id: m.id,
+      sport: resolvedSport,
+      sportIcon: sportIcon(resolvedSport),
+      time: m.period || "Live",
+      league: m.league || "",
+      home: m.home || "",
+      homeLogo: m.homeLogo || "assets/images/mobile-home/teams/team-01.webp",
+      away: m.away || "",
+      awayLogo: m.awayLogo || "assets/images/mobile-home/teams/team-02.webp",
+      homeScore: hs != null && hs !== "" ? hs.trim() : null,
+      awayScore: as != null && as !== "" ? as.trim() : null,
+      note: "",
+      scope: "live",
+      hasStream: false,
+      odds: [],
+    };
+  }
+
+  function syncMatchFavStars(id, on) {
+    const selector = `[data-ml-fav="${typeof CSS !== "undefined" && CSS.escape ? CSS.escape(id) : id}"]`;
+    document.querySelectorAll(selector).forEach((btn) => {
+      btn.classList.toggle("is-fav", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      btn.setAttribute("aria-label", on ? "Remove from favorites" : "Add to favorites");
+      btn.textContent = on ? "★" : "☆";
+    });
+  }
+
+  function toggleMatchFavourite(id) {
+    if (!id || !window.SbFavourites) return;
+    const m = findMatchById(id);
+    if (!m) return;
+    const adding = !isMatchFavourite(id);
+    if (adding) window.SbFavourites.upsert(matchToFavouriteRecord(m, findMatchSportId(id)));
+    else window.SbFavourites.remove(id);
+    syncMatchFavStars(id, adding);
+    toast(adding ? "Added to favorites" : "Removed from favorites");
   }
 
   function addMatch(id) {
@@ -925,6 +988,14 @@
         return;
       }
 
+      const favBtn = e.target.closest("[data-ml-fav]");
+      if (favBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMatchFavourite(favBtn.getAttribute("data-ml-fav"));
+        return;
+      }
+
       const matchBtn = e.target.closest(".ml-match-card");
       if (matchBtn) {
         addMatch(matchBtn.getAttribute("data-ml-match"));
@@ -934,6 +1005,15 @@
       if (!e.target.closest(".ml-filters-wrap")) {
         if (!$("#ml-flyout")?.hidden) closeFlyout();
       }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      if (e.target.closest("[data-ml-fav]")) return;
+      const card = e.target.closest(".ml-match-card[data-ml-match]");
+      if (!card) return;
+      e.preventDefault();
+      addMatch(card.getAttribute("data-ml-match"));
     });
 
     /* Hover chip → open that sport's menu under the chip; inner columns still cascade. */
