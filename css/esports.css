@@ -1476,13 +1476,15 @@
   }
 
   .es-right .bet-remove {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--accent-blue-soft);
     background: transparent;
+    opacity: 0.85;
   }
 
   .es-right .bet-remove:hover {
     color: #fff;
     background: rgba(255, 255, 255, 0.08);
+    opacity: 1;
   }
 
   .es-right .ticket-live-badge {
@@ -1490,11 +1492,16 @@
     color: #fff;
   }
 
+  .es-right .ticket-meta-line,
   .es-right .ticket-event-id,
-  .es-right .bet-item-league,
+  .es-right .bet-item-league {
+    color: #fff;
+  }
+
+  .es-right .bet-item-match,
   .es-right .ticket-market,
-  .es-right .bet-item-match {
-    color: var(--cyan-soft);
+  .es-right .ticket-selection-row {
+    color: var(--accent-blue-soft);
   }
 
   .es-right .ticket-score {
@@ -1527,11 +1534,22 @@
   .es-right #bet-type-select,
   .es-right #odds-change-select,
   .es-right .stake-control input,
-  .es-right .quick-stakes button,
-  .es-right .promo-code-input {
+  .es-right .quick-stakes button {
     background: var(--header-nav-bg) !important;
     border: 1px solid rgba(255, 255, 255, 0.14);
     color: #fff !important;
+  }
+
+  .es-right .promo-code-input {
+    background: var(--header-nav-bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: var(--text-muted) !important;
+  }
+
+  .es-right .promo-code-input:focus,
+  .es-right .promo-code-input:not(:placeholder-shown) {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
   }
 
   /* No outer box around ± / input — only inner control borders */
@@ -1557,7 +1575,8 @@
   }
 
   .es-right .promo-code-input::placeholder {
-    color: rgba(255, 255, 255, 0.45);
+    color: var(--text-muted);
+    opacity: 1;
   }
 
   .es-right .ticket-trash,
@@ -1578,8 +1597,37 @@
   .es-right .ticket-winnings-row,
   .es-right .max-stake-link,
   .es-right .ticket-meta-link,
-  .es-right .ticket-account-meta {
-    color: rgba(255, 255, 255, 0.82) !important;
+  .es-right .ticket-account-meta,
+  .es-right .ticket-automax__label {
+    color: #fff !important;
+  }
+
+  .es-right .ticket-automax__info {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+
+  .es-right .ticket-automax__info:hover,
+  .es-right .ticket-automax__info.is-open,
+  .es-right .ticket-automax__info:focus-visible {
+    background: var(--section-blue);
+    color: #fff;
+  }
+
+  .es-right .ticket-automax__tip {
+    background: var(--header-nav-bg);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .es-right .ticket-automax__tip::after {
+    border-top-color: var(--header-nav-bg);
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.18));
+  }
+
+  .es-right .ticket-automax__toggle:not(.is-on) {
+    background: rgba(255, 255, 255, 0.28);
   }
 
   .es-right .ticket-summary-row strong,
@@ -1640,6 +1688,186 @@
     filter: brightness(1.06);
     background: linear-gradient(90deg, var(--brand-blue) 0%, var(--accent-blue) 55%, var(--section-blue) 100%);
     color: #fff;
+  }
+
+  /* Logged-in My bets — desktop dark chrome (Caelo esports after-login, 1xbet tokens) */
+  .es-right .mybets-app {
+    background: var(--sidebar-bg);
+    color: #fff;
+  }
+
+  .es-right .mybets-subtabs {
+    background: rgba(47, 105, 177, .28) ;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0 4px;
+  }
+
+  .es-right .mybets-subtab {
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 600;
+  }
+
+  .es-right .mybets-subtab.active {
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .es-right .mybets-subtab.active::after {
+    left: 18%;
+    right: 18%;
+    height: 2px;
+    background: var(--action-green);
+    border-radius: 2px;
+  }
+
+  .es-right .mybets-badge {
+    color: var(--header-bg-strong);
+    background: #fff;
+    border-color: transparent;
+  }
+
+  .es-right .mybets-subtab.active .mybets-badge {
+    color: var(--header-bg-strong);
+    background: #fff;
+    border-color: transparent;
+  }
+
+  .es-right .mybets-open-controls,
+  .es-right .mybets-footer-note {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-check,
+  .es-right .mybets-check-label,
+  .es-right .mybets-refresh {
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-refresh-icon {
+    color: var(--accent-blue-soft);
+  }
+
+  .es-right .my-bets-body .bet-empty-text {
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-card,
+  .es-right .mybets-slip-card,
+  .es-right .mybets-empty,
+  .es-right .mybets-guest-card {
+    background: var(--header-nav-bg);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    color: #fff;
+  }
+
+  .es-right .mybets-card-head,
+  .es-right .mybets-card-event-date,
+  .es-right .mybets-card-stake-currency,
+  .es-right .mybets-card-league,
+  .es-right .mybets-card-id,
+  .es-right .mybets-card-time,
+  .es-right .mybets-card-payout-label {
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-card-score,
+  .es-right .mybets-card-odds-line,
+  .es-right .mybets-card-stake-value,
+  .es-right .mybets-card-match,
+  .es-right .mybets-card-payout-value {
+    color: #fff;
+  }
+
+  .es-right .mybets-card-odds-tag {
+    color: var(--accent-blue-soft);
+  }
+
+  .es-right .mybets-card-event {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .es-right .mybets-card-payout {
+    background: var(--sidebar-bg);
+  }
+
+  .es-right .mybets-cashout.is-disabled {
+    color: var(--text-muted);
+    background: var(--sidebar-bg);
+    border-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .es-right .mybets-slip-card__head {
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .es-right .mybets-slip-card__row {
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-slip-card__row strong,
+  .es-right .mybets-slip-card__match,
+  .es-right .mybets-slip-card__status {
+    color: #fff;
+  }
+
+  .es-right .mybets-slip-card__league,
+  .es-right .mybets-slip-card__selection {
+    color: var(--text-muted);
+  }
+
+  .es-right .mybets-slip-card__event {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .es-right .mybets-slip-card__selection > span {
+    color: #fff;
+    background: var(--sidebar-bg);
+  }
+
+  .es-right .mybets-empty-icon {
+    color: color-mix(in srgb, var(--text-muted) 70%, transparent);
+  }
+
+  .es-right .mybets-sell,
+  .es-right .mybets-repeat,
+  .es-right .mybets-sell-settings {
+    background: var(--header-action);
+    color: #fff;
+  }
+
+  .es-right .mybets-sell:hover,
+  .es-right .mybets-repeat:hover,
+  .es-right .mybets-sell-settings:hover {
+    background: var(--header-action-hover);
+    color: #fff;
+  }
+
+  .es-right .mybets-view-all {
+    color: #fff;
+    background: var(--header-nav-bg);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .es-right .mybets-view-all:hover {
+    color: #fff;
+    background: var(--section-blue);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .es-right .mybets-view-history,
+  .es-right .mybets-view-history--list {
+    color: #fff;
+    background: var(--action-green);
+    border: none;
+  }
+
+  .es-right .mybets-view-history:hover {
+    color: #fff;
+    background: var(--action-green-hover);
   }
 
   /* Author display:block must not beat [hidden] */
