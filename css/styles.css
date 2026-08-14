@@ -8593,7 +8593,7 @@ body.bh-desktop-open {
   text-align: center;
   min-height: 120px;
   padding: 16px 12px;
-  background: var(--header-nav-bg);
+  background: #ffffff;
   border-radius: 8px;
 }
 
